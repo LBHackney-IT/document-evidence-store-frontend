@@ -1,14 +1,14 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@1.25.1
+  cypress: cypress-io/cypress@1
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
   node:
     docker:
-      - image: circleci/node:12.13
-    working_directory: ~/repo
+      - image: circleci/node:14
+    working_directory: ~/project
 
 commands:
   assume-role:
@@ -26,23 +26,8 @@ jobs:
     executor: node
 
     steps:
-      - checkout
-
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package-lock.json" }}
-
-      - run:
-          name: Install dependencies
-          command: |
-            sudo CYPRESS_CACHE_FOLDER=~/repo/cypress npm i --no-cache git
-            sudo CYPRESS_CACHE_FOLDER=~/repo/cypress npm i
-
-      - save_cache:
-          paths:
-            - node_modules
-            - cypress
-          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - attach_workspace:
+          at: ~/
 
       - run:
           name: Run linter
@@ -61,7 +46,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/
 
       - assume-role:
           aws-account: $AWS_ACCOUNT_STAGING
@@ -79,7 +64,7 @@ jobs:
 
     steps:
       - attach_workspace:
-          at: ~/repo
+          at: ~/
 
       - assume-role:
           aws-account: $AWS_ACCOUNT_PRODUCTION
@@ -96,11 +81,20 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - test
+      - cypress/install # Use Cypress step to install and cache dependencies
+      - cypress/run:
+          requires:
+            - cypress/install
+          executor: cypress/base-14
+          attach-workspace: true
+      - test:
+          requires:
+            - cypress/install
       - deploy-staging:
           context: api-assume-role-staging-context
           requires:
             - test
+            - cypress/run
           filters:
             branches:
               only:
