@@ -198,7 +198,7 @@ context('Network Requests', () => {
       expect(xhr.requestHeaders).to.have.property('Content-Type');
       expect(xhr.responseBody).to.have.property(
         'name',
-        'Using POST in cy.route()'
+        'Using POST in cy.intercept()'
       );
     });
 

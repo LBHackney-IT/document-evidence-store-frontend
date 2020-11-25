@@ -22,6 +22,22 @@ commands:
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
 jobs:
+  build:
+    executor: node
+
+    steps:
+      - attach_workspace:
+          at: ~/
+
+      - run:
+          name: Build application
+          command: npm run build
+
+      - persist_to_workspace:
+          root: ./project
+          paths:
+            - ./
+
   test:
     executor: node
 
@@ -56,7 +72,6 @@ jobs:
           environment:
             NODE_ENV: production
           command: |
-            npm run build
             ./node_modules/serverless/bin/serverless.js deploy -s staging
 
   deploy-production:
@@ -74,22 +89,31 @@ jobs:
           environment:
             NODE_ENV: production
           command: |
-            npm run build
             ./node_modules/serverless/bin/serverless.js deploy -s production
 
 workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - cypress/install # Use Cypress step to install and cache dependencies
+      - cypress/install: # Use Cypress step to install and cache dependencies
+          build: npm run build
+
+      - test:
+          requires:
+            - cypress/install
+
+      # - build:
+      #     requires:
+      #       - cypress/install
+
       - cypress/run:
           requires:
             - cypress/install
           executor: cypress/base-14
           attach-workspace: true
-      - test:
-          requires:
-            - cypress/install
+          start: npm run start
+          wait-on: 'http-get://127.0.0.1:3000'
+
       - deploy-staging:
           context: api-assume-role-staging-context
           requires:
@@ -99,6 +123,7 @@ workflows:
             branches:
               only:
                 - main
+
       # - permit-deploy-production:
       #     type: approval
       #     requires:
