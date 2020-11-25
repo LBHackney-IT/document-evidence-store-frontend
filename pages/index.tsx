@@ -1,9 +1,15 @@
-import { Container, Header, Heading, HeadingLevels, Link, Main, PhaseBanner, Tile } from 'lbh-frontend-react'
-import Head from 'next/head'
-//import Header from '../components/Header'
-import styles from '../styles/Home.module.css'
+import {
+  Container,
+  Header,
+  Heading,
+  HeadingLevels,
+  Main,
+  PhaseBanner,
+  Tile,
+} from 'lbh-frontend-react';
+import { ReactNode } from 'react';
 
-export default function Home() {
+const Home = (): ReactNode => {
   return (
     <div>
       <Header serviceName="Document Evidence Service">
@@ -11,15 +17,20 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Header>
       <Container>
-        <PhaseBanner phase="ALPHA" url="form-url"/>
+        <PhaseBanner phase="ALPHA" url="form-url" />
       </Container>
       <Main>
         <div className="lbh-container">
           <Heading level={HeadingLevels.H1}>Please log in</Heading>
-          <Tile link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localhost:3000" title="Log in with Google" />
+          <Tile
+            link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localhost:3000"
+            title="Log in with Google"
+          />
           {/* <Link href={`https://auth.hackney.gov.uk/auth?redirect_uri=${redirect_uri}`} Login with google></Link> */}
         </div>
       </Main>
     </div>
-  )
-}
+  );
+};
+
+export default Home;

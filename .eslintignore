@@ -1,0 +1,12 @@
+node_modules
+.next
+next.config.js
+*.test.jsx
+*.test.tsx
+*.test.js
+*.test.ts
+*.spec.js
+*.spec.ts
+db
+cypress
+src/tests
