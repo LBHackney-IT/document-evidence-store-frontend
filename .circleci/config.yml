@@ -35,12 +35,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            sudo CYPRESS_CACHE_FOLDER=~/repo npm i --no-cache git
-            sudo CYPRESS_CACHE_FOLDER=~/repo npm i
+            sudo CYPRESS_CACHE_FOLDER=~/repo/cypress npm i --no-cache git
+            sudo CYPRESS_CACHE_FOLDER=~/repo/cypress npm i
 
       - save_cache:
           paths:
             - node_modules
+            - cypress
           key: v1-dependencies-{{ checksum "package-lock.json" }}
 
       - run:
