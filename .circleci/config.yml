@@ -1,7 +1,121 @@
 version: 2.1
+
 orbs:
-  node: circleci/node@3.0.0
+  cypress: cypress-io/cypress@1.25.1
+  aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
+
+executors:
+  node:
+    docker:
+      - image: circleci/node:12.13
+    working_directory: ~/repo
+
+commands:
+  assume-role:
+    description: 'Assumes deployment role and persists credentials across jobs'
+    parameters:
+      aws-account:
+        type: string
+    steps:
+      - aws_assume_role/assume_role:
+          account: <<parameters.aws-account>>
+          profile_name: default
+          role: 'LBH_Circle_CI_Deployment_Role'
+jobs:
+  test:
+    executor: node
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Install dependencies
+          command: |
+            sudo CYPRESS_CACHE_FOLDER=~/repo npm i --no-cache git
+            sudo CYPRESS_CACHE_FOLDER=~/repo npm i
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Run linter
+          command: npm run lint
+
+      - run:
+          name: Run prettier
+          command: npm run prettier:test
+
+      - run:
+          name: Build application
+          command: npm run build
+
+      - run:
+          name: Run unit tests
+          command: npm run test:unit:ci
+
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  deploy-staging:
+    executor: node
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - assume-role:
+          aws-account: $AWS_ACCOUNT_STAGING
+
+      - run:
+          name: Deploy application
+          environment:
+            NODE_ENV: production
+          command: |
+            npm run build
+            ./node_modules/serverless/bin/serverless.js deploy -s staging
+
+  deploy-production:
+    executor: node
+
+    steps:
+      - attach_workspace:
+          at: ~/repo
+
+      - assume-role:
+          aws-account: $AWS_ACCOUNT_PRODUCTION
+
+      - run:
+          name: Deploy application
+          environment:
+            NODE_ENV: production
+          command: |
+            npm run build
+            ./node_modules/serverless/bin/serverless.js deploy -s production
+
 workflows:
-  node-tests:
+  version: 2
+  continuous-delivery:
     jobs:
-      - node/test
+      - test
+      - deploy-staging:
+          context: api-assume-role-staging-context
+          requires:
+            - test
+          filters:
+            branches:
+              only:
+                - main
+      # - permit-deploy-production:
+      #     type: approval
+      #     requires:
+      #       - deploy-staging
+      # - deploy-production:
+      #     requires:
+      #       - permit-deploy-production
