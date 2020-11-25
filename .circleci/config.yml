@@ -22,22 +22,6 @@ commands:
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
 jobs:
-  build:
-    executor: node
-
-    steps:
-      - attach_workspace:
-          at: ~/
-
-      - run:
-          name: Build application
-          command: npm run build
-
-      - persist_to_workspace:
-          root: ./project
-          paths:
-            - ./
-
   test:
     executor: node
 
@@ -101,10 +85,6 @@ workflows:
       - test:
           requires:
             - cypress/install
-
-      # - build:
-      #     requires:
-      #       - cypress/install
 
       - cypress/run:
           requires:
