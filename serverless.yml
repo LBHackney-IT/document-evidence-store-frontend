@@ -5,11 +5,17 @@ provider:
   runtime: nodejs12.x
   region: eu-west-2
   stage: ${opt:stage}
+  apiGateway:
+    shouldStartNameWithService: true
 
 package:
   individually: true
   exclude:
     - ./**
+  excludeDevDependencies: false
+
+plugins:
+  - serverless-plugin-include-dependencies
 
 functions:
   document-evidence-frontend:
@@ -19,10 +25,8 @@ functions:
       include:
         - src/lambda.js
         - next.config.js
-        - src/**
         - public/**
         - build/_next/**
-        - node_modules/**
     events:
       - http:
           path: api/{proxy+}
@@ -34,7 +38,6 @@ functions:
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
-      GOOGLE_AUTH_REDIRECT_URL: ${ssm:/common/google-auth-redirect-uri}
 resources:
   Resources:
     CloudFrontDistribution:
