@@ -1,0 +1,104 @@
+service: document-evidence-frontend
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-west-2
+  stage: ${opt:stage}
+
+package:
+  individually: true
+  exclude:
+    - ./**
+
+functions:
+  document-evidence-frontend:
+    name: ${self:service}-${self:provider.stage}
+    handler: src/lambda.handler
+    package:
+      include:
+        - src/lambda.js
+        - next.config.js
+        - src/**
+        - public/**
+        - build/_next/**
+        - node_modules/**
+    events:
+      - http:
+          path: api/{proxy+}
+          method: ANY
+      - http: ANY /
+      - http: ANY /{proxy+}
+    vpc:
+      securityGroupIds: ${self:custom.securityGroups.${self:provider.stage}}
+      subnetIds: ${self:custom.subnets.${self:provider.stage}}
+    environment:
+      HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
+      GOOGLE_AUTH_REDIRECT_URL: ${ssm:/common/google-auth-redirect-uri}
+resources:
+  Resources:
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Aliases:
+            - ${self:custom.aliases.${self:provider.stage}}
+          PriceClass: PriceClass_100
+          ViewerCertificate:
+            AcmCertificateArn: ${self:custom.certificate-arn.${self:provider.stage}}
+            MinimumProtocolVersion: TLSv1.2_2018
+            SslSupportMethod: sni-only
+          DefaultCacheBehavior:
+            TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
+            ViewerProtocolPolicy: 'redirect-to-https'
+            AllowedMethods:
+              - GET
+              - HEAD
+              - OPTIONS
+              - PUT
+              - PATCH
+              - POST
+              - DELETE
+            DefaultTTL: 0
+            MaxTTL: 0
+            MinTTL: 0
+            ForwardedValues:
+              QueryString: true
+              Cookies:
+                Forward: all
+          Enabled: true
+          Origins:
+            - Id: ${self:service}-${self:provider.stage}-custom-origin
+              DomainName: ${self:custom.domain-name}
+              OriginPath: /${self:provider.stage}
+              CustomOriginConfig:
+                HTTPPort: 80
+                HTTPSPort: 443
+                OriginProtocolPolicy: https-only
+
+custom:
+  domain-name:
+    Fn::Join:
+      - '.'
+      - - Ref: ApiGatewayRestApi
+        - execute-api
+        - eu-west-2
+        - amazonaws.com
+  aliases:
+    staging: evidence-store-staging.hackney.gov.uk
+    production: evidence-store.hackney.gov.uk
+  certificate-arn:
+    staging: arn:aws:acm:us-east-1:715003523189:certificate/8f7fa30c-a4e5-4775-b827-ade824a33c9a
+    production: arn:aws:acm:us-east-1:153306643385:certificate/71728a39-cd3e-4570-a440-e87f84ef9a0d
+  securityGroups:
+    staging:
+      - sg-0166cbf56b7e77af0
+    production:
+      - sg-04b71cc889c5790e7
+  subnets:
+    staging:
+      - subnet-06d3de1bd9181b0d7
+      - subnet-0ed7d7713d1127656
+    production:
+      - subnet-0b7b8fea07efabf34
+      - subnet-01d3657f97a243261

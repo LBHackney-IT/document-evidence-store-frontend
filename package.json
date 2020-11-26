@@ -9,13 +9,17 @@
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx",
     "prettier:test": "npx prettier -c .",
     "prettier:fix": "npx prettier --write .",
-    "test:unit": "jest"
+    "test:unit": "jest",
+    "deploy": "sls deploy"
   },
   "dependencies": {
     "lbh-frontend-react": "^0.5.7",
     "next": "10.0.2",
     "react": "^17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "restana": "^4.8.0",
+    "serve-static": "^1.14.1",
+    "serverless-http": "^2.6.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",
@@ -31,6 +35,7 @@
     "jest": "^26.6.3",
     "prettier": "^2.2.0",
     "pretty-quick": "^3.1.0",
+    "serverless": "^2.12.0",
     "ts-jest": "^26.4.4",
     "typescript": "^4.0.5"
   },

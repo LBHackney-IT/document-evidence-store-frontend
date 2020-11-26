@@ -6,3 +6,4 @@ false
 coverage
 */Cypress/*
 .data
+build
