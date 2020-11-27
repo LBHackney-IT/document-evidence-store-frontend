@@ -1,17 +1,20 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import App, { getServerSideProps } from './_app';
-import { createRouter } from 'next/router';
-import { AppProps } from 'next/app';
-import React, { createElement } from 'react';
+import React from 'react';
 import { PageComponent } from '../../types/page-component';
-import { authoriseUser } from '../helpers/auth';
+import * as authHelpers from '../helpers/auth';
 import { mocked } from 'ts-jest/utils';
 import { IncomingMessage, ServerResponse } from 'http';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { GetServerSidePropsContext } from 'next';
 
 jest.mock('../helpers/auth');
 
-const mockedAuthoriseUser = mocked(authoriseUser);
+const {
+  authoriseUser,
+  pathIsWhitelisted,
+  userIsInValidGroup,
+  createLoginUrl,
+} = mocked(authHelpers);
 
 describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => (
@@ -25,19 +28,71 @@ describe('CustomApp', () => {
   });
 
   describe('getServerSideProps', () => {
-    it('when the user is not logged in redirects to google', async () => {
-      const req = { url: '/path' } as IncomingMessage;
-      const res = {} as ServerResponse;
-      const ctx = { req, res } as GetServerSidePropsContext;
+    const req = { url: '/path' } as IncomingMessage;
+    const res = {} as ServerResponse;
+    const ctx = { req, res } as GetServerSidePropsContext;
 
-      mockedAuthoriseUser.mockImplementation(() => undefined);
+    describe('when the user is not logged in', () => {
+      beforeEach(() => {
+        authoriseUser.mockImplementation(() => undefined);
+      });
 
-      const result = await getServerSideProps(ctx);
+      it('redirects to google when the page is private', async () => {
+        const loginUrl = 'i am a google auth url';
 
-      expect(result).toHaveProperty('redirect', {
-        destination:
-          'https://auth.hackney.gov.uk/auth?redirect_uri=http://localdev.hackney.gov.uk/path',
-        permanent: false,
+        createLoginUrl.mockImplementation(() => loginUrl);
+        pathIsWhitelisted.mockImplementation(() => false);
+
+        const result = await getServerSideProps(ctx);
+
+        expect(result).toEqual({
+          props: {},
+          redirect: {
+            destination: loginUrl,
+            permanent: false,
+          },
+        });
+      });
+
+      it('returns empty props when the page is public', async () => {
+        pathIsWhitelisted.mockImplementation(() => true);
+        const result = await getServerSideProps(ctx);
+
+        expect(result).toEqual({ props: {} });
+      });
+    });
+
+    describe('when the user is logged in', () => {
+      const user: authHelpers.User = {
+        groups: ['testGroup'],
+        name: 'Frodo Baggins',
+        email: 'frodo@baggins.com',
+        isAuthorised: true,
+      };
+
+      beforeEach(() => {
+        authoriseUser.mockImplementation(() => user);
+        pathIsWhitelisted.mockImplementation(() => false);
+      });
+
+      it('redirects to `access denied` when the user is not in a valid group', async () => {
+        userIsInValidGroup.mockImplementation(() => false);
+        const result = await getServerSideProps(ctx);
+
+        expect(result).toEqual({
+          props: {},
+          redirect: {
+            destination: '/access-denied',
+            permanent: false,
+          },
+        });
+      });
+
+      it('returns the user in props when the user is in a valid group', async () => {
+        userIsInValidGroup.mockImplementation(() => true);
+        const result = await getServerSideProps(ctx);
+
+        expect(result).toEqual({ props: { user } });
       });
     });
   });
