@@ -23,7 +23,7 @@ const Home = (): ReactNode => {
         <div className="lbh-container">
           <Heading level={HeadingLevels.H1}>Please log in</Heading>
           <Tile
-            link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localhost:3000"
+            link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localdev.hackney.gov.uk:3000/temp"
             title="Log in with Google"
           />
           {/* <Link href={`https://auth.hackney.gov.uk/auth?redirect_uri=${redirect_uri}`} Login with google></Link> */}

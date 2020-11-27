@@ -1,0 +1,11 @@
+{
+  "staging": {
+    "DEV_TEAM": "development-team-staging"
+  },
+  "production": {
+    "DEV_TEAM": "development-team-production"
+  },
+  "dev": {
+    "DEV_TEAM": "development-team-staging"
+  }
+}
