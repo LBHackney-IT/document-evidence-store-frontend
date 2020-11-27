@@ -1,14 +1,14 @@
 import cookie from 'cookie';
-import { IncomingMessage, ServerResponse } from 'http';
+import { IncomingMessage } from 'http';
 import jsonwebtoken from 'jsonwebtoken';
-import AuthGroups from '../../auth-groups.json';
+import authGroupsJson from '../../auth-groups.json';
+import { EnvironmentKey } from '../../types/env';
 
 const secret = process.env.HACKNEY_JWT_SECRET as string;
 const cookieName = process.env.HACKNEY_COOKIE_NAME as string;
 const baseUrl = process.env.BASE_URL as string;
-const env = process.env.REACT_APP_ENV as keyof typeof AuthGroups;
-const authGroups = AuthGroups[env];
-
+const environmentKey = process.env.REACT_APP_ENV as EnvironmentKey;
+const authGroups = authGroupsJson[environmentKey];
 const AUTH_WHITELIST = ['/', '/access-denied'];
 
 export type JWTPayload = {
@@ -30,18 +30,18 @@ export const createLoginUrl = (redirect: string): string =>
 export const pathIsWhitelisted = (path: string): boolean =>
   AUTH_WHITELIST.includes(path);
 
-export const userIsInValidGroup = ({ groups = [] }: User): boolean =>
-  Object.values(authGroups).some((group) => groups.includes(group));
+export const userIsInValidGroup = (user: User): boolean =>
+  Object.values(authGroups).some((group) => user.groups.includes(group));
 
-export const deleteSession = (res: ServerResponse): void => {
-  res.setHeader(
-    'Set-Cookie',
-    cookie.serialize(cookieName, '', {
-      maxAge: -1,
-      domain: '.hackney.gov.uk',
-    })
-  );
-};
+// export const deleteSession = (res: ServerResponse): void => {
+//   res.setHeader(
+//     'Set-Cookie',
+//     cookie.serialize(cookieName, '', {
+//       maxAge: -1,
+//       domain: '.hackney.gov.uk',
+//     })
+//   );
+// };
 
 export const authoriseUser = (req: IncomingMessage): User | undefined => {
   try {
@@ -66,8 +66,8 @@ export const authoriseUser = (req: IncomingMessage): User | undefined => {
   } catch (err) {
     if (err instanceof jsonwebtoken.JsonWebTokenError) {
       return;
-    } else {
-      console.log(err.message);
     }
+
+    console.error(err.message);
   }
 };
