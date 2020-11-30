@@ -1,46 +1,64 @@
 import '../styles/globals.css';
-import { AppProps } from 'next/app';
+import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
 import { PageComponent } from '../../types/page-component';
-import { GetServerSideProps } from 'next';
 import {
   authoriseUser,
   createLoginUrl,
   pathIsWhitelisted,
+  redirect,
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
+import UserContext from '../components/UserContext/UserContext';
 
 type CustomAppProps = {
   Component: PageComponent;
   pageProps: AppProps['pageProps'];
   user?: User;
+  reloading?: boolean;
 };
 
-const CustomApp = ({ Component, pageProps }: CustomAppProps): JSX.Element => {
-  return <Component {...pageProps} />;
+const CustomApp = ({
+  Component,
+  pageProps,
+  user,
+  reloading,
+}: CustomAppProps): JSX.Element | null => {
+  if (reloading) return null;
+
+  return (
+    <UserContext.Provider value={{ user }}>
+      <Component {...pageProps} />;
+    </UserContext.Provider>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+CustomApp.getInitialProps = async (appContext: AppContext) => {
+  const {
+    ctx: { req, res, pathname },
+  } = appContext;
+  const appProps = await App.getInitialProps(appContext);
+
+  if (pathIsWhitelisted(pathname)) return appProps;
+
+  if (!req || !res) {
+    redirect(res, pathname);
+    return { ...appProps, reloading: true };
+  }
+
   const user = authoriseUser(req);
-  if (pathIsWhitelisted(req.url || '/')) return { props: { user } };
 
   if (!user) {
-    const path = req.url || '/';
-    return {
-      props: {},
-      redirect: { destination: createLoginUrl(path), permanent: false },
-    };
+    const authPath = createLoginUrl(pathname);
+    return redirect(res, authPath);
   }
 
   if (!userIsInValidGroup(user)) {
-    return {
-      props: {},
-      redirect: { destination: '/access-denied', permanent: false },
-    };
+    return redirect(res, '/access-denied');
   }
 
-  return { props: { user } };
+  return { ...appProps, user };
 };
 
 export default CustomApp;

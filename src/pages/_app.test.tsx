@@ -1,26 +1,33 @@
 import { render } from '@testing-library/react';
-import App, { getServerSideProps } from './_app';
+import App from './_app';
 import React from 'react';
 import { PageComponent } from '../../types/page-component';
 import * as authHelpers from '../helpers/auth';
 import { mocked } from 'ts-jest/utils';
 import { IncomingMessage, ServerResponse } from 'http';
-import { GetServerSidePropsContext } from 'next';
+import { NextPageContext } from 'next';
+import NextApp, { AppContext, AppInitialProps } from 'next/app';
+import CustomApp from './_app';
 
 jest.mock('../helpers/auth');
+jest.mock('next/app');
 
 const {
   authoriseUser,
   pathIsWhitelisted,
   userIsInValidGroup,
   createLoginUrl,
+  redirect,
 } = mocked(authHelpers);
+
+const MockedNextApp = mocked(NextApp);
+const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
+MockedNextApp.getInitialProps.mockImplementation(async () => pageProps);
 
 describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => (
     <p>Hello</p>
   )) as unknown) as PageComponent;
-  const pageProps = { foo: 'bar' };
 
   it('if the page is public returns the component with the right props', () => {
     render(<App Component={pageComponent} pageProps={pageProps} />);
@@ -28,37 +35,31 @@ describe('CustomApp', () => {
   });
 
   describe('getServerSideProps', () => {
-    const req = { url: '/path' } as IncomingMessage;
+    const req = {} as IncomingMessage;
     const res = {} as ServerResponse;
-    const ctx = { req, res } as GetServerSidePropsContext;
+    const ctx = { req, res, pathname: '/path' } as NextPageContext;
+    const appContext = { ctx } as AppContext;
 
     describe('when the user is not logged in', () => {
       beforeEach(() => {
         authoriseUser.mockImplementation(() => undefined);
       });
+      const loginUrl = 'i am a google auth url';
+      createLoginUrl.mockImplementation(() => loginUrl);
 
       it('redirects to google when the page is private', async () => {
-        const loginUrl = 'i am a google auth url';
-
-        createLoginUrl.mockImplementation(() => loginUrl);
         pathIsWhitelisted.mockImplementation(() => false);
+        await CustomApp.getInitialProps(appContext);
 
-        const result = await getServerSideProps(ctx);
-
-        expect(result).toEqual({
-          props: {},
-          redirect: {
-            destination: loginUrl,
-            permanent: false,
-          },
-        });
+        expect(createLoginUrl).toHaveBeenCalledWith(ctx.pathname);
+        expect(redirect).toHaveBeenCalledWith(res, loginUrl);
       });
 
       it('returns empty props when the page is public', async () => {
         pathIsWhitelisted.mockImplementation(() => true);
-        const result = await getServerSideProps(ctx);
+        const result = await CustomApp.getInitialProps(appContext);
 
-        expect(result).toEqual({ props: {} });
+        expect(result).toEqual(pageProps);
       });
     });
 
@@ -77,22 +78,26 @@ describe('CustomApp', () => {
 
       it('redirects to `access denied` when the user is not in a valid group', async () => {
         userIsInValidGroup.mockImplementation(() => false);
-        const result = await getServerSideProps(ctx);
+        await CustomApp.getInitialProps(appContext);
 
-        expect(result).toEqual({
-          props: {},
-          redirect: {
-            destination: '/access-denied',
-            permanent: false,
-          },
-        });
+        expect(redirect).toHaveBeenCalledWith(res, '/access-denied');
       });
 
       it('returns the user in props when the user is in a valid group', async () => {
         userIsInValidGroup.mockImplementation(() => true);
-        const result = await getServerSideProps(ctx);
+        const result = await CustomApp.getInitialProps(appContext);
 
-        expect(result).toEqual({ props: { user } });
+        expect(result).toEqual({ ...pageProps, user });
+      });
+
+      it('returns the props and reloads the page when the page is rendered client side and is private', async () => {
+        const ctx = { pathname: '/path' } as NextPageContext;
+        const clientSideContext = { ctx } as AppContext;
+        pathIsWhitelisted.mockImplementation(() => false);
+        const result = await CustomApp.getInitialProps(clientSideContext);
+
+        expect(redirect).toHaveBeenCalledWith(undefined, ctx.pathname);
+        expect(result).toEqual({ ...pageProps, reloading: true });
       });
     });
   });

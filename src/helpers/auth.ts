@@ -1,5 +1,5 @@
 import cookie from 'cookie';
-import { IncomingMessage } from 'http';
+import { IncomingMessage, ServerResponse } from 'http';
 import jsonwebtoken from 'jsonwebtoken';
 import authGroupsJson from '../../auth-groups.json';
 import { EnvironmentKey } from '../../types/env';
@@ -32,6 +32,20 @@ export const pathIsWhitelisted = (path: string): boolean =>
 
 export const userIsInValidGroup = (user: User): boolean =>
   Object.values(authGroups).some((group) => user.groups.includes(group));
+
+type Redirector = (location: string) => void;
+export const redirect = (
+  res: ServerResponse | undefined,
+  location: string,
+  redirector: Redirector = window.location.replace
+) => {
+  if (!res) {
+    redirector(location);
+    return;
+  }
+  res.writeHead(302, { Location: location });
+  res.end();
+};
 
 // export const deleteSession = (res: ServerResponse): void => {
 //   res.setHeader(
