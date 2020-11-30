@@ -1,0 +1,62 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.lbh-container {
+  max-width: 1100px !important;
+}
+
+.lbh-form-group {
+  margin-bottom: 20px !important;
+}
+
+.lbu-service-switcher {
+  margin-top: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #bfc1c3;
+
+  &__name {
+    margin-bottom: 10px;
+  }
+
+  &__link {
+    margin: 0;
+  }
+
+  @media screen and (min-width: 400px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    &__name {
+      margin-bottom: 0px;
+    }
+  }
+}
+
+.lbu-layout {
+  &__pane {
+    margin-top: 35px;
+  }
+
+  @media screen and (min-width: 700px) {
+    display: flex;
+    flex-direction: row;
+
+    &__sidebar {
+      width: 300px;
+    }
+
+    &__pane {
+      margin-top: 0px;
+      width: 100%;
+    }
+  }
+}

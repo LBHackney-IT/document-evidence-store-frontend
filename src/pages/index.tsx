@@ -1,5 +1,5 @@
 import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
-import Layout from '../Components/Layout';
+import Layout from '../Components/ResidentLayout';
 import { ReactNode } from 'react';
 
 const Home = (): ReactNode => (

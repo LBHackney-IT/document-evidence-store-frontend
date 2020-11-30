@@ -1,4 +1,4 @@
-import '../styles/globals.css';
+import '../styles/globals.scss';
 import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
 import { PageComponent } from '../../types/page-component';
