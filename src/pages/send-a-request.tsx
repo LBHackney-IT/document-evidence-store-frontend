@@ -5,7 +5,7 @@ import {
   Button,
   ErrorMessage,
 } from 'lbh-frontend-react';
-import Layout from '../components/Layout';
+import Layout from '../components/DashboardLayout';
 import Field from '../components/Field';
 import Checkbox from '../components/Checkbox';
 import Radio from '../components/Radio';
@@ -31,7 +31,7 @@ const SendARequest = (): ReactNode => {
 
   return (
     <Layout>
-      <Heading level={HeadingLevels.H1}>Make a new request</Heading>
+      <Heading level={HeadingLevels.H2}>Make a new request</Heading>
 
       <Formik
         initialValues={{
