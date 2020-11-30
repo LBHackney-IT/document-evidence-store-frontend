@@ -13,13 +13,17 @@
     "deploy": "sls deploy"
   },
   "dependencies": {
+    "@types/yup": "^0.29.9",
+    "formik": "^2.2.5",
+    "isomorphic-unfetch": "^3.1.0",
     "lbh-frontend-react": "^0.5.7",
     "next": "10.0.2",
     "react": "^17.0.1",
     "react-dom": "17.0.1",
     "restana": "^4.8.0",
     "serve-static": "^1.14.1",
-    "serverless-http": "^2.6.0"
+    "serverless-http": "^2.6.0",
+    "yup": "^0.31.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.15",

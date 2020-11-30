@@ -8,8 +8,11 @@ import {
   Tile,
 } from 'lbh-frontend-react';
 import { ReactNode } from 'react';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
+import fetch from 'isomorphic-unfetch';
 
-const Home = (): ReactNode => {
+const SendARequest = (): ReactNode => {
   return (
     <div>
       <Header serviceName="Document Evidence Service">
@@ -28,4 +31,4 @@ const Home = (): ReactNode => {
   );
 };
 
-export default Home;
+export default SendARequest;
