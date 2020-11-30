@@ -1,16 +1,17 @@
-import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
-import Layout from '../Components/ResidentLayout';
+import Head from 'next/head';
+import { Heading, HeadingLevels } from 'lbh-frontend-react';
+import Layout from '../Components/DashboardLayout';
 import { ReactNode } from 'react';
 
-const Home = (): ReactNode => (
-  <Layout>
-    <Heading level={HeadingLevels.H1}>Please log in</Heading>
-    <Tile
-      link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localhost:3000"
-      title="Log in with Google"
-    />
-    {/* <Link href={`https://auth.hackney.gov.uk/auth?redirect_uri=${redirect_uri}`} Login with google></Link> */}
-  </Layout>
-);
+const SendARequest = (): ReactNode => {
+  return (
+    <Layout>
+      <Head>
+        <title>Browse residents</title>
+      </Head>
+      <Heading level={HeadingLevels.H2}>Browse residents</Heading>
+    </Layout>
+  );
+};
 
-export default Home;
+export default SendARequest;

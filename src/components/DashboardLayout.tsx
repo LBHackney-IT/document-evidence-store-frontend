@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Header, Main, PhaseBanner } from 'lbh-frontend-react';
-import Link from 'next/link';
+import NavLink from './NavLink';
 
 const Layout = (props: Props): JSX.Element => (
   <>
@@ -15,7 +15,6 @@ const Layout = (props: Props): JSX.Element => (
     </Header>
 
     <Container>
-      {/* <PhaseBanner phase="ALPHA" url="form-url" /> */}
       <header className="lbu-service-switcher">
         <strong className="lbu-service-switcher__name lbh-heading-h5">
           Housing benefit
@@ -31,10 +30,10 @@ const Layout = (props: Props): JSX.Element => (
         <nav className="lbu-layout__sidebar">
           <ul className="lbh-list">
             <li>
-              <Link href="/">Residents</Link>
+              <NavLink href="/">Residents</NavLink>
             </li>
             <li>
-              <Link href="/requests">Requests</Link>
+              <NavLink href="/requests">Requests</NavLink>
             </li>
           </ul>
         </nav>

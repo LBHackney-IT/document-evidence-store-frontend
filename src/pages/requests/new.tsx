@@ -1,15 +1,15 @@
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
+import Head from 'next/head';
 import {
   Heading,
   HeadingLevels,
   Button,
   ErrorMessage,
 } from 'lbh-frontend-react';
-import Layout from '../components/DashboardLayout';
-import Field from '../components/Field';
-import Checkbox from '../components/Checkbox';
-import Radio from '../components/Radio';
-import { ReactNode } from 'react';
+import Layout from '../../components/DashboardLayout';
+import Field from '../../components/Field';
+import Checkbox from '../../components/Checkbox';
+import Radio from '../../components/Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import fetch from 'isomorphic-unfetch';
@@ -31,6 +31,9 @@ const SendARequest = (): ReactNode => {
 
   return (
     <Layout>
+      <Head>
+        <title>Make a new request</title>
+      </Head>
       <Heading level={HeadingLevels.H2}>Make a new request</Heading>
 
       <Formik
