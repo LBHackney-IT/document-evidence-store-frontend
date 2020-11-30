@@ -1,0 +1,14 @@
+[
+  {
+    "id": "passport",
+    "title": "Passport"
+  },
+  {
+    "id": "driving-license",
+    "title": "Driving license"
+  },
+  {
+    "id": "bank-statement",
+    "title": "Bank statement"
+  }
+]
