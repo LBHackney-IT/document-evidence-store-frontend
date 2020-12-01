@@ -17,7 +17,7 @@ const {
   pathIsWhitelisted,
   userIsInValidGroup,
   createLoginUrl,
-  redirect,
+  serverSideRedirect,
 } = mocked(authHelpers);
 
 const MockedNextApp = mocked(NextApp);
@@ -52,7 +52,7 @@ describe('CustomApp', () => {
         await CustomApp.getInitialProps(appContext);
 
         expect(createLoginUrl).toHaveBeenCalledWith(ctx.pathname);
-        expect(redirect).toHaveBeenCalledWith(res, loginUrl);
+        expect(serverSideRedirect).toHaveBeenCalledWith(res, loginUrl);
       });
 
       it('returns empty props when the page is public', async () => {
@@ -80,7 +80,7 @@ describe('CustomApp', () => {
         userIsInValidGroup.mockImplementation(() => false);
         await CustomApp.getInitialProps(appContext);
 
-        expect(redirect).toHaveBeenCalledWith(res, '/access-denied');
+        expect(serverSideRedirect).toHaveBeenCalledWith(res, '/access-denied');
       });
 
       it('returns the user in props when the user is in a valid group', async () => {
@@ -93,10 +93,10 @@ describe('CustomApp', () => {
       it('returns the props and reloads the page when the page is rendered client side and is private', async () => {
         const ctx = { pathname: '/path' } as NextPageContext;
         const clientSideContext = { ctx } as AppContext;
+        const pathname = 'name';
         pathIsWhitelisted.mockImplementation(() => false);
         const result = await CustomApp.getInitialProps(clientSideContext);
 
-        expect(redirect).toHaveBeenCalledWith(undefined, ctx.pathname);
         expect(result).toEqual({ ...pageProps, reloading: true });
       });
     });

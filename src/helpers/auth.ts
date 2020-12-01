@@ -33,7 +33,10 @@ export const pathIsWhitelisted = (path: string): boolean =>
 export const userIsInValidGroup = (user: User): boolean =>
   Object.values(authGroups).some((group) => user.groups.includes(group));
 
-export const serverSideRedirect = (res: ServerResponse, location: string) => {
+export const serverSideRedirect = (
+  res: ServerResponse,
+  location: string
+): void => {
   res.writeHead(302, { Location: location });
   res.end();
 };

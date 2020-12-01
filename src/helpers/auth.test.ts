@@ -109,16 +109,11 @@ describe('auth helpers', () => {
     const location = 'location';
     const replaceSpy = jest.fn();
 
-    it('redirects client side', () => {
-      const result = auth.redirect(res, location, replaceSpy);
-      expect(replaceSpy).toHaveBeenCalledWith(location);
-    });
-
     it('redirects server side', () => {
       const res = {} as ServerResponse;
       res.writeHead = jest.fn();
       res.end = jest.fn();
-      auth.redirect(res, location, replaceSpy);
+      auth.serverSideRedirect(res, location);
       expect(res.writeHead).toHaveBeenCalledWith(302, { Location: location });
     });
   });

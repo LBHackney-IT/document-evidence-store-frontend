@@ -38,7 +38,7 @@ functions:
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
-      BASE_URL: http://localdev.hackney.gov.uk:3000
+      BASE_URL: http://localdev.hackney.gov.uk
       HACKNEY_COOKIE_NAME: hackneyToken
       REACT_APP_ENV: ${self:provider.stage}
 resources:
