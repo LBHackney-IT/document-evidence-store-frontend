@@ -93,7 +93,6 @@ describe('CustomApp', () => {
       it('returns the props and reloads the page when the page is rendered client side and is private', async () => {
         const ctx = { pathname: '/path' } as NextPageContext;
         const clientSideContext = { ctx } as AppContext;
-        const pathname = 'name';
         pathIsWhitelisted.mockImplementation(() => false);
         const result = await CustomApp.getInitialProps(clientSideContext);
 

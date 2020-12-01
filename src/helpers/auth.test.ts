@@ -105,9 +105,7 @@ describe('auth helpers', () => {
   });
 
   describe('redirect', () => {
-    const res = undefined;
     const location = 'location';
-    const replaceSpy = jest.fn();
 
     it('redirects server side', () => {
       const res = {} as ServerResponse;
