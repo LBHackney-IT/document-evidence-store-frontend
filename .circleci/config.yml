@@ -51,9 +51,7 @@ jobs:
 
       - run:
           name: Run unit tests
-          command: |
-            cp .env.sample .env
-            npm run test:unit
+          command: npm run test:unit
 
   deploy-staging:
     executor: node
