@@ -26,7 +26,6 @@ const Home = (): ReactNode => {
             link="https://auth.hackney.gov.uk/auth?redirect_uri=http://localdev.hackney.gov.uk:3000/temp"
             title="Log in with Google"
           />
-          {/* <Link href={`https://auth.hackney.gov.uk/auth?redirect_uri=${redirect_uri}`} Login with google></Link> */}
         </div>
       </Main>
     </div>

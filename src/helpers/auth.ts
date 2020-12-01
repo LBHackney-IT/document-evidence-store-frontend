@@ -1,12 +1,15 @@
 import cookie from 'cookie';
 import { IncomingMessage, ServerResponse } from 'http';
 import jsonwebtoken from 'jsonwebtoken';
-import AuthGroups from '../../auth-groups.json';
+import authGroupsJson from '../../auth-groups.json';
+import { EnvironmentKey } from '../../types/env';
 
 const secret = process.env.HACKNEY_JWT_SECRET as string;
 const cookieName = process.env.HACKNEY_COOKIE_NAME as string;
-const env = process.env.REACT_APP_ENV as keyof typeof AuthGroups;
-const authGroups = AuthGroups[env];
+const baseUrl = process.env.BASE_URL as string;
+const environmentKey = process.env.REACT_APP_ENV as EnvironmentKey;
+const authGroups = authGroupsJson[environmentKey];
+const AUTH_WHITELIST = ['/', '/access-denied'];
 
 export type JWTPayload = {
   groups: string[];
@@ -21,25 +24,34 @@ export type User = {
   email: string;
 };
 
-export const AUTH_WHITELIST = ['/login', '/access-denied'];
+export const createLoginUrl = (redirect: string): string =>
+  `https://auth.hackney.gov.uk/auth?redirect_uri=${baseUrl}${redirect}`;
 
-export const deleteSession = (res: ServerResponse) => {
-  res.setHeader(
-    'Set-Cookie',
-    cookie.serialize(cookieName, '', {
-      maxAge: -1,
-      domain: '.hackney.gov.uk',
-    })
-  );
+export const pathIsWhitelisted = (path: string): boolean =>
+  AUTH_WHITELIST.includes(path);
+
+export const userIsInValidGroup = (user: User): boolean =>
+  Object.values(authGroups).some((group) => user.groups.includes(group));
+
+export const serverSideRedirect = (
+  res: ServerResponse,
+  location: string
+): void => {
+  res.writeHead(302, { Location: location });
+  res.end();
 };
 
-export const authoriseUser = ({
-  req,
-  res,
-}: {
-  req: IncomingMessage;
-  res: ServerResponse;
-}): User | undefined => {
+// export const deleteSession = (res: ServerResponse): void => {
+//   res.setHeader(
+//     'Set-Cookie',
+//     cookie.serialize(cookieName, '', {
+//       maxAge: -1,
+//       domain: '.hackney.gov.uk',
+//     })
+//   );
+// };
+
+export const authoriseUser = (req: IncomingMessage): User | undefined => {
   try {
     const cookies = cookie.parse(req.headers.cookie ?? '');
     const token = cookies[cookieName];
@@ -53,14 +65,6 @@ export const authoriseUser = ({
       secret
     ) as JWTPayload;
 
-    const hasValidGroup = groups.some((group) =>
-      Object.values(authGroups).includes(group)
-    );
-
-    if (!hasValidGroup) {
-      return;
-    }
-
     return {
       isAuthorised: true,
       groups,
@@ -70,8 +74,8 @@ export const authoriseUser = ({
   } catch (err) {
     if (err instanceof jsonwebtoken.JsonWebTokenError) {
       return;
-    } else {
-      console.log(err.message);
     }
+
+    console.error(err.message);
   }
 };
