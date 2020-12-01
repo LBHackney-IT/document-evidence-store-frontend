@@ -6,11 +6,11 @@ import {
   authoriseUser,
   createLoginUrl,
   pathIsWhitelisted,
-  redirect,
+  serverSideRedirect,
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
-import UserContext from '../components/UserContext/UserContext';
+import { UserContext } from '../Components/UserContext/UserContext';
 
 type CustomAppProps = {
   Component: PageComponent;
@@ -43,19 +43,18 @@ CustomApp.getInitialProps = async (appContext: AppContext) => {
   if (pathIsWhitelisted(pathname)) return appProps;
 
   if (!req || !res) {
-    redirect(res, pathname);
+    window.location.replace(pathname);
     return { ...appProps, reloading: true };
   }
 
   const user = authoriseUser(req);
-
   if (!user) {
     const authPath = createLoginUrl(pathname);
-    return redirect(res, authPath);
+    return serverSideRedirect(res, authPath);
   }
 
   if (!userIsInValidGroup(user)) {
-    return redirect(res, '/access-denied');
+    return serverSideRedirect(res, '/access-denied');
   }
 
   return { ...appProps, user };
