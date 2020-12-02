@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import styles from '../styles/NavLink.module.scss';
 
 const NavLink = (props: Props): JSX.Element => {
   const router = useRouter();
@@ -8,14 +9,14 @@ const NavLink = (props: Props): JSX.Element => {
   if (router.pathname === props.href) {
     return (
       <Link href={props.href}>
-        <a className="lbu-nav-link lbu-nav-link--active">{props.children}</a>
+        <a className={styles.active}>{props.children}</a>
       </Link>
     );
   }
 
   return (
     <Link href={props.href}>
-      <a className="lbu-nav-link">{props.children}</a>
+      <a>{props.children}</a>
     </Link>
   );
 };
