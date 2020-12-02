@@ -8,10 +8,17 @@ body {
   box-sizing: border-box;
 }
 
+// widen default container to fit our ui
 .lbh-container {
   max-width: 1100px !important;
 }
 
+// fix spacing bug
 .lbh-form-group {
   margin-bottom: 20px !important;
+}
+
+// counteract z-index on the header
+[data-reach-dialog-overlay] {
+  z-index: 5;
 }
