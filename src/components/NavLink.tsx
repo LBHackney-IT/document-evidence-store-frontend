@@ -9,14 +9,14 @@ const NavLink = (props: Props): JSX.Element => {
   if (router.pathname === props.href) {
     return (
       <Link href={props.href}>
-        <a className={styles.active}>{props.children}</a>
+        <a className={`lbh-link ${styles.active}`}>{props.children}</a>
       </Link>
     );
   }
 
   return (
     <Link href={props.href}>
-      <a>{props.children}</a>
+      <a className="lbh-link">{props.children}</a>
     </Link>
   );
 };
