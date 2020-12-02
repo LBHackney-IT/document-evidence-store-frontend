@@ -8,4 +8,8 @@
   @media screen and (min-width: 600px) {
     width: 600px;
   }
+
+  *:first-child {
+    margin-top: 0;
+  }
 }
