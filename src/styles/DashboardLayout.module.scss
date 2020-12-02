@@ -1,0 +1,45 @@
+// service switcher
+.switcher {
+  margin-top: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #bfc1c3;
+  @media screen and (min-width: 400px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.switcher__name {
+  margin-bottom: 10px;
+  @media screen and (min-width: 400px) {
+    margin-bottom: 0px;
+  }
+}
+
+.switcher__link {
+  margin: 0;
+}
+
+// layout with left sidebar nav
+.layout {
+  @media screen and (min-width: 700px) {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.layout__sidebar {
+  @media screen and (min-width: 700px) {
+    width: 300px;
+  }
+}
+
+.layout__pane {
+  margin-top: 35px;
+  @media screen and (min-width: 700px) {
+    margin-top: 0px;
+    width: 100%;
+  }
+}

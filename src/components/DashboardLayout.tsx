@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Header, Main, PhaseBanner } from 'lbh-frontend-react';
 import NavLink from './NavLink';
+import styles from '../styles/DashboardLayout.module.scss';
 
 const Layout = (props: Props): JSX.Element => (
   <>
@@ -15,19 +16,19 @@ const Layout = (props: Props): JSX.Element => (
     </Header>
 
     <Container>
-      <header className="lbu-service-switcher">
-        <strong className="lbu-service-switcher__name lbh-heading-h5">
+      <header className={styles.switcher}>
+        <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
           Housing benefit
         </strong>
-        <a href="#" className="lbu-service-switcher__link lbh-link">
+        <a href="#" className={`lbh-link ${styles['switcher__link']} `}>
           Switch service
         </a>
       </header>
     </Container>
 
     <div className="lbh-main-wrapper">
-      <div className="lbh-container lbu-layout">
-        <nav className="lbu-layout__sidebar">
+      <div className={`lbh-container ${styles.layout}`}>
+        <nav className={styles['layout__sidebar']}>
           <ul className="lbh-list">
             <li>
               <NavLink href="/">Residents</NavLink>
@@ -38,7 +39,7 @@ const Layout = (props: Props): JSX.Element => (
           </ul>
         </nav>
 
-        <main className="lbu-layout__pane" id="main-content" role="main">
+        <main className={styles['layout__pane']} id="main-content" role="main">
           {props.children}
         </main>
       </div>
