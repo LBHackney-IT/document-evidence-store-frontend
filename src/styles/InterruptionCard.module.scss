@@ -13,6 +13,10 @@
   }
 }
 
+.govuk-button:link {
+  color: #00513f !important;
+}
+
 .inner {
   margin-bottom: 25px;
 
@@ -35,7 +39,8 @@
 
   button,
   a,
-  .govuk-button:link,
+  a:link,
+  .govuk-button,
   .lbh-button {
     background: white;
     color: #00513f;
