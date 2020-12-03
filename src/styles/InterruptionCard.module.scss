@@ -34,9 +34,13 @@
   }
 
   button,
-  a {
+  a,
+  .lbh-button {
     background: white;
     color: #00513f;
+    &:visited {
+      color: #00513f;
+    }
     &:hover {
       background: white !important;
       color: darken(#00513f, 5);
