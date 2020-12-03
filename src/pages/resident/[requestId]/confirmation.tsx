@@ -33,9 +33,12 @@ const Index = (): ReactNode => {
             be in touch about the next steps.
           </p>
           <p className="lbh-body">
-            <a href="#" className="govuk-link lbh-link">
+            <a
+              href={process.env.FEEDBACK_FORM_URL}
+              className="govuk-link lbh-link"
+            >
               What did you think of this service?
-            </a>{' '}
+            </a>
             (takes 30 seconds)
           </p>
         </div>

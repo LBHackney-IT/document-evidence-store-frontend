@@ -1,30 +1,52 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is the resident and staff-facing frontend for Hackney's new document and evidence store.
 
-## Getting Started
+It's also known as **Hackney Upload**.
 
-First, run the development server:
+## 🧱 How it's made
+
+It's a [Next.js](https://nextjs.org) app that works with:
+
+- Hackney's [document platform API](https://github.com/LBHackney-IT/documents-api)
+- Hackney's Google login... (???)
+
+It's built using the [React port](https://github.com/LBHackney-IT/lbh-frontend-react) of Hackney Frontend.
+
+## 💻 Running it locally
+
+You need `node` and `npm` installed.
+
+First, clone the repo
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It'll be on [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## 🧪 Testing it
 
-## Learn More
+It uses Jest, `react-testing-library` and cypress for tests.
 
-To learn more about Next.js, take a look at the following resources:
+Run Jest rests with:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+npm run test:unit
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🌎 Putting it on the internet
 
-## Deploy on Vercel
+It's suitable for Heroku, Vercel, AWS, or any other Node.js hosting.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Pushes to the main branch will be automatically built and deployed to our staging environment.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## 🧬 Configuration
+
+You can use a `.env` file to supply environment config locally.
+
+| Variable          | Description                                                         | Example             |
+| ----------------- | ------------------------------------------------------------------- | ------------------- |
+| BASE_URL          |                                                                     |                     |
+| FEEDBACK_FORM_URL | The URL to a form where users can submit feedback about the service | https://example.com |
