@@ -1,6 +1,6 @@
 import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
-import Layout from '../../components/ResidentLayout';
-import InterruptionCard from '../../components/InterruptionCard';
+import Layout from '../../../components/ResidentLayout';
+import InterruptionCard from '../../../components/InterruptionCard';
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -8,7 +8,7 @@ import Head from 'next/head';
 
 const Index = (): ReactNode => {
   const router = useRouter();
-  const { token } = router.query;
+  const { requestId } = router.query;
 
   return (
     <Layout>
@@ -20,7 +20,7 @@ const Index = (): ReactNode => {
         Upload a photograph or scan for the following evidence.
       </p>
 
-      <Link href={`/resident/confirmation?token=${token}`}>
+      <Link href={`/resident/${requestId}/confirmation`}>
         <a className="govuk-button lbh-button">Continue</a>
       </Link>
     </Layout>
