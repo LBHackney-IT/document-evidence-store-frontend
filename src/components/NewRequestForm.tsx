@@ -85,7 +85,7 @@ const NewRequestForm = (props: Props): JSX.Element => {
               {touched.evidence && errors.evidence && (
                 <ErrorMessage>{errors.evidence}</ErrorMessage>
               )}
-              <div className="govuk-radios  lbh-radios">
+              <div className="govuk-radios lbh-radios">
                 {props.evidenceTypes.map((type) => (
                   <Radio
                     label={type.title}
