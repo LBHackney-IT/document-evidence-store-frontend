@@ -1,0 +1,17 @@
+.alert {
+  border: 1px solid #a4d65e;
+  border-left: 5px solid #a4d65e;
+  background: transparentize(#a4d65e, 0.5);
+  padding: 25px;
+  margin-bottom: 25px;
+  @media screen and (min-width: 700px) {
+    margin-bottom: 35px;
+  }
+
+  *:first-child {
+    margin-top: 0;
+  }
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
