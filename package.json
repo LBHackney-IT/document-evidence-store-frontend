@@ -19,6 +19,7 @@
     "@reach/dialog": "^0.12.1",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
+    "axios": "^0.21.0",
     "cookie": "^0.4.1",
     "formik": "^2.2.5",
     "jsonwebtoken": "^8.5.1",
