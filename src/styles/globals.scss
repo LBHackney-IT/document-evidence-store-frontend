@@ -22,3 +22,8 @@ body {
 [data-reach-dialog-overlay] {
   z-index: 5;
 }
+
+// counteract weird padding class we don't want or need
+.padding {
+  padding: 0 !important;
+}
