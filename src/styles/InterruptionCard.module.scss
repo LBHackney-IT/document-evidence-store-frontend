@@ -1,0 +1,55 @@
+.card {
+  padding: 25px;
+  background: #00513f;
+  @media screen and (min-width: 700px) {
+    display: flex;
+    flex-direction: row;
+    padding: 45px;
+  }
+
+  img {
+    display: block;
+    margin: auto;
+  }
+}
+
+.inner {
+  margin-bottom: 25px;
+
+  @media screen and (min-width: 700px) {
+    max-width: 66.67%;
+    margin-bottom: 0px;
+    margin-right: 35px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  li,
+  a {
+    color: white;
+  }
+
+  button,
+  a {
+    background: white;
+    color: #00513f;
+    &:hover {
+      background: white !important;
+      color: darken(#00513f, 5);
+    }
+    &:active {
+      color: darken(#00513f, 10);
+    }
+  }
+
+  *:first-child {
+    margin-top: 0;
+  }
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
