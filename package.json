@@ -10,6 +10,8 @@
     "prettier:test": "npx prettier -c .",
     "prettier:fix": "npx prettier --write .",
     "test:unit": "jest",
+    "test:e2e:ci": "cypress run",
+    "test:e2e:dev": "cypress open",
     "deploy": "sls deploy"
   },
   "dependencies": {
