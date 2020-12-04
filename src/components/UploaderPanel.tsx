@@ -1,6 +1,5 @@
 import React from 'react';
 import { Label, Hint, ErrorMessage } from 'lbh-frontend-react';
-import { Field } from 'formik';
 import styles from '../styles/UploaderPanel.module.scss';
 
 const classNameFromProps = (props: Props) => {
@@ -19,18 +18,23 @@ const UploaderPanel = (props: Props) => (
       </p>
     )}
     {props.error && <ErrorMessage>{props.error}</ErrorMessage>}
-    <Field
+    <input
       type="file"
       className="govuk-file-upload  lbh-file-upload"
       name={props.name}
       id={props.name}
       data-testid="fileInput"
-      aria-describedby={props.hint ? `${props.name}-hint` : false}
+      onChange={(e) => {
+        if (e.currentTarget.files !== null)
+          props.setFieldValue(props.name, e.currentTarget.files[0]);
+      }}
+      aria-describedby={props.hint && `${props.name}-hint`}
     />
   </div>
 );
 
 interface Props {
+  setFieldValue: Function;
   name: string;
   label: string;
   hint?: string;
