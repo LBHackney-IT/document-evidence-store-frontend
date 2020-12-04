@@ -1,0 +1,21 @@
+.panel {
+  border: 1px solid #bfc1c3;
+  border-left: 5px solid #dee0e2;
+  padding: 25px;
+
+  label {
+    font-weight: 700;
+  }
+
+  input {
+    margin-top: 10px;
+  }
+}
+
+.errorPanel {
+  border-color: #d4351c;
+}
+
+.setPanel {
+  border-color: #00513f;
+}

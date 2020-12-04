@@ -1,4 +1,4 @@
-import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
+import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import InterruptionCard from '../../../components/InterruptionCard';
 import { ReactNode } from 'react';

@@ -1,4 +1,4 @@
-import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
+import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import Panel from '../../../components/Panel';
 import { ReactNode } from 'react';
@@ -15,7 +15,6 @@ const Index = (): ReactNode => {
       <Head>
         <title>Confirmation</title>
       </Head>
-
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <Panel>

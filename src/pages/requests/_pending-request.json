@@ -1,0 +1,12 @@
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "created_at": "2020-11-30T15:34:12.299Z",
+  "resident": {
+    "name": "Namey McName",
+    "email": "frodo@bagend.com",
+    "phone_number": "+447123456780"
+  },
+  "delivery_methods": ["sms", "email"],
+  "document_type": "passport_scan",
+  "service_requested_by": "development-team-staging"
+}
