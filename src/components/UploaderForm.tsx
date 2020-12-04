@@ -15,7 +15,7 @@ const schemaFromIds = (ids) =>
   ids.reduce(
     (o, key) => ({
       ...o,
-      [key]: Yup.string().required('Please select a file'),
+      [key]: Yup.mixed().required('Please select a file'),
     }),
     {}
   );
@@ -43,14 +43,19 @@ const UploaderForm = (): JSX.Element => {
       validationSchema={schema}
       onSubmit={async (values) => {
         try {
-          console.log(values);
-          // process form here
+          // using formdata to ensure file objects are correctly transmitted
+          let formData = new FormData();
+          for (const key in values) {
+            formData.set(key, values[key]);
+          }
+          // process form here...
         } catch (err) {
+          console.log(err);
           setSubmitError(true);
         }
       }}
     >
-      {({ values, errors, touched }) => (
+      {({ values, errors, touched, setFieldValue, isSubmitting }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -60,6 +65,7 @@ const UploaderForm = (): JSX.Element => {
 
           {panelsFromIds(requestedIds).map((document, i) => (
             <UploaderPanel
+              setFieldValue={setFieldValue}
               key={document.id}
               label={document.title}
               hint={document.description}
@@ -69,7 +75,9 @@ const UploaderForm = (): JSX.Element => {
             />
           ))}
 
-          <Button type="submit">Continue</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            Continue
+          </Button>
         </Form>
       )}
     </Formik>
