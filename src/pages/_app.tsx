@@ -10,7 +10,7 @@ import {
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
-import { UserContext } from '../Components/UserContext/UserContext';
+import { UserContext } from '../components/UserContext/UserContext';
 
 type CustomAppProps = {
   Component: PageComponent;

@@ -3,9 +3,10 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import Field from './Field';
 import { Formik, Form } from 'formik';
 
+const submitSpy = jest.fn();
 test('is properly named, labelled and responds to input', async () => {
   render(
-    <Formik initialValues={{ exampleName: '' }} onSubmit={() => {}}>
+    <Formik initialValues={{ exampleName: '' }} onSubmit={submitSpy}>
       <Form>
         <Field label="Example label" name="exampleName" />
       </Form>
@@ -24,7 +25,7 @@ test('is properly named, labelled and responds to input', async () => {
 
 test('displays hints', async () => {
   render(
-    <Formik initialValues={{ exampleName: '' }} onSubmit={() => {}}>
+    <Formik initialValues={{ exampleName: '' }} onSubmit={submitSpy}>
       <Form>
         <Field label="Example label" name="exampleName" hint="Example hint" />
       </Form>
@@ -35,7 +36,7 @@ test('displays hints', async () => {
 
 test('displays errors', async () => {
   render(
-    <Formik initialValues={{ exampleName: '' }} onSubmit={() => {}}>
+    <Formik initialValues={{ exampleName: '' }} onSubmit={submitSpy}>
       <Form>
         <Field label="Example label" name="exampleName" error="Example error" />
       </Form>

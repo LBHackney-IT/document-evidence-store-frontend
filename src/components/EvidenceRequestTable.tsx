@@ -1,7 +1,6 @@
 import { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { Table } from 'lbh-frontend-react';
-import { DocumentType } from '../domain/document-type';
 
 export const EvidenceRequestTable: FunctionComponent<Props> = ({
   requests,
