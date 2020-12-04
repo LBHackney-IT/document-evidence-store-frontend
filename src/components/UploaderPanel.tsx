@@ -24,6 +24,7 @@ const UploaderPanel = (props: Props) => (
       className="govuk-file-upload  lbh-file-upload"
       name={props.name}
       id={props.name}
+      data-testid="fileInput"
       aria-describedby={props.hint ? `${props.name}-hint` : false}
     />
   </div>
