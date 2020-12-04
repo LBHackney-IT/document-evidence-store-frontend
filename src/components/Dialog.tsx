@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import {
-  Dialog as ReachDialog,
-  DialogOverlay,
-  DialogContent,
-} from '@reach/dialog';
+import { Dialog as ReachDialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 import styles from '../styles/Dialog.module.scss';
 
-const Dialog = (props: Props) => (
+const Dialog: FunctionComponent<Props> = (props) => (
   <ReachDialog
     isOpen={props.open}
     aria-label={props.title}
@@ -23,8 +19,7 @@ const Dialog = (props: Props) => (
 interface Props {
   open: boolean;
   title: string;
-  onDismiss(): any;
-  children: React.ReactNode;
+  onDismiss(): void;
 }
 
 export default Dialog;

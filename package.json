@@ -19,7 +19,6 @@
     "@testing-library/react": "^11.2.2",
     "cookie": "^0.4.1",
     "formik": "^2.2.5",
-    "isomorphic-unfetch": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
     "@types/yup": "^0.29.9",
     "formik": "^2.2.5",

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2020-11-30T15:34:12.299Z",
+    "resident": {
+      "name": "Namey McName",
+      "email": "frodo@bagend.com",
+      "phoneNumber": "+447123456780"
+    },
+    "deliveryMethods": ["SMS", "EMAIL"],
+    "documentType": "passport-scan",
+    "serviceRequestedBy": "development-team-staging"
+  },
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2020-11-30T15:34:12.299Z",
+    "resident": {
+      "name": "Namey McName",
+      "email": "frodo@bagend.com",
+      "phoneNumber": "+447123456780"
+    },
+    "deliveryMethods": ["SMS", "EMAIL"],
+    "documentType": "passport-scan",
+    "serviceRequestedBy": "development-team-staging"
+  },
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2020-11-30T15:34:12.299Z",
+    "resident": {
+      "name": "Namey McName",
+      "email": "frodo@bagend.com",
+      "phoneNumber": "+447123456780"
+    },
+    "deliveryMethods": ["SMS", "EMAIL"],
+    "documentType": "passport-scan",
+    "serviceRequestedBy": "development-team-staging"
+  }
+]

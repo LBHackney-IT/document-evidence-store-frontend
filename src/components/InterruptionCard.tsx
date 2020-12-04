@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from '../styles/InterruptionCard.module.scss';
 
-const InterruptionCard = (props: Props) => (
+const InterruptionCard: FunctionComponent<Props> = (props) => (
   <div className={styles.card}>
     <div className={styles.inner}>{props.children}</div>
     {props.image && <img src={props.image} alt="" />}
@@ -9,7 +9,6 @@ const InterruptionCard = (props: Props) => (
 );
 
 interface Props {
-  children: React.ReactNode;
   image?: string;
 }
 

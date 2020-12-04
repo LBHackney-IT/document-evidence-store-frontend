@@ -1,64 +1,33 @@
-import { useState } from 'react';
 import Head from 'next/head';
-import { Heading, HeadingLevels, Table } from 'lbh-frontend-react';
+import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Link from 'next/link';
 import Layout from '../../components/DashboardLayout';
-import { ReactNode } from 'react';
-import { DateTime } from 'luxon';
-import pendingRequests from './_pending-requests.json';
-import evidenceTypes from './_evidence-types.json';
-
-const tableRowsFromData = (rawData: RequestData[]) =>
-  rawData.map((row) => {
-    return {
-      resident: row.resident.name,
-      documents: evidenceTypes.filter(
-        (type) => type.id === row.document_type
-      )[0].title,
-      made: DateTime.fromISO(row.created_at).toRelative(),
-      link: `/requests/${row.id}`,
-    };
-  });
-
-interface RequestData {
-  id: string;
-  resident: {
-    name: string;
-  };
-  document_type: string;
-  created_at: string;
-}
+import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { EvidenceRequest } from '../../domain/evidence-request';
+import { InternalApiGateway } from '../../gateways/internal-api';
+import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
 
 const SendARequest = (): ReactNode => {
+  const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
+
+  useEffect(() => {
+    const gateway = new InternalApiGateway();
+    setEvidenceRequests(gateway.getEvidenceRequests());
+  }, []);
+
+  const table = useMemo(() => {
+    if (!evidenceRequests) return <p>Loading</p>;
+
+    return <EvidenceRequestTable requests={evidenceRequests} />;
+  }, [evidenceRequests]);
+
   return (
     <Layout>
       <Head>
         <title>Pending requests</title>
       </Head>
       <Heading level={HeadingLevels.H2}>Pending requests</Heading>
-
-      <Table
-        columns={[
-          {
-            Header: 'Resident',
-            accessor: 'resident',
-            sortType: 'basic',
-          },
-          {
-            Header: 'Documents',
-            accessor: 'documents',
-            sortType: 'basic',
-          },
-          {
-            Header: 'Made',
-            accessor: 'made',
-            sortType: 'basic',
-          },
-        ]}
-        data={tableRowsFromData(pendingRequests)}
-        dueDateWarning={[]}
-      />
-
+      {table}
       <Link href="/requests/new">
         <a className="govuk-button lbh-button">New request</a>
       </Link>
