@@ -4,6 +4,8 @@ import { DocumentType } from '../domain/document-type';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { ResponseMapper } from '../boundary/response-mapper';
 
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+
 export class InternalApiGateway {
   // private token: string;
 
@@ -11,14 +13,13 @@ export class InternalApiGateway {
     // this.token = token;
   }
 
-  getEvidenceRequests(): EvidenceRequest[] {
-    const documentTypes = this.getDocumentTypes();
-    return evidenceRequests.map((er) =>
-      ResponseMapper.mapEvidenceRequest(er, documentTypes)
-    );
+  async getEvidenceRequests(): Promise<EvidenceRequest[]> {
+    await sleep();
+    return evidenceRequests.map((er) => ResponseMapper.mapEvidenceRequest(er));
   }
 
-  getDocumentTypes(): DocumentType[] {
+  async getDocumentTypes(): Promise<DocumentType[]> {
+    await sleep();
     return documentTypes.map((dt) => ResponseMapper.mapDocumentType(dt));
   }
 }

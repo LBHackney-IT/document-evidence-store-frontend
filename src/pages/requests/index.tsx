@@ -12,7 +12,7 @@ const SendARequest = (): ReactNode => {
 
   useEffect(() => {
     const gateway = new InternalApiGateway();
-    setEvidenceRequests(gateway.getEvidenceRequests());
+    gateway.getEvidenceRequests().then(setEvidenceRequests);
   }, []);
 
   const table = useMemo(() => {

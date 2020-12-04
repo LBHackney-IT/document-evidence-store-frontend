@@ -6,8 +6,8 @@ describe('Internal API Gateway', () => {
   const gateway = new InternalApiGateway();
 
   describe('getDocumentTypes', () => {
-    it('returns DocumentTypes', () => {
-      const result = gateway.getDocumentTypes();
+    it('returns DocumentTypes', async () => {
+      const result = await gateway.getDocumentTypes();
       expect(
         result.every((r) => r instanceof DocumentType === true)
       ).toBeTruthy();
@@ -15,8 +15,8 @@ describe('Internal API Gateway', () => {
   });
 
   describe('getEvidenceRequests', () => {
-    it('returns DocumentTypes', () => {
-      const result = gateway.getEvidenceRequests();
+    it('returns DocumentTypes', async () => {
+      const result = await gateway.getEvidenceRequests();
       expect(
         result.every((r) => r instanceof EvidenceRequest === true)
       ).toBeTruthy();

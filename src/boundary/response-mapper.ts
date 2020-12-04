@@ -8,7 +8,7 @@ export interface EvidenceRequestResponse {
   id: string;
   createdAt: string;
   deliveryMethods: string[];
-  documentType: string;
+  documentType: IDocumentType;
   serviceRequestedBy: string;
   resident: {
     name: string;
@@ -18,18 +18,13 @@ export interface EvidenceRequestResponse {
 }
 
 export class ResponseMapper {
-  static mapEvidenceRequest(
-    attrs: EvidenceRequestResponse,
-    documentTypes: DocumentType[]
-  ): EvidenceRequest {
+  static mapEvidenceRequest(attrs: EvidenceRequestResponse): EvidenceRequest {
     const resident = new Resident(attrs.resident);
     const createdAt = DateTime.fromISO(attrs.createdAt);
     const deliveryMethods = attrs.deliveryMethods.map(
       (dm) => DeliveryMethod[dm as keyof typeof DeliveryMethod]
     );
-    const documentType = documentTypes.find(
-      ({ id }) => id === attrs.documentType
-    );
+    const documentType = new DocumentType(attrs.documentType);
 
     return new EvidenceRequest({
       ...attrs,

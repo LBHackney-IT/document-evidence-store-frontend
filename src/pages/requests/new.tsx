@@ -11,7 +11,7 @@ const SendARequest = (): ReactNode => {
 
   useEffect(() => {
     const gateway = new InternalApiGateway();
-    setDocumentTypes(gateway.getDocumentTypes());
+    gateway.getDocumentTypes().then(setDocumentTypes);
   }, []);
 
   const form = useMemo(() => {

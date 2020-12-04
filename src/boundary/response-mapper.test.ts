@@ -12,10 +12,7 @@ describe('ResponseMapper', () => {
     const [responseJson] = EvidenceRequestFixture;
 
     beforeEach(() => {
-      result = ResponseMapper.mapEvidenceRequest(
-        responseJson,
-        DocumentTypeFixture
-      );
+      result = ResponseMapper.mapEvidenceRequest(responseJson);
     });
 
     it('maps basic attributes', () => {
