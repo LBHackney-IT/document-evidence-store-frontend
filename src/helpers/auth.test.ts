@@ -12,7 +12,7 @@ describe('auth helpers', () => {
   describe('createLoginUrl', () => {
     it('returns a google auth url', () => {
       const path = '/foo';
-      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=http://localdev.hackney.gov.uk${path}`;
+      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=http://localdev.hackney.gov.uk:3000${path}`;
 
       expect(auth.createLoginUrl(path)).toEqual(expected);
     });
@@ -28,7 +28,7 @@ describe('auth helpers', () => {
     });
 
     describe('for a whitelisted path', () => {
-      const path = '/';
+      const path = '/login';
 
       it('returns true', () => {
         expect(auth.pathIsWhitelisted(path)).toEqual(true);

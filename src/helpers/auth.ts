@@ -6,10 +6,10 @@ import { EnvironmentKey } from '../../types/env';
 
 const secret = process.env.HACKNEY_JWT_SECRET as string;
 const cookieName = process.env.HACKNEY_COOKIE_NAME as string;
-const baseUrl = process.env.BASE_URL as string;
+const baseUrl = process.env.APP_URL as string;
 const environmentKey = process.env.REACT_APP_ENV as EnvironmentKey;
 const authGroups = authGroupsJson[environmentKey];
-const AUTH_WHITELIST = ['/', '/access-denied'];
+const AUTH_WHITELIST = ['/login', '/access-denied'];
 
 export type JWTPayload = {
   groups: string[];
