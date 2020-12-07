@@ -6,7 +6,7 @@ import NewRequestForm from '../../components/NewRequestForm';
 import { InternalApiGateway } from '../../gateways/internal-api';
 import { DocumentType } from '../../domain/document-type';
 
-const SendARequest = (): ReactNode => {
+const RequestsNewPage = (): ReactNode => {
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
 
   useEffect(() => {
@@ -30,4 +30,4 @@ const SendARequest = (): ReactNode => {
   );
 };
 
-export default SendARequest;
+export default RequestsNewPage;

@@ -7,7 +7,7 @@ import { EvidenceRequest } from '../../domain/evidence-request';
 import { InternalApiGateway } from '../../gateways/internal-api';
 import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
 
-const SendARequest = (): ReactNode => {
+const RequestsIndexPage = (): ReactNode => {
   const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const SendARequest = (): ReactNode => {
   );
 };
 
-export default SendARequest;
+export default RequestsIndexPage;
