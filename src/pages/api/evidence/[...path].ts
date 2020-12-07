@@ -1,26 +1,27 @@
 import { NextApiHandler } from 'next';
 import { authoriseUser } from '../../../helpers/auth';
+import { EvidenceApiGateway } from '../../../gateways/evidence-api';
+import { Method } from 'axios';
 
-// GET document_types
-// GET evidence_requests
-// POST evidence_requests
+const evidenceApiGateway = new EvidenceApiGateway();
 
-const endpoint: NextApiHandler = (req, res) => {
+const endpoint: NextApiHandler = async (req, res) => {
   const user = authoriseUser(req);
-  if (!user) return res.status(401).json({ error: 'Unauthorized' });
+  if (!user) return res.status(401).json({ error: 'Unauthorised' });
 
   const path = req.query.path as string[];
 
-  // 1. get Platform API token for this path
-
-  // 2. Forward request to platform API
-
   try {
-    // call use case here
-    res.status(200).json(null);
+    const { status, data } = await evidenceApiGateway.request(
+      path,
+      req.method as Method,
+      req.body
+    );
+
+    res.status(status).json(data);
   } catch (err) {
     console.log('Error: ' + err);
-    return res.status(400).json({ error: `Bad request` });
+    res.status(500).json({ error: `Server error` });
   }
 };
 
