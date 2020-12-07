@@ -16,7 +16,6 @@ const {
   authoriseUser,
   pathIsWhitelisted,
   userIsInValidGroup,
-  createLoginUrl,
   serverSideRedirect,
 } = mocked(authHelpers);
 
@@ -44,15 +43,15 @@ describe('CustomApp', () => {
       beforeEach(() => {
         authoriseUser.mockImplementation(() => undefined);
       });
-      const loginUrl = 'i am a google auth url';
-      createLoginUrl.mockImplementation(() => loginUrl);
 
       it('redirects to google when the page is private', async () => {
         pathIsWhitelisted.mockImplementation(() => false);
         await CustomApp.getInitialProps(appContext);
 
-        expect(createLoginUrl).toHaveBeenCalledWith(ctx.pathname);
-        expect(serverSideRedirect).toHaveBeenCalledWith(res, loginUrl);
+        expect(serverSideRedirect).toHaveBeenCalledWith(
+          res,
+          `/login?redirect=${ctx.pathname}`
+        );
       });
 
       it('returns empty props when the page is public', async () => {

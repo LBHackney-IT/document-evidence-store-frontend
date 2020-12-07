@@ -1,4 +1,8 @@
 describe('Can view evidence requests', () => {
+  beforeEach(() => {
+    cy.login();
+  });
+
   it("has 'Please log in' heading", () => {
     cy.visit(`http://localhost:3000`);
     cy.get('nav').contains('Requests').click();
@@ -11,7 +15,7 @@ describe('Can view evidence requests', () => {
       .first()
       .should('contain', 'Namey McName')
       .and('contain', 'Passport')
-      .and('contain', '3 days ago');
+      .and('contain', 'days ago');
   });
 });
 

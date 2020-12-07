@@ -1,4 +1,8 @@
 describe('Can view evidence requests', () => {
+  beforeEach(() => {
+    cy.login();
+  });
+
   it("has 'Please log in' heading", () => {
     cy.visit(`http://localhost:3000`);
 
