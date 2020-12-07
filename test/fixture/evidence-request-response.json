@@ -3,6 +3,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2020-11-30T15:34:12.299Z",
     "resident": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "name": "Namey McName",
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"
@@ -19,6 +20,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2020-11-29T15:34:12.299Z",
     "resident": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "name": "Namey McName",
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"
@@ -35,6 +37,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2020-11-25T15:34:12.299Z",
     "resident": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "name": "Namey McName",
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"

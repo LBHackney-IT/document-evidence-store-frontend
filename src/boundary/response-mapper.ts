@@ -11,6 +11,7 @@ export interface EvidenceRequestResponse {
   documentType: IDocumentType;
   serviceRequestedBy: string;
   resident: {
+    id: string;
     name: string;
     email: string;
     phoneNumber: string;

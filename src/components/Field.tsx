@@ -26,7 +26,7 @@ export interface Props {
   label: string;
   hint?: string;
   name: string;
-  error?: string;
+  error?: string | null;
 }
 
 export default Field;
