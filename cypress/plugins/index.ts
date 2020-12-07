@@ -12,10 +12,11 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-/**
- * @type {Cypress.PluginConfig}
- */
-module.exports = (on, config) => {
-  // `on` is used to hook into various events Cypress emits
-  // `config` is the resolved Cypress config
+import dotenvPlugin from 'cypress-dotenv';
+
+const plugin: Cypress.PluginConfig = (_on, config) => {
+  config = dotenvPlugin(config, {}, true);
+  return config;
 };
+
+export default plugin;

@@ -4,13 +4,12 @@ import React from 'react';
 import { PageComponent } from '../../types/page-component';
 import {
   authoriseUser,
-  createLoginUrl,
   pathIsWhitelisted,
   serverSideRedirect,
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
-import { UserContext } from '../Components/UserContext/UserContext';
+import { UserContext } from '../components/UserContext/UserContext';
 
 type CustomAppProps = {
   Component: PageComponent;
@@ -49,8 +48,7 @@ CustomApp.getInitialProps = async (appContext: AppContext) => {
 
   const user = authoriseUser(req);
   if (!user) {
-    const authPath = createLoginUrl(pathname);
-    return serverSideRedirect(res, authPath);
+    return serverSideRedirect(res, `/login?redirect=${pathname}`);
   }
 
   if (!userIsInValidGroup(user)) {

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styles from '../styles/NavLink.module.scss';
 
-const NavLink = (props: Props): JSX.Element => {
+const NavLink: FunctionComponent<Props> = (props) => {
   const router = useRouter();
 
   if (router.pathname === props.href) {
@@ -23,7 +23,6 @@ const NavLink = (props: Props): JSX.Element => {
 
 export interface Props {
   href: string;
-  children: React.ReactNode;
 }
 
 export default NavLink;

@@ -1,9 +1,9 @@
-import React from 'react';
-import { Container, Header, Main, PhaseBanner } from 'lbh-frontend-react';
+import React, { FunctionComponent } from 'react';
+import { Container, Header } from 'lbh-frontend-react';
 import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
 
-const Layout = (props: Props): JSX.Element => (
+const Layout: FunctionComponent = (props) => (
   <>
     <Header
       serviceName="Upload"
@@ -46,9 +46,5 @@ const Layout = (props: Props): JSX.Element => (
     </div>
   </>
 );
-
-export interface Props {
-  children: React.ReactNode;
-}
 
 export default Layout;

@@ -5,7 +5,10 @@ import { Formik, Form } from 'formik';
 
 test('is properly named, labelled and responds to clicks', async () => {
   render(
-    <Formik initialValues={{ exampleName: false }} onSubmit={() => {}}>
+    <Formik
+      initialValues={{ exampleName: false }}
+      onSubmit={() => console.log('submitted')}
+    >
       <Form>
         <Checkbox label="Example label" name="exampleName" />
       </Form>
