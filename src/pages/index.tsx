@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import Layout from '../components/DashboardLayout';
+import Layout from '../Components/DashboardLayout';
 import { ReactNode } from 'react';
 
 const BrowseResidents = (): ReactNode => (

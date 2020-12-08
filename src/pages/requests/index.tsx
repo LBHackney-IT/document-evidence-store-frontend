@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Link from 'next/link';
-import Layout from '../../components/DashboardLayout';
+import Layout from '../../Components/DashboardLayout';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { EvidenceRequest } from '../../domain/evidence-request';
 import { InternalApiGateway } from '../../gateways/internal-api';
-import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
+import { EvidenceRequestTable } from '../../Components/EvidenceRequestTable';
 
 const RequestsIndexPage = (): ReactNode => {
   const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();

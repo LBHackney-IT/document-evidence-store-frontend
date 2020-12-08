@@ -1,8 +1,8 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import Layout from '../../components/DashboardLayout';
-import NewRequestForm from '../../components/NewRequestForm';
+import Layout from '../../Components/DashboardLayout';
+import NewRequestForm from '../../Components/NewRequestForm';
 import { InternalApiGateway } from '../../gateways/internal-api';
 import { DocumentType } from '../../domain/document-type';
 

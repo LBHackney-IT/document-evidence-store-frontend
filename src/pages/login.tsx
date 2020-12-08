@@ -1,5 +1,5 @@
 import { Heading, HeadingLevels, Tile } from 'lbh-frontend-react';
-import Layout from '../components/ResidentLayout';
+import Layout from '../Components/ResidentLayout';
 import { ReactNode, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { createLoginUrl } from 'src/helpers/auth';

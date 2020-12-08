@@ -1,25 +1,41 @@
-import evidenceRequests from '../../test/fixture/evidence-request-response.json';
 import documentTypes from '../../test/fixture/document-types-response.json';
 import { DocumentType } from '../domain/document-type';
-import { EvidenceRequest } from '../domain/evidence-request';
-import { ResponseMapper } from '../boundary/response-mapper';
+import {
+  EvidenceRequestResponse,
+  ResponseMapper,
+} from '../boundary/response-mapper';
+import Axios from 'axios';
+import { EvidenceRequest } from 'src/domain/evidence-request';
 
-const sleep = () => new Promise((resolve) => setTimeout(resolve, 1000));
+export class InternalServerError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'InternalServerError';
+  }
+}
 
 export class InternalApiGateway {
-  // private token: string;
-
-  constructor() {
-    // this.token = token;
-  }
-
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
-    await sleep();
-    return evidenceRequests.map((er) => ResponseMapper.mapEvidenceRequest(er));
+    try {
+      const { data } = await Axios.get<EvidenceRequestResponse[]>(
+        '/api/evidence/evidence_requests'
+      );
+
+      return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerError('Internal server error');
+    }
   }
 
   async getDocumentTypes(): Promise<DocumentType[]> {
-    await sleep();
-    return documentTypes.map((dt) => ResponseMapper.mapDocumentType(dt));
+    try {
+      await Axios.get<EvidenceRequestResponse[]>(
+        '/api/evidence/evidence_types'
+      );
+      return documentTypes.map((dt) => ResponseMapper.mapDocumentType(dt));
+    } catch (err) {
+      throw new InternalServerError('Internal server error');
+    }
   }
 }

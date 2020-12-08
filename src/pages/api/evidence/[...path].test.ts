@@ -1,11 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { mocked } from 'ts-jest/utils';
-import { requestMock } from '../../../gateways/evidence-api';
+import * as EvidenceApi from '../../../gateways/evidence-api';
+import * as EvidenceApiMock from '../../../gateways/__mocks__/evidence-api';
 import endpoint from './[...path]';
 import { authoriseUser, User } from '../../../helpers/auth';
 
 jest.mock('../../../gateways/evidence-api');
 jest.mock('../../../helpers/auth');
+
+const { requestMock } = EvidenceApi as typeof EvidenceApiMock;
 
 const mockedAuthoriseUser = mocked(authoriseUser);
 describe('endpoint', () => {
