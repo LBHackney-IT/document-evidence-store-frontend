@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
 import { InternalApiGateway } from '../gateways/internal-api';
 
@@ -15,8 +15,8 @@ test('it renders an uploader panel and a continue button', async () => {
       evidenceRequest={evidenceRequest}
     />
   );
-  expect(screen.getByText('Passport')); 
-  expect(screen.getByText('A valid passport open at the photo page')); 
-  expect(screen.getByText('Browse...'));  
+  expect(screen.getByText('Passport'));
+  expect(screen.getByText('A valid passport open at the photo page'));
+  expect(screen.getByText('Browse...'));
   expect(screen.getByText('Continue'));
 });
