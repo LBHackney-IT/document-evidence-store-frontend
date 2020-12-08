@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import 'cypress-file-upload';
 
 const defaultUser: UserData = {
   email: 'test@hackney.gov.uk',
