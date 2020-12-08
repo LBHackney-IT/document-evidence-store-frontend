@@ -36,7 +36,12 @@ describe('CustomApp', () => {
   describe('getServerSideProps', () => {
     const req = {} as IncomingMessage;
     const res = {} as ServerResponse;
-    const ctx = { req, res, pathname: '/path' } as NextPageContext;
+    const ctx = {
+      req,
+      res,
+      pathname: '/path/[parameter]',
+      asPath: '/path/1234',
+    } as NextPageContext;
     const appContext = { ctx } as AppContext;
 
     describe('when the user is not logged in', () => {
@@ -50,7 +55,7 @@ describe('CustomApp', () => {
 
         expect(serverSideRedirect).toHaveBeenCalledWith(
           res,
-          `/login?redirect=${ctx.pathname}`
+          `/login?redirect=${ctx.asPath}`
         );
       });
 
@@ -90,8 +95,12 @@ describe('CustomApp', () => {
       });
 
       it('returns the props and reloads the page when the page is rendered client side and is private', async () => {
-        const ctx = { pathname: '/path' } as NextPageContext;
-        const clientSideContext = { ctx } as AppContext;
+        const clientSideCtx = {
+          ...ctx,
+          req: undefined,
+          res: undefined,
+        } as NextPageContext;
+        const clientSideContext = { ctx: clientSideCtx } as AppContext;
         pathIsWhitelisted.mockImplementation(() => false);
         const result = await CustomApp.getInitialProps(clientSideContext);
 
