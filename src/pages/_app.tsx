@@ -35,20 +35,21 @@ const CustomApp = ({
 
 CustomApp.getInitialProps = async (appContext: AppContext) => {
   const {
-    ctx: { req, res, pathname },
+    ctx: { req, res, pathname, asPath },
   } = appContext;
   const appProps = await App.getInitialProps(appContext);
+  const currentPath = asPath || '/';
 
   if (pathIsWhitelisted(pathname)) return appProps;
 
   if (!req || !res) {
-    window.location.replace(pathname);
+    window.location.replace(currentPath);
     return { ...appProps, reloading: true };
   }
 
   const user = authoriseUser(req);
   if (!user) {
-    return serverSideRedirect(res, `/login?redirect=${pathname}`);
+    return serverSideRedirect(res, `/login?redirect=${currentPath}`);
   }
 
   if (!userIsInValidGroup(user)) {
