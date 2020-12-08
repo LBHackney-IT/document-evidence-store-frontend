@@ -9,7 +9,13 @@ const cookieName = process.env.HACKNEY_COOKIE_NAME as string;
 const baseUrl = process.env.APP_URL as string;
 const environmentKey = process.env.REACT_APP_ENV as EnvironmentKey;
 const authGroups = authGroupsJson[environmentKey];
-const AUTH_WHITELIST = ['/login', '/access-denied'];
+const AUTH_WHITELIST = [
+  '/login',
+  '/access-denied',
+  '/resident/[requestId]',
+  '/resident/[requestId]/upload',
+  '/resident/[requestId]/confirmation',
+];
 
 export type JWTPayload = {
   groups: string[];
