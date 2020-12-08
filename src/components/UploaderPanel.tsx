@@ -35,7 +35,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
 );
 
 interface Props {
-  setFieldValue(): void;
+  setFieldValue(key: string, value: File): void;
   name: string;
   label: string;
   hint?: string;
