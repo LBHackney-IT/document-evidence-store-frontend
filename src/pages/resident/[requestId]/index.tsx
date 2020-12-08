@@ -15,6 +15,7 @@ const Index = (): ReactNode => {
       <Head>
         <title>You’ll need to photograph your documents</title>
       </Head>
+      {requestId}
       <InterruptionCard image="/illustration.svg">
         <Heading level={HeadingLevels.H2}>
           You’ll need to photograph your documents

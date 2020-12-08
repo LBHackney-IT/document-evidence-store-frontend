@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from '../styles/Panel.module.scss';
 
-const Panel = (props: Props) => (
+const Panel: FunctionComponent<Props> = (props: Props) => (
   <div className={styles.panel}>{props.children}</div>
 );
 

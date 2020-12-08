@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import Link from 'next/link';
 import Layout from '../components/ResidentLayout';
 import { ReactNode } from 'react';
 
