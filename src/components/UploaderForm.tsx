@@ -3,13 +3,10 @@ import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import UploaderPanel from './UploaderPanel';
-import { useRouter } from 'next/router';
 import { DocumentType } from '../domain/document-type';
 import { EvidenceRequest } from '../domain/evidence-request';
 
 const UploaderForm: FunctionComponent<Props> = (props) => {
-  const router = useRouter();
-  const { requestId } = router.query;
   const [submitError, setSubmitError] = useState(false);
 
   const requestedDocuments = [props.evidenceRequest.documentType];
@@ -40,26 +37,25 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
     [requestedDocuments]
   );
 
-  console.log(initialValues);
+  const handleSubmit = async (values) => {
+    try {
+      // using formdata to ensure file objects are correctly transmitted
+      const formData = new FormData();
+      for (const key in values) {
+        formData.set(key, values[key]);
+      }
+      // process form here...
+    } catch (err) {
+      console.log(err);
+      setSubmitError(true);
+    }
+  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={async (values) => {
-        try {
-          // using formdata to ensure file objects are correctly transmitted
-          const formData = new FormData();
-          for (const key in values) {
-            formData.set(key, values[key]);
-          }
-          // process form here...
-          router.push(`/resident/${requestId}/confirmation`);
-        } catch (err) {
-          console.log(err);
-          setSubmitError(true);
-        }
-      }}
+      onSubmit={handleSubmit}
     >
       {({ values, errors, touched, setFieldValue, isSubmitting }) => (
         <Form>
@@ -93,6 +89,7 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
 interface Props {
   documentTypes: Array<DocumentType>;
   evidenceRequest: EvidenceRequest;
+  requestId: string;
 }
 
 export default UploaderForm;
