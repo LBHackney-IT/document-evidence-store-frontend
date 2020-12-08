@@ -38,6 +38,9 @@ functions:
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
+      APP_URL: https://${self:custom.aliases.${self:provider.stage}}
+      HACKNEY_COOKIE_NAME: hackneyToken
+      REACT_APP_ENV: ${self:provider.stage}
 resources:
   Resources:
     CloudFrontDistribution:

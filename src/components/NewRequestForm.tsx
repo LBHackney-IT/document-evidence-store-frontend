@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
-import Layout from './DashboardLayout';
 import Field from './Field';
 import Checkbox from './Checkbox';
 import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import fetch from 'isomorphic-unfetch';
+import { DocumentType } from '../domain/document-type';
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Please enter the resident's name"),
@@ -19,7 +18,7 @@ const schema = Yup.object().shape({
   evidence: Yup.string().required('Please choose an evidence type'),
 });
 
-const NewRequestForm = (props: Props): JSX.Element => {
+const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
 
   return (
@@ -42,7 +41,7 @@ const NewRequestForm = (props: Props): JSX.Element => {
         }
       }}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ errors, touched }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -86,7 +85,7 @@ const NewRequestForm = (props: Props): JSX.Element => {
                 <ErrorMessage>{errors.evidence}</ErrorMessage>
               )}
               <div className="govuk-radios lbh-radios">
-                {props.evidenceTypes.map((type) => (
+                {documentTypes.map((type) => (
                   <Radio
                     label={type.title}
                     key={type.id}
@@ -98,9 +97,7 @@ const NewRequestForm = (props: Props): JSX.Element => {
             </fieldset>
           </div>
 
-          <Button type="submit" disabled={isSubmitting}>
-            Send request
-          </Button>
+          <Button type="submit">Send request</Button>
         </Form>
       )}
     </Formik>
@@ -108,12 +105,7 @@ const NewRequestForm = (props: Props): JSX.Element => {
 };
 
 interface Props {
-  evidenceTypes: Array<EvidenceType>;
-}
-
-interface EvidenceType {
-  id: string;
-  title: string;
+  documentTypes: Array<DocumentType>;
 }
 
 export default NewRequestForm;

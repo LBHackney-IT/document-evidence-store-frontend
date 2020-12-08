@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field as FormikField } from 'formik';
-import { Label, Hint } from 'lbh-frontend-react';
+import { Label } from 'lbh-frontend-react';
 
 const Field = (props: Props): JSX.Element => (
   <div className="govuk-checkboxes__item">

@@ -1,36 +1,61 @@
 import '../styles/globals.scss';
-import { AppProps } from 'next/app';
-import React, { ReactNode } from 'react';
+import App, { AppContext, AppProps } from 'next/app';
+import React from 'react';
 import { PageComponent } from '../../types/page-component';
-import { GetServerSideProps } from 'next';
-import { authoriseUser, redirectToLogin, User } from '../helpers/auth';
-import { useRouter } from 'next/router';
+import {
+  authoriseUser,
+  pathIsWhitelisted,
+  serverSideRedirect,
+  User,
+  userIsInValidGroup,
+} from '../helpers/auth';
+import { UserContext } from '../components/UserContext/UserContext';
 
 type CustomAppProps = {
   Component: PageComponent;
   pageProps: AppProps['pageProps'];
+  user?: User;
+  reloading?: boolean;
 };
 
-const baseUrl = process.env.BASE_URL!;
-const loginUrl = (redirect: string) =>
-  `https://auth.hackney.gov.uk/auth?redirect_uri=${baseUrl}${redirect}`;
+const CustomApp = ({
+  Component,
+  pageProps,
+  user,
+  reloading,
+}: CustomAppProps): JSX.Element | null => {
+  if (reloading) return null;
 
-const CustomApp = ({ Component, pageProps }: CustomAppProps): JSX.Element => {
-  return <Component {...pageProps} />;
+  return (
+    <UserContext.Provider value={{ user }}>
+      <Component {...pageProps} />;
+    </UserContext.Provider>
+  );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const user = authoriseUser({ req, res });
+CustomApp.getInitialProps = async (appContext: AppContext) => {
+  const {
+    ctx: { req, res, pathname },
+  } = appContext;
+  const appProps = await App.getInitialProps(appContext);
 
-  if (!user) {
-    const path = req.url || '/';
-    return {
-      props: {},
-      redirect: { destination: loginUrl(path), permanent: false },
-    };
+  if (pathIsWhitelisted(pathname)) return appProps;
+
+  if (!req || !res) {
+    window.location.replace(pathname);
+    return { ...appProps, reloading: true };
   }
 
-  return { props: {} };
+  const user = authoriseUser(req);
+  if (!user) {
+    return serverSideRedirect(res, `/login?redirect=${pathname}`);
+  }
+
+  if (!userIsInValidGroup(user)) {
+    return serverSideRedirect(res, '/access-denied');
+  }
+
+  return { ...appProps, user };
 };
 
 export default CustomApp;

@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { Container, Header, Main, PhaseBanner } from 'lbh-frontend-react';
 
-const Layout = (props: Props): JSX.Element => (
+const Layout: FunctionComponent = (props) => (
   <>
     <Header isStackedOnMobile={true} homepageUrl="/" />
 
     <Container>
-      <PhaseBanner phase="ALPHA" url={process.env.FEEDBACK_FORM_URL} />
+      <PhaseBanner phase="ALPHA" url="form-url" />
     </Container>
 
     <Main>
@@ -14,9 +14,5 @@ const Layout = (props: Props): JSX.Element => (
     </Main>
   </>
 );
-
-export interface Props {
-  children: React.ReactNode;
-}
 
 export default Layout;
