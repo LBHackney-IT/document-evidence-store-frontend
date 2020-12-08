@@ -9,7 +9,7 @@ const classNameFromProps = (props: Props) => {
   return className;
 };
 
-const UploaderPanel: FunctionComponent<Props> = (props: Props) => (
+const UploaderPanel: FunctionComponent<Props> = (props) => (
   <div className={classNameFromProps(props)}>
     <Label labelFor={props.name}>{props.label}</Label>
     {props.hint && (
