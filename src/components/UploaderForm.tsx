@@ -1,26 +1,30 @@
-import { useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import UploaderPanel from './UploaderPanel';
 import { useRouter } from 'next/router';
+import { DocumentType } from '../domain/document-type';
+import { EvidenceRequest } from '../domain/evidence-request';
 
-import evidenceTypes from '../pages/requests/_evidence-types.json';
-import request from '../pages/requests/_pending-request.json';
+const UploaderForm: FunctionComponent<Props> = (props) => {
+  const router = useRouter();
+  const { requestId } = router.query;
+  const [submitError, setSubmitError] = useState(false);
 
-const requestedIds = [].concat(request.document_type);
+  const requestedDocuments = [props.evidenceRequest.documentType]
 
-const schemaFromIds = (ids) =>
-  ids.reduce(
-    (o, key) => ({
-      ...o,
-      [key]: Yup.mixed().required('Please select a file'),
-    }),
-    {}
+  const schema = Yup.object(
+    requestedDocuments.reduce(
+      (o, key) => ({
+        ...o,
+        [key]: Yup.mixed().required('Please select a file'),
+      }),
+      {}
+    )
   );
 
-const initialValuesFromIds = (ids) =>
-  ids.reduce(
+  const initialValues = requestedDocuments.reduce(
     (o, key) => ({
       ...o,
       [key]: '',
@@ -28,19 +32,12 @@ const initialValuesFromIds = (ids) =>
     {}
   );
 
-const panelsFromIds = (ids) =>
-  ids.map((id) => evidenceTypes.find((type) => type.id === id));
-
-const schema = Yup.object(schemaFromIds(requestedIds));
-
-const UploaderForm = (): JSX.Element => {
-  const router = useRouter();
-  const { requestId } = router.query;
-  const [submitError, setSubmitError] = useState(false);
+  console.log(requestedDocuments)
+  console.log(props.documentTypes)
 
   return (
     <Formik
-      initialValues={initialValuesFromIds(requestedIds)}
+      initialValues={initialValues}
       validationSchema={schema}
       onSubmit={async (values) => {
         try {
@@ -65,7 +62,7 @@ const UploaderForm = (): JSX.Element => {
             </ErrorMessage>
           )}
 
-          {panelsFromIds(requestedIds).map((document) => (
+          {requestedDocuments.map((document) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
               key={document.id}
@@ -85,5 +82,10 @@ const UploaderForm = (): JSX.Element => {
     </Formik>
   );
 };
+
+interface Props {
+  documentTypes: Array<DocumentType>;
+  evidenceRequest: EvidenceRequest;
+}
 
 export default UploaderForm;
