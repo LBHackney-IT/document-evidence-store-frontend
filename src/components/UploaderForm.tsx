@@ -14,25 +14,33 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
 
   const requestedDocuments = [props.evidenceRequest.documentType];
 
-  const schema = useMemo(() => Yup.object(
-    requestedDocuments.reduce(
-      (others, key) => ({
-        ...others,
-        [key.id]: Yup.mixed().required('Please select a file')
-      }),
-      {}
-    )
-  ), [requestedDocuments])
+  const schema = useMemo(
+    () =>
+      Yup.object(
+        requestedDocuments.reduce(
+          (others, key) => ({
+            ...others,
+            [key.id]: Yup.mixed().required('Please select a file'),
+          }),
+          {}
+        )
+      ),
+    [requestedDocuments]
+  );
 
-  const initialValues = useMemo(() => requestedDocuments.reduce(
-    (others, key) => ({
-      ...others,
-      [key.id]: ''
-    }),
-    {}
-  ), [requestedDocuments])
+  const initialValues = useMemo(
+    () =>
+      requestedDocuments.reduce(
+        (others, key) => ({
+          ...others,
+          [key.id]: '',
+        }),
+        {}
+      ),
+    [requestedDocuments]
+  );
 
-  console.log(initialValues)
+  console.log(initialValues);
 
   return (
     <Formik
