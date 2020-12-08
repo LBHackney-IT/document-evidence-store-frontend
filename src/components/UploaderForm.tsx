@@ -1,4 +1,4 @@
-import { FunctionComponent, useState, useMemo } from 'react';
+import { FunctionComponent, useState, useMemo, useCallback } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -37,7 +37,7 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
     [requestedDocuments]
   );
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = useCallback(async (values) => {
     try {
       // using formdata to ensure file objects are correctly transmitted
       const formData = new FormData();
@@ -49,7 +49,7 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
       console.log(err);
       setSubmitError(true);
     }
-  };
+  }, []);
 
   return (
     <Formik
