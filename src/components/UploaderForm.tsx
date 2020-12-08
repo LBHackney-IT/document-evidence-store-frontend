@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState, useMemo } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -14,26 +14,25 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
 
   const requestedDocuments = [props.evidenceRequest.documentType];
 
-  const schema = Yup.object(
+  const schema = useMemo(() => Yup.object(
     requestedDocuments.reduce(
-      (o, key) => ({
-        ...o,
-        [key]: Yup.mixed().required('Please select a file'),
+      (others, key) => ({
+        ...others,
+        [key.id]: Yup.mixed().required('Please select a file')
       }),
       {}
     )
-  );
+  ), [requestedDocuments])
 
-  const initialValues = requestedDocuments.reduce(
-    (o, key) => ({
-      ...o,
-      [key]: '',
+  const initialValues = useMemo(() => requestedDocuments.reduce(
+    (others, key) => ({
+      ...others,
+      [key.id]: ''
     }),
     {}
-  );
+  ), [requestedDocuments])
 
-  console.log(requestedDocuments);
-  console.log(props.documentTypes);
+  console.log(initialValues)
 
   return (
     <Formik
