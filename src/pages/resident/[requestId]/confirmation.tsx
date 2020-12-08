@@ -2,7 +2,6 @@ import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import Panel from '../../../components/Panel';
 import { ReactNode } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 

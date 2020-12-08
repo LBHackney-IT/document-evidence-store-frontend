@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import React from 'react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import UploaderPanel from './UploaderPanel';
-import { Formik, Form } from 'formik';
 
 test('is properly named, and labelled', async () => {
   render(
     <UploaderPanel
       label="Example label"
       name="exampleName"
-      setFieldValue={() => {}}
+      setFieldValue={jest.fn()}
     />
   );
   expect(screen.getByLabelText('Example label'));
@@ -62,7 +61,7 @@ test('displays hints', async () => {
       label="Example label"
       name="exampleName"
       hint="Example hint"
-      setFieldValue={() => {}}
+      setFieldValue={jest.fn()}
     />
   );
   expect(screen.getByText('Example hint'));
@@ -74,7 +73,7 @@ test('displays errors', async () => {
       label="Example label"
       name="exampleName"
       error="Example error"
-      setFieldValue={() => {}}
+      setFieldValue={jest.fn()}
     />
   );
   expect(screen.getByText('Example error'));

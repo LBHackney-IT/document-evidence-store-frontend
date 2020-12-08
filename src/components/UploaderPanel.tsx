@@ -1,5 +1,5 @@
-import React from 'react';
-import { Label, Hint, ErrorMessage } from 'lbh-frontend-react';
+import React, { FunctionComponent } from 'react';
+import { Label, ErrorMessage } from 'lbh-frontend-react';
 import styles from '../styles/UploaderPanel.module.scss';
 
 const classNameFromProps = (props: Props) => {
@@ -9,7 +9,7 @@ const classNameFromProps = (props: Props) => {
   return className;
 };
 
-const UploaderPanel = (props: Props) => (
+const UploaderPanel: FunctionComponent<Props> = (props: Props) => (
   <div className={classNameFromProps(props)}>
     <Label labelFor={props.name}>{props.label}</Label>
     {props.hint && (
@@ -35,7 +35,7 @@ const UploaderPanel = (props: Props) => (
 );
 
 interface Props {
-  setFieldValue: Function;
+  setFieldValue(): void;
   name: string;
   label: string;
   hint?: string;

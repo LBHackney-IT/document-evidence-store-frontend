@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
-import Layout from './DashboardLayout';
-import { Formik, Form, FieldArray } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import fetch from 'isomorphic-unfetch';
 import UploaderPanel from './UploaderPanel';
+import { useRouter } from 'next/router';
 
 import evidenceTypes from '../pages/requests/_evidence-types.json';
 import request from '../pages/requests/_pending-request.json';
@@ -35,6 +34,8 @@ const panelsFromIds = (ids) =>
 const schema = Yup.object(schemaFromIds(requestedIds));
 
 const UploaderForm = (): JSX.Element => {
+  const router = useRouter();
+  const { requestId } = router.query;
   const [submitError, setSubmitError] = useState(false);
 
   return (
@@ -44,11 +45,12 @@ const UploaderForm = (): JSX.Element => {
       onSubmit={async (values) => {
         try {
           // using formdata to ensure file objects are correctly transmitted
-          let formData = new FormData();
+          const formData = new FormData();
           for (const key in values) {
             formData.set(key, values[key]);
           }
           // process form here...
+          router.push(`/resident/${requestId}/confirmation`);
         } catch (err) {
           console.log(err);
           setSubmitError(true);
@@ -63,7 +65,7 @@ const UploaderForm = (): JSX.Element => {
             </ErrorMessage>
           )}
 
-          {panelsFromIds(requestedIds).map((document, i) => (
+          {panelsFromIds(requestedIds).map((document) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
               key={document.id}
