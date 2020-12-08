@@ -14,6 +14,13 @@ describe('Internal API Gateway', () => {
     });
   });
 
+  describe('getEvidenceRequest', () => {
+    it('returns DocumentType', async () => {
+      const result = await gateway.getEvidenceRequest();
+      expect(result instanceof EvidenceRequest === true).toBeTruthy();
+    });
+  });
+
   describe('getEvidenceRequests', () => {
     it('returns DocumentTypes', async () => {
       const result = await gateway.getEvidenceRequests();
