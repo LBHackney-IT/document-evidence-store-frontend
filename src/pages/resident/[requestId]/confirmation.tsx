@@ -36,7 +36,7 @@ const Index = (): ReactNode => {
               className="govuk-link lbh-link"
             >
               What did you think of this service?
-            </a>
+            </a>{' '}
             (takes 30 seconds)
           </p>
         </div>
