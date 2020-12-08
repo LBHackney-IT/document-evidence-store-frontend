@@ -12,7 +12,7 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
   const { requestId } = router.query;
   const [submitError, setSubmitError] = useState(false);
 
-  const requestedDocuments = [props.evidenceRequest.documentType]
+  const requestedDocuments = [props.evidenceRequest.documentType];
 
   const schema = Yup.object(
     requestedDocuments.reduce(
@@ -32,8 +32,8 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
     {}
   );
 
-  console.log(requestedDocuments)
-  console.log(props.documentTypes)
+  console.log(requestedDocuments);
+  console.log(props.documentTypes);
 
   return (
     <Formik
