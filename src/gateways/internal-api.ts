@@ -14,18 +14,18 @@ export class InternalApiGateway {
     // this.token = token;
   }
 
-  async getEvidenceRequests(): Promise<EvidenceRequest[]> {
-    await sleep();
+  async getEvidenceRequests(rapid?: boolean): Promise<EvidenceRequest[]> {
+    if (!rapid) await sleep();
     return evidenceRequests.map((er) => ResponseMapper.mapEvidenceRequest(er));
   }
 
-  async getEvidenceRequest(): Promise<EvidenceRequest> {
-    await sleep();
+  async getEvidenceRequest(rapid?: boolean): Promise<EvidenceRequest> {
+    if (!rapid) await sleep();
     return ResponseMapper.mapEvidenceRequest(singleEvidenceRequest);
   }
 
-  async getDocumentTypes(): Promise<DocumentType[]> {
-    await sleep();
+  async getDocumentTypes(rapid?: boolean): Promise<DocumentType[]> {
+    if (!rapid) await sleep();
     return documentTypes.map((dt) => ResponseMapper.mapDocumentType(dt));
   }
 }
