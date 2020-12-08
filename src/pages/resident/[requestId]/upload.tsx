@@ -29,14 +29,14 @@ const Index = (): ReactNode => {
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {documentTypes && evidenceRequest ?
+          {documentTypes && evidenceRequest ? (
             <UploaderForm
               documentTypes={documentTypes}
               evidenceRequest={evidenceRequest}
             />
-            :
+          ) : (
             <p>Loading...</p>
-          }
+          )}
         </div>
       </div>
     </Layout>
