@@ -17,7 +17,7 @@ const Index = (): ReactNode => {
       </Head>
       {requestId}
       <InterruptionCard image="/illustration.svg">
-        <Heading level={HeadingLevels.H2}>
+        <Heading level={HeadingLevels.H1}>
           You’ll need to photograph your documents
         </Heading>
         <p className="lbh-body">You can use your smartphone camera.</p>
