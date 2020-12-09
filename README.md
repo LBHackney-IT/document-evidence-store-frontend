@@ -45,12 +45,11 @@ If you have the right [environment config](#-configuration), login should now wo
 
 ## 🧪 Testing it
 
-It uses Jest, `react-testing-library` and cypress for tests.
-
-Run Jest rests with:
+It uses Jest, `react-testing-library` and cypress for tests. Run them with:
 
 ```
 npm run test:unit
+npm run test:e2e:dev
 ```
 
 ## 🌎 Putting it on the internet
