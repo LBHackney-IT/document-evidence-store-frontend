@@ -40,7 +40,7 @@ Add this line to your hosts file (Windows: `C:\Windows\System32\drivers\etc\host
 
 When you next launch the app, it should be on `localdev.hackney.gov.uk:3000`.
 
-If you have the right [environment config](#🧬 Configuration), login should now work.
+If you have the right [environment config](#-configuration), login should now work.
 
 
 ## 🧪 Testing it
