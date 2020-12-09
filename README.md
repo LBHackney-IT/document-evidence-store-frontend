@@ -38,7 +38,7 @@ Add this line to your hosts file (Windows: `C:\Windows\System32\drivers\etc\host
 127.0.0.1	localdev.hackney.gov.uk
 ```
 
-When you next launch the app, it should be on `localdev.hackney.gov.uk:3000`.
+When you next launch the app, it should be on `http://localdev.hackney.gov.uk:3000`.
 
 If you have the right [environment config](#-configuration), login should now work.
 
@@ -63,12 +63,13 @@ Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment)
 
 ## 🧬 Configuration
 
-You can use a `.env` file to supply environment config locally.
+You can use a `.env` file to supply environment config locally. Create a fresh one with `cp .env.sample .env`.
+
 
 | Variable            | Description                                                         | Example                             |
 | ------------------- | ------------------------------------------------------------------- | ----------------------------------- |
 | APP_URL             |                                                                     | http://localdev.hackney.gov.uk:3000 |
 | HACKNEY_JWT_SECRET  |                                                                     |                                     |
-| HACKNEY_COOKIE_NAME |                                                                     |                                     |
+| HACKNEY_COOKIE_NAME |                                                                     | hackneyToken                        |
 | REACT_APP_ENV       |                                                                     | dev                                 |
 | FEEDBACK_FORM_URL   | The URL to a form where users can submit feedback about the service | https://example.com                 |
