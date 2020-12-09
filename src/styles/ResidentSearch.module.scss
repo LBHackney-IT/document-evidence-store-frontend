@@ -1,0 +1,36 @@
+.form{
+    margin-bottom: 25px;
+
+    @media screen and (min-width: 500px){
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 35px;
+
+        div{
+            width: 100%;
+        }
+
+        input{
+            height: 49px;
+            padding: 13px;
+        }
+
+        button{
+            margin-top: 0;
+            margin-left: 15px;
+        }
+    }
+}
+
+
+.label{
+    position: absolute !important;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+	padding:0 !important;
+	border:0 !important;
+	height: 1px !important; 
+	width: 1px !important; 
+    overflow: hidden;
+}
