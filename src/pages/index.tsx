@@ -8,6 +8,7 @@ import { InternalApiGateway } from '../gateways/internal-api';
 import { EvidenceRequestTable } from '../components/EvidenceRequestTable';
 import ResidentSearchForm from '../components/ResidentSearchForm';
 import Tabs from '../components/Tabs';
+import TableSkeleton from '../components/TableSkeleton';
 
 const BrowseResidents = (): ReactNode => {
   const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
@@ -18,7 +19,8 @@ const BrowseResidents = (): ReactNode => {
   }, []);
 
   const table = useMemo(() => {
-    if (!evidenceRequests) return <p>Loading</p>;
+    if (!evidenceRequests)
+      return <TableSkeleton columns={['Resident', 'Document', 'Made']} />;
 
     return <EvidenceRequestTable requests={evidenceRequests} />;
   }, [evidenceRequests]);
@@ -37,8 +39,17 @@ const BrowseResidents = (): ReactNode => {
       <ResidentSearchForm handleSearch={handleSearch} />
 
       <Tabs
-        tabTitles={['One', 'Two', 'Three']}
-        children={[{ table }, { table }, { table }]}
+        tabTitles={['To review (3)', 'All (3)']}
+        children={[
+          <div key="1">
+            <Heading level={HeadingLevels.H3}>To review</Heading>
+            {table}
+          </div>,
+          <div key="2">
+            <Heading level={HeadingLevels.H3}>All residents</Heading>
+            {table}
+          </div>,
+        ]}
       />
     </Layout>
   );
