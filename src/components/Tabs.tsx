@@ -11,18 +11,18 @@ import styles from '../styles/Tabs.module.scss';
 
 const Tabs = (props: Props): JSX.Element => {
   return (
-    <BaseTabs className={styles.outer} data-module="govuk-tabs">
+    <BaseTabs className={styles.outer}>
       <h2 className={styles.title}>Contents</h2>
 
       <TabList className={styles.tabList}>
         {props.tabTitles.map((title: string) => (
-          <li key={title} className={styles.tab}>
-            <Tab className={styles.tabLink}>{title}</Tab>
-          </li>
+          <Tab key={title} className={styles.tab}>
+            {title}
+          </Tab>
         ))}
       </TabList>
 
-      <TabPanels>
+      <TabPanels className={styles.tabPanels}>
         {props.children.map((child, i) => (
           <TabPanel key={i} className={styles.tabPanel}>
             {child}
