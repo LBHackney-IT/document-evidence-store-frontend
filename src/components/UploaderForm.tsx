@@ -77,8 +77,12 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
               label={document.title}
               hint={document.description}
               name={document.id}
-              set={!!values[document.id]}
-              error={touched[document.id] ? errors[document.id] : null}
+              set={!!values[document.id as keyof typeof values]}
+              error={
+                touched[document.id as keyof typeof touched]
+                  ? errors[document.id as keyof typeof errors]
+                  : null
+              }
             />
           ))}
 
