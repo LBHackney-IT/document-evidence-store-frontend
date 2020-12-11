@@ -19,7 +19,11 @@ const tokens: TokenDictionary = {
 };
 
 export class EvidenceApiGateway {
-  async request(pathSegments: string[], method: Method, body?: any) {
+  async request(
+    pathSegments: string[],
+    method: Method,
+    body?: unknown
+  ): Promise<{ data?: string; status: number }> {
     const token = this.getToken(pathSegments, method);
     if (!token) {
       return { status: 404 };
