@@ -1,6 +1,6 @@
 import { DocumentType } from '../domain/document-type';
 import { EvidenceRequest } from '../domain/evidence-request';
-import { InternalApiGateway } from './internal-api';
+import { InternalApiGateway, InternalServerError } from './internal-api';
 import axios, { AxiosResponse } from 'axios';
 import { ResponseMapper } from '../boundary/response-mapper';
 
@@ -50,6 +50,16 @@ describe('Internal API Gateway', () => {
         expect(result).toEqual(mappedData);
       });
     });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        mockedAxios.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () => gateway.getEvidenceRequests();
+        expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
   });
 
   describe('getDocumentTypes', () => {
@@ -93,6 +103,16 @@ describe('Internal API Gateway', () => {
             expectedData[i]
           );
         }
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        mockedAxios.get.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () => gateway.getDocumentTypes();
+        expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
       });
     });
   });
