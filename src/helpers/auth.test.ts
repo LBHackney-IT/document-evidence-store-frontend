@@ -12,7 +12,7 @@ describe('auth helpers', () => {
   describe('createLoginUrl', () => {
     it('returns a google auth url', () => {
       const path = '/foo';
-      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=${process.env.BASE_URL}${path}`;
+      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=${process.env.APP_URL}${path}`;
 
       expect(auth.createLoginUrl(path)).toEqual(expected);
     });
