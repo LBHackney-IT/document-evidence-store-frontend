@@ -1,5 +1,4 @@
-import documentTypes from '../../test/fixture/document-types-response.json';
-import { DocumentType } from '../domain/document-type';
+import { DocumentType, IDocumentType } from '../domain/document-type';
 import {
   EvidenceRequestResponse,
   ResponseMapper,
@@ -30,11 +29,12 @@ export class InternalApiGateway {
 
   async getDocumentTypes(): Promise<DocumentType[]> {
     try {
-      await Axios.get<EvidenceRequestResponse[]>(
-        '/api/evidence/evidence_types'
+      const { data } = await Axios.get<IDocumentType[]>(
+        '/api/evidence/document_types'
       );
-      return documentTypes.map((dt) => ResponseMapper.mapDocumentType(dt));
+      return data.map((dt) => ResponseMapper.mapDocumentType(dt));
     } catch (err) {
+      console.log(err);
       throw new InternalServerError('Internal server error');
     }
   }

@@ -91,7 +91,7 @@ describe('Internal API Gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getDocumentTypes();
         expect(mockedAxios.get).toHaveBeenLastCalledWith(
-          '/api/evidence/evidence_types'
+          '/api/evidence/document_types'
         );
       });
 
@@ -103,6 +103,11 @@ describe('Internal API Gateway', () => {
             expectedData[i]
           );
         }
+      });
+
+      it('returns the right correct response', async () => {
+        const result = await gateway.getDocumentTypes();
+        expect(result).toEqual(mappedData);
       });
     });
 

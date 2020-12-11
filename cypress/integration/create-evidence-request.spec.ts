@@ -1,6 +1,12 @@
-describe('Can view evidence requests', () => {
+describe('Can create evidence requests', () => {
   beforeEach(() => {
     cy.login();
+    cy.intercept('/api/evidence/document_types', {
+      fixture: 'document-types-response.json',
+    });
+    cy.intercept('/api/evidence/evidence_requests', {
+      fixture: 'evidence-request-response',
+    });
   });
 
   it("has 'Please log in' heading", () => {
