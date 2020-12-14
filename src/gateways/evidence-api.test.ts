@@ -100,9 +100,24 @@ describe('Evidence api gateway', () => {
       );
     });
 
-    it('does not return an error', async () => {
+    it('does not throw an error', async () => {
       const response = await gateway.request(path, method);
       expect(response).toEqual(expectedResponse);
+    });
+
+    describe('when axios request fails', () => {
+      const expectedStatus = 500;
+      const expectedResponse = { status: 500 };
+      beforeEach(() => {
+        mockedAxios.request.mockRejectedValue({
+          status: expectedStatus,
+        } as AxiosResponse);
+      });
+
+      it('returns status code 500', async () => {
+        const response = await gateway.request(path, method);
+        expect(response).toEqual(expectedResponse);
+      });
     });
   });
 
@@ -126,7 +141,7 @@ describe('Evidence api gateway', () => {
       );
     });
 
-    it('the request returns the correct response', async () => {
+    it('returns the correct response', async () => {
       const response = await gateway.request(path, method);
       expect(response).toEqual(expectedResponse);
       expect(axios.request).toHaveBeenCalledWith({

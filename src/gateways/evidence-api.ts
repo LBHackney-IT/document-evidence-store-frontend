@@ -29,20 +29,25 @@ export class EvidenceApiGateway {
       return { status: 404 };
     }
 
-    const { status, data } = await axios.request({
-      method,
-      baseURL: process.env.BASE_URL,
-      url: `/${pathSegments.join('/')}`,
-      data: body,
-      headers: {
-        Authorization: token,
-      },
-      validateStatus() {
-        return true;
-      },
-    });
+    try {
+      const { status, data } = await axios.request({
+        method,
+        baseURL: process.env.BASE_URL,
+        url: `/${pathSegments.join('/')}`,
+        data: body,
+        headers: {
+          Authorization: token,
+        },
+        validateStatus() {
+          return true;
+        },
+      });
 
-    return { data, status };
+      return { data, status };
+    } catch (err) {
+      console.log('Error: ' + err);
+      return { status: 500 };
+    }
   }
 
   private getToken(path: string[], method: Method) {
