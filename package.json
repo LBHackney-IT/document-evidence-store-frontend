@@ -11,8 +11,7 @@
     "prettier:fix": "npx prettier --write .",
     "test:unit": "jest",
     "test:e2e:ci": "cypress run",
-    "test:e2e:dev": "cypress open",
-    "deploy": "sls deploy"
+    "test:e2e:dev": "cypress open"
   },
   "dependencies": {
     "@reach/alert": "^0.12.1",

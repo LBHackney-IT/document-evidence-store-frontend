@@ -9,10 +9,12 @@ provider:
     shouldStartNameWithService: true
 
 package:
-  excludeDevDependencies: false
+  individually: true
+  exclude:
+    - ./**
 
-plugins:
-  - serverless-plugin-include-dependencies
+# plugins:
+#   - serverless-plugin-include-dependencies
 
 functions:
   document-evidence-frontend:
@@ -24,6 +26,7 @@ functions:
         - next.config.js
         - public/**
         - build/_next/**
+        - node_modules/**
     events:
       - http:
           path: api/{proxy+}
