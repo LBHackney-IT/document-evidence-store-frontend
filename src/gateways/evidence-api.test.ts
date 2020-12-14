@@ -7,7 +7,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('Evidence api gateway', () => {
   const gateway = new EvidenceApiGateway();
   const validateStatus = expect.any(Function);
-  const baseUrl = process.env.BASE_URL;
+  const baseUrl = process.env.EVIDENCE_API_BASE_URL;
 
   describe('GET request to /document_types', () => {
     const expectedData = {

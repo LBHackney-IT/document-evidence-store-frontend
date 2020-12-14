@@ -32,7 +32,7 @@ export class EvidenceApiGateway {
     try {
       const { status, data } = await axios.request({
         method,
-        baseURL: process.env.BASE_URL,
+        baseURL: process.env.EVIDENCE_API_BASE_URL,
         url: `/${pathSegments.join('/')}`,
         data: body,
         headers: {
