@@ -9,9 +9,6 @@ provider:
     shouldStartNameWithService: true
 
 package:
-  individually: true
-  exclude:
-    - ./**
   excludeDevDependencies: false
 
 plugins:
