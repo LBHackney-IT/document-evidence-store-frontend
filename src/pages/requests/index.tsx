@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
+import { Heading, HeadingLevels, Paragraph } from 'lbh-frontend-react';
 import Link from 'next/link';
 import Layout from '../../components/DashboardLayout';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
@@ -16,7 +16,7 @@ const RequestsIndexPage = (): ReactNode => {
   }, []);
 
   const table = useMemo(() => {
-    if (!evidenceRequests) return <p>Loading</p>;
+    if (!evidenceRequests) return <Paragraph>Loading</Paragraph>;
 
     return <EvidenceRequestTable requests={evidenceRequests} />;
   }, [evidenceRequests]);

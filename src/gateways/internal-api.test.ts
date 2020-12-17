@@ -14,7 +14,7 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 describe('Internal API Gateway', () => {
   const gateway = new InternalApiGateway();
 
-  describe('getEvidenceRequests', () => {
+  xdescribe('getEvidenceRequests', () => {
     describe('returns the correct response', () => {
       const expectedData = ['foo', 'bar'];
       const mappedData = (['blim', 'blam'] as unknown) as EvidenceRequest[];

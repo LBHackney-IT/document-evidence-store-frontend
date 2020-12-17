@@ -26,7 +26,7 @@ const RequestsNewPage = (): ReactNode => {
   }, []);
 
   const form = useMemo(() => {
-    if (!documentTypes) return <p>Loading</p>;
+    if (!documentTypes) return <Paragraph>Loading</Paragraph>;
     return (
       <NewRequestForm documentTypes={documentTypes} onSubmit={handleSubmit} />
     );

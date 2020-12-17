@@ -29,11 +29,13 @@ describe('ResponseMapper', () => {
     });
 
     it('maps the document type', () => {
-      expect(result.documentType).toMatchObject({
-        id: 'passport-scan',
-        title: 'Passport',
-        description: 'A valid passport open at the photo page',
-      });
+      expect(result.documentTypes).toMatchObject([
+        {
+          id: 'passport-scan',
+          title: 'Passport',
+          description: 'A valid passport open at the photo page',
+        },
+      ]);
     });
 
     // 2020-11-30T15:34:12.299Z

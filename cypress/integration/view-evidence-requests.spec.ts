@@ -1,4 +1,4 @@
-describe('Can view evidence requests', () => {
+describe('View evidence requests', () => {
   beforeEach(() => {
     cy.login();
     cy.intercept('/api/evidence/evidence_requests', {
@@ -6,7 +6,7 @@ describe('Can view evidence requests', () => {
     });
   });
 
-  it("has 'Please log in' heading", () => {
+  it('User can view pending evidence requests', () => {
     cy.visit(`http://localhost:3000`);
     cy.get('nav').contains('Requests').click();
 

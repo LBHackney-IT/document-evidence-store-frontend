@@ -1,4 +1,4 @@
-describe('Can create evidence requests', () => {
+describe('Create evidence requests', () => {
   beforeEach(() => {
     cy.login();
     cy.intercept('/api/evidence/document_types', {
@@ -9,7 +9,7 @@ describe('Can create evidence requests', () => {
     });
   });
 
-  it("has 'Please log in' heading", () => {
+  it('User can fill out new request form', () => {
     cy.visit(`http://localhost:3000`);
 
     cy.get('nav').contains('Requests').click();

@@ -24,6 +24,7 @@ export interface EvidenceRequestRequest {
 
 export class InternalApiGateway {
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
+    await new Promise((resolve) => setTimeout(resolve, 100));
     return EvidenceRequestsFixture.map(ResponseMapper.mapEvidenceRequest);
     // try {
     //   const { data } = await Axios.get<EvidenceRequestResponse[]>(
