@@ -5,27 +5,29 @@ import {
   authoriseUser,
   pathIsWhitelisted,
   serverSideRedirect,
+  unsafeExtractUser,
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
 import { UserContext } from '../components/UserContext/UserContext';
 import { NextPage } from 'next';
 import { Layout } from '../components/Layout';
+import { AccessDeniedPage } from '../components/AccessDeniedPage';
 
 type CustomAppProps = {
   Component: NextPage;
   pageProps: AppProps['pageProps'];
   user?: User;
-  reloading?: boolean;
+  accessDenied?: boolean;
 };
 
 const CustomApp = ({
   Component,
   pageProps,
   user,
-  reloading,
+  accessDenied,
 }: CustomAppProps): JSX.Element | null => {
-  if (reloading) return null;
+  if (accessDenied) return <AccessDeniedPage />;
 
   return (
     <UserContext.Provider value={{ user }}>
@@ -38,27 +40,33 @@ const CustomApp = ({
 
 CustomApp.getInitialProps = async (appContext: AppContext) => {
   const {
-    ctx: { req, res, pathname },
+    ctx: { req, res, pathname, asPath },
   } = appContext;
   const appProps = await App.getInitialProps(appContext);
 
-  if (pathIsWhitelisted(pathname)) return appProps;
+  const user = req && res ? authoriseUser(req) : unsafeExtractUser();
+  const props = { ...appProps, user };
 
-  if (!req || !res) {
-    window.location.replace(pathname);
-    return { ...appProps, reloading: true };
-  }
+  if (pathIsWhitelisted(pathname)) return props;
 
-  const user = authoriseUser(req);
   if (!user) {
-    return serverSideRedirect(res, `/login?redirect=${pathname}`);
+    const redirect = encodeURIComponent(asPath || '/');
+    const url = `/login?redirect=${redirect}`;
+
+    if (req && res) {
+      serverSideRedirect(res, url);
+    } else {
+      window.location.replace(url);
+    }
+
+    return { accessDenied: true };
   }
 
   if (!userIsInValidGroup(user)) {
-    return serverSideRedirect(res, '/access-denied');
+    return { accessDenied: true };
   }
 
-  return { ...appProps, user };
+  return props;
 };
 
 export default CustomApp;
