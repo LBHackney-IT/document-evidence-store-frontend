@@ -1,4 +1,4 @@
-interface IResident {
+export interface IResident {
   name: string;
   email: string;
   phoneNumber: string;
