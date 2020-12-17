@@ -10,6 +10,7 @@ import {
 } from '../helpers/auth';
 import { UserContext } from '../components/UserContext/UserContext';
 import { NextPage } from 'next';
+import { Layout } from '../components/Layout';
 
 type CustomAppProps = {
   Component: NextPage;
@@ -28,7 +29,9 @@ const CustomApp = ({
 
   return (
     <UserContext.Provider value={{ user }}>
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </UserContext.Provider>
   );
 };

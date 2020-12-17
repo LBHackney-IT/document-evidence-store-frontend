@@ -1,7 +1,6 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import { Heading, HeadingLevels, Paragraph } from 'lbh-frontend-react';
-import Layout from '../../components/DashboardLayout';
 import NewRequestForm from '../../components/NewRequestForm';
 import {
   EvidenceRequestRequest,
@@ -33,13 +32,13 @@ const RequestsNewPage = (): ReactNode => {
   }, [documentTypes]);
 
   return (
-    <Layout>
+    <>
       <Head>
         <title>Make a new request</title>
       </Head>
       <Heading level={HeadingLevels.H2}>Make a new request</Heading>
       {complete ? <Paragraph>Thanks!</Paragraph> : form}
-    </Layout>
+    </>
   );
 };
 
