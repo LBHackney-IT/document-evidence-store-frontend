@@ -1,18 +1,20 @@
 import { IncomingMessage, ServerResponse } from 'http';
 import * as auth from './auth';
-import cookie from 'cookie';
 import jsonwebtoken from 'jsonwebtoken';
+import * as MockCookie from '../../__mocks__/universal-cookie';
+import * as Cookie from 'universal-cookie';
 import { mocked } from 'ts-jest/utils';
 
-jest.mock('cookie');
 jest.mock('jsonwebtoken');
-const mockedCookie = mocked(cookie);
 const mockedJsonWebToken = mocked(jsonwebtoken);
+
+const { mockCookieGet } = (Cookie as unknown) as typeof MockCookie;
+
 describe('auth helpers', () => {
   describe('createLoginUrl', () => {
     it('returns a google auth url', () => {
       const path = '/foo';
-      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=${process.env.APP_URL}${path}`;
+      const expected = `https://auth.hackney.gov.uk/auth?redirect_uri=${process.env.NEXT_PUBLIC_APP_URL}${path}`;
 
       expect(auth.createLoginUrl(path)).toEqual(expected);
     });
@@ -60,7 +62,7 @@ describe('auth helpers', () => {
     });
   });
 
-  describe('authoriseUser', () => {
+  describe('authorize', () => {
     const req = {
       headers: {
         cookie: '',
@@ -68,16 +70,16 @@ describe('auth helpers', () => {
     } as IncomingMessage;
 
     it('returns undefined when the cookie does not exist', () => {
-      mockedCookie.parse.mockImplementation(() => ({}));
+      mockCookieGet.mockImplementation(() => null);
 
       expect(auth.authoriseUser(req)).toBeUndefined();
     });
 
     describe('when the cookie exists', () => {
+      const cookieValue = 'cookie';
+
       beforeEach(() => {
-        mockedCookie.parse.mockImplementation(() => ({
-          hackneyToken: 'some cookie',
-        }));
+        mockCookieGet.mockImplementation(() => cookieValue);
       });
 
       it('returns a user when the JWT is valid', () => {
@@ -88,10 +90,11 @@ describe('auth helpers', () => {
         };
         mockedJsonWebToken.verify.mockImplementation(() => jwtPayload);
 
-        expect(auth.authoriseUser(req)).toEqual({
-          ...jwtPayload,
-          isAuthorised: true,
-        });
+        expect(auth.authoriseUser(req)).toEqual(jwtPayload);
+        expect(mockedJsonWebToken.verify).toHaveBeenCalledWith(
+          cookieValue,
+          process.env.HACKNEY_JWT_SECRET
+        );
       });
 
       it('throws an error when the user is not authorised', () => {
@@ -100,11 +103,50 @@ describe('auth helpers', () => {
         });
 
         expect(auth.authoriseUser(req)).toBeUndefined();
+        expect(mockedJsonWebToken.verify).toHaveBeenCalledWith(
+          cookieValue,
+          process.env.HACKNEY_JWT_SECRET
+        );
       });
     });
   });
 
-  describe('redirect', () => {
+  describe('unsafeExtractUser', () => {
+    it('returns undefined when the cookie does not exist', () => {
+      mockCookieGet.mockImplementation(() => null);
+
+      expect(auth.unsafeExtractUser()).toBeUndefined();
+    });
+
+    describe('when the cookie exists', () => {
+      const cookieValue = 'cookie';
+
+      beforeEach(() => {
+        mockCookieGet.mockImplementation(() => cookieValue);
+      });
+
+      it('returns a user when the JWT is valid', () => {
+        const jwtPayload = {
+          groups: [],
+          name: 'user',
+          email: 'user@email',
+        };
+        mockedJsonWebToken.decode.mockImplementation(() => jwtPayload);
+
+        expect(auth.unsafeExtractUser()).toEqual(jwtPayload);
+        expect(mockedJsonWebToken.decode).toHaveBeenCalledWith(cookieValue);
+      });
+
+      it('returns undefined when the JWT is not valid', () => {
+        mockedJsonWebToken.decode.mockImplementation(() => null);
+
+        expect(auth.unsafeExtractUser()).toEqual(null);
+        expect(mockedJsonWebToken.decode).toHaveBeenCalledWith(cookieValue);
+      });
+    });
+  });
+
+  describe('serverSideRedirect', () => {
     const location = 'location';
 
     it('redirects server side', () => {
