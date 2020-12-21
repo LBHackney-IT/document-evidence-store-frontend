@@ -18,6 +18,6 @@ describe('ResidentSearchForm', () => {
       },
     });
     fireEvent.click(screen.getByText('Search'));
-    expect(mockHandler).toHaveBeenCalledTimes(10);
+    expect(mockHandler).toHaveBeenCalledTimes(1);
   });
 });
