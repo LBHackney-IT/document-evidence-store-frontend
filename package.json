@@ -14,15 +14,12 @@
     "test:e2e:dev": "cypress open"
   },
   "dependencies": {
+    "@reach/tabs": "^0.12.1",
     "@reach/alert": "^0.12.1",
     "@reach/dialog": "^0.12.1",
-    "@reach/tabs": "^0.12.1",
-    "@testing-library/jest-dom": "^5.11.6",
-    "@testing-library/react": "^11.2.2",
-    "@types/yup": "^0.29.9",
+    "axios": "^0.21.0",
     "cookie": "^0.4.1",
     "formik": "^2.2.5",
-    "isomorphic-unfetch": "^3.1.0",
     "jsonwebtoken": "^8.5.1",
     "lbh-frontend-react": "^0.5.7",
     "luxon": "^1.25.0",
