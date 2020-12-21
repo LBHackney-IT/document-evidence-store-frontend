@@ -6,7 +6,6 @@ import {
 import Axios from 'axios';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 
-
 export class InternalServerError extends Error {
   constructor(message: string) {
     super(message);
@@ -26,11 +25,6 @@ export class InternalApiGateway {
       console.log(err);
       throw new InternalServerError('Internal server error');
     }
-  }
-
-  async getEvidenceRequest(): Promise<EvidenceRequest> {
-    await sleep();
-    return ResponseMapper.mapEvidenceRequest(singleEvidenceRequest);
   }
 
   async getDocumentTypes(): Promise<DocumentType[]> {
