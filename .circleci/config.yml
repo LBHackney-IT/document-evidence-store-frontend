@@ -31,7 +31,10 @@ commands:
     steps:
       - run:
           name: Deploy application
-          command: npm run deploy -- -s <<parameters.stage>>
+          command: |
+            npm prune --production
+            sudo npm i -g serverless
+            sls deploy -s <<parameters.stage>>
 
 jobs:
   test:

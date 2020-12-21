@@ -12,10 +12,9 @@ package:
   individually: true
   exclude:
     - ./**
-  excludeDevDependencies: false
 
-plugins:
-  - serverless-plugin-include-dependencies
+# plugins:
+#   - serverless-plugin-include-dependencies
 
 functions:
   document-evidence-frontend:
@@ -23,10 +22,12 @@ functions:
     handler: src/lambda.handler
     package:
       include:
+        - auth-groups.json
         - src/lambda.js
         - next.config.js
         - public/**
         - build/_next/**
+        - node_modules/**
     events:
       - http:
           path: api/{proxy+}
@@ -41,6 +42,10 @@ functions:
       APP_URL: https://${self:custom.aliases.${self:provider.stage}}
       HACKNEY_COOKIE_NAME: hackneyToken
       REACT_APP_ENV: ${self:provider.stage}
+      EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
+      EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
+      EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/evidence_requests/token}
+      EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST: ${ssm:/evidence-api/${self:provider.stage}/post/evidence_requests/token}
 resources:
   Resources:
     CloudFrontDistribution:

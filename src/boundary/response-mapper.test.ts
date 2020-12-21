@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
-import EvidenceRequestFixture from '../../test/fixture/evidence-request-response.json';
-import DocumentTypeFixture from '../../test/fixture/document-types-response.json';
+import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
+import DocumentTypeFixture from '../../cypress/fixtures/document-types-response.json';
 import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { Resident } from '../domain/resident';
 import { ResponseMapper } from './response-mapper';
