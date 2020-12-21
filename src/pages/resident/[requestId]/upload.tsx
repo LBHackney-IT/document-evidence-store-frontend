@@ -18,7 +18,9 @@ const Index = (): ReactNode => {
   useEffect(() => {
     const gateway = new InternalApiGateway();
     gateway.getDocumentTypes().then(setDocumentTypes);
-    gateway.getEvidenceRequest().then(setEvidenceRequest);
+    gateway
+      .getEvidenceRequests()
+      .then((requests) => setEvidenceRequest(requests[0]));
   }, []);
 
   return (
