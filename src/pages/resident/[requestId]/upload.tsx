@@ -36,7 +36,7 @@ const Index = (): ReactNode => {
             <UploaderForm
               documentTypes={documentTypes}
               evidenceRequest={evidenceRequest}
-              requestId={requestId}
+              requestId={requestId as string}
             />
           ) : (
             <p>Loading...</p>
