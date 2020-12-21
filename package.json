@@ -11,8 +11,7 @@
     "prettier:fix": "npx prettier --write .",
     "test:unit": "jest",
     "test:e2e:ci": "cypress run",
-    "test:e2e:dev": "cypress open",
-    "deploy": "sls deploy"
+    "test:e2e:dev": "cypress open"
   },
   "dependencies": {
     "@reach/alert": "^0.12.1",
@@ -31,12 +30,13 @@
     "react": "^17.0.1",
     "react-dom": "17.0.1",
     "restana": "^4.8.0",
-    "sass": "^1.29.0",
     "serve-static": "^1.14.1",
     "serverless-http": "^2.6.0",
     "yup": "^0.31.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
     "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.15",
     "@types/jsonwebtoken": "^8.5.0",
@@ -56,6 +56,7 @@
     "jest": "^26.6.3",
     "prettier": "2.2.1",
     "pretty-quick": "^3.1.0",
+    "sass": "^1.29.0",
     "serverless": "^2.12.0",
     "serverless-plugin-include-dependencies": "^4.1.0",
     "ts-jest": "^26.4.4",
