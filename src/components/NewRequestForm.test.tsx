@@ -8,8 +8,6 @@ const documentTypes = documentTypesFixture.map((dt) =>
   ResponseMapper.mapDocumentType(dt)
 );
 
-
-
 describe('NewRequestFormForm', () => {
   it('renders an uploader panel and a continue button', async () => {
     render(<NewRequestForm documentTypes={documentTypes} />);
