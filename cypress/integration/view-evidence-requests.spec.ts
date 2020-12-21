@@ -11,7 +11,6 @@ describe('Can view evidence requests', () => {
     cy.get('nav').contains('Requests').click();
 
     cy.get('h2').should('contain', 'Pending requests');
-    cy.contains('Loading').should('exist');
 
     cy.get('tbody tr')
       .should('have.length', 3)

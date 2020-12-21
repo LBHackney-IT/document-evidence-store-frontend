@@ -1,0 +1,62 @@
+.title {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+.tabList {
+  font-family: 'Open Sans';
+  list-style: none;
+  background: none;
+}
+
+.tab {
+  padding: 7px 12px;
+  font-size: 1rem;
+  background-color: #f3f2f1;
+  color: #0b0c0c;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  @media screen and (min-width: 700px) {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+  }
+  &[aria-selected='true'] {
+    border: 1px solid #b1b4b6;
+    border-bottom: 1px solid white;
+    border-bottom: none;
+    background: white;
+    text-decoration: none;
+    margin-bottom: 0px;
+  }
+
+  &:focus {
+    outline: none;
+    background: #fd0;
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+  }
+}
+
+.tabPanels {
+  margin-top: -1px;
+  border: 1px solid #b1b4b6;
+  padding: 25px;
+  @media screen and (min-width: 700px) {
+    padding: 35px;
+  }
+}
+
+.tabPanel {
+  *:first-child {
+    margin-top: 0;
+  }
+  *:last-child {
+    margin-bottom: 0;
+  }
+}
