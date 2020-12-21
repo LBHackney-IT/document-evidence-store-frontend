@@ -42,7 +42,6 @@ When you next launch the app, it should be on `http://localdev.hackney.gov.uk:30
 
 If you have the right [environment config](#-configuration), login should now work.
 
-
 ## 🧪 Testing it
 
 It uses Jest, `react-testing-library` and cypress for tests. Run them with:
@@ -63,7 +62,6 @@ Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment)
 ## 🧬 Configuration
 
 You can use a `.env` file to supply environment config locally. Create a fresh one with `cp .env.sample .env`.
-
 
 | Variable            | Description                                                         | Example                             |
 | ------------------- | ------------------------------------------------------------------- | ----------------------------------- |
