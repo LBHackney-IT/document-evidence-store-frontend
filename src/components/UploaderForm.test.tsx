@@ -1,13 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
-import { InternalApiGateway } from '../gateways/internal-api';
+import singleEvidenceRequestFixture from '../../test/fixture/evidence-request-response-singular.json';
+import documentTypesFixture from '../../test/fixture/document-types-response.json';
+import { ResponseMapper } from '../boundary/response-mapper';
 
 describe('UploaderForm', () => {
   it('renders an uploader panel and a continue button', async () => {
-    const gateway = new InternalApiGateway();
-    const documentTypes = await gateway.getDocumentTypes(true);
-    const evidenceRequest = await gateway.getEvidenceRequest(true);
+    const documentTypes = documentTypesFixture.map((dt) =>
+      ResponseMapper.mapDocumentType(dt)
+    );
+    const evidenceRequest = ResponseMapper.mapEvidenceRequest(
+      singleEvidenceRequestFixture
+    );
 
     render(
       <UploaderForm
