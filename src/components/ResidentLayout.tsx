@@ -6,7 +6,7 @@ const Layout: FunctionComponent = (props) => (
     <Header isStackedOnMobile={true} homepageUrl="/" />
 
     <Container>
-      <PhaseBanner phase="ALPHA" url="form-url" />
+      <PhaseBanner phase="ALPHA" url={process.env.FEEDBACK_FORM_URL} />
     </Container>
 
     <Main>

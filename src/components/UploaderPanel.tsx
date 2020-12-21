@@ -39,7 +39,7 @@ interface Props {
   name: string;
   label: string;
   hint?: string;
-  error?: string;
+  error?: string | null;
   set?: boolean;
 }
 

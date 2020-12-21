@@ -41,7 +41,7 @@ const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
         }
       }}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, isSubmitting }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -97,7 +97,9 @@ const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
             </fieldset>
           </div>
 
-          <Button type="submit">Send request</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            Send request
+          </Button>
         </Form>
       )}
     </Formik>
