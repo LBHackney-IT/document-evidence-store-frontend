@@ -8,7 +8,7 @@ export interface EvidenceRequestResponse {
   id: string;
   createdAt: string;
   deliveryMethods: string[];
-  documentType: IDocumentType;
+  documentTypes: IDocumentType[];
   serviceRequestedBy: string;
   resident: {
     id: string;
@@ -25,14 +25,14 @@ export class ResponseMapper {
     const deliveryMethods = attrs.deliveryMethods.map(
       (dm) => DeliveryMethod[dm as keyof typeof DeliveryMethod]
     );
-    const documentType = new DocumentType(attrs.documentType);
+    const documentTypes = attrs.documentTypes.map((dt) => new DocumentType(dt));
 
     return new EvidenceRequest({
       ...attrs,
       resident,
       createdAt,
       deliveryMethods,
-      documentType,
+      documentTypes,
     });
   }
 

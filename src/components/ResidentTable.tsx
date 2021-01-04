@@ -10,7 +10,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
       residents.map((row) => {
         return {
           resident: row.resident.name,
-          document: row.documentType?.title,
+          document: row.documentTypes.map((dt) => dt.title).join(', '),
           uploaded: `${row.createdAt.toRelative()}`,
         };
       }),

@@ -1,7 +1,6 @@
 import '../styles/globals.scss';
 import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
-import { PageComponent } from '../../types/page-component';
 import {
   authoriseUser,
   pathIsWhitelisted,
@@ -10,9 +9,10 @@ import {
   userIsInValidGroup,
 } from '../helpers/auth';
 import { UserContext } from '../components/UserContext/UserContext';
+import { NextPage } from 'next';
 
 type CustomAppProps = {
-  Component: PageComponent;
+  Component: NextPage;
   pageProps: AppProps['pageProps'];
   user?: User;
   reloading?: boolean;
@@ -28,7 +28,7 @@ const CustomApp = ({
 
   return (
     <UserContext.Provider value={{ user }}>
-      <Component {...pageProps} />;
+      <Component {...pageProps} />
     </UserContext.Provider>
   );
 };

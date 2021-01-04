@@ -1,11 +1,10 @@
 import { render } from '@testing-library/react';
 import App from './_app';
 import React from 'react';
-import { PageComponent } from '../../types/page-component';
 import * as authHelpers from '../helpers/auth';
 import { mocked } from 'ts-jest/utils';
 import { IncomingMessage, ServerResponse } from 'http';
-import { NextPageContext } from 'next';
+import { NextPage, NextPageContext } from 'next';
 import NextApp, { AppContext, AppInitialProps } from 'next/app';
 import CustomApp from './_app';
 
@@ -24,9 +23,7 @@ const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
 MockedNextApp.getInitialProps.mockImplementation(async () => pageProps);
 
 describe('CustomApp', () => {
-  const pageComponent = (jest.fn(() => (
-    <p>Hello</p>
-  )) as unknown) as PageComponent;
+  const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
 
   it('if the page is public returns the component with the right props', () => {
     render(<App Component={pageComponent} pageProps={pageProps} />);

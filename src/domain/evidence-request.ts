@@ -7,7 +7,7 @@ interface IEvidenceRequest {
   createdAt: DateTime;
   resident: Resident;
   deliveryMethods: DeliveryMethod[];
-  documentType?: DocumentType;
+  documentTypes: DocumentType[];
   serviceRequestedBy: string;
 }
 
@@ -21,7 +21,7 @@ export class EvidenceRequest implements IEvidenceRequest {
   createdAt: DateTime;
   resident: Resident;
   deliveryMethods: DeliveryMethod[];
-  documentType?: DocumentType;
+  documentTypes: DocumentType[];
   serviceRequestedBy: string;
 
   constructor(params: IEvidenceRequest) {
@@ -29,7 +29,7 @@ export class EvidenceRequest implements IEvidenceRequest {
     this.createdAt = params.createdAt;
     this.resident = params.resident;
     this.deliveryMethods = params.deliveryMethods;
-    this.documentType = params.documentType;
+    this.documentTypes = params.documentTypes;
     this.serviceRequestedBy = params.serviceRequestedBy;
   }
 }

@@ -8,6 +8,7 @@ const Field = (props: Props): JSX.Element => (
       type="checkbox"
       name={props.name}
       id={props.name}
+      value={props.value}
       className="govuk-checkboxes__input"
     />
     <Label
@@ -22,6 +23,7 @@ const Field = (props: Props): JSX.Element => (
 export interface Props {
   label: string;
   name: string;
+  value?: string;
 }
 
 export default Field;
