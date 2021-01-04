@@ -38,7 +38,6 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
       }}
       validationSchema={schema}
       onSubmit={async (values) => {
-        console.log(values);
         try {
           await onSubmit({
             ...values,
