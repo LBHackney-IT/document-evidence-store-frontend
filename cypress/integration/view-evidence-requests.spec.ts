@@ -12,12 +12,12 @@ describe('Can view evidence requests', () => {
 
     cy.get('h2').should('contain', 'Pending requests');
 
-    cy.get('tbody tr')
-      .should('have.length', 3)
-      .first()
+    cy.get('tbody tr').should('have.length', 3);
+
+    cy.get('tbody tr:first')
       .should('contain', 'Namey McName')
       .and('contain', 'Passport')
-      .and('contain', 'days ago');
+      .and('contain', 'ago');
   });
 });
 
