@@ -1,6 +1,7 @@
 import { DocumentType, IDocumentType } from '../domain/document-type';
 import {
   EvidenceRequestResponse,
+  // EvidenceRequestResponse,
   ResponseMapper,
 } from '../boundary/response-mapper';
 import Axios from 'axios';
@@ -24,18 +25,19 @@ export interface EvidenceRequestRequest {
 
 export class InternalApiGateway {
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return EvidenceRequestsFixture.map(ResponseMapper.mapEvidenceRequest);
-    // try {
-    //   const { data } = await Axios.get<EvidenceRequestResponse[]>(
-    //     '/api/evidence/evidence_requests'
-    //   );
+    try {
+      // TODO: Uncomment when endpoint is complete on API
+      // const { data } = await Axios.get<EvidenceRequestResponse[]>(
+      //   '/api/evidence/evidence_requests'
+      // );
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      const data = EvidenceRequestsFixture;
 
-    //   return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
-    // } catch (err) {
-    //   console.log(err);
-    //   throw new InternalServerError('Internal server error');
-    // }
+      return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerError('Internal server error');
+    }
   }
 
   async createEvidenceRequest(

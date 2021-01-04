@@ -1,0 +1,25 @@
+.table {
+  tr:nth-of-type(even) .content {
+    animation-delay: 0.6s;
+  }
+}
+
+.content {
+  background-color: #f3f2f1;
+  width: 50%;
+  height: 23.4px;
+  border-radius: 5px;
+  animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-color: #f3f2f1;
+  }
+  50% {
+    background: #dee0e2;
+  }
+  to {
+    background-color: #f3f2f1;
+  }
+}
