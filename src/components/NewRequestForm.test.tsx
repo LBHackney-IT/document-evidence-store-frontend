@@ -36,4 +36,17 @@ describe('NewRequestFormForm', () => {
       expect(screen.getByText('Please choose an evidence type'));
     });
   });
+
+  it('prevents double-submits', async () => {
+    render(<NewRequestForm documentTypes={documentTypes} />);
+
+    fireEvent.change(screen.getByLabelText("Name"), { target: { value: 'Example name' } })
+    fireEvent.change(screen.getByLabelText("Email"), { target: { value: 'example@email.com' } })
+    fireEvent.change(screen.getByLabelText("Mobile phone number"), { target: { value: '07777777777' } })
+    fireEvent.click(screen.getByText(documentTypes[0].title));
+    fireEvent.click(screen.getByText('Send request'));
+
+    const foundButton = screen.getByText('Send request').closest('button')
+    expect(foundButton && foundButton.disabled).toBeTruthy()
+  });
 });
