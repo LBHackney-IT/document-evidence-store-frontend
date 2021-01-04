@@ -71,7 +71,7 @@ describe('CustomApp', () => {
         );
       });
 
-      it('returns `access denied` and redirects to login the page is private and rendered client side', async () => {
+      it('returns `access denied` and redirects to login when the page is private and rendered client side', async () => {
         jest.spyOn(window.location, 'replace');
         const ctx = { pathname: '/path', asPath: '/path' } as NextPageContext;
         const clientSideContext = { ctx } as AppContext;
