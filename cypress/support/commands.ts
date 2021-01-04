@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const defaultUser: UserData = {
+export const defaultUser: UserData = {
   email: 'test@hackney.gov.uk',
   name: 'Test User',
   groups: ['development-team-staging'],
@@ -8,7 +8,7 @@ const defaultUser: UserData = {
 
 Cypress.Commands.add('login', (userData: UserData = defaultUser) => {
   const jwtSecret = Cypress.env('HACKNEY_JWT_SECRET');
-  const cookieName = Cypress.env('HACKNEY_COOKIE_NAME');
+  const cookieName = Cypress.env('NEXT_PUBLIC_HACKNEY_COOKIE_NAME');
   const token = jwt.sign(userData, jwtSecret);
 
   cy.setCookie(cookieName, token);

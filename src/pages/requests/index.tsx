@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Link from 'next/link';
-import Layout from '../../components/DashboardLayout';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { EvidenceRequest } from '../../domain/evidence-request';
 import { InternalApiGateway } from '../../gateways/internal-api';
@@ -24,7 +23,7 @@ const RequestsIndexPage = (): ReactNode => {
   }, [evidenceRequests]);
 
   return (
-    <Layout>
+    <>
       <Head>
         <title>Pending requests</title>
       </Head>
@@ -33,7 +32,7 @@ const RequestsIndexPage = (): ReactNode => {
       <Link href="/requests/new">
         <a className="govuk-button lbh-button">New request</a>
       </Link>
-    </Layout>
+    </>
   );
 };
 

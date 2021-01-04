@@ -33,22 +33,53 @@ describe('CustomApp', () => {
   describe('getServerSideProps', () => {
     const req = {} as IncomingMessage;
     const res = {} as ServerResponse;
-    const ctx = { req, res, pathname: '/path' } as NextPageContext;
+    const ctx = {
+      req,
+      res,
+      pathname: '/path',
+      asPath: '/path',
+    } as NextPageContext;
     const appContext = { ctx } as AppContext;
+    const replaceSpy = jest.fn();
+    let originalLocation: Location;
+
+    beforeAll(() => {
+      originalLocation = window.location;
+      // window.location is readonly by default
+      Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: { replace: replaceSpy },
+      });
+    });
+
+    afterAll(() => {
+      window.location = originalLocation;
+    });
 
     describe('when the user is not logged in', () => {
       beforeEach(() => {
         authoriseUser.mockImplementation(() => undefined);
       });
 
-      it('redirects to google when the page is private', async () => {
+      it('redirects to login when the page is private and rendered server side', async () => {
         pathIsWhitelisted.mockImplementation(() => false);
         await CustomApp.getInitialProps(appContext);
 
         expect(serverSideRedirect).toHaveBeenCalledWith(
           res,
-          `/login?redirect=${ctx.pathname}`
+          `/login?redirect=%2Fpath`
         );
+      });
+
+      it('returns `access denied` and redirects to login when the page is private and rendered client side', async () => {
+        jest.spyOn(window.location, 'replace');
+        const ctx = { pathname: '/path', asPath: '/path' } as NextPageContext;
+        const clientSideContext = { ctx } as AppContext;
+        pathIsWhitelisted.mockImplementation(() => false);
+        const result = await CustomApp.getInitialProps(clientSideContext);
+
+        expect(result).toEqual({ accessDenied: true });
+        expect(replaceSpy).toHaveBeenCalledWith(`/login?redirect=%2Fpath`);
       });
 
       it('returns empty props when the page is public', async () => {
@@ -64,7 +95,6 @@ describe('CustomApp', () => {
         groups: ['testGroup'],
         name: 'Frodo Baggins',
         email: 'frodo@baggins.com',
-        isAuthorised: true,
       };
 
       beforeEach(() => {
@@ -72,11 +102,11 @@ describe('CustomApp', () => {
         pathIsWhitelisted.mockImplementation(() => false);
       });
 
-      it('redirects to `access denied` when the user is not in a valid group', async () => {
+      it('returns `access denied` when the user is not in a valid group', async () => {
         userIsInValidGroup.mockImplementation(() => false);
-        await CustomApp.getInitialProps(appContext);
+        const props = await CustomApp.getInitialProps(appContext);
 
-        expect(serverSideRedirect).toHaveBeenCalledWith(res, '/access-denied');
+        expect(props).toEqual({ accessDenied: true });
       });
 
       it('returns the user in props when the user is in a valid group', async () => {
@@ -84,15 +114,6 @@ describe('CustomApp', () => {
         const result = await CustomApp.getInitialProps(appContext);
 
         expect(result).toEqual({ ...pageProps, user });
-      });
-
-      it('returns the props and reloads the page when the page is rendered client side and is private', async () => {
-        const ctx = { pathname: '/path' } as NextPageContext;
-        const clientSideContext = { ctx } as AppContext;
-        pathIsWhitelisted.mockImplementation(() => false);
-        const result = await CustomApp.getInitialProps(clientSideContext);
-
-        expect(result).toEqual({ ...pageProps, reloading: true });
       });
     });
   });

@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import Layout from '../components/DashboardLayout';
 import { ReactNode } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { InternalApiGateway } from '../gateways/internal-api';
@@ -30,7 +29,7 @@ const BrowseResidents = (): ReactNode => {
   };
 
   return (
-    <Layout>
+    <>
       <Head>
         <title>Browse residents</title>
       </Head>
@@ -51,7 +50,7 @@ const BrowseResidents = (): ReactNode => {
           </div>,
         ]}
       />
-    </Layout>
+    </>
   );
 };
 

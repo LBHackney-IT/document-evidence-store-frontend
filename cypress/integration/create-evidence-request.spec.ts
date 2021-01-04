@@ -4,8 +4,11 @@ describe('Create evidence requests', () => {
     cy.intercept('/api/evidence/document_types', {
       fixture: 'document-types-response.json',
     });
-    cy.intercept('/api/evidence/evidence_requests', {
+    cy.intercept('GET', '/api/evidence/evidence_requests', {
       fixture: 'evidence-request-response',
+    });
+    cy.intercept('POST', '/api/evidence/evidence_requests', {
+      fixture: 'single-evidence-request-response',
     });
   });
 
@@ -30,6 +33,8 @@ describe('Create evidence requests', () => {
     cy.get('label').contains('Driving license').click();
 
     cy.get('button').contains('Send request').click();
+
+    cy.get('body').contains('Thanks!');
   });
 });
 
