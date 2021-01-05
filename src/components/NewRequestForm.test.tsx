@@ -39,7 +39,7 @@ describe('NewRequestFormForm', () => {
       expect(screen.getByText("Please enter the resident's name"));
       expect(screen.getByText("Please enter the resident's email address"));
       expect(screen.getByText("Please enter the resident's phone number"));
-      expect(screen.getByText('Please choose an evidence type'));
+      expect(screen.getByText('What document do you want to request?'));
     });
   });
 
