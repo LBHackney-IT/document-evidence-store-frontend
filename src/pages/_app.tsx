@@ -11,7 +11,6 @@ import {
 } from '../helpers/auth';
 import { UserContext } from '../contexts/UserContext';
 import { NextPage } from 'next';
-import { Layout } from '../components/Layout';
 import { AccessDeniedPage } from '../components/AccessDeniedPage';
 
 type CustomAppProps = {
@@ -31,9 +30,7 @@ const CustomApp = ({
 
   return (
     <UserContext.Provider value={{ user }}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </UserContext.Provider>
   );
 };

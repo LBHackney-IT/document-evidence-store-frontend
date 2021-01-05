@@ -7,6 +7,7 @@ import {
   InternalApiGateway,
 } from '../../gateways/internal-api';
 import { DocumentType } from '../../domain/document-type';
+import Layout from 'src/components/DashboardLayout';
 
 const RequestsNewPage = (): ReactNode => {
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
@@ -32,13 +33,13 @@ const RequestsNewPage = (): ReactNode => {
   }, [documentTypes]);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Make a new request</title>
       </Head>
       <Heading level={HeadingLevels.H2}>Make a new request</Heading>
       {complete ? <Paragraph>Thanks!</Paragraph> : form}
-    </>
+    </Layout>
   );
 };
 

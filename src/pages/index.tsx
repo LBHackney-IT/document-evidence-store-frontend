@@ -8,6 +8,7 @@ import { EvidenceRequestTable } from '../components/EvidenceRequestTable';
 import ResidentSearchForm from '../components/ResidentSearchForm';
 import Tabs from '../components/Tabs';
 import TableSkeleton from '../components/TableSkeleton';
+import Layout from '../components/DashboardLayout';
 
 const BrowseResidents = (): ReactNode => {
   const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
@@ -29,7 +30,7 @@ const BrowseResidents = (): ReactNode => {
   };
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Browse residents</title>
       </Head>
@@ -50,7 +51,7 @@ const BrowseResidents = (): ReactNode => {
           </div>,
         ]}
       />
-    </>
+    </Layout>
   );
 };
 

@@ -3,9 +3,9 @@ import { Container, Header } from 'lbh-frontend-react';
 import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
 import { UserContext } from '../contexts/UserContext';
-import { ResidentLayout } from './ResidentLayout';
+import ResidentLayout from './ResidentLayout';
 
-export const Layout: FunctionComponent = ({ children }) => {
+const Layout: FunctionComponent = ({ children }) => {
   const { user } = useContext(UserContext);
 
   if (!user) return <ResidentLayout>{children}</ResidentLayout>;
@@ -58,3 +58,5 @@ export const Layout: FunctionComponent = ({ children }) => {
     </>
   );
 };
+
+export default Layout;

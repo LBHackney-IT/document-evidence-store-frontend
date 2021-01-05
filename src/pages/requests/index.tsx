@@ -6,6 +6,7 @@ import { EvidenceRequest } from '../../domain/evidence-request';
 import { InternalApiGateway } from '../../gateways/internal-api';
 import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
 import TableSkeleton from '../../components/TableSkeleton';
+import Layout from 'src/components/DashboardLayout';
 
 const RequestsIndexPage = (): ReactNode => {
   const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
@@ -23,7 +24,7 @@ const RequestsIndexPage = (): ReactNode => {
   }, [evidenceRequests]);
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Pending requests</title>
       </Head>
@@ -32,7 +33,7 @@ const RequestsIndexPage = (): ReactNode => {
       <Link href="/requests/new">
         <a className="govuk-button lbh-button">New request</a>
       </Link>
-    </>
+    </Layout>
   );
 };
 
