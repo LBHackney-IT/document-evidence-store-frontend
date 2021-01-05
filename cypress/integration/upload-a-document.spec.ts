@@ -1,4 +1,10 @@
 describe('Can upload a document', () => {
+  beforeEach(() => {
+    cy.intercept('/api/evidence/document_types', {
+      fixture: 'document-types-response.json',
+    });
+  });
+
   it('shows guidance', () => {
     cy.visit(`http://localhost:3000/resident/foo`);
     cy.get('h1').should('contain', 'You’ll need to photograph your documents');
