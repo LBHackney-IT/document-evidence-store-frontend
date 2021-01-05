@@ -43,7 +43,7 @@ CustomApp.getInitialProps = async (appContext: AppContext) => {
     ctx: { req, res, pathname, asPath },
   } = appContext;
   const appProps = await App.getInitialProps(appContext);
-  const currentPath = asPath || '/';
+  // const currentPath = asPath || '/';
 
   const user = req && res ? authoriseUser(req) : unsafeExtractUser();
   const props = { ...appProps, user };

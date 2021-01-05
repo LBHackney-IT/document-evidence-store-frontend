@@ -2,7 +2,7 @@ import React, { FunctionComponent, useContext } from 'react';
 import { Container, Header } from 'lbh-frontend-react';
 import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
-import { UserContext } from './UserContext/UserContext';
+import { UserContext } from '../contexts/UserContext';
 import { ResidentLayout } from './ResidentLayout';
 
 export const Layout: FunctionComponent = ({ children }) => {
