@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
-import singleEvidenceRequestFixture from '../../test/fixture/evidence-request-response-singular.json';
-import documentTypesFixture from '../../test/fixture/document-types-response.json';
+import singleEvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response-singular.json';
+import documentTypesFixture from '../../cypress/fixtures/document-types-response.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 
 const documentTypes = documentTypesFixture.map((dt) =>

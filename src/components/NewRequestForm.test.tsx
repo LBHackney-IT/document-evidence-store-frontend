@@ -1,16 +1,20 @@
 import React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import NewRequestForm from './NewRequestForm';
-import documentTypesFixture from '../../test/fixture/document-types-response.json';
+import documentTypesFixture from '../../cypress/fixtures/document-types-response.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 
 const documentTypes = documentTypesFixture.map((dt) =>
   ResponseMapper.mapDocumentType(dt)
 );
 
+const mockHandler = jest.fn();
+
 describe('NewRequestFormForm', () => {
   it('renders an uploader panel and a continue button', async () => {
-    render(<NewRequestForm documentTypes={documentTypes} />);
+    render(
+      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+    );
     expect(screen.getByLabelText('Name'));
     expect(screen.getByLabelText('Email'));
     expect(screen.getByLabelText('Mobile phone number'));
@@ -26,7 +30,9 @@ describe('NewRequestFormForm', () => {
   });
 
   it('validates all three contact details and an evidence type are present', async () => {
-    render(<NewRequestForm documentTypes={documentTypes} />);
+    render(
+      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+    );
     fireEvent.click(screen.getByText('Send request'));
 
     await waitFor(() => {
@@ -38,7 +44,9 @@ describe('NewRequestFormForm', () => {
   });
 
   it('prevents double-submits', async () => {
-    render(<NewRequestForm documentTypes={documentTypes} />);
+    render(
+      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+    );
 
     fireEvent.change(screen.getByLabelText('Name'), {
       target: { value: 'Example name' },

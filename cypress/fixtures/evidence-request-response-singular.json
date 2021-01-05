@@ -8,10 +8,12 @@
     "phoneNumber": "+447123456780"
   },
   "deliveryMethods": ["SMS", "EMAIL"],
-  "documentType": {
-    "id": "passport-scan",
-    "title": "Passport",
-    "description": "A valid passport open at the photo page"
-  },
+  "documentTypes": [
+    {
+      "id": "passport-scan",
+      "title": "Passport",
+      "description": "A valid passport open at the photo page"
+    }
+  ],
   "serviceRequestedBy": "development-team-staging"
 }
