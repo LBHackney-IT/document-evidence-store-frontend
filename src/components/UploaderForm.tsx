@@ -14,7 +14,7 @@ import { EvidenceRequest } from '../domain/evidence-request';
 const UploaderForm: FunctionComponent<Props> = (props) => {
   const [submitError, setSubmitError] = useState(false);
 
-  const requestedDocuments = [props.evidenceRequest.documentType];
+  const requestedDocuments = props.evidenceRequest.documentTypes;
 
   const schema = useMemo(
     () =>
