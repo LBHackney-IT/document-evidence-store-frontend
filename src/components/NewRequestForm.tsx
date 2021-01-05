@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
@@ -49,7 +49,7 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
         }
       }}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, isSubmitting }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -119,7 +119,9 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
             </fieldset>
           </div>
 
-          <Button type="submit">Send request</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            Send request
+          </Button>
         </Form>
       )}
     </Formik>

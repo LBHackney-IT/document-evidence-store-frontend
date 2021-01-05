@@ -1,30 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📤 Hackney Upload frontend
 
-## Getting Started
+This is the resident and staff-facing frontend for Hackney's new document and evidence store.
 
-First, run the development server:
+It's also known as **Hackney Upload**.
+
+## 🧱 How it's made
+
+It's a [Next.js](https://nextjs.org) app that works with:
+
+- Hackney's [document platform API](https://github.com/LBHackney-IT/documents-api)
+- Hackney's [Google oAuth service](https://github.com/LBHackney-IT/LBH-Google-auth)
+
+It's built using the [React port](https://github.com/LBHackney-IT/lbh-frontend-react) of Hackney Frontend.
+
+## 💻 Running it locally
+
+You need `node` and `npm` installed.
+
+First, clone the repo
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It'll be on [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Logging in
 
-## Learn More
+First, you need a @hackney.gov.uk Google account in the right groups to log in. Speak to Hackney IT if you don't have these.
 
-To learn more about Next.js, take a look at the following resources:
+Next, you need to tell your computer to run the app from a hackney.gov.uk domain. Let's use `localdev.hackney.gov.uk`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Add this line to your hosts file (Windows: `C:\Windows\System32\drivers\etc\hosts`, Mac: `/etc/hosts`):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+127.0.0.1	localdev.hackney.gov.uk
+```
 
-## Deploy on Vercel
+When you next launch the app, it should be on `http://localdev.hackney.gov.uk:3000`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+If you have the right [environment config](#-configuration), login should now work.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 🧪 Testing it
+
+It uses Jest, `react-testing-library` and cypress for tests. Run them with:
+
+```
+npm run test:unit
+npm run test:e2e:dev
+```
+
+## 🌎 Putting it on the internet
+
+It's suitable for Heroku, Vercel, AWS, or any other Node.js hosting.
+
+Pushes to the main branch will be automatically built and deployed to our staging environment.
+
+Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## 🧬 Configuration
+
+You can use a `.env` file to supply environment config locally. Create a fresh one with `cp .env.sample .env`.
+
+| Variable            | Description                                                         | Example                             |
+| ------------------- | ------------------------------------------------------------------- | ----------------------------------- |
+| APP_URL             |                                                                     | http://localdev.hackney.gov.uk:3000 |
+| HACKNEY_JWT_SECRET  |                                                                     |                                     |
+| HACKNEY_COOKIE_NAME |                                                                     | hackneyToken                        |
+| REACT_APP_ENV       |                                                                     | dev                                 |
+| FEEDBACK_FORM_URL   | The URL to a form where users can submit feedback about the service | https://example.com                 |

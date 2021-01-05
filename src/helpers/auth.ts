@@ -9,7 +9,13 @@ const cookieName = process.env.NEXT_PUBLIC_HACKNEY_COOKIE_NAME as string;
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL as string;
 const environmentKey = process.env.NEXT_PUBLIC_REACT_APP_ENV as EnvironmentKey;
 const authGroups = authGroupsJson[environmentKey];
-const AUTH_WHITELIST = ['/login', '/access-denied'];
+const AUTH_WHITELIST = [
+  '/login',
+  '/access-denied',
+  '/resident/[requestId]',
+  '/resident/[requestId]/upload',
+  '/resident/[requestId]/confirmation',
+];
 
 export type User = {
   groups: string[];

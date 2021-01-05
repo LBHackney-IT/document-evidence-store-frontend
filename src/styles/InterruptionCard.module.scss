@@ -13,6 +13,10 @@
   }
 }
 
+.govuk-button:link {
+  color: #00513f !important;
+}
+
 .inner {
   margin-bottom: 25px;
 
@@ -34,9 +38,15 @@
   }
 
   button,
-  a {
+  a,
+  a:link,
+  .govuk-button,
+  .lbh-button {
     background: white;
     color: #00513f;
+    &:visited {
+      color: #00513f;
+    }
     &:hover {
       background: white !important;
       color: darken(#00513f, 5);

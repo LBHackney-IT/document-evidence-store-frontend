@@ -1,0 +1,22 @@
+.panel {
+  padding: 25px;
+  background: #00513f;
+  text-align: center;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p,
+  li,
+  a {
+    color: white;
+  }
+
+  p {
+    font-size: 1.4rem;
+    @media screen and (min-width: 700px) {
+      font-size: 2rem;
+    }
+  }
+}

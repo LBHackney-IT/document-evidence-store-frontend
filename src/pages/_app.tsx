@@ -9,9 +9,8 @@ import {
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
-import { UserContext } from '../components/UserContext/UserContext';
+import { UserContext } from '../contexts/UserContext';
 import { NextPage } from 'next';
-import { Layout } from '../components/Layout';
 import { AccessDeniedPage } from '../components/AccessDeniedPage';
 
 type CustomAppProps = {
@@ -31,9 +30,7 @@ const CustomApp = ({
 
   return (
     <UserContext.Provider value={{ user }}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Component {...pageProps} />
     </UserContext.Provider>
   );
 };
@@ -43,6 +40,7 @@ CustomApp.getInitialProps = async (appContext: AppContext) => {
     ctx: { req, res, pathname, asPath },
   } = appContext;
   const appProps = await App.getInitialProps(appContext);
+  // const currentPath = asPath || '/';
 
   const user = req && res ? authoriseUser(req) : unsafeExtractUser();
   const props = { ...appProps, user };
