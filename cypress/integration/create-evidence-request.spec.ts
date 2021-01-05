@@ -1,15 +1,18 @@
-describe('Can create evidence requests', () => {
+describe('Create evidence requests', () => {
   beforeEach(() => {
     cy.login();
     cy.intercept('/api/evidence/document_types', {
       fixture: 'document-types-response.json',
     });
-    cy.intercept('/api/evidence/evidence_requests', {
+    cy.intercept('GET', '/api/evidence/evidence_requests', {
       fixture: 'evidence-request-response',
+    });
+    cy.intercept('POST', '/api/evidence/evidence_requests', {
+      fixture: 'single-evidence-request-response',
     });
   });
 
-  it("has 'Please log in' heading", () => {
+  it('User can fill out new request form', () => {
     cy.visit(`http://localhost:3000`);
 
     cy.get('nav').contains('Requests').click();
@@ -30,6 +33,8 @@ describe('Can create evidence requests', () => {
     cy.get('label').contains('Driving license').click();
 
     cy.get('button').contains('Send request').click();
+
+    cy.get('body').contains('Thanks!');
   });
 });
 

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Container, Header, Main, PhaseBanner } from 'lbh-frontend-react';
 
-const Layout: FunctionComponent = (props) => (
+export const ResidentLayout: FunctionComponent = (props) => (
   <>
     <Header isStackedOnMobile={true} homepageUrl="/" />
 
@@ -17,5 +17,3 @@ const Layout: FunctionComponent = (props) => (
     </Main>
   </>
 );
-
-export default Layout;

@@ -1,34 +1,39 @@
 import '../styles/globals.scss';
 import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
-import { PageComponent } from '../../types/page-component';
 import {
   authoriseUser,
   pathIsWhitelisted,
   serverSideRedirect,
+  unsafeExtractUser,
   User,
   userIsInValidGroup,
 } from '../helpers/auth';
 import { UserContext } from '../contexts/UserContext';
+import { NextPage } from 'next';
+import { Layout } from '../components/Layout';
+import { AccessDeniedPage } from '../components/AccessDeniedPage';
 
 type CustomAppProps = {
-  Component: PageComponent;
+  Component: NextPage;
   pageProps: AppProps['pageProps'];
   user?: User;
-  reloading?: boolean;
+  accessDenied?: boolean;
 };
 
 const CustomApp = ({
   Component,
   pageProps,
   user,
-  reloading,
+  accessDenied,
 }: CustomAppProps): JSX.Element | null => {
-  if (reloading) return null;
+  if (accessDenied) return <AccessDeniedPage />;
 
   return (
     <UserContext.Provider value={{ user }}>
-      <Component {...pageProps} />;
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </UserContext.Provider>
   );
 };
@@ -40,23 +45,29 @@ CustomApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
   const currentPath = asPath || '/';
 
-  if (pathIsWhitelisted(pathname)) return appProps;
+  const user = req && res ? authoriseUser(req) : unsafeExtractUser();
+  const props = { ...appProps, user };
 
-  if (!req || !res) {
-    window.location.replace(currentPath);
-    return { ...appProps, reloading: true };
-  }
+  if (pathIsWhitelisted(pathname)) return props;
 
-  const user = authoriseUser(req);
   if (!user) {
-    return serverSideRedirect(res, `/login?redirect=${currentPath}`);
+    const redirect = encodeURIComponent(asPath || '/');
+    const url = `/login?redirect=${redirect}`;
+
+    if (req && res) {
+      serverSideRedirect(res, url);
+    } else {
+      window.location.replace(url);
+    }
+
+    return { accessDenied: true };
   }
 
   if (!userIsInValidGroup(user)) {
-    return serverSideRedirect(res, '/access-denied');
+    return { accessDenied: true };
   }
 
-  return { ...appProps, user };
+  return props;
 };
 
 export default CustomApp;

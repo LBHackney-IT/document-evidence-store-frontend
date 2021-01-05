@@ -88,6 +88,8 @@ workflows:
     jobs:
       - cypress/install: # Use Cypress step to install and cache dependencies
           build: npm run build
+          post-checkout:
+            - run: cp .env.sample .env
 
       - test:
           requires:
@@ -98,8 +100,9 @@ workflows:
             - cypress/install
           executor: cypress/base-14
           attach-workspace: true
-          start: cp .env.sample .env && npm run start
+          start: npm run start
           wait-on: 'http-get://127.0.0.1:3000'
+          store_artifacts: true
 
       - deploy-staging:
           context: api-assume-role-staging-context

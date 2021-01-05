@@ -1,13 +1,13 @@
-import cookie from 'cookie';
+import Cookie from 'universal-cookie';
 import { IncomingMessage, ServerResponse } from 'http';
 import jsonwebtoken from 'jsonwebtoken';
 import authGroupsJson from '../../auth-groups.json';
 import { EnvironmentKey } from '../../types/env';
 
 const secret = process.env.HACKNEY_JWT_SECRET as string;
-const cookieName = process.env.HACKNEY_COOKIE_NAME as string;
-const baseUrl = process.env.APP_URL as string;
-const environmentKey = process.env.REACT_APP_ENV as EnvironmentKey;
+const cookieName = process.env.NEXT_PUBLIC_HACKNEY_COOKIE_NAME as string;
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL as string;
+const environmentKey = process.env.NEXT_PUBLIC_REACT_APP_ENV as EnvironmentKey;
 const authGroups = authGroupsJson[environmentKey];
 const AUTH_WHITELIST = [
   '/login',
@@ -17,14 +17,7 @@ const AUTH_WHITELIST = [
   '/resident/[requestId]/confirmation',
 ];
 
-export type JWTPayload = {
-  groups: string[];
-  name: string;
-  email: string;
-};
-
 export type User = {
-  isAuthorised: boolean;
   groups: string[];
   name: string;
   email: string;
@@ -59,29 +52,30 @@ export const serverSideRedirect = (
 
 export const authoriseUser = (req: IncomingMessage): User | undefined => {
   try {
-    const cookies = cookie.parse(req.headers.cookie ?? '');
-    const token = cookies[cookieName];
+    const cookies = new Cookie(req.headers.cookie ?? '');
+    const token = cookies.get(cookieName);
 
-    if (!token) {
-      return;
-    }
+    if (!token) return;
 
-    const { groups = [], name, email } = jsonwebtoken.verify(
-      token,
-      secret
-    ) as JWTPayload;
+    const user = jsonwebtoken.verify(token, secret) as User | undefined;
 
-    return {
-      isAuthorised: true,
-      groups,
-      name,
-      email,
-    };
+    return user;
   } catch (err) {
     if (err instanceof jsonwebtoken.JsonWebTokenError) {
       return;
     }
 
-    console.error(err.message);
+    throw err;
   }
+};
+
+export const unsafeExtractUser = (): User | undefined => {
+  const cookies = new Cookie();
+  const token = cookies.get(cookieName);
+
+  if (!token) return;
+
+  const user = jsonwebtoken.decode(token) as User | undefined;
+
+  return user;
 };

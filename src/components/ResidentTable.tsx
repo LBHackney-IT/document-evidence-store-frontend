@@ -3,18 +3,18 @@ import { EvidenceRequest } from '../domain/evidence-request';
 import { Table } from 'lbh-frontend-react';
 
 export const EvidenceRequestTable: FunctionComponent<Props> = ({
-  requests,
+  residents,
 }) => {
   const rows = useMemo(
     () =>
-      requests.map((row) => {
+      residents.map((row) => {
         return {
           resident: row.resident.name,
-          document: row.documentTypes[0].title,
-          made: `${row.createdAt.toRelative()}`,
+          document: row.documentTypes.map((dt) => dt.title).join(', '),
+          uploaded: `${row.createdAt.toRelative()}`,
         };
       }),
-    [requests]
+    [residents]
   );
 
   return (
@@ -31,8 +31,8 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
           sortType: 'basic',
         },
         {
-          Header: 'Made',
-          accessor: 'made',
+          Header: 'Uploaded',
+          accessor: 'uploaded',
           sortType: 'basic',
         },
       ]}
@@ -43,5 +43,5 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
 };
 
 type Props = {
-  requests: EvidenceRequest[];
+  residents: EvidenceRequest[];
 };

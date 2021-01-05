@@ -6,36 +6,44 @@ import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
+import { EvidenceRequestRequest } from 'src/gateways/internal-api';
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("Please enter the resident's name"),
-  email: Yup.string()
-    .required("Please enter the resident's email address")
-    .email('Please give a valid email address'),
-  phone: Yup.string().required("Please enter the resident's phone number"),
-  sendByEmail: Yup.boolean(),
-  sendBySms: Yup.boolean(),
-  evidence: Yup.string().required('Please choose an evidence type'),
+  resident: Yup.object().shape({
+    name: Yup.string().required("Please enter the resident's name"),
+    email: Yup.string()
+      .required("Please enter the resident's email address")
+      .email('Please give a valid email address'),
+    phoneNumber: Yup.string().required(
+      "Please enter the resident's phone number"
+    ),
+  }),
+  deliveryMethods: Yup.array(),
+  documentTypes: Yup.string().required('Please choose a document type'),
 });
 
-const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
+const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
 
   return (
     <Formik
       initialValues={{
-        name: '',
-        email: '',
-        phone: '',
-        evidence: '',
-        sendByEmail: true,
-        sendBySms: true,
+        resident: {
+          name: '',
+          email: '',
+          phoneNumber: '',
+        },
+        documentTypes: '',
+        deliveryMethods: ['SMS', 'EMAIL'],
       }}
       validationSchema={schema}
       onSubmit={async (values) => {
         try {
-          console.log(values);
-          // process form here
+          await onSubmit({
+            ...values,
+            // TODO: Remove this when we support multiple document types
+            documentTypes: [values.documentTypes],
+          });
         } catch (err) {
           setSubmitError(true);
         }
@@ -51,38 +59,52 @@ const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
 
           <Field
             label="Name"
-            name="name"
-            error={touched.name ? errors.name : null}
+            name="resident.name"
+            error={touched.resident?.name ? errors.resident?.name : null}
           />
           <Field
             label="Email"
-            name="email"
-            error={touched.email ? errors.email : null}
+            name="resident.email"
+            error={touched.resident?.email ? errors.resident?.email : null}
           />
           <Field
             label="Mobile phone number"
-            name="phone"
-            error={touched.phone ? errors.phone : null}
+            name="resident.phoneNumber"
+            error={
+              touched.resident?.phoneNumber
+                ? errors.resident?.phoneNumber
+                : null
+            }
           />
 
           <div className="govuk-form-group lbh-form-group">
             <div className="govuk-checkboxes lbh-checkboxes">
-              <Checkbox label="Send request by email" name="sendByEmail" />
-              <Checkbox label="Send request by SMS" name="sendBySms" />
+              <Checkbox
+                label="Send request by email"
+                name="deliveryMethods"
+                value="EMAIL"
+              />
+              <Checkbox
+                label="Send request by SMS"
+                name="deliveryMethods"
+                value="SMS"
+              />
             </div>
           </div>
 
           <div
             className={`govuk-form-group lbh-form-group ${
-              touched.evidence && errors.evidence && 'govuk-form-group--error'
+              touched.documentTypes &&
+              errors.documentTypes &&
+              'govuk-form-group--error'
             }`}
           >
             <fieldset className="govuk-fieldset">
               <legend className="govuk-fieldset__legend">
                 What document do you want to request?
               </legend>
-              {touched.evidence && errors.evidence && (
-                <ErrorMessage>{errors.evidence}</ErrorMessage>
+              {touched.documentTypes && errors.documentTypes && (
+                <ErrorMessage>{errors.documentTypes}</ErrorMessage>
               )}
               <div className="govuk-radios lbh-radios">
                 {documentTypes.map((type) => (
@@ -90,7 +112,7 @@ const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
                     label={type.title}
                     key={type.id}
                     value={type.id}
-                    name="evidence"
+                    name="documentTypes"
                   />
                 ))}
               </div>
@@ -108,6 +130,7 @@ const NewRequestForm = ({ documentTypes }: Props): JSX.Element => {
 
 interface Props {
   documentTypes: Array<DocumentType>;
+  onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
 }
 
 export default NewRequestForm;
