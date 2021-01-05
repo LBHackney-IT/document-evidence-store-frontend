@@ -63,10 +63,14 @@ Check the [Next.js deployment documentation](https://nextjs.org/docs/deployment)
 
 You can use a `.env` file to supply environment config locally. Create a fresh one with `cp .env.sample .env`.
 
-| Variable            | Description                                                         | Example                             |
-| ------------------- | ------------------------------------------------------------------- | ----------------------------------- |
-| APP_URL             |                                                                     | http://localdev.hackney.gov.uk:3000 |
-| HACKNEY_JWT_SECRET  |                                                                     |                                     |
-| HACKNEY_COOKIE_NAME |                                                                     | hackneyToken                        |
-| REACT_APP_ENV       |                                                                     | dev                                 |
-| FEEDBACK_FORM_URL   | The URL to a form where users can submit feedback about the service | https://example.com                 |
+| Variable                                  | Description                                                         | Example                             |
+| ----------------------------------------- | ------------------------------------------------------------------- | ----------------------------------- |
+| NEXT_PUBLIC_APP_URL                       |                                                                     | http://localdev.hackney.gov.uk:3000 |
+| HACKNEY_JWT_SECRET                        |                                                                     |                                     |
+| NEXT_PUBLIC_HACKNEY_COOKIE_NAME           |                                                                     | hackneyToken                        |
+| NEXT_PUBLIC_REACT_APP_ENV                 |                                                                     | dev                                 |
+| FEEDBACK_FORM_URL                         | The URL to a form where users can submit feedback about the service | https://example.com                 |
+| EVIDENCE_API_BASE_URL                     |                                                                     | https://example.com/api/v1/         |
+| EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET     |                                                                     |                                     |
+| EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET  |                                                                     |                                     |
+| EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST |                                                                     |                                     |
