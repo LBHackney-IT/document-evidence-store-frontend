@@ -3,6 +3,12 @@ describe('Can upload a document', () => {
     cy.intercept('/api/evidence/document_types', {
       fixture: 'document-types-response.json',
     });
+    cy.intercept('GET', '/api/evidence/evidence_requests', {
+      fixture: 'evidence-request-response',
+    });
+    cy.intercept('POST', '/api/evidence/evidence_requests', {
+      fixture: 'single-evidence-request-response',
+    });
   });
 
   it('shows guidance', () => {
