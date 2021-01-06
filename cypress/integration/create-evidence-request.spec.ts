@@ -13,7 +13,7 @@ describe('Create evidence requests', () => {
   });
 
   it('User can fill out new request form', () => {
-    cy.visit(`http://localhost:3000`);
+    cy.visit(`http://localhost:3000/dashboard`);
 
     cy.get('nav').contains('Requests').click();
     cy.get('h2').should('contain', 'Pending requests');
