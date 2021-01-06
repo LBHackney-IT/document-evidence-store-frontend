@@ -2,10 +2,10 @@ import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Link from 'next/link';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
-import { EvidenceRequest } from '../../domain/evidence-request';
-import { InternalApiGateway } from '../../gateways/internal-api';
-import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
-import TableSkeleton from '../../components/TableSkeleton';
+import { EvidenceRequest } from '../../../domain/evidence-request';
+import { InternalApiGateway } from '../../../gateways/internal-api';
+import { EvidenceRequestTable } from '../../../components/EvidenceRequestTable';
+import TableSkeleton from '../../../components/TableSkeleton';
 import Layout from 'src/components/DashboardLayout';
 
 const RequestsIndexPage = (): ReactNode => {
@@ -30,7 +30,7 @@ const RequestsIndexPage = (): ReactNode => {
       </Head>
       <Heading level={HeadingLevels.H2}>Pending requests</Heading>
       {table}
-      <Link href="/requests/new">
+      <Link href="/dashboard/requests/new">
         <a className="govuk-button lbh-button">New request</a>
       </Link>
     </Layout>

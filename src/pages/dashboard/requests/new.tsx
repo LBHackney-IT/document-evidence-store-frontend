@@ -1,12 +1,12 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import Head from 'next/head';
 import { Heading, HeadingLevels, Paragraph } from 'lbh-frontend-react';
-import NewRequestForm from '../../components/NewRequestForm';
+import NewRequestForm from '../../../components/NewRequestForm';
 import {
   EvidenceRequestRequest,
   InternalApiGateway,
-} from '../../gateways/internal-api';
-import { DocumentType } from '../../domain/document-type';
+} from '../../../gateways/internal-api';
+import { DocumentType } from '../../../domain/document-type';
 import Layout from 'src/components/DashboardLayout';
 
 const RequestsNewPage = (): ReactNode => {
