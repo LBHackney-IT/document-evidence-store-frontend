@@ -1,55 +1,76 @@
 .list {
+  padding-left: 0;
   list-style: none;
 }
 
-.item {
-  margin-top: 0px;
-  padding: 25px 0px;
-  border-top: 1px solid map-get($lbh-colours, 'lbh-border');
-
-  &:last-of-type {
-    border-bottom: 1px solid map-get($lbh-colours, 'lbh-border');
-  }
-
-  @media screen and (min-width: 700px) {
-    margin-top: 0px;
-  }
-}
-
-.item-two-columns {
+.twoColumnList {
+  padding-left: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 25px;
 }
 
+.item {
+  margin-top: 0px;
+  padding: 25px 0px;
+  border-top: 1px solid #dee0e2;
+  &:last-of-type {
+    border-bottom: 1px solid #dee0e2;
+  }
+  @media screen and (min-width: 700px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 0px;
+  }
+}
+
+.title {
+  @media screen and (min-width: 700px) {
+    margin: 0;
+  }
+}
+
 .preview {
   font-family: 'Open Sans';
-  background: map-get($lbh-colours, 'lbh-panel');
+  background: #dee0e2;
   height: 112px;
   width: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-@media screen and (min-width: 700px) {
-  .item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .preview {
+  @media screen and (min-width: 700px) {
     flex-shrink: 0;
     margin-right: 35px;
   }
+}
 
-  .meta {
-    margin-top: 10px;
+.redLink {
+  margin-left: 10px;
+  // tried everything else first
+  color: #be3a34 !important;
+  &:link {
+    color: #be3a34 !important;
   }
+  &:visited {
+    color: #be3a34 !important;
+  }
+  &:focus {
+    color: inherit !important;
+  }
+}
 
-  .actions {
+.meta {
+  @media screen and (min-width: 700px) {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+}
+
+.actions {
+  @media screen and (min-width: 700px) {
     margin-left: auto;
   }
 }
