@@ -18,6 +18,8 @@ describe('Can upload a document', () => {
   });
 
   it('lets you choose a file', () => {
+    cy.visit(`http://localhost:3000/resident/foo`);
+    cy.get('a').contains('Continue').click();
     cy.get('h1').should('contain', 'Upload your documents');
     cy.get('input[type=file]').attachFile('example.png');
     cy.get('button').contains('Continue').click();
