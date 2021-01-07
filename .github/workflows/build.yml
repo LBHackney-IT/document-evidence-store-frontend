@@ -33,9 +33,8 @@ jobs:
           CI: true
 
       - name: Integration tests
-        run: |
-          npm run build
-          npm run start
-          npm run test:e2e:ci
-        env:
-          CI: true
+        uses: cypress-io/github-action@v1
+        with:
+          build: npm run build
+          start: npm start
+          wait-on: http://localhost:3030
