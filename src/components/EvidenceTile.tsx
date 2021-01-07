@@ -2,12 +2,13 @@ import React, { FunctionComponent, ReactNode } from 'react';
 import Link from 'next/link';
 import styles from '../styles/EvidenceTile.module.scss';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
+import { humanFileSize } from '../helpers/formatters';
 
 export const EvidenceTile: FunctionComponent<Props> = (props) => (
   <li className={styles.item}>
     <div className={styles.preview}>
       <strong>{props.format}</strong>
-      <span className={styles.filesize}>{props.fileSize}</span>
+      <span className={styles.filesize}>{humanFileSize(props.fileSize)}</span>
     </div>
     <div>
       <Heading level={HeadingLevels.H3} className={styles.title}>
@@ -47,7 +48,7 @@ interface ListProps {
 interface Props {
   id: string;
   format: string;
-  fileSize: string;
+  fileSize: number;
   title: string;
   createdAt: string;
   purpose?: string;
