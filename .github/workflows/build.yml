@@ -28,11 +28,14 @@ jobs:
         run: |
           npm run test:unit
           npm run prettier:test
+          npm run lint
         env:
           CI: true
 
       - name: Integration tests
         run: |
+          npm run build
+          npm run start
           npm run test:e2e:ci
         env:
           CI: true
