@@ -6,7 +6,7 @@ describe('Can upload a document', () => {
     cy.intercept('GET', '/api/evidence/evidence_requests', {
       fixture: 'evidence-request-response',
     });
-    cy.intercept('POST', '/api/evidence/evidence_requests', {
+    cy.intercept('POST', '/api/evidence/evidence_request', {
       fixture: 'single-evidence-request-response',
     });
   });
