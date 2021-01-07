@@ -38,10 +38,10 @@ const Layout: FunctionComponent = ({ children }) => {
           <nav className={styles['layout__sidebar']}>
             <ul className="lbh-list">
               <li>
-                <NavLink href="/">Residents</NavLink>
+                <NavLink href="/dashboard">Residents</NavLink>
               </li>
               <li>
-                <NavLink href="/requests">Requests</NavLink>
+                <NavLink href="/dashboard/requests">Requests</NavLink>
               </li>
             </ul>
           </nav>

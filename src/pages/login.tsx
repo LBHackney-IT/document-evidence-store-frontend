@@ -7,7 +7,7 @@ import Layout from '../components/ResidentLayout';
 const Home = (): ReactNode => {
   const router = useRouter();
   const loginUrl = useMemo(() => {
-    const { redirect = '/' } = router.query as { redirect?: string };
+    const { redirect = '/dashboard' } = router.query as { redirect?: string };
     return createLoginUrl(redirect);
   }, [router]);
 
