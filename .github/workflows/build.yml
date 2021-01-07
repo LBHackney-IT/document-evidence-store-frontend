@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+        run: cp .env.sample .env
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
