@@ -10,10 +10,16 @@ const ResidentPage = (): ReactNode => {
 
     return (
         <Layout>
-        <Head>
-            <title>Resident</title>
-        </Head>
-        <Heading level={HeadingLevels.H2}>{residentId}</Heading>
+            <Head>
+                <title>Firstname Surname</title>
+            </Head>
+            <Heading level={HeadingLevels.H2}>Firstname Surname</Heading>
+            <p>0777 777 7777</p>
+            <p>email@email.com</p>
+
+            {residentId}
+
+
         </Layout>
     );
 };
