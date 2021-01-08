@@ -23,16 +23,7 @@ const DocumentDetailPage = (): ReactNode => {
         <Link href={`/dashboard/resident/${residentId}`}>
           <a className="lbh-link">Firstname Surname</a>
         </Link>
-        <svg
-          className="lbu-divider"
-          width="12"
-          height="17"
-          viewBox="0 0 12 17"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M2 1.5L9 8.5L2 15.5" stroke="#0B0C0C" stroke-width="3" />
-        </svg>
+        <img src="/divider.svg" alt="" className="lbu-divider"/>
         Passport
       </Heading>
 
