@@ -12,7 +12,9 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     </div>
     <div>
       <Heading level={HeadingLevels.H3} className={styles.title}>
-        <Link href={`/dashboard/evidence/${props.id}`}>
+        <Link
+          href={`/dashboard/resident/${props.residentId}/document/${props.id}`}
+        >
           <a className="lbh-link">{props.title}</a>
         </Link>
       </Heading>
@@ -21,12 +23,19 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
         {props.purpose && <> with {props.purpose}</>}
       </p>
     </div>
+
     {props.toReview && (
       <div className={`lbh-body-s ${styles.actions}`}>
-        <Link href="/accept">
+        <Link
+          href={`/dashboard/resident/${props.residentId}?action=accept`}
+          scroll={false}
+        >
           <a className="lbh-link">Accept</a>
         </Link>
-        <Link href="/reject">
+        <Link
+          href={`/dashboard/resident/${props.residentId}?action=reject`}
+          scroll={false}
+        >
           <a className={`lbh-link ${styles.redLink}`}>Request new file</a>
         </Link>
       </div>
@@ -46,6 +55,7 @@ interface ListProps {
 }
 
 interface Props {
+  residentId: string;
   id: string;
   format: string;
   fileSize: number;

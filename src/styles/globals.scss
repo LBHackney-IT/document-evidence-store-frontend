@@ -43,3 +43,28 @@ body {
 .padding {
   padding: 0 !important;
 }
+
+// properly space breadcrumb divider inside headings
+.lbu-divider {
+  margin: 0 10px;
+}
+
+// visually hidden but screen reader visible ui elements
+.lbu-visually-hidden {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0 !important;
+  border: 0 !important;
+  height: 1px !important;
+  width: 1px !important;
+  overflow: hidden;
+}
+
+// properly space out headings
+h3 {
+  margin-top: 35px;
+  @media screen and (min-width: 700px) {
+    margin-top: 45px;
+  }
+}
