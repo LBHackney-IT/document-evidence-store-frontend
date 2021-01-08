@@ -5,10 +5,15 @@ import Layout from 'src/components/DashboardLayout';
 import { useRouter } from 'next/router';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import styles from 'src/styles/Resident.module.scss';
+import AcceptDialog from 'src/components/AcceptDialog';
+import RejectDialog from 'src/components/RejectDialog';
 
 const ResidentPage = (): ReactNode => {
   const router = useRouter();
-  const { residentId } = router.query as { residentId: string };
+  const { residentId, action } = router.query as {
+    residentId: string;
+    action: string;
+  };
 
   return (
     <Layout>
@@ -123,6 +128,22 @@ const ResidentPage = (): ReactNode => {
           purpose="Example form"
         />
       </EvidenceList>
+
+      <AcceptDialog
+        open={action === 'accept'}
+        onAccept={() => {
+          // handle accept here
+        }}
+        onDismiss={() => router.push(`/dashboard/resident/${residentId}`)}
+      />
+
+      <RejectDialog
+        open={action === 'reject'}
+        onReject={() => {
+          // handle reject here
+        }}
+        onDismiss={() => router.push(`/dashboard/resident/${residentId}`)}
+      />
     </Layout>
   );
 };
