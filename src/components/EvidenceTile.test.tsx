@@ -9,7 +9,7 @@ describe('EvidenceTile', () => {
         id="123"
         title="Foo"
         createdAt="1 day ago"
-        fileSize="1.3MB"
+        fileSize={1024}
         format="PDF"
         purpose="Example form"
         toReview
@@ -17,7 +17,7 @@ describe('EvidenceTile', () => {
     );
     expect(screen.getByText('Foo'));
     expect(screen.getByText('1 day ago with Example form'));
-    expect(screen.getByText('1.3MB'));
+    expect(screen.getByText('1.0 KB'));
     expect(screen.getByText('PDF'));
     expect(screen.getByText('Accept'));
     expect(screen.getByText('Request new file'));
@@ -29,7 +29,7 @@ describe('EvidenceTile', () => {
         id="123"
         title="Foo"
         createdAt="1 day ago"
-        fileSize="1.3MB"
+        fileSize={1024}
         format="PDF"
         purpose="Example form"
       />
