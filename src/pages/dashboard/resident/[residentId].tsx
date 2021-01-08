@@ -23,7 +23,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -32,7 +32,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -41,7 +41,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -55,7 +55,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
         />
@@ -63,7 +63,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
         />
@@ -71,7 +71,7 @@ const ResidentPage = (): ReactNode => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize="1.3MB"
+          fileSize={1300000}
           format="PDF"
           purpose="Example form"
         />
