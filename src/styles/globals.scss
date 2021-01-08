@@ -10,6 +10,17 @@ body {
   box-sizing: border-box;
 }
 
+.lbh-link:visited {
+  // no other way to override inline styles
+  color: #025ea6 !important;
+  &:hover {
+    color: #0085ca;
+  }
+  &:focus {
+    color: #0b0c0c !important;
+  }
+}
+
 // widen default container to fit our ui
 .lbh-container {
   max-width: 1100px !important;
