@@ -5,7 +5,6 @@ import { Formik, Form } from 'formik';
 import Field from './Field';
 import * as Yup from 'yup';
 import styles from '../styles/Dialog.module.scss';
-// import Link from 'next/link';
 
 const schema = Yup.object().shape({
   reason: Yup.string()
@@ -40,13 +39,13 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
               <Button onClick={props.onReject} disabled={isSubmitting}>
                 Request new file
               </Button>
-              <a
-                href="#"
-                className="lbh-body lbh-link"
+              <button
                 onClick={props.onDismiss}
+                className={`lbh-body lbh-link ${styles.cancelButton}`}
+                type="button"
               >
                 No, cancel
-              </a>
+              </button>
             </div>
           </Form>
         )}

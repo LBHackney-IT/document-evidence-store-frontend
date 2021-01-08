@@ -29,7 +29,24 @@
 
     *:first-of-type {
       margin-bottom: 0px;
-      margin-right: 15px;
+      margin-right: 20px;
     }
+  }
+}
+
+.cancelButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+  // needed to override inline styles on buttons
+  color: #025ea6 !important;
+  &:hover,
+  &:active {
+    color: #0085ca !important;
+  }
+  &:focus {
+    color: #0b0c0c !important;
   }
 }

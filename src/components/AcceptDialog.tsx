@@ -18,9 +18,13 @@ const AcceptDialog: FunctionComponent<Props> = (props) => (
 
     <div className={styles.actions}>
       <Button onClick={props.onAccept}>Yes, accept</Button>
-      <a href="#" className="lbh-body lbh-link" onClick={props.onDismiss}>
+      <button
+        onClick={props.onDismiss}
+        type="button"
+        className={`${styles.cancelButton} lbh-body lbh-link`}
+      >
         No, cancel
-      </a>
+      </button>
     </div>
   </Dialog>
 );
