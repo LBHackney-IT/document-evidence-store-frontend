@@ -8,7 +8,7 @@ import styles from '../styles/Dialog.module.scss';
 
 const schema = Yup.object().shape({
   reason: Yup.string()
-    .required('You must give a reason')
+    .required('Please give a reason')
     .min(2, 'Reason needs to be at least three characters'),
 });
 
@@ -17,7 +17,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
     <Dialog
       open={props.open}
       onDismiss={props.onDismiss}
-      title="Request new file"
+      title="Request a new file"
     >
       <Formik
         onSubmit={props.onReject}
