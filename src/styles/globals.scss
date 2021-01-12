@@ -43,3 +43,8 @@ body {
 .padding {
   padding: 0 !important;
 }
+
+// override broken button margins
+.lbh-button--start {
+  margin-bottom: 35px !important;
+}
