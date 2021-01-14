@@ -1,21 +1,31 @@
 import { Resident } from '../domain/resident';
-import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
+import {
+  DeliveryMethod,
+  EvidenceRequest,
+  IEvidenceRequest,
+} from '../domain/evidence-request';
 import { DateTime } from 'luxon';
 import { DocumentType, IDocumentType } from '../domain/document-type';
+import {
+  DocumentState,
+  DocumentSubmission,
+  IDocumentSubmission,
+} from '../domain/document-submission';
 
 export type DeliveryMethodResponse = 'sms' | 'email';
-export interface EvidenceRequestResponse {
-  id: string;
+export interface EvidenceRequestResponse
+  extends Omit<
+    IEvidenceRequest,
+    'createdAt' | 'deliveryMethods' | 'documentTypes'
+  > {
   createdAt: string;
   deliveryMethods: string[];
   documentTypes: IDocumentType[];
-  serviceRequestedBy: string;
-  resident: {
-    id: string;
-    name: string;
-    email: string;
-    phoneNumber: string;
-  };
+}
+export interface DocumentSubmissionResponse
+  extends Omit<IDocumentSubmission, 'createdAt' | 'state'> {
+  createdAt: string;
+  state: string;
 }
 
 export class ResponseMapper {
@@ -38,5 +48,13 @@ export class ResponseMapper {
 
   static mapDocumentType(attrs: IDocumentType): DocumentType {
     return new DocumentType(attrs);
+  }
+
+  static mapDocumentSubmission(
+    attrs: DocumentSubmissionResponse
+  ): DocumentSubmission {
+    const createdAt = DateTime.fromISO(attrs.createdAt);
+    const state = DocumentState[attrs.state as keyof typeof DocumentState];
+    return new DocumentSubmission({ ...attrs, createdAt, state });
   }
 }

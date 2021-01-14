@@ -5,23 +5,36 @@ import { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import UploaderForm from '../../../components/UploaderForm';
-import { DocumentType } from '../../../domain/document-type';
 import { EvidenceRequest } from '../../../domain/evidence-request';
 import { InternalApiGateway } from '../../../gateways/internal-api';
+import { DocumentSubmission } from 'src/domain/document-submission';
 
 const Index = (): ReactNode => {
   const router = useRouter();
-  const { requestId } = router.query;
-  const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
+  const gateway = new InternalApiGateway();
+  const { requestId } = router.query as { requestId: string };
   const [evidenceRequest, setEvidenceRequest] = useState<EvidenceRequest>();
+  const [documentSubmissions, setDocumentSubmissions] = useState<{
+    [key: string]: DocumentSubmission;
+  }>({});
 
   useEffect(() => {
-    const gateway = new InternalApiGateway();
-    gateway.getDocumentTypes().then(setDocumentTypes);
     gateway
-      .getEvidenceRequests()
-      .then((requests) => setEvidenceRequest(requests[0]));
+      .getEvidenceRequest(requestId)
+      .then((request) => setEvidenceRequest(request));
   }, []);
+
+  useEffect(() => {
+    if (!evidenceRequest) return;
+
+    evidenceRequest.documentTypes.forEach(({ id }) => {
+      gateway
+        .createDocumentSubmission(id)
+        .then((ds) =>
+          setDocumentSubmissions({ ...documentSubmissions, [id]: ds })
+        );
+    });
+  }, [evidenceRequest]);
 
   return (
     <Layout>
@@ -34,9 +47,8 @@ const Index = (): ReactNode => {
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {documentTypes && evidenceRequest ? (
+          {evidenceRequest ? (
             <UploaderForm
-              documentTypes={documentTypes}
               evidenceRequest={evidenceRequest}
               requestId={requestId as string}
             />

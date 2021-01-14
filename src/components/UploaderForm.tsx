@@ -8,7 +8,6 @@ import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import UploaderPanel from './UploaderPanel';
-import { DocumentType } from '../domain/document-type';
 import { EvidenceRequest } from '../domain/evidence-request';
 
 const UploaderForm: FunctionComponent<Props> = (props) => {
@@ -96,7 +95,6 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
 };
 
 interface Props {
-  documentTypes: Array<DocumentType>;
   evidenceRequest: EvidenceRequest;
   requestId: string;
 }
