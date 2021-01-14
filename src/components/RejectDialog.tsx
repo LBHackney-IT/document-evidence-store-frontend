@@ -56,7 +56,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
 
 interface Props {
   open: boolean;
-  onReject(): void;
+  onReject(reason: string): void;
   onDismiss(): void;
 }
 
