@@ -14,7 +14,7 @@ const ResidentPage = (): ReactNode => {
       <Head>
         <title>Firstname Surname</title>
       </Head>
-      <Heading level={HeadingLevels.H2}>Firstname Surname</Heading>
+      <h1 className="lbh-heading-h2">Firstname Surname</h1>
       <p className="lbh-body">0777 777 7777</p>
       <p className="lbh-body">email@email.com</p>
       <Heading level={HeadingLevels.H3}>To review</Heading>

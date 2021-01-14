@@ -10,11 +10,18 @@ describe('Can upload a document', () => {
       fixture: 'document-submission-response-singular',
       statusCode: 201,
     });
+
+    cy.visit(`http://localhost:3000/resident/foo`);
+    cy.injectAxe();
   });
+
+  it('Has no detectable accessibility issues', () => {
+    cy.checkA11y();
+  });
+
 
   it('shows guidance and lets you upload a file', () => {
     // View guidance
-    cy.visit(`http://localhost:3000/resident/foo`);
     cy.get('h1').should('contain', 'You’ll need to photograph your documents');
     cy.get('a').contains('Continue').click();
 

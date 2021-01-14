@@ -35,3 +35,5 @@ cypress/videos
 
 .serverless
 .env
+
+debug.log
