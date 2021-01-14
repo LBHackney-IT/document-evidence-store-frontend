@@ -17,7 +17,7 @@ describe('View evidence requests', () => {
   it('User can view pending evidence requests', () => {
     cy.get('nav').contains('Requests').click();
 
-    cy.get('h2').should('contain', 'Pending requests');
+    cy.get('h1').should('contain', 'Pending requests');
 
     cy.get('tbody tr').should('have.length', 3);
 

@@ -30,14 +30,14 @@ const Layout: FunctionComponent = ({ children }) => {
       </Header>
 
       <Container>
-        <header className={styles.switcher}>
+        <nav className={styles.switcher} aria-label="Switch service">
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             Housing benefit
           </strong>
           <a href="#" className={`lbh-link ${styles['switcher__link']} `}>
             Switch service
           </a>
-        </header>
+        </nav>
       </Container>
 
       <div className="lbh-main-wrapper">

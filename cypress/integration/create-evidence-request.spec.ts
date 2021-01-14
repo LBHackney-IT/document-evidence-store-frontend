@@ -22,11 +22,11 @@ describe('Create evidence requests', () => {
 
   it('User can fill out new request form', () => {
     cy.get('nav').contains('Requests').click();
-    cy.get('h2').should('contain', 'Pending requests');
+    cy.get('h1').should('contain', 'Pending requests');
 
     cy.get('a').contains('New request').click();
 
-    cy.get('h2').should('contain', 'Make a new request');
+    cy.get('h1').should('contain', 'Make a new request');
 
     cy.get('label').contains('Name').next('input').type('Frodo Baggins');
     cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
