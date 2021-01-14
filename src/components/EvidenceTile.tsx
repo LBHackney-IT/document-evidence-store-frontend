@@ -27,13 +27,13 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     {props.toReview && (
       <div className={`lbh-body-s ${styles.actions}`}>
         <Link
-          href={`/dashboard/resident/${props.residentId}?action=accept`}
+          href={`/dashboard/resident/${props.residentId}/document/${props.id}?action=accept`}
           scroll={false}
         >
           <a className="lbh-link">Accept</a>
         </Link>
         <Link
-          href={`/dashboard/resident/${props.residentId}?action=reject`}
+          href={`/dashboard/resident/${props.residentId}/document/${props.id}?action=reject`}
           scroll={false}
         >
           <a className={`lbh-link ${styles.redLink}`}>Request new file</a>
