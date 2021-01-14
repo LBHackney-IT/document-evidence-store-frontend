@@ -20,7 +20,9 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
       title="Request a new file"
     >
       <Formik
-        onSubmit={props.onReject}
+        onSubmit={(values) => {
+          props.onReject(values.reason);
+        }}
         validationSchema={schema}
         initialValues={{
           reason: '',
@@ -36,7 +38,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
               error={touched.reason ? errors.reason : null}
             />
             <div className={styles.actions}>
-              <Button onClick={props.onReject} disabled={isSubmitting}>
+              <Button type="submit" disabled={isSubmitting}>
                 Request new file
               </Button>
               <button
