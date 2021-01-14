@@ -3,14 +3,24 @@ describe('Accept and reject evidence', () => {
     cy.login();
 
     cy.visit(`http://localhost:3000/dashboard/resident/1`);
+    cy.injectAxe();
+  });
+
+  it('resident detail page has no detectable accessibility issues', () => {
+    cy.checkA11y();
   });
 
   it('shows resident contact details and all evidence states', () => {
-    cy.get('h2').should('contain', 'Firstname Surname');
+    cy.get('h1').should('contain', 'Firstname Surname');
 
-    cy.get('h3').should('contain', 'To review');
-    cy.get('h3').should('contain', 'Pending requests');
-    cy.get('h3').should('contain', 'Reviewed');
+    cy.get('h2').should('contain', 'To review');
+    cy.get('h2').should('contain', 'Pending requests');
+    cy.get('h2').should('contain', 'Reviewed');
+  });
+
+  it('document detail page has no detectable accessibility issues', () => {
+    cy.get('a').contains('Foo').click();
+    cy.checkA11y();
   });
 
   it('lets you see a document detail page with accept/reject actions', () => {
@@ -46,7 +56,7 @@ describe('Accept and reject evidence', () => {
     cy.get('a').contains('Foo').click();
     cy.get('a').contains('Request new file').click();
 
-    cy.get('button').contains('Request new file').click();
+    cy.get('.lbh-button').contains('Request new file').click();
 
     cy.get('span').should('contain', 'Please give a reason');
   });

@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Heading, HeadingLevels, Button } from 'lbh-frontend-react';
+import { Button } from 'lbh-frontend-react';
 import { ReactNode } from 'react';
 import Layout from 'src/components/DashboardLayout';
 import { useRouter } from 'next/router';
@@ -17,10 +17,10 @@ const ResidentPage = (): ReactNode => {
       <Head>
         <title>Firstname Surname</title>
       </Head>
-      <Heading level={HeadingLevels.H2}>Firstname Surname</Heading>
+      <h1 className="lbh-heading-h2">Firstname Surname</h1>
       <p className="lbh-body">0777 777 7777</p>
       <p className="lbh-body">email@email.com</p>
-      <Heading level={HeadingLevels.H3}>To review</Heading>
+      <h2 className="lbh-heading-h3">To review</h2>
       <EvidenceList>
         <EvidenceTile
           residentId={residentId}
@@ -53,7 +53,7 @@ const ResidentPage = (): ReactNode => {
           toReview
         />
       </EvidenceList>
-      <Heading level={HeadingLevels.H3}>Pending requests</Heading>
+      <h2 className="lbh-heading-h3">Pending requests</h2>
 
       <table className={`govuk-table lbh-table ${styles.table}`}>
         <thead className="govuk-table__head">
@@ -94,7 +94,7 @@ const ResidentPage = (): ReactNode => {
         </tbody>
       </table>
 
-      <Heading level={HeadingLevels.H3}>Reviewed</Heading>
+      <h2 className="lbh-heading-h3">Reviewed</h2>
 
       <EvidenceList twoColumns>
         <EvidenceTile
