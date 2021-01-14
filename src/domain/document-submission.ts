@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { DocumentType } from './document-type';
 
 export enum DocumentState {
   PENDING,
@@ -19,7 +20,7 @@ export interface IDocumentSubmission {
   rejectionReason?: string;
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
-  documentType: string;
+  documentType: DocumentType;
 }
 
 export class DocumentSubmission implements IDocumentSubmission {
@@ -29,7 +30,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   rejectionReason?: string;
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
-  documentType: string;
+  documentType: DocumentType;
 
   constructor(params: IDocumentSubmission) {
     this.id = params.id;
