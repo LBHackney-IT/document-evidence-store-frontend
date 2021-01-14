@@ -9,16 +9,21 @@ describe('Can upload a document', () => {
     cy.intercept('POST', '/api/evidence/evidence_request', {
       fixture: 'single-evidence-request-response',
     });
+
+    cy.visit(`http://localhost:3000/resident/foo`);
+    cy.injectAxe();
+  });
+
+  it('Has no detectable accessibility issues', () => {
+    cy.checkA11y();
   });
 
   it('shows guidance', () => {
-    cy.visit(`http://localhost:3000/resident/foo`);
     cy.get('h1').should('contain', 'You’ll need to photograph your documents');
     cy.get('a').contains('Continue').click();
   });
 
   it('lets you choose a file', () => {
-    cy.visit(`http://localhost:3000/resident/foo`);
     cy.get('a').contains('Continue').click();
     cy.get('h1').should('contain', 'Upload your documents');
     cy.get('input[type=file]').attachFile('example.png');

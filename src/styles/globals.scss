@@ -68,3 +68,8 @@ h3 {
     margin-top: 45px;
   }
 }
+
+// override broken button margins
+.lbh-button--start {
+  margin-bottom: 35px !important;
+}

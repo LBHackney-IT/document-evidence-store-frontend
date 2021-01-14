@@ -1,16 +1,23 @@
 describe('View evidence requests', () => {
   beforeEach(() => {
     cy.login();
+
     cy.intercept('/api/evidence/evidence_requests', {
       fixture: 'evidence-request-response',
     });
+
+    cy.visit(`http://localhost:3000/dashboard`);
+    cy.injectAxe();
+  });
+
+  it('Has no detectable accessibility issues', () => {
+    cy.checkA11y();
   });
 
   it('User can view pending evidence requests', () => {
-    cy.visit(`http://localhost:3000/dashboard`);
     cy.get('nav').contains('Requests').click();
 
-    cy.get('h2').should('contain', 'Pending requests');
+    cy.get('h1').should('contain', 'Pending requests');
 
     cy.get('tbody tr').should('have.length', 3);
 
