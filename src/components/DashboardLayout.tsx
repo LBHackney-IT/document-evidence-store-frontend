@@ -2,6 +2,7 @@ import React, { FunctionComponent, useContext } from 'react';
 import { Container, Header } from 'lbh-frontend-react';
 import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
+import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
 import ResidentLayout from './ResidentLayout';
 
@@ -12,6 +13,12 @@ const Layout: FunctionComponent = ({ children }) => {
 
   return (
     <>
+      <a
+        href="#main-content"
+        className={`lbh-body-s ${skipLinkStyles.skipLink}`}
+      >
+        Skip to main content
+      </a>
       <Header
         serviceName="Upload"
         isServiceNameShort={true}

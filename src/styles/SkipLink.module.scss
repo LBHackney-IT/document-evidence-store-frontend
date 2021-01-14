@@ -1,0 +1,11 @@
+.skipLink {
+  background: #ffdd00;
+  display: block;
+  padding: 10px;
+  position: absolute;
+  left: -100%;
+  &:focus {
+    position: relative;
+    left: 0;
+  }
+}
