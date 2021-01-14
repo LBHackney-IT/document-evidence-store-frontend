@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Link from 'next/link';
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { EvidenceRequest } from '../../../domain/evidence-request';
@@ -28,7 +27,7 @@ const RequestsIndexPage = (): ReactNode => {
       <Head>
         <title>Pending requests</title>
       </Head>
-      <Heading level={HeadingLevels.H2}>Pending requests</Heading>
+      <h1 className="lbh-heading-h2">Pending requests</h1>
       {table}
       <Link href="/dashboard/requests/new">
         <a className="govuk-button lbh-button">New request</a>

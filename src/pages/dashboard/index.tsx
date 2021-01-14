@@ -34,7 +34,7 @@ const BrowseResidents = (): ReactNode => {
       <Head>
         <title>Browse residents</title>
       </Head>
-      <Heading level={HeadingLevels.H2}>Browse residents</Heading>
+      <h1 className="lbh-heading-h2">Browse residents</h1>
 
       <ResidentSearchForm handleSearch={handleSearch} />
 

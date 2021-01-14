@@ -3,6 +3,7 @@ import styles from '../styles/PhaseBanner.module.scss';
 
 const PhaseBanner: FunctionComponent = () => (
   <div
+    role="complementary"
     className={`govuk-phase-banner lbh-phase-banner lbh-container ${styles.banner}`}
   >
     <p className="govuk-phase-banner__content">
