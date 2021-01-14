@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { DocumentType } from './document-type';
 import { Resident } from './resident';
 
-interface IEvidenceRequest {
+export interface IEvidenceRequest {
   id: string;
   createdAt: DateTime;
   resident: Resident;

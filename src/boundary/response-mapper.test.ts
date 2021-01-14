@@ -1,10 +1,15 @@
 import { DateTime } from 'luxon';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
 import DocumentTypeFixture from '../../cypress/fixtures/document-types-response.json';
+import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
 import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { Resident } from '../domain/resident';
 import { ResponseMapper } from './response-mapper';
 import { DocumentType } from '../domain/document-type';
+import {
+  DocumentState,
+  DocumentSubmission,
+} from '../domain/document-submission';
 
 describe('ResponseMapper', () => {
   describe('.mapEvidenceRequest', () => {
@@ -61,6 +66,47 @@ describe('ResponseMapper', () => {
 
       expect(result).toBeInstanceOf(DocumentType);
       expect(result).toMatchObject(responseJson);
+    });
+  });
+
+  describe('.mapDocumentSubmission', () => {
+    let result: DocumentSubmission;
+    const responseJson = DocumentSubmissionFixture;
+
+    beforeEach(() => {
+      result = ResponseMapper.mapDocumentSubmission(responseJson);
+    });
+
+    it('maps the basic attributes', () => {
+      const {
+        claimId,
+        rejectionReason,
+        id,
+        uploadPolicy,
+        documentType,
+      } = responseJson;
+
+      expect(result).toMatchObject({
+        claimId,
+        rejectionReason,
+        id,
+        uploadPolicy,
+        documentType,
+      });
+    });
+
+    // 2021-01-14T10:23:42.958Z
+    it('maps the date', () => {
+      expect(result.createdAt).toBeInstanceOf(DateTime);
+      expect(result.createdAt).toMatchObject({
+        year: 2021,
+        month: 1,
+        day: 14,
+      });
+    });
+
+    it('maps the document state', () => {
+      expect(result.state).toEqual(DocumentState.PENDING);
     });
   });
 });

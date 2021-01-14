@@ -1,8 +1,9 @@
 import { DocumentType } from '../domain/document-type';
-import { EvidenceRequest } from '../domain/evidence-request';
 import { InternalApiGateway, InternalServerError } from './internal-api';
 import axios, { AxiosResponse } from 'axios';
 import { ResponseMapper } from '../boundary/response-mapper';
+import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
+import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
 
 jest.mock('axios');
 jest.mock('../boundary/response-mapper');
@@ -16,8 +17,10 @@ describe('Internal API Gateway', () => {
 
   xdescribe('getEvidenceRequests', () => {
     describe('returns the correct response', () => {
-      const expectedData = ['foo', 'bar'];
-      const mappedData = (['blim', 'blam'] as unknown) as EvidenceRequest[];
+      const expectedData = EvidenceRequestFixture;
+      const mappedData = EvidenceRequestFixture.map(
+        ResponseMapper.mapEvidenceRequest
+      );
 
       beforeEach(() => {
         mockedAxios.get.mockResolvedValue({
@@ -55,6 +58,51 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         mockedAxios.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () => gateway.getEvidenceRequests();
+        expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('getEvidenceRequest', () => {
+    const id = 'id';
+    describe('returns the correct response', () => {
+      const expectedData = EvidenceRequestFixture[0];
+      const mappedData = ResponseMapper.mapEvidenceRequest(expectedData);
+
+      beforeEach(() => {
+        mockedAxios.get.mockResolvedValue({
+          data: expectedData,
+        });
+
+        mockedResponseMapper.mapEvidenceRequest.mockReturnValue(mappedData);
+      });
+
+      it('calls axios correctly', async () => {
+        await gateway.getEvidenceRequest(id);
+        expect(mockedAxios.get).toHaveBeenLastCalledWith(
+          `/api/evidence/evidence_requests/${id}`
+        );
+      });
+
+      it('maps the response', async () => {
+        await gateway.getEvidenceRequest(id);
+        expect(mockedResponseMapper.mapEvidenceRequest).toHaveBeenCalledWith(
+          expectedData
+        );
+      });
+
+      it('returns mapped EvidenceTypes', async () => {
+        const result = await gateway.getEvidenceRequest(id);
+        expect(result).toEqual(mappedData);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        mockedAxios.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () => gateway.getEvidenceRequest(id);
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -118,6 +166,56 @@ describe('Internal API Gateway', () => {
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
+      });
+    });
+  });
+
+  describe('createDocument', () => {
+    const documentType = 'passport-scan';
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        mockedAxios.post.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () =>
+          gateway.createDocumentSubmission(documentType);
+        expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+
+    describe('when successful', () => {
+      const mappedResponse = ResponseMapper.mapDocumentSubmission(
+        DocumentSubmissionFixture
+      );
+
+      beforeEach(() => {
+        mockedAxios.post.mockResolvedValue({ data: DocumentSubmissionFixture });
+        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
+          mappedResponse
+        );
+      });
+
+      it('calls axios correctly', async () => {
+        await gateway.createDocumentSubmission(documentType);
+        expect(mockedAxios.post).toHaveBeenCalledWith(
+          '/api/evidence/document_submissions',
+          {
+            documentType,
+          }
+        );
+      });
+
+      it('maps the response correctly', async () => {
+        await gateway.createDocumentSubmission(documentType);
+        expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
+          DocumentSubmissionFixture
+        );
+      });
+
+      it('returns the correct response', async () => {
+        const result = await gateway.createDocumentSubmission(documentType);
+        expect(result).toEqual(mappedResponse);
       });
     });
   });
