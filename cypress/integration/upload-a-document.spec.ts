@@ -19,7 +19,6 @@ describe('Can upload a document', () => {
     cy.checkA11y();
   });
 
-
   it('shows guidance and lets you upload a file', () => {
     // View guidance
     cy.get('h1').should('contain', 'You’ll need to photograph your documents');

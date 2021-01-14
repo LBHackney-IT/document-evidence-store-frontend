@@ -13,7 +13,6 @@ Cypress.Commands.add('login', (userData: UserData = defaultUser) => {
   const token = jwt.sign(userData, jwtSecret);
 
   cy.setCookie(cookieName, token);
-  Cypress.Cookies.preserveOnce(cookieName);
   cy.wrap(defaultUser).as('defaultUser');
   cy.wrap(userData).as('user');
 });
