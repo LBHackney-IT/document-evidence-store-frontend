@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import { ReactNode } from 'react';
@@ -14,9 +14,9 @@ const Index = (): ReactNode => {
   const gateway = new InternalApiGateway();
   const { requestId } = router.query as { requestId: string };
   const [evidenceRequest, setEvidenceRequest] = useState<EvidenceRequest>();
-  const [documentSubmissions, setDocumentSubmissions] = useState<{
-    [key: string]: DocumentSubmission;
-  }>({});
+  const [documentSubmissions, setDocumentSubmissions] = useState<
+    DocumentSubmission[]
+  >([]);
 
   useEffect(() => {
     gateway
@@ -30,11 +30,14 @@ const Index = (): ReactNode => {
     evidenceRequest.documentTypes.forEach(({ id }) => {
       gateway
         .createDocumentSubmission(id)
-        .then((ds) =>
-          setDocumentSubmissions({ ...documentSubmissions, [id]: ds })
-        );
+        .then((ds) => setDocumentSubmissions([...documentSubmissions, ds]));
     });
   }, [evidenceRequest]);
+
+  const loading = useMemo(
+    () => documentSubmissions.length !== evidenceRequest?.documentTypes.length,
+    [evidenceRequest, documentSubmissions]
+  );
 
   return (
     <Layout>
@@ -47,13 +50,13 @@ const Index = (): ReactNode => {
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {evidenceRequest ? (
+          {loading ? (
+            <p className="lbh-body">Loading...</p>
+          ) : (
             <UploaderForm
-              evidenceRequest={evidenceRequest}
+              submissions={documentSubmissions}
               requestId={requestId as string}
             />
-          ) : (
-            <p>Loading...</p>
           )}
         </div>
       </div>
