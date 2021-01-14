@@ -14,10 +14,11 @@
     "test:e2e:dev": "cypress open"
   },
   "dependencies": {
-    "@reach/tabs": "^0.12.1",
     "@reach/alert": "^0.12.1",
     "@reach/dialog": "^0.12.1",
+    "@reach/tabs": "^0.12.1",
     "axios": "^0.21.0",
+    "file-type": "^16.2.0",
     "formik": "^2.2.5",
     "jsonwebtoken": "^8.5.1",
     "lbh-frontend-react": "^0.5.7",
