@@ -56,9 +56,11 @@ describe('Accept and reject evidence', () => {
     cy.get('a').contains('Foo').click();
     cy.get('a').contains('Request new file').click();
 
-    cy.get('.lbh-button').contains('Request new file').click();
+    cy.get('[role=dialog]').within(() => {
+      cy.get('button').contains('Request new file').click();
 
-    cy.get('span').should('contain', 'Please give a reason');
+      cy.get('span').should('contain', 'Please give a reason');
+    });
   });
 });
 
