@@ -50,4 +50,26 @@ describe('RejectDialog', () => {
     const foundButton = screen.getByText('Request new file').closest('button');
     expect(foundButton && foundButton.disabled).toBeTruthy();
   });
+
+  it('fires the handler properly', async () => {
+    render(
+      <RejectDialog
+        onDismiss={mockHandler}
+        open={true}
+        onReject={mockHandler}
+      />
+    );
+
+    fireEvent.change(screen.getByLabelText('Reason for rejection'), {
+      target: { value: 'Example reason' },
+    });
+    fireEvent.click(screen.getByText('Request new file'));
+
+    await waitFor(() => {
+      expect(mockHandler).toBeCalledTimes(1);
+      expect(mockHandler).toBeCalledWith(
+        expect.stringContaining('Example reason')
+      );
+    });
+  });
 });
