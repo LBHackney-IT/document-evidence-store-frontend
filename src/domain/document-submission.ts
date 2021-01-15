@@ -17,9 +17,9 @@ export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
   claimId: string;
-  rejectionReason?: string;
+  rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy?: UploadPolicy;
+  uploadPolicy: UploadPolicy | null;
   documentType: DocumentType;
 }
 
@@ -27,9 +27,9 @@ export class DocumentSubmission implements IDocumentSubmission {
   id: string;
   createdAt: DateTime;
   claimId: string;
-  rejectionReason?: string;
+  rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy?: UploadPolicy;
+  uploadPolicy: UploadPolicy | null;
   documentType: DocumentType;
 
   constructor(params: IDocumentSubmission) {

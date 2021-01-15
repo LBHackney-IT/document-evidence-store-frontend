@@ -6,13 +6,9 @@ import React, {
 } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
-import * as Yup from 'yup';
 import UploaderPanel from './UploaderPanel';
-import { DocumentSubmission } from 'src/domain/document-submission';
-
-type FormValues = {
-  [key: string]: File;
-};
+import { DocumentSubmission } from '../domain/document-submission';
+import { UploadFormModel } from '../services/upload-form-model';
 
 const getError = (
   id: string,
@@ -24,48 +20,27 @@ const getError = (
   return errors[id as keyof typeof errors] as string;
 };
 
-const UploaderForm: FunctionComponent<Props> = ({ submissions }) => {
+const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
   const [submitError, setSubmitError] = useState(false);
+  const model = useMemo(() => new UploadFormModel(submissions), [submissions]);
 
-  const schema = useMemo(
-    () =>
-      Yup.object(
-        submissions.reduce(
-          (others, key) => ({
-            ...others,
-            [key.id]: Yup.mixed().required('Please select a file'),
-          }),
-          {}
-        )
-      ),
-    [submissions]
+  const handleSubmit = useCallback(
+    async (values) => {
+      try {
+        await model.handleSubmit(values);
+        onSuccess();
+      } catch (err) {
+        console.log(err);
+        setSubmitError(true);
+      }
+    },
+    [model, setSubmitError]
   );
-
-  const initialValues: FormValues = useMemo(
-    () =>
-      submissions.reduce(
-        (others, key) => ({
-          ...others,
-          [key.id]: null,
-        }),
-        {}
-      ),
-    [submissions]
-  );
-
-  const handleSubmit = useCallback(async (values) => {
-    try {
-      console.log(values);
-    } catch (err) {
-      console.log(err);
-      setSubmitError(true);
-    }
-  }, []);
 
   return (
     <Formik
-      initialValues={initialValues}
-      validationSchema={schema}
+      initialValues={model.initialValues}
+      validationSchema={model.schema}
       onSubmit={handleSubmit}
     >
       {({ values, errors, touched, setFieldValue, isSubmitting }) => (
@@ -100,6 +75,7 @@ const UploaderForm: FunctionComponent<Props> = ({ submissions }) => {
 interface Props {
   submissions: DocumentSubmission[];
   requestId: string;
+  onSuccess(): void;
 }
 
 export default UploaderForm;

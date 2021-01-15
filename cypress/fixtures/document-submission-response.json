@@ -1,0 +1,56 @@
+[
+  {
+    "documentType": {
+      "id": "passport-scan",
+      "title": "Passport",
+      "description": "A valid passport open at the photo page"
+    },
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "rejectionReason": "string",
+    "state": "PENDING",
+    "uploadPolicy": {
+      "url": "https://s3.eu-west-2.amazonaws.com/documents-api-staging-bucket",
+      "fields": {
+        "Policy": "eyJleHBpcmF0aW9uIjoiMjAyMS0wMS0xNFQxMjo0Njo0MloiLCJjb25kaXRpb25zIjpbeyJidWNr",
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Credential": "ASIA2M6MH6B23FRY5AGL/20210114/eu-west-2/s3/aws4_request",
+        "X-Amz-Date": "20210114T114642Z",
+        "X-Amz-Security-Token": "IQoJb3JpZ2luX2VjECQaCWV1LXdlc3QtMiJGMEQCICARp6bKyZDPEzWNQCru/",
+        "X-Amz-Server-Side-Encryption": "AES256",
+        "X-Amz-Signature": "eee0db7a571db65f4eda9fc11cccaca0c9281b271ae77a4cae0480f17",
+        "acl": "private",
+        "bucket": "documents-api-staging-bucket",
+        "key": "65c63bc0-211d-4caf-8e66-d8263a111543"
+      }
+    }
+  },
+  {
+    "documentType": {
+      "id": "driving-license",
+      "title": "Driving license",
+      "description": "A valid UK full or provisional UK driving license"
+    },
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "createdAt": "2021-01-14T10:24:42.958Z",
+    "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "rejectionReason": null,
+    "state": "PENDING",
+    "uploadPolicy": {
+      "url": "https://s3.eu-west-2.amazonaws.com/documents-api-staging-bucket",
+      "fields": {
+        "Policy": "eyJleHBpcmF0aW9uIjoiMjAyMS0wMS0xNFQxMjo0Njo0MloiLCJjb25kaXRpb25zIjpbeyJidWNr",
+        "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+        "X-Amz-Credential": "ASIA2M6MH6B23FRY5AGL/20210114/eu-west-2/s3/aws4_request",
+        "X-Amz-Date": "20210114T114642Z",
+        "X-Amz-Security-Token": "IQoJb3JpZ2luX2VjECQaCWV1LXdlc3QtMiJGMEQCICARp6bKyZDPEzWNQCru/",
+        "X-Amz-Server-Side-Encryption": "AES256",
+        "X-Amz-Signature": "eee0db7a571db65f4eda9fc11cccaca0c9281b271ae77a4cae0480f17",
+        "acl": "private",
+        "bucket": "documents-api-staging-bucket",
+        "key": "65c63bc0-211d-4caf-8e66-d8263a111544"
+      }
+    }
+  }
+]

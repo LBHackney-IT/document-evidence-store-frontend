@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import { ReactNode } from 'react';
@@ -27,17 +27,21 @@ const Index = (): ReactNode => {
   useEffect(() => {
     if (!evidenceRequest) return;
 
-    evidenceRequest.documentTypes.forEach(({ id }) => {
-      gateway
-        .createDocumentSubmission(id)
-        .then((ds) => setDocumentSubmissions([...documentSubmissions, ds]));
-    });
+    const requests = evidenceRequest.documentTypes.map(({ id }) =>
+      gateway.createDocumentSubmission(id)
+    );
+
+    Promise.all(requests).then(setDocumentSubmissions);
   }, [evidenceRequest]);
 
-  const loading = useMemo(
-    () => documentSubmissions.length !== evidenceRequest?.documentTypes.length,
-    [evidenceRequest, documentSubmissions]
-  );
+  const onSuccess = useCallback(() => {
+    router.push(`/resident/${requestId}/confirmation`);
+  }, [requestId]);
+
+  const loading = useMemo(() => {
+    console.log(documentSubmissions);
+    return documentSubmissions.length !== evidenceRequest?.documentTypes.length;
+  }, [evidenceRequest, documentSubmissions]);
 
   return (
     <Layout>
@@ -56,6 +60,7 @@ const Index = (): ReactNode => {
             <UploaderForm
               submissions={documentSubmissions}
               requestId={requestId as string}
+              onSuccess={onSuccess}
             />
           )}
         </div>
