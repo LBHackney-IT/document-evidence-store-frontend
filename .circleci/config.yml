@@ -21,6 +21,10 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
+      - persist_to_workspace:
+          root: '~'
+          paths:
+            - .aws
 
   deploy-lambda:
     description: 'Deploys application'
