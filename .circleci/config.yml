@@ -9,20 +9,30 @@ executors:
     docker:
       - image: circleci/node:14
     working_directory: ~/project
+  python:
+    docker:
+      - image: circleci/python:3.7
+
+references:
+  workspace_root: &workspace_root '~'
+  attach_workspace: &attach_workspace
+    attach_workspace:
+      at: *workspace_root
 
 commands:
-  assume-role:
+  assume-role-and-persist-workspace:
     description: 'Assumes deployment role and persists credentials across jobs'
     parameters:
       aws-account:
         type: string
     steps:
+      - checkout
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
       - persist_to_workspace:
-          root: '~'
+          root: *workspace_root
           paths:
             - .aws
 
@@ -45,8 +55,8 @@ jobs:
     executor: node
 
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
+      - checkout
 
       - run:
           name: Run linter
@@ -58,17 +68,26 @@ jobs:
 
       - run:
           name: Run unit tests
-          command: npm run test:unit
+          command: npm run test:unit -- --maxWorkers=2
+
+  assume-role-staging:
+    executor: python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_STAGING
+
+  assume-role-production:
+    executor: python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_PRODUCTION
 
   deploy-staging:
     executor: node
 
     steps:
-      - attach_workspace:
-          at: ~/
-
-      - assume-role:
-          aws-account: $AWS_ACCOUNT_STAGING
+      - *attach_workspace
+      - checkout
 
       - deploy-lambda:
           stage: staging
@@ -77,11 +96,8 @@ jobs:
     executor: node
 
     steps:
-      - attach_workspace:
-          at: ~/
-
-      - assume-role:
-          aws-account: $AWS_ACCOUNT_PRODUCTION
+      - *attach_workspace
+      - checkout
 
       - deploy-lambda:
           stage: production
@@ -108,11 +124,18 @@ workflows:
           wait-on: 'http-get://127.0.0.1:3000'
           store_artifacts: true
 
-      - deploy-staging:
+      - assume-role-staging:
           context: api-assume-role-staging-context
           requires:
-            - test
             - cypress/run
+            - test
+          filters:
+            branches:
+              only: main
+
+      - deploy-staging:
+          requires:
+            - assume-role-staging
           filters:
             branches:
               only:
@@ -123,7 +146,12 @@ workflows:
       #     requires:
       #       - deploy-staging
 
+      # - assume-role-production:
+      #     context: api-assume-role-production-context
+      #     requires:
+      #       - permit-deploy-production
+
       # - deploy-production:
       #     context: api-assume-role-staging-context
       #     requires:
-      #       - permit-deploy-production
+      #       - assume-role-production
