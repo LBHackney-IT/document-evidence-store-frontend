@@ -34,12 +34,12 @@ describe('ResponseMapper', () => {
     });
 
     it('maps the document type', () => {
-      expect(result.documentTypes).toMatchObject([
-        {
+      expect(result.documentTypes).toEqual([
+        new DocumentType({
           id: 'passport-scan',
           title: 'Passport',
           description: 'A valid passport open at the photo page',
-        },
+        }),
       ]);
     });
 
@@ -78,20 +78,13 @@ describe('ResponseMapper', () => {
     });
 
     it('maps the basic attributes', () => {
-      const {
-        claimId,
-        rejectionReason,
-        id,
-        uploadPolicy,
-        documentType,
-      } = responseJson;
+      const { claimId, rejectionReason, id, uploadPolicy } = responseJson;
 
       expect(result).toMatchObject({
         claimId,
         rejectionReason,
         id,
         uploadPolicy,
-        documentType,
       });
     });
 
@@ -107,6 +100,16 @@ describe('ResponseMapper', () => {
 
     it('maps the document state', () => {
       expect(result.state).toEqual(DocumentState.PENDING);
+    });
+
+    it('maps the document type', () => {
+      expect(result.documentType).toEqual(
+        new DocumentType({
+          id: 'passport-scan',
+          title: 'Passport',
+          description: 'A valid passport open at the photo page',
+        })
+      );
     });
   });
 });

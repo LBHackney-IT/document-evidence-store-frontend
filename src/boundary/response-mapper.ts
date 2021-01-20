@@ -23,9 +23,10 @@ export interface EvidenceRequestResponse
   documentTypes: IDocumentType[];
 }
 export interface DocumentSubmissionResponse
-  extends Omit<IDocumentSubmission, 'createdAt' | 'state'> {
+  extends Omit<IDocumentSubmission, 'createdAt' | 'state' | 'documentType'> {
   createdAt: string;
   state: string;
+  documentType: IDocumentType;
 }
 
 export class ResponseMapper {
@@ -55,6 +56,7 @@ export class ResponseMapper {
   ): DocumentSubmission {
     const createdAt = DateTime.fromISO(attrs.createdAt);
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
-    return new DocumentSubmission({ ...attrs, createdAt, state });
+    const documentType = new DocumentType(attrs.documentType);
+    return new DocumentSubmission({ ...attrs, createdAt, state, documentType });
   }
 }

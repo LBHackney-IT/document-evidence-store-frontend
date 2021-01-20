@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import { ReactNode } from 'react';
@@ -14,9 +14,9 @@ const Index = (): ReactNode => {
   const gateway = new InternalApiGateway();
   const { requestId } = router.query as { requestId: string };
   const [evidenceRequest, setEvidenceRequest] = useState<EvidenceRequest>();
-  const [documentSubmissions, setDocumentSubmissions] = useState<{
-    [key: string]: DocumentSubmission;
-  }>({});
+  const [documentSubmissions, setDocumentSubmissions] = useState<
+    DocumentSubmission[]
+  >([]);
 
   useEffect(() => {
     gateway
@@ -27,14 +27,21 @@ const Index = (): ReactNode => {
   useEffect(() => {
     if (!evidenceRequest) return;
 
-    evidenceRequest.documentTypes.forEach(({ id }) => {
-      gateway
-        .createDocumentSubmission(id)
-        .then((ds) =>
-          setDocumentSubmissions({ ...documentSubmissions, [id]: ds })
-        );
-    });
+    const requests = evidenceRequest.documentTypes.map(({ id }) =>
+      gateway.createDocumentSubmission(id)
+    );
+
+    Promise.all(requests).then(setDocumentSubmissions);
   }, [evidenceRequest]);
+
+  const onSuccess = useCallback(() => {
+    router.push(`/resident/${requestId}/confirmation`);
+  }, [requestId]);
+
+  const loading = useMemo(() => {
+    console.log(documentSubmissions);
+    return documentSubmissions.length !== evidenceRequest?.documentTypes.length;
+  }, [evidenceRequest, documentSubmissions]);
 
   return (
     <Layout>
@@ -43,17 +50,23 @@ const Index = (): ReactNode => {
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <Heading level={HeadingLevels.H1}>Upload your documents</Heading>
+          <Heading level={HeadingLevels.H1}>
+            Upload your{' '}
+            {loading || documentSubmissions.length == 1
+              ? 'document'
+              : 'documents'}
+          </Heading>
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {evidenceRequest ? (
-            <UploaderForm
-              evidenceRequest={evidenceRequest}
-              requestId={requestId as string}
-            />
+          {loading ? (
+            <p className="lbh-body">Loading...</p>
           ) : (
-            <p>Loading...</p>
+            <UploaderForm
+              submissions={documentSubmissions}
+              requestId={requestId as string}
+              onSuccess={onSuccess}
+            />
           )}
         </div>
       </div>
