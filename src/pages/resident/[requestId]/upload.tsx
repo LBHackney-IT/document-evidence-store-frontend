@@ -50,7 +50,12 @@ const Index = (): ReactNode => {
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <Heading level={HeadingLevels.H1}>Upload your documents</Heading>
+          <Heading level={HeadingLevels.H1}>
+            Upload your{' '}
+            {loading || documentSubmissions.length == 1
+              ? 'document'
+              : 'documents'}
+          </Heading>
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
