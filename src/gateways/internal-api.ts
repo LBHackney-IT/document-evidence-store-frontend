@@ -22,6 +22,7 @@ export interface EvidenceRequestRequest {
   documentTypes: string[];
   resident: Omit<IResident, 'id'>;
   serviceRequestedBy?: string;
+  userRequestedBy?: string;
 }
 
 export class InternalApiGateway {
