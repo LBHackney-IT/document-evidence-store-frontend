@@ -1,4 +1,6 @@
-module.exports = {
+const nextEnv = require('next-env');
+
+const config = {
   distDir: 'build/_next',
   target: 'server',
   webpack: (config, { webpack, isServer }) => {
@@ -13,3 +15,9 @@ module.exports = {
     return config;
   },
 };
+
+const withNextEnv = nextEnv({
+  publicPrefix: 'RUNTIME_',
+});
+
+module.exports = withNextEnv(config);

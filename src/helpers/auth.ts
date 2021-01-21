@@ -5,9 +5,9 @@ import authGroupsJson from '../../auth-groups.json';
 import { EnvironmentKey } from '../../types/env';
 
 const secret = process.env.HACKNEY_JWT_SECRET as string;
-const cookieName = process.env.NEXT_PUBLIC_HACKNEY_COOKIE_NAME as string;
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL as string;
-const environmentKey = process.env.NEXT_PUBLIC_REACT_APP_ENV as EnvironmentKey;
+const cookieName = process.env.RUNTIME_HACKNEY_COOKIE_NAME as string;
+const baseUrl = process.env.RUNTIME_APP_URL as string;
+const environmentKey = process.env.RUNTIME_HOST_ENV as EnvironmentKey;
 const authGroups = authGroupsJson[environmentKey];
 const AUTH_WHITELIST = [
   '/login',
