@@ -1,12 +1,5 @@
 import axios, { Method } from 'axios';
-
-type TokenDictionary = {
-  [key: string]:
-    | {
-        [method: string]: string | undefined;
-      }
-    | undefined;
-};
+import { TokenDictionary } from '../../types/api';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -25,9 +18,6 @@ export class EvidenceApiGateway {
     body?: unknown
   ): Promise<{ data?: string; status: number }> {
     const token = this.getToken(pathSegments, method);
-    if (!token) {
-      return { status: 404 };
-    }
 
     try {
       const { status, data } = await axios.request({

@@ -156,14 +156,4 @@ describe('Evidence api gateway', () => {
       });
     });
   });
-
-  describe('for unrecognised path', () => {
-    const path = ['foo'];
-    const method = 'POST';
-
-    it('return 404', async () => {
-      const response = await gateway.request(path, method);
-      expect(response.status).toBe(404);
-    });
-  });
 });

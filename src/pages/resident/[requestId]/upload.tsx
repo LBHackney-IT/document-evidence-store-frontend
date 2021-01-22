@@ -28,7 +28,7 @@ const Index = (): ReactNode => {
     if (!evidenceRequest) return;
 
     const requests = evidenceRequest.documentTypes.map(({ id }) =>
-      gateway.createDocumentSubmission(id)
+      gateway.createDocumentSubmission(evidenceRequest, id)
     );
 
     Promise.all(requests).then(setDocumentSubmissions);
