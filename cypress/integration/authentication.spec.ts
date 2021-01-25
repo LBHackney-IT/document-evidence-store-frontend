@@ -28,8 +28,7 @@ describe('authentication', () => {
 
   context('when logged in without the correct google group', () => {
     it('shows access denied', () => {
-      const user = { ...defaultUser };
-      user.groups = ['some-other-group'];
+      const user = { ...defaultUser, groups: ['some-other-group'] };
       cy.login(user);
 
       cy.visit('/dashboard/requests/new');
@@ -38,5 +37,3 @@ describe('authentication', () => {
     });
   });
 });
-
-export {};

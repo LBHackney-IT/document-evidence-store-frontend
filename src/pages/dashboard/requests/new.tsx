@@ -1,4 +1,11 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import Head from 'next/head';
 import { Paragraph } from 'lbh-frontend-react';
 import NewRequestForm from '../../../components/NewRequestForm';
@@ -8,10 +15,12 @@ import {
 } from '../../../gateways/internal-api';
 import { DocumentType } from '../../../domain/document-type';
 import Layout from 'src/components/DashboardLayout';
+import { UserContext } from 'src/contexts/UserContext';
 
 const RequestsNewPage = (): ReactNode => {
   const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
   const [complete, setComplete] = useState(false);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     const gateway = new InternalApiGateway();
@@ -20,7 +29,11 @@ const RequestsNewPage = (): ReactNode => {
 
   const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
     const gateway = new InternalApiGateway();
-    const payload = { ...values, serviceRequestedBy: 'Housing benefit' };
+    const payload: EvidenceRequestRequest = {
+      ...values,
+      serviceRequestedBy: 'Housing benefit',
+      userRequestedBy: user?.email,
+    };
     await gateway.createEvidenceRequest(payload);
     setComplete(true);
   }, []);

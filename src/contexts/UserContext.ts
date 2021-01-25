@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { User } from 'src/helpers/auth';
+import { User } from '../domain/user';
 
 type UserContext = { user?: User };
 

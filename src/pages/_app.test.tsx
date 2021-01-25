@@ -1,22 +1,20 @@
 import { render } from '@testing-library/react';
-import App from './_app';
+import App, { CustomAppProps } from './_app';
 import React from 'react';
-import * as authHelpers from '../helpers/auth';
+import * as RequestAuthorizer from '../services/request-authorizer';
+import * as MockRequestAuthorizer from '../services/__mocks__/request-authorizer';
 import { mocked } from 'ts-jest/utils';
 import { IncomingMessage, ServerResponse } from 'http';
 import { NextPage, NextPageContext } from 'next';
 import NextApp, { AppContext, AppInitialProps } from 'next/app';
 import CustomApp from './_app';
+import { User } from '../domain/user';
+import { Router } from 'next/router';
 
-jest.mock('../helpers/auth');
+jest.mock('../services/request-authorizer');
 jest.mock('next/app');
 
-const {
-  authoriseUser,
-  pathIsWhitelisted,
-  userIsInValidGroup,
-  serverSideRedirect,
-} = mocked(authHelpers);
+const { executeMock } = RequestAuthorizer as typeof MockRequestAuthorizer;
 
 const MockedNextApp = mocked(NextApp);
 const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
@@ -25,7 +23,7 @@ MockedNextApp.getInitialProps.mockImplementation(async () => pageProps);
 describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
 
-  it('if the page is public returns the component with the right props', () => {
+  it('renders the component with the right props', () => {
     render(<App Component={pageComponent} pageProps={pageProps} />);
     expect(pageComponent).toHaveBeenCalledWith(pageProps, {});
   });
@@ -33,87 +31,101 @@ describe('CustomApp', () => {
   describe('getServerSideProps', () => {
     const req = {} as IncomingMessage;
     const res = {} as ServerResponse;
-    const ctx = {
-      req,
-      res,
-      pathname: '/path',
+    req.headers = { cookie: 'cookie' };
+    res.writeHead = jest.fn();
+    res.end = jest.fn();
+
+    const router = {} as Router;
+    router.replace = jest.fn();
+
+    const clientCtx = {
       asPath: '/path',
     } as NextPageContext;
-    const appContext = { ctx } as AppContext;
-    const replaceSpy = jest.fn();
-    let originalLocation: Location;
 
-    beforeAll(() => {
-      originalLocation = window.location;
-      // window.location is readonly by default
-      Object.defineProperty(window, 'location', {
-        configurable: true,
-        value: { replace: replaceSpy },
-      });
-    });
+    const serverCtx = {
+      ...clientCtx,
+      req,
+      res,
+    };
 
-    afterAll(() => {
-      window.location = originalLocation;
-    });
+    const serverContext = { ctx: serverCtx } as AppContext;
+    const clientContext = { ctx: clientCtx, router } as AppContext;
 
-    describe('when the user is not logged in', () => {
+    describe('when authentication fails', () => {
+      const redirect = 'redirect url';
+      let result: CustomAppProps;
+
       beforeEach(() => {
-        authoriseUser.mockImplementation(() => undefined);
+        executeMock.mockReturnValue({ success: false, redirect });
       });
 
-      it('redirects to login when the page is private and rendered server side', async () => {
-        pathIsWhitelisted.mockImplementation(() => false);
-        await CustomApp.getInitialProps(appContext);
+      describe('on server side', () => {
+        beforeEach(async () => {
+          result = await CustomApp.getInitialProps(serverContext);
+        });
 
-        expect(serverSideRedirect).toHaveBeenCalledWith(
-          res,
-          `/login?redirect=%2Fpath`
-        );
+        it('calls the authorizer correctly', () => {
+          expect(executeMock).toHaveBeenCalledWith({
+            serverSide: true,
+            cookieHeader: req.headers.cookie,
+            path: serverCtx.asPath,
+          });
+        });
+
+        it('redirects to the redirect url', async () => {
+          expect(res.writeHead).toHaveBeenCalledWith(302, {
+            Location: redirect,
+          });
+          expect(res.end).toHaveBeenCalled();
+        });
+
+        it('blocks the frontend while redirect occurs', () => {
+          expect(result).toEqual({ ...pageProps, accessDenied: true });
+        });
       });
 
-      it('returns `access denied` and redirects to login when the page is private and rendered client side', async () => {
-        jest.spyOn(window.location, 'replace');
-        const ctx = { pathname: '/path', asPath: '/path' } as NextPageContext;
-        const clientSideContext = { ctx } as AppContext;
-        pathIsWhitelisted.mockImplementation(() => false);
-        const result = await CustomApp.getInitialProps(clientSideContext);
+      describe('on client side', () => {
+        beforeEach(async () => {
+          result = await CustomApp.getInitialProps(clientContext);
+        });
 
-        expect(result).toEqual({ accessDenied: true });
-        expect(replaceSpy).toHaveBeenCalledWith(`/login?redirect=%2Fpath`);
-      });
+        it('calls the authorizer correctly', () => {
+          expect(executeMock).toHaveBeenCalledWith({
+            serverSide: false,
+            cookieHeader: undefined,
+            path: clientCtx.asPath,
+          });
+        });
 
-      it('returns empty props when the page is public', async () => {
-        pathIsWhitelisted.mockImplementation(() => true);
-        const result = await CustomApp.getInitialProps(appContext);
+        it('redirects to the redirect url', async () => {
+          expect(router.replace).toHaveBeenCalledWith(redirect);
+        });
 
-        expect(result).toEqual(pageProps);
+        it('blocks the frontend while redirect occurs', () => {
+          expect(result).toEqual({ ...pageProps, accessDenied: true });
+        });
       });
     });
 
-    describe('when the user is logged in', () => {
-      const user: authHelpers.User = {
+    describe('when authentication succeeds', () => {
+      const user: User = {
         groups: ['testGroup'],
         name: 'Frodo Baggins',
         email: 'frodo@baggins.com',
       };
+      let result: CustomAppProps;
 
-      beforeEach(() => {
-        authoriseUser.mockImplementation(() => user);
-        pathIsWhitelisted.mockImplementation(() => false);
+      beforeEach(async () => {
+        executeMock.mockReturnValue({ success: true, user });
+        result = await CustomApp.getInitialProps(serverContext);
       });
 
-      it('returns `access denied` when the user is not in a valid group', async () => {
-        userIsInValidGroup.mockImplementation(() => false);
-        const props = await CustomApp.getInitialProps(appContext);
-
-        expect(props).toEqual({ accessDenied: true });
-      });
-
-      it('returns the user in props when the user is in a valid group', async () => {
-        userIsInValidGroup.mockImplementation(() => true);
-        const result = await CustomApp.getInitialProps(appContext);
-
-        expect(result).toEqual({ ...pageProps, user });
+      it('returns the user', () => {
+        expect(result).toEqual({
+          ...pageProps,
+          user: user,
+          accessDenied: false,
+        });
       });
     });
   });

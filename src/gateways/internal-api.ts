@@ -1,13 +1,14 @@
-import { DocumentType, IDocumentType } from '../domain/document-type';
-import {
-  EvidenceRequestResponse,
-  // EvidenceRequestResponse,
-  ResponseMapper,
-} from '../boundary/response-mapper';
 import Axios from 'axios';
+import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { IResident } from 'src/domain/resident';
 import EvidenceRequestsFixture from '../../cypress/fixtures/evidence-request-response.json';
+import {
+  DocumentSubmissionResponse,
+  EvidenceRequestResponse,
+  ResponseMapper,
+} from '../boundary/response-mapper';
+import { DocumentType, IDocumentType } from '../domain/document-type';
 
 export class InternalServerError extends Error {
   constructor(message: string) {
@@ -21,6 +22,7 @@ export interface EvidenceRequestRequest {
   documentTypes: string[];
   resident: Omit<IResident, 'id'>;
   serviceRequestedBy?: string;
+  userRequestedBy?: string;
 }
 
 export class InternalApiGateway {
@@ -34,6 +36,18 @@ export class InternalApiGateway {
       const data = EvidenceRequestsFixture;
 
       return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getEvidenceRequest(id: string): Promise<EvidenceRequest> {
+    try {
+      const { data } = await Axios.get<EvidenceRequestResponse>(
+        `/api/evidence/evidence_requests/${id}`
+      );
+      return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
       console.log(err);
       throw new InternalServerError('Internal server error');
@@ -62,6 +76,21 @@ export class InternalApiGateway {
         '/api/evidence/document_types'
       );
       return data.map((dt) => ResponseMapper.mapDocumentType(dt));
+    } catch (err) {
+      console.log(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async createDocumentSubmission(
+    documentType: string
+  ): Promise<DocumentSubmission> {
+    try {
+      const { data } = await Axios.post<DocumentSubmissionResponse>(
+        '/api/evidence/document_submissions',
+        { documentType }
+      );
+      return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
       console.log(err);
       throw new InternalServerError('Internal server error');

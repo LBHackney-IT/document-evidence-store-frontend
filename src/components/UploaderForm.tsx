@@ -5,61 +5,42 @@ import React, {
   useCallback,
 } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
-import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
 import UploaderPanel from './UploaderPanel';
-import { DocumentType } from '../domain/document-type';
-import { EvidenceRequest } from '../domain/evidence-request';
+import { DocumentSubmission } from '../domain/document-submission';
+import { UploadFormModel } from '../services/upload-form-model';
 
-const UploaderForm: FunctionComponent<Props> = (props) => {
+const getError = (
+  id: string,
+  touched: FormikTouched<File>,
+  errors: FormikErrors<File>
+) => {
+  const dirty = touched[id as keyof typeof touched];
+  if (!dirty) return null;
+  return errors[id as keyof typeof errors] as string;
+};
+
+const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
   const [submitError, setSubmitError] = useState(false);
+  const model = useMemo(() => new UploadFormModel(submissions), [submissions]);
 
-  const requestedDocuments = props.evidenceRequest.documentTypes;
-
-  const schema = useMemo(
-    () =>
-      Yup.object(
-        requestedDocuments.reduce(
-          (others, key) => ({
-            ...others,
-            [key.id]: Yup.mixed().required('Please select a file'),
-          }),
-          {}
-        )
-      ),
-    [requestedDocuments]
-  );
-
-  const initialValues = useMemo(
-    () =>
-      requestedDocuments.reduce(
-        (others, key) => ({
-          ...others,
-          [key.id]: '',
-        }),
-        {}
-      ),
-    [requestedDocuments]
-  );
-
-  const handleSubmit = useCallback(async (values) => {
-    try {
-      // using formdata to ensure file objects are correctly transmitted
-      const formData = new FormData();
-      for (const key in values) {
-        formData.set(key, values[key]);
+  const handleSubmit = useCallback(
+    async (values) => {
+      try {
+        await model.handleSubmit(values);
+        onSuccess();
+      } catch (err) {
+        console.log(err);
+        setSubmitError(true);
       }
-      // process form here...
-    } catch (err) {
-      console.log(err);
-      setSubmitError(true);
-    }
-  }, []);
+    },
+    [model, setSubmitError]
+  );
 
   return (
     <Formik
-      initialValues={initialValues}
-      validationSchema={schema}
+      initialValues={model.initialValues}
+      validationSchema={model.schema}
       onSubmit={handleSubmit}
     >
       {({ values, errors, touched, setFieldValue, isSubmitting }) => (
@@ -70,19 +51,15 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
             </ErrorMessage>
           )}
 
-          {requestedDocuments.map((document) => (
+          {submissions.map(({ id, documentType }) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
-              key={document.id}
-              label={document.title}
-              hint={document.description}
-              name={document.id}
-              set={!!values[document.id as keyof typeof values]}
-              error={
-                touched[document.id as keyof typeof touched]
-                  ? errors[document.id as keyof typeof errors]
-                  : null
-              }
+              key={id}
+              label={documentType.title}
+              hint={documentType.description}
+              name={id}
+              set={!!values[id as keyof typeof values]}
+              error={getError(id, touched, errors)}
             />
           ))}
 
@@ -96,9 +73,9 @@ const UploaderForm: FunctionComponent<Props> = (props) => {
 };
 
 interface Props {
-  documentTypes: Array<DocumentType>;
-  evidenceRequest: EvidenceRequest;
+  submissions: DocumentSubmission[];
   requestId: string;
+  onSuccess(): void;
 }
 
 export default UploaderForm;

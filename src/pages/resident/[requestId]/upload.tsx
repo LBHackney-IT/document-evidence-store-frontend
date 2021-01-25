@@ -1,27 +1,47 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import { ReactNode } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import UploaderForm from '../../../components/UploaderForm';
-import { DocumentType } from '../../../domain/document-type';
 import { EvidenceRequest } from '../../../domain/evidence-request';
 import { InternalApiGateway } from '../../../gateways/internal-api';
+import { DocumentSubmission } from 'src/domain/document-submission';
 
 const Index = (): ReactNode => {
   const router = useRouter();
-  const { requestId } = router.query;
-  const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
+  const gateway = new InternalApiGateway();
+  const { requestId } = router.query as { requestId: string };
   const [evidenceRequest, setEvidenceRequest] = useState<EvidenceRequest>();
+  const [documentSubmissions, setDocumentSubmissions] = useState<
+    DocumentSubmission[]
+  >([]);
 
   useEffect(() => {
-    const gateway = new InternalApiGateway();
-    gateway.getDocumentTypes().then(setDocumentTypes);
     gateway
-      .getEvidenceRequests()
-      .then((requests) => setEvidenceRequest(requests[0]));
+      .getEvidenceRequest(requestId)
+      .then((request) => setEvidenceRequest(request));
   }, []);
+
+  useEffect(() => {
+    if (!evidenceRequest) return;
+
+    const requests = evidenceRequest.documentTypes.map(({ id }) =>
+      gateway.createDocumentSubmission(id)
+    );
+
+    Promise.all(requests).then(setDocumentSubmissions);
+  }, [evidenceRequest]);
+
+  const onSuccess = useCallback(() => {
+    router.push(`/resident/${requestId}/confirmation`);
+  }, [requestId]);
+
+  const loading = useMemo(() => {
+    console.log(documentSubmissions);
+    return documentSubmissions.length !== evidenceRequest?.documentTypes.length;
+  }, [evidenceRequest, documentSubmissions]);
 
   return (
     <Layout>
@@ -30,18 +50,23 @@ const Index = (): ReactNode => {
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <Heading level={HeadingLevels.H1}>Upload your documents</Heading>
+          <Heading level={HeadingLevels.H1}>
+            Upload your{' '}
+            {loading || documentSubmissions.length == 1
+              ? 'document'
+              : 'documents'}
+          </Heading>
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {documentTypes && evidenceRequest ? (
-            <UploaderForm
-              documentTypes={documentTypes}
-              evidenceRequest={evidenceRequest}
-              requestId={requestId as string}
-            />
+          {loading ? (
+            <p className="lbh-body">Loading...</p>
           ) : (
-            <p>Loading...</p>
+            <UploaderForm
+              submissions={documentSubmissions}
+              requestId={requestId as string}
+              onSuccess={onSuccess}
+            />
           )}
         </div>
       </div>
