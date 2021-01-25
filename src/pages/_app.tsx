@@ -58,11 +58,13 @@ CustomApp.getInitialProps = async (
   }
 
   const { redirect } = response;
-  if (res) {
-    res.writeHead(302, { Location: redirect });
-    res.end();
-  } else {
-    router.replace(redirect);
+  if (redirect) {
+    if (res) {
+      res.writeHead(302, { Location: redirect });
+      res.end();
+    } else {
+      router.replace(redirect);
+    }
   }
 
   return { ...appProps, accessDenied: true };

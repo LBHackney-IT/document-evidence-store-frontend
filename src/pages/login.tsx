@@ -13,7 +13,8 @@ const createLoginUrl = (redirect: string): string => {
 const Home = (): ReactNode => {
   const router = useRouter();
   const loginUrl = useMemo(() => {
-    const { redirect = '/dashboard' } = router.query as { redirect?: string };
+    let { redirect } = router.query as { redirect?: string };
+    if (!redirect || redirect == '/') redirect = '/dashboard';
     return createLoginUrl(redirect);
   }, [router]);
 

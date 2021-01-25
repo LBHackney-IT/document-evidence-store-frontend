@@ -8,13 +8,14 @@ const authGroupsJson = AuthGroupsJson as {
   [key: string]: Record<string, string>;
 };
 
+const GLOB = '[^/]+';
 const AUTH_WHITELIST = [
   '/login',
   '/access-denied',
-  '/resident/[requestId]',
-  '/resident/[requestId]/upload',
-  '/resident/[requestId]/confirmation',
-];
+  '/resident/*',
+  '/resident/*/upload',
+  '/resident/*/confirmation',
+].map((str) => new RegExp(`^${str.replace('*', GLOB)}$`));
 
 export interface RequestAuthorizerCommand {
   path: string;
@@ -29,7 +30,7 @@ export type RequestAuthorizerResponse =
     }
   | {
       success: false;
-      redirect: string;
+      redirect?: string;
     };
 
 export interface RequestAuthorizerDependencies {
@@ -37,7 +38,7 @@ export interface RequestAuthorizerDependencies {
   cookieName: string;
   environmentKey: EnvironmentKey;
   authGroups: Record<string, string>;
-  authWhitelist: string[];
+  authWhitelist: RegExp[];
 }
 
 const defaultDependencies = {
@@ -53,7 +54,7 @@ export class RequestAuthorizer {
   private cookieName: string;
   private environmentKey: string;
   private authGroups: Record<string, string>;
-  private authWhitelist: string[];
+  private authWhitelist: RegExp[];
 
   constructor(deps: Partial<RequestAuthorizerDependencies> = {}) {
     this.secret = deps.secret ?? defaultDependencies.secret;
@@ -81,14 +82,15 @@ export class RequestAuthorizer {
     }
 
     if (!this.userIsInValidGroup(user)) {
-      return { success: false, redirect: '/access-denied' };
+      return { success: false };
     }
 
     return { success: true, user };
   }
 
   private pathIsWhitelisted(path: string): boolean {
-    return this.authWhitelist.includes(path);
+    const { pathname } = new URL(path, 'http://hackney.gov.uk');
+    return this.authWhitelist.some((regex) => regex.test(pathname));
   }
 
   private userIsInValidGroup(user: User): boolean {

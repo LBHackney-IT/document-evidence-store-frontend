@@ -73,13 +73,17 @@ describe('Request Authorizer', () => {
             secret,
             environmentKey: 'production',
             authGroups: { VALID: 'valid-group' },
-            authWhitelist: ['/'],
+            authWhitelist: [/\//],
           });
         });
 
         it('tries to verify the token', () => {
           const cookieHeader = 'cookie header';
-          instance.execute({ serverSide: true, path: '/', cookieHeader });
+          instance.execute({
+            serverSide: true,
+            path: '/?foo=bar#title',
+            cookieHeader,
+          });
 
           expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
           expect(mockJWT.verify).toHaveBeenCalledWith(token, secret);
@@ -158,7 +162,7 @@ describe('Request Authorizer', () => {
         if (result.success) fail('Should be a faillure');
 
         expect(result.success).toBeFalsy();
-        expect(result.redirect).toEqual('/access-denied');
+        expect(result.redirect).toBeUndefined();
       });
     });
   });
