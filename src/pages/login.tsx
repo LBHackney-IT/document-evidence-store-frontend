@@ -1,9 +1,14 @@
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { ReactNode, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { createLoginUrl } from 'src/helpers/auth';
 import Layout from '../components/ResidentLayout';
 import Link from 'next/link';
+
+const baseUrl = process.env.RUNTIME_APP_URL as string;
+
+const createLoginUrl = (redirect: string): string => {
+  return `https://auth.hackney.gov.uk/auth?redirect_uri=${baseUrl}${redirect}`;
+};
 
 const Home = (): ReactNode => {
   const router = useRouter();

@@ -1,20 +1,16 @@
-import '../styles/globals.scss';
+import { NextPage } from 'next';
 import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
-import {
-  authoriseUser,
-  pathIsWhitelisted,
-  serverSideRedirect,
-  unsafeExtractUser,
-  User,
-  userIsInValidGroup,
-} from '../helpers/auth';
-import { UserContext } from '../contexts/UserContext';
-import { NextPage } from 'next';
+import { User } from 'src/domain/user';
 import { AccessDeniedPage } from '../components/AccessDeniedPage';
+import { UserContext } from '../contexts/UserContext';
+import {
+  RequestAuthorizer,
+  RequestAuthorizerCommand,
+} from '../services/request-authorizer';
+import '../styles/globals.scss';
 
-type CustomAppProps = {
-  Component: NextPage;
+export type CustomAppProps = {
   pageProps: AppProps['pageProps'];
   user?: User;
   accessDenied?: boolean;
@@ -25,7 +21,7 @@ const CustomApp = ({
   pageProps,
   user,
   accessDenied,
-}: CustomAppProps): JSX.Element | null => {
+}: CustomAppProps & { Component: NextPage }): JSX.Element | null => {
   if (accessDenied) return <AccessDeniedPage />;
 
   return (
@@ -35,36 +31,41 @@ const CustomApp = ({
   );
 };
 
-CustomApp.getInitialProps = async (appContext: AppContext) => {
+const authorizer = new RequestAuthorizer();
+CustomApp.getInitialProps = async (
+  appContext: AppContext
+): Promise<CustomAppProps> => {
   const {
-    ctx: { req, res, pathname, asPath },
+    ctx: { req, res, asPath },
+    router,
   } = appContext;
   const appProps = await App.getInitialProps(appContext);
-  // const currentPath = asPath || '/';
 
-  const user = req && res ? authoriseUser(req) : unsafeExtractUser();
-  const props = { ...appProps, user };
+  const command: RequestAuthorizerCommand = {
+    path: asPath ?? '/',
+    cookieHeader: req?.headers.cookie,
+    serverSide: req !== undefined && res !== undefined,
+  };
 
-  if (pathIsWhitelisted(pathname)) return props;
+  const response = authorizer.execute(command);
 
-  if (!user) {
-    const redirect = encodeURIComponent(asPath || '/');
-    const url = `/login?redirect=${redirect}`;
-
-    if (req && res) {
-      serverSideRedirect(res, url);
-    } else {
-      window.location.replace(url);
-    }
-
-    return { accessDenied: true };
+  if (response.success) {
+    return {
+      ...appProps,
+      accessDenied: false,
+      user: response.user,
+    };
   }
 
-  if (!userIsInValidGroup(user)) {
-    return { accessDenied: true };
+  const { redirect } = response;
+  if (res) {
+    res.writeHead(302, { Location: redirect });
+    res.end();
+  } else {
+    router.replace(redirect);
   }
 
-  return props;
+  return { ...appProps, accessDenied: true };
 };
 
 export default CustomApp;
