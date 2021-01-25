@@ -64,7 +64,7 @@ describe('CustomApp', () => {
           result = await CustomApp.getInitialProps(serverContext);
         });
 
-        it('calls executes the authorizer correctly', () => {
+        it('calls the authorizer correctly', () => {
           expect(executeMock).toHaveBeenCalledWith({
             serverSide: true,
             cookieHeader: req.headers.cookie,
@@ -89,7 +89,7 @@ describe('CustomApp', () => {
           result = await CustomApp.getInitialProps(clientContext);
         });
 
-        it('calls executes the authorizer correctly', () => {
+        it('calls the authorizer correctly', () => {
           expect(executeMock).toHaveBeenCalledWith({
             serverSide: false,
             cookieHeader: undefined,
