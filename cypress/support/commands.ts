@@ -8,9 +8,8 @@ export const defaultUser: UserData = {
 };
 
 Cypress.Commands.add('login', (userData: UserData = defaultUser) => {
-  const jwtSecret = Cypress.env('HACKNEY_JWT_SECRET');
   const cookieName = Cypress.env('RUNTIME_HACKNEY_COOKIE_NAME');
-  const token = jwt.sign(userData, jwtSecret);
+  const token = jwt.sign(userData, 'sekret');
 
   cy.setCookie(cookieName, token);
   cy.wrap(defaultUser).as('defaultUser');
