@@ -11,21 +11,36 @@ const Field = (props: Props): JSX.Element => (
     <Label labelFor={props.name}>{props.label}</Label>
     {props.hint && <Hint id={`${props.name}-hint`}>{props.hint}</Hint>}
     {props.error && <ErrorMessage>{props.error}</ErrorMessage>}
-    <FormikField
-      name={props.name}
-      id={props.name}
-      aria-describedby={props.hint ? `${props.name}-hint` : false}
-      className={`govuk-input lbh-input ${
-        props.error ? 'govuk-input--error' : null
-      }`}
-    />
+    {props.textarea ? (
+      <FormikField
+        name={props.name}
+        id={props.name}
+        as="textarea"
+        rows="3"
+        data-testid="textarea"
+        aria-describedby={props.hint ? `${props.name}-hint` : false}
+        className={`govuk-textarea  lbh-textarea ${
+          props.error ? 'govuk-input--error' : null
+        }`}
+      />
+    ) : (
+      <FormikField
+        name={props.name}
+        id={props.name}
+        aria-describedby={props.hint ? `${props.name}-hint` : false}
+        className={`govuk-input  lbh-input ${
+          props.error ? 'govuk-input--error' : null
+        }`}
+      />
+    )}
   </div>
 );
 
 export interface Props {
   label: string;
-  hint?: string;
   name: string;
+  textarea?: boolean;
+  hint?: string;
   error?: string | null;
 }
 

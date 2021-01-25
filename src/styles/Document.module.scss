@@ -1,0 +1,16 @@
+.actions {
+  margin-bottom: 35px;
+  *:first-child {
+    margin-right: 10px;
+  }
+}
+
+.preview {
+  margin: 0;
+  margin-bottom: 35px;
+
+  img {
+    background-color: #f3f2f1;
+    max-width: 100%;
+  }
+}

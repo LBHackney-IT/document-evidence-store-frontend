@@ -4,6 +4,7 @@ import Field from './Field';
 import { Formik, Form } from 'formik';
 
 const submitSpy = jest.fn();
+
 test('is properly named, labelled and responds to input', async () => {
   render(
     <Formik initialValues={{ exampleName: '' }} onSubmit={submitSpy}>
@@ -43,4 +44,15 @@ test('displays errors', async () => {
     </Formik>
   );
   expect(screen.getByText('Example error'));
+});
+
+test('renders a textarea if asked', async () => {
+  render(
+    <Formik initialValues={{ exampleName: '' }} onSubmit={submitSpy}>
+      <Form>
+        <Field label="Example label" name="exampleName" textarea />
+      </Form>
+    </Formik>
+  );
+  expect(screen.getByTestId('textarea'));
 });

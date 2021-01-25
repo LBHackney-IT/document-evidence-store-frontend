@@ -53,11 +53,7 @@ const Layout: FunctionComponent = ({ children }) => {
             </ul>
           </nav>
 
-          <main
-            className={styles['layout__pane']}
-            id="main-content"
-            role="main"
-          >
+          <main className={styles['layout__pane']} id="main-content">
             {children}
           </main>
         </div>

@@ -4,6 +4,7 @@
   z-index: 5;
   width: 90vw;
   max-width: 600px;
+  margin-top: 13vh;
 
   @media screen and (min-width: 600px) {
     width: 600px;
@@ -11,5 +12,41 @@
 
   *:first-child {
     margin-top: 0;
+  }
+}
+
+.actions {
+  margin-top: 30px;
+
+  *:first-of-type {
+    margin-bottom: 15px;
+  }
+
+  @media screen and (min-width: 600px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    *:first-of-type {
+      margin-bottom: 0px;
+      margin-right: 20px;
+    }
+  }
+}
+
+.cancelButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-decoration: underline;
+  // needed to override inline styles on buttons
+  color: #025ea6 !important;
+  &:hover,
+  &:active {
+    color: #0085ca !important;
+  }
+  &:focus {
+    color: #0b0c0c !important;
   }
 }
