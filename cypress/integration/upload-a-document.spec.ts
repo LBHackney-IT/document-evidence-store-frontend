@@ -1,4 +1,5 @@
 import dsFixtures from '../fixtures/document-submission-response.json';
+import erFixtures from '../fixtures/evidence-request-response-singular.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';
@@ -10,13 +11,19 @@ describe('Can upload a document', () => {
     cy.intercept('GET', `/api/evidence/evidence_requests/${requestId}`, {
       fixture: 'evidence-request-response-singular',
     });
-    cy.intercept('POST', '/api/evidence/document_submissions', (req) => {
-      const docType = req.body.documentType;
-      const response = dsFixtures.find((ds) => ds.documentType.id === docType);
-      req.reply((res) => {
-        res.send(201, response);
-      });
-    }).as('s3Upload');
+    cy.intercept(
+      'POST',
+      `/api/evidence/evidence_requests/${erFixtures.id}/document_submissions`,
+      (req) => {
+        const docType = req.body.documentType;
+        const response = dsFixtures.find(
+          (ds) => ds.documentType.id === docType
+        );
+        req.reply((res) => {
+          res.send(201, response);
+        });
+      }
+    );
 
     cy.visit(`http://localhost:3000/resident/${requestId}`);
     cy.injectAxe();
@@ -31,7 +38,7 @@ describe('Can upload a document', () => {
       cy.intercept('POST', dsFixtures[0].uploadPolicy.url, {
         statusCode: 201,
         delayMs: 2500,
-      });
+      }).as('s3Upload');
     });
 
     it('shows guidance and lets you upload a file', () => {
@@ -63,7 +70,7 @@ describe('Can upload a document', () => {
     beforeEach(() => {
       cy.intercept('POST', dsFixtures[0].uploadPolicy.url, {
         forceNetworkError: true,
-      });
+      }).as('s3Upload');
     });
 
     it('shows guidance and lets you upload a file', () => {
