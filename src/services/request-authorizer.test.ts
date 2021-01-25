@@ -12,7 +12,7 @@ jest.mock('jsonwebtoken');
 jest.mock('universal-cookie');
 const mockJWT = mocked(jwt);
 const jwtPayload = {
-  groups: 'valid-group',
+  groups: ['valid-group'],
   name: 'frodo',
   email: 'frodo@bag.end',
 } as User;
@@ -126,8 +126,13 @@ describe('Request Authorizer', () => {
   });
 
   describe('when the user is logged in', () => {
+    /* seemingly ts-jest can't handle function overloads very well,
+     * so expects the return type to match `void` (despite this function
+     * also working synchronously to return a value)
+     */
+    type MockVerify = jest.MockedFunction<() => User>;
     beforeEach(() => {
-      mockJWT.verify.mockReturnValue(jwtPayload);
+      ((mockJWT.verify as unknown) as MockVerify).mockReturnValue(jwtPayload);
     });
 
     it('succeeds', () => {
@@ -141,7 +146,7 @@ describe('Request Authorizer', () => {
 
     describe('but not part of a valid group', () => {
       beforeEach(() => {
-        mockJWT.verify.mockReturnValue({
+        ((mockJWT.verify as unknown) as MockVerify).mockReturnValue({
           ...jwtPayload,
           groups: ['other-group'],
         });
