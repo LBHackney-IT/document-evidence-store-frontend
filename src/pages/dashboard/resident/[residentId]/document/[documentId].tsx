@@ -1,13 +1,13 @@
+import { Button } from 'lbh-frontend-react';
 import Head from 'next/head';
-import { Button, Heading, HeadingLevels } from 'lbh-frontend-react';
-import { ReactNode } from 'react';
-import Layout from 'src/components/DashboardLayout';
-import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { humanFileSize } from 'src/helpers/formatters';
+import { useRouter } from 'next/router';
+import { ReactNode } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
-import RejectDialog from 'src/components/RejectDialog';
+import Layout from 'src/components/DashboardLayout';
 import History from 'src/components/History';
+import RejectDialog from 'src/components/RejectDialog';
+import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
 
 const DocumentDetailPage = (): ReactNode => {
@@ -20,13 +20,13 @@ const DocumentDetailPage = (): ReactNode => {
         <title>Passport | Firstname Surname</title>
       </Head>
 
-      <Heading level={HeadingLevels.H2}>
+      <h1 className="lbh-heading-h2">
         <Link href={`/dashboard/resident/${residentId}`}>
           <a className="lbh-link">Firstname Surname</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
         Passport
-      </Heading>
+      </h1>
 
       <div className={styles.actions}>
         <Link
@@ -45,7 +45,7 @@ const DocumentDetailPage = (): ReactNode => {
         </Link>
       </div>
 
-      <Heading level={HeadingLevels.H3}>Preview</Heading>
+      <h2 className="lbh-heading-h3">Preview</h2>
 
       <figure className={styles.preview}>
         <img src="http://placehold.it/600x400" alt="example" />
@@ -57,9 +57,9 @@ const DocumentDetailPage = (): ReactNode => {
         </figcaption>
       </figure>
 
-      <Heading level={HeadingLevels.H3}>History</Heading>
+      <h2 className="lbh-heading-h3">History</h2>
 
-      <History/>
+      <History />
 
       <AcceptDialog
         open={action === 'accept'}
