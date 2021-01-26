@@ -40,6 +40,15 @@ describe('Create evidence requests', () => {
 
     cy.get('button').contains('Send request').click();
 
+    cy.get('[role=dialog]').within(() => {
+      cy.get('li').contains('Frodo Baggins');
+      cy.get('li').contains('frodo@bagend.com');
+      cy.get('li').contains('+447123456780');
+      cy.get('li').contains('Driving license');
+
+      cy.get('button').contains('Yes, send this request').click();
+    });
+
     cy.get('body').contains('Thanks!');
   });
 });
