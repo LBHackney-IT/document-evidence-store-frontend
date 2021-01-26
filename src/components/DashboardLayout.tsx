@@ -23,7 +23,7 @@ const Layout: FunctionComponent = ({ children }) => {
         serviceName="Upload"
         isServiceNameShort={true}
         isStackedOnMobile={true}
-        homepageUrl="/"
+        homepageUrl="/dashboard"
       >
         <p>{user.name}</p>
         <a href="#">Sign out</a>
