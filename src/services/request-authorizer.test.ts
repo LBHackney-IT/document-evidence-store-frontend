@@ -7,6 +7,7 @@ import * as Cookie from 'universal-cookie';
 import * as MockCookie from '../../__mocks__/universal-cookie';
 import { mocked } from 'ts-jest/utils';
 import { User } from '../domain/user';
+import { AuthenticationError } from '../../types/auth-errors';
 
 jest.mock('jsonwebtoken');
 jest.mock('universal-cookie');
@@ -63,7 +64,7 @@ describe('Request Authorizer', () => {
         if (result.success) fail('Should be a faillure');
 
         expect(result.success).toBeFalsy();
-        expect(result.redirect).toEqual('/login?redirect=%2F');
+        expect(result.error).toEqual(AuthenticationError.InvalidToken);
       });
 
       describe('but the page is whitelisted', () => {
@@ -162,7 +163,9 @@ describe('Request Authorizer', () => {
         if (result.success) fail('Should be a faillure');
 
         expect(result.success).toBeFalsy();
-        expect(result.redirect).toBeUndefined();
+        expect(result.error).toEqual(
+          AuthenticationError.GoogleGroupNotRecognised
+        );
       });
     });
   });

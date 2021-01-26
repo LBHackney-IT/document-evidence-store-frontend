@@ -2,6 +2,7 @@ import Cookie from 'universal-cookie';
 import * as jsonwebtoken from 'jsonwebtoken';
 import AuthGroupsJson from '../../auth-groups.json';
 import { EnvironmentKey } from '../../types/env';
+import { AuthenticationError } from '../../types/auth-errors';
 import { User } from '../domain/user';
 
 const authGroupsJson = AuthGroupsJson as {
@@ -32,7 +33,7 @@ export type RequestAuthorizerResponse =
     }
   | {
       success: false;
-      redirect?: string;
+      error: AuthenticationError;
     };
 
 export interface RequestAuthorizerDependencies {
@@ -77,14 +78,14 @@ export class RequestAuthorizer {
     if (this.pathIsWhitelisted(command.path)) return { success: true, user };
 
     if (!user) {
-      const redirect = encodeURIComponent(command.path || '/');
-      const url = `/login?redirect=${redirect}`;
-
-      return { success: false, redirect: url };
+      return { success: false, error: AuthenticationError.InvalidToken };
     }
 
     if (!this.userIsInValidGroup(user)) {
-      return { success: false };
+      return {
+        success: false,
+        error: AuthenticationError.GoogleGroupNotRecognised,
+      };
     }
 
     return { success: true, user };
