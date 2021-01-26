@@ -18,8 +18,9 @@ const endpoint: NextApiHandler = async (req, res) => {
     path: path.join('/'),
   };
 
-  const { success } = authorizer.execute(authorizeCommand);
-  if (!success) return res.status(401).json({ error: 'Unauthorised' });
+  const authResult = authorizer.execute(authorizeCommand);
+  if (!authResult.success)
+    return res.status(401).json({ error: authResult.error });
 
   try {
     const { status, data } = await evidenceApiGateway.request(

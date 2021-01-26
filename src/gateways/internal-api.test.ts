@@ -4,6 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 import { ResponseMapper } from '../boundary/response-mapper';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
+import { EvidenceRequest } from 'src/domain/evidence-request';
 
 jest.mock('axios');
 jest.mock('../boundary/response-mapper');
@@ -170,14 +171,15 @@ describe('Internal API Gateway', () => {
     });
   });
 
-  describe('createDocument', () => {
+  describe('createDocumentSubmission', () => {
     const documentType = 'passport-scan';
+    const evidenceRequest = { id: 'evidence request id' } as EvidenceRequest;
 
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         mockedAxios.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.createDocumentSubmission(documentType);
+          gateway.createDocumentSubmission(evidenceRequest, documentType);
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -197,9 +199,9 @@ describe('Internal API Gateway', () => {
       });
 
       it('calls axios correctly', async () => {
-        await gateway.createDocumentSubmission(documentType);
+        await gateway.createDocumentSubmission(evidenceRequest, documentType);
         expect(mockedAxios.post).toHaveBeenCalledWith(
-          '/api/evidence/document_submissions',
+          `/api/evidence/evidence_requests/${evidenceRequest.id}/document_submissions`,
           {
             documentType,
           }
@@ -207,14 +209,17 @@ describe('Internal API Gateway', () => {
       });
 
       it('maps the response correctly', async () => {
-        await gateway.createDocumentSubmission(documentType);
+        await gateway.createDocumentSubmission(evidenceRequest, documentType);
         expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
           DocumentSubmissionFixture
         );
       });
 
       it('returns the correct response', async () => {
-        const result = await gateway.createDocumentSubmission(documentType);
+        const result = await gateway.createDocumentSubmission(
+          evidenceRequest,
+          documentType
+        );
         expect(result).toEqual(mappedResponse);
       });
     });

@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import App, { AppContext, AppProps } from 'next/app';
 import React from 'react';
-import { User } from 'src/domain/user';
+import { User } from '../domain/user';
 import { AccessDeniedPage } from '../components/AccessDeniedPage';
 import { UserContext } from '../contexts/UserContext';
 import {
@@ -9,6 +9,7 @@ import {
   RequestAuthorizerCommand,
 } from '../services/request-authorizer';
 import '../styles/globals.scss';
+import { AuthenticationError } from '../../types/auth-errors';
 
 export type CustomAppProps = {
   pageProps: AppProps['pageProps'];
@@ -57,13 +58,15 @@ CustomApp.getInitialProps = async (
     };
   }
 
-  const { redirect } = response;
-  if (redirect) {
+  if (response.error == AuthenticationError.InvalidToken) {
+    const redirect = encodeURIComponent(command.path || '/');
+    const url = `/login?redirect=${redirect}`;
+
     if (res) {
-      res.writeHead(302, { Location: redirect });
+      res.writeHead(302, { Location: url });
       res.end();
     } else {
-      router.replace(redirect);
+      router.replace(url);
     }
   }
 

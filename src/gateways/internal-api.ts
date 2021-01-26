@@ -83,11 +83,12 @@ export class InternalApiGateway {
   }
 
   async createDocumentSubmission(
+    evidenceRequest: EvidenceRequest,
     documentType: string
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await Axios.post<DocumentSubmissionResponse>(
-        '/api/evidence/document_submissions',
+        `/api/evidence/evidence_requests/${evidenceRequest.id}/document_submissions`,
         { documentType }
       );
       return ResponseMapper.mapDocumentSubmission(data);

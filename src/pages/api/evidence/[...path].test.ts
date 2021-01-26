@@ -10,7 +10,9 @@ jest.mock('../../../gateways/evidence-api');
 jest.mock('../../../services/request-authorizer');
 
 const { requestMock } = EvidenceApi as typeof EvidenceApiMock;
-const { executeMock } = RequestAuthorizer as typeof MockRequestAuthorizer;
+const {
+  executeMock,
+} = (RequestAuthorizer as unknown) as typeof MockRequestAuthorizer;
 
 describe('endpoint', () => {
   const cookieHeader = 'cookie header';
@@ -86,10 +88,11 @@ describe('endpoint', () => {
   });
 
   describe('returns 401 not authorised', () => {
-    const expectedData = { error: 'Unauthorised' };
+    const error = 'oh noes';
+    const expectedData = { error };
     const expectedStatus = 401;
     it('returns an error when the user is not authenticated', async () => {
-      executeMock.mockReturnValue({ success: false });
+      executeMock.mockReturnValue({ success: false, error });
       await endpoint(req, res);
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
       expect(res.json).toHaveBeenCalledWith(expectedData);

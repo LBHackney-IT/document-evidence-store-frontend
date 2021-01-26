@@ -10,11 +10,14 @@ import NextApp, { AppContext, AppInitialProps } from 'next/app';
 import CustomApp from './_app';
 import { User } from '../domain/user';
 import { Router } from 'next/router';
+import { AuthenticationError } from '../../types/auth-errors';
 
 jest.mock('../services/request-authorizer');
 jest.mock('next/app');
 
-const { executeMock } = RequestAuthorizer as typeof MockRequestAuthorizer;
+const {
+  executeMock,
+} = (RequestAuthorizer as unknown) as typeof MockRequestAuthorizer;
 
 const MockedNextApp = mocked(NextApp);
 const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
@@ -52,11 +55,11 @@ describe('CustomApp', () => {
     const clientContext = { ctx: clientCtx, router } as AppContext;
 
     describe('when authentication fails', () => {
-      const redirect = 'redirect url';
+      const error = AuthenticationError.InvalidToken;
       let result: CustomAppProps;
 
       beforeEach(() => {
-        executeMock.mockReturnValue({ success: false, redirect });
+        executeMock.mockReturnValue({ success: false, error });
       });
 
       describe('on server side', () => {
@@ -74,7 +77,7 @@ describe('CustomApp', () => {
 
         it('redirects to the redirect url', async () => {
           expect(res.writeHead).toHaveBeenCalledWith(302, {
-            Location: redirect,
+            Location: '/login?redirect=%2Fpath',
           });
           expect(res.end).toHaveBeenCalled();
         });
@@ -98,7 +101,9 @@ describe('CustomApp', () => {
         });
 
         it('redirects to the redirect url', async () => {
-          expect(router.replace).toHaveBeenCalledWith(redirect);
+          expect(router.replace).toHaveBeenCalledWith(
+            '/login?redirect=%2Fpath'
+          );
         });
 
         it('blocks the frontend while redirect occurs', () => {
