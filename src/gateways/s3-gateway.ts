@@ -7,10 +7,11 @@ export class S3Gateway {
     const formData = new FormData();
 
     Object.entries(policy.fields).forEach(([k, v]) => formData.append(k, v));
-    formData.append('file', file);
 
     const fileType = await FileType.fromBlob(file);
     formData.append('Content-Type', fileType?.mime ?? file.type);
+
+    formData.append('file', file);
 
     await Axios.post(policy.url, formData);
   }
