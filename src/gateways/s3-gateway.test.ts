@@ -40,12 +40,15 @@ describe('S3 Gateway', () => {
       await gateway.upload(file, policy);
       const data: FormData = mockedAxios.post.mock.calls[0][1];
 
-      for (const k in policy.fields) {
-        expect(data.get(k)).toEqual(policy.fields[k]);
-      }
+      const dataArray = Array.from(data.entries());
 
-      expect(data.get('file')).toEqual(file);
-      expect(data.get('Content-Type')).toEqual('image/png');
+      // AWS is fussy about the order, the file must be last
+      expect(dataArray).toEqual([
+        ['key1', 'value1'],
+        ['key2', 'value2'],
+        ['Content-Type', 'image/png'],
+        ['file', file],
+      ]);
     });
   });
 });

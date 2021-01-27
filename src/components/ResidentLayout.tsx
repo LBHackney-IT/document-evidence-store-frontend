@@ -8,7 +8,7 @@ const ResidentLayout: FunctionComponent = (props) => (
     <a href="#main-content" className={`lbh-body-s ${styles.skipLink}`}>
       Skip to main content
     </a>
-    <Header isStackedOnMobile={true} homepageUrl="/" />
+    <Header isStackedOnMobile={true} homepageUrl="/dashboard" />
     <PhaseBanner />
 
     <Main id="main-content">

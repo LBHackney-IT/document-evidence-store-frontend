@@ -1,5 +1,11 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+  render,
+  fireEvent,
+  screen,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import NewRequestForm from './NewRequestForm';
 import documentTypesFixture from '../../cypress/fixtures/document-types-response.json';
 import { ResponseMapper } from '../boundary/response-mapper';
@@ -8,25 +14,49 @@ const documentTypes = documentTypesFixture.map((dt) =>
   ResponseMapper.mapDocumentType(dt)
 );
 
-const mockHandler = jest.fn();
+const promise = Promise.resolve();
+const mockHandler = jest.fn(() => promise);
+
+const values = {
+  deliveryMethods: ['SMS', 'EMAIL'],
+  documentTypes: ['passport-scan'],
+  resident: {
+    email: 'example@email.com',
+    name: 'Example name',
+    phoneNumber: '07777777777',
+  },
+};
+
+const fillInForm = () => {
+  fireEvent.change(screen.getByLabelText('Name'), {
+    target: { value: values.resident.name },
+  });
+  fireEvent.change(screen.getByLabelText('Email'), {
+    target: { value: values.resident.email },
+  });
+  fireEvent.change(screen.getByLabelText('Mobile phone number'), {
+    target: { value: values.resident.phoneNumber },
+  });
+  fireEvent.click(screen.getByText(documentTypes[0].title));
+};
 
 describe('NewRequestFormForm', () => {
   it('renders an uploader panel and a continue button', async () => {
     render(
       <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
     );
-    expect(screen.getByLabelText('Name'));
-    expect(screen.getByLabelText('Email'));
-    expect(screen.getByLabelText('Mobile phone number'));
+    expect(screen.getByLabelText('Name')).toBeVisible();
+    expect(screen.getByLabelText('Email')).toBeVisible();
+    expect(screen.getByLabelText('Mobile phone number')).toBeVisible();
 
-    expect(screen.getByLabelText('Send request by SMS'));
-    expect(screen.getByLabelText('Send request by email'));
+    expect(screen.getByLabelText('Send request by SMS')).toBeChecked();
+    expect(screen.getByLabelText('Send request by email')).toBeChecked();
 
-    expect(screen.getByLabelText('Passport'));
-    expect(screen.getByLabelText('Driving license'));
-    expect(screen.getByLabelText('Bank statement'));
+    expect(screen.getByText('Passport')).toBeVisible();
+    expect(screen.getByText('Driving license')).toBeVisible();
+    expect(screen.getByText('Bank statement')).toBeVisible();
 
-    expect(screen.getByText('Send request'));
+    expect(screen.getByText('Send request')).toBeVisible();
   });
 
   it('validates all three contact details and an evidence type are present', async () => {
@@ -36,11 +66,36 @@ describe('NewRequestFormForm', () => {
     fireEvent.click(screen.getByText('Send request'));
 
     await waitFor(() => {
-      expect(screen.getByText("Please enter the resident's name"));
-      expect(screen.getByText("Please enter the resident's email address"));
-      expect(screen.getByText("Please enter the resident's phone number"));
-      expect(screen.getByText('What document do you want to request?'));
+      expect(
+        screen.getByText("Please enter the resident's name")
+      ).toBeVisible();
+      expect(
+        screen.getByText("Please enter the resident's email address")
+      ).toBeVisible();
+      expect(
+        screen.getByText("Please enter the resident's phone number")
+      ).toBeVisible();
+      expect(screen.getByText('Please choose a document type')).toBeVisible();
     });
+  });
+
+  it('calls the submit handler', async () => {
+    render(
+      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+    );
+
+    fillInForm();
+
+    fireEvent.click(screen.getByText('Send request'));
+
+    await waitFor(() => {
+      fireEvent.click(screen.getByText('Yes, send this request'));
+    });
+
+    // https://egghead.io/lessons/jest-fix-the-not-wrapped-in-act-warning
+    await act(() => promise);
+
+    expect(mockHandler).toHaveBeenCalledWith(values);
   });
 
   it('prevents double-submits', async () => {
@@ -48,19 +103,18 @@ describe('NewRequestFormForm', () => {
       <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
     );
 
-    fireEvent.change(screen.getByLabelText('Name'), {
-      target: { value: 'Example name' },
-    });
-    fireEvent.change(screen.getByLabelText('Email'), {
-      target: { value: 'example@email.com' },
-    });
-    fireEvent.change(screen.getByLabelText('Mobile phone number'), {
-      target: { value: '07777777777' },
-    });
-    fireEvent.click(screen.getByText(documentTypes[0].title));
+    fillInForm();
+
     fireEvent.click(screen.getByText('Send request'));
 
-    const foundButton = screen.getByText('Send request').closest('button');
-    expect(foundButton && foundButton.disabled).toBeTruthy();
+    await waitFor(() => {
+      fireEvent.click(screen.getByText('Yes, send this request'));
+
+      const foundButton = screen.getByText('Send request').closest('button');
+      expect(foundButton && foundButton.disabled).toBeTruthy();
+    });
+
+    // https://egghead.io/lessons/jest-fix-the-not-wrapped-in-act-warning
+    await act(() => promise);
   });
 });

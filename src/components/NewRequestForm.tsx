@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
@@ -7,6 +7,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
 import { EvidenceRequestRequest } from 'src/gateways/internal-api';
+import ConfirmRequestDialog from './ConfirmRequestDialog';
 
 const schema = Yup.object().shape({
   resident: Yup.object().shape({
@@ -19,37 +20,44 @@ const schema = Yup.object().shape({
     ),
   }),
   deliveryMethods: Yup.array(),
-  documentTypes: Yup.string().required('Please choose a document type'),
+  documentTypes: Yup.array().min(1, 'Please choose a document type'),
 });
+
+const initialValues = {
+  resident: {
+    name: '',
+    email: '',
+    phoneNumber: '',
+  },
+  documentTypes: [],
+  deliveryMethods: ['SMS', 'EMAIL'],
+};
 
 const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
+  const [request, setRequest] = useState<EvidenceRequestRequest>();
+
+  const submitHandler = useCallback(
+    async (values: typeof initialValues) => {
+      if (!request) return setRequest(values);
+      try {
+        await onSubmit(values);
+        setRequest(undefined);
+      } catch (err) {
+        setRequest(undefined);
+        setSubmitError(true);
+      }
+    },
+    [setRequest, request, onSubmit, setSubmitError]
+  );
 
   return (
     <Formik
-      initialValues={{
-        resident: {
-          name: '',
-          email: '',
-          phoneNumber: '',
-        },
-        documentTypes: '',
-        deliveryMethods: ['SMS', 'EMAIL'],
-      }}
+      initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={async (values) => {
-        try {
-          await onSubmit({
-            ...values,
-            // TODO: Remove this when we support multiple document types
-            documentTypes: [values.documentTypes],
-          });
-        } catch (err) {
-          setSubmitError(true);
-        }
-      }}
+      onSubmit={submitHandler}
     >
-      {({ errors, touched, isSubmitting }) => (
+      {({ errors, touched, isSubmitting, submitForm }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -112,7 +120,7 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
                     label={type.title}
                     key={type.id}
                     value={type.id}
-                    name="documentTypes"
+                    name="documentTypes[0]"
                   />
                 ))}
               </div>
@@ -122,6 +130,13 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
           <Button type="submit" disabled={isSubmitting}>
             Send request
           </Button>
+
+          <ConfirmRequestDialog
+            documentTypes={documentTypes}
+            request={request}
+            onAccept={submitForm}
+            onDismiss={() => setRequest(undefined)}
+          />
         </Form>
       )}
     </Formik>
