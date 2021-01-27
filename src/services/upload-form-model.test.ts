@@ -11,11 +11,19 @@ const documentSubmissions = documentSubmissionFixture.map((ds) =>
 
 jest.mock('../gateways/s3-gateway');
 
+const mockUpdateState = jest.fn();
+jest.mock('../gateways/internal-api', () => ({
+  InternalApiGateway: jest.fn(() => ({
+    updateDocumentSubmission: mockUpdateState,
+  })),
+}));
+
 describe('UploadFormModel', () => {
   let model: UploadFormModel;
+  const evidenceRequestId = 'evidence-request-id';
 
   beforeEach(() => {
-    model = new UploadFormModel(documentSubmissions);
+    model = new UploadFormModel(evidenceRequestId, documentSubmissions);
   });
 
   describe('initialValues', () => {
@@ -37,7 +45,7 @@ describe('UploadFormModel', () => {
       [documentSubmissions[1].id]: file2,
     };
 
-    it('calls the gateway for each submission', async () => {
+    it('calls s3 for each submission', async () => {
       await model.handleSubmit(values);
 
       expect(uploadMock).toHaveBeenNthCalledWith(
@@ -49,6 +57,23 @@ describe('UploadFormModel', () => {
         2,
         file2,
         documentSubmissions[1].uploadPolicy
+      );
+    });
+
+    it('updates the state of each submission', async () => {
+      await model.handleSubmit(values);
+
+      expect(mockUpdateState).toHaveBeenNthCalledWith(
+        1,
+        evidenceRequestId,
+        documentSubmissions[0].id,
+        { state: 'UPLOADED' }
+      );
+      expect(mockUpdateState).toHaveBeenNthCalledWith(
+        2,
+        evidenceRequestId,
+        documentSubmissions[1].id,
+        { state: 'UPLOADED' }
       );
     });
   });

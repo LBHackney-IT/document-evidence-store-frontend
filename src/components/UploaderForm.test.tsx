@@ -41,7 +41,7 @@ describe('UploaderForm', () => {
   beforeEach(() => {
     render(
       <UploaderForm
-        requestId="foo"
+        evidenceRequestId="evidence-request-id"
         submissions={documentSubmissions}
         onSuccess={successHandler}
       />

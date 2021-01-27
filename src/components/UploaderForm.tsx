@@ -20,9 +20,16 @@ const getError = (
   return errors[id as keyof typeof errors] as string;
 };
 
-const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
+const UploaderForm: FunctionComponent<Props> = ({
+  submissions,
+  onSuccess,
+  evidenceRequestId,
+}) => {
   const [submitError, setSubmitError] = useState(false);
-  const model = useMemo(() => new UploadFormModel(submissions), [submissions]);
+  const model = useMemo(
+    () => new UploadFormModel(evidenceRequestId, submissions),
+    [submissions]
+  );
 
   const handleSubmit = useCallback(
     async (values) => {
@@ -73,8 +80,8 @@ const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
 };
 
 interface Props {
+  evidenceRequestId: string;
   submissions: DocumentSubmission[];
-  requestId: string;
   onSuccess(): void;
 }
 

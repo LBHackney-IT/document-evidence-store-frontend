@@ -25,6 +25,16 @@ describe('Can upload a document', () => {
       }
     );
 
+    dsFixtures.forEach(({ id }, i) =>
+      cy
+        .intercept(
+          'PATCH',
+          `/api/evidence/evidence_requests/${erFixtures.id}/document_submissions/${id}`,
+          { statusCode: 200 }
+        )
+        .as(`patch-document-state-${i + 1}`)
+    );
+
     cy.visit(`http://localhost:3000/resident/${requestId}`);
     cy.injectAxe();
   });
@@ -57,8 +67,11 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').click();
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
+
       cy.wait('@s3Upload');
       cy.wait('@s3Upload');
+      cy.wait('@patch-document-state-1');
+      cy.wait('@patch-document-state-2');
 
       // View confirmation
       cy.get('h1').should('contain', "We've recieved your documents");

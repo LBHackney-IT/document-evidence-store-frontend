@@ -1,5 +1,8 @@
 import Axios from 'axios';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  IDocumentSubmission,
+} from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { IResident } from 'src/domain/resident';
 import EvidenceRequestsFixture from '../../cypress/fixtures/evidence-request-response.json';
@@ -37,7 +40,7 @@ export class InternalApiGateway {
 
       return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
@@ -49,7 +52,7 @@ export class InternalApiGateway {
       );
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
@@ -65,7 +68,7 @@ export class InternalApiGateway {
 
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
@@ -77,23 +80,39 @@ export class InternalApiGateway {
       );
       return data.map((dt) => ResponseMapper.mapDocumentType(dt));
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
 
   async createDocumentSubmission(
-    evidenceRequest: EvidenceRequest,
+    evidenceRequestId: string,
     documentType: string
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await Axios.post<DocumentSubmissionResponse>(
-        `/api/evidence/evidence_requests/${evidenceRequest.id}/document_submissions`,
+        `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
         { documentType }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async updateDocumentSubmission(
+    evidenceRequestId: string,
+    documentSubmissionId: string,
+    params: Partial<IDocumentSubmission>
+  ): Promise<void> {
+    try {
+      await Axios.patch(
+        `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions/${documentSubmissionId}`,
+        params
+      );
+    } catch (err) {
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
