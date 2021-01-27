@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import DocumentTypesFixture from '../../cypress/fixtures/document-types-response.json';
 import { ResponseMapper } from '../boundary/response-mapper';
@@ -48,7 +48,7 @@ describe('Confirm Request Dialog', () => {
       );
     });
 
-    it('is closed', () => {
+    it('is open', () => {
       expect(screen.queryByRole('dialog')).toBeVisible();
     });
 
@@ -62,6 +62,30 @@ describe('Confirm Request Dialog', () => {
       );
 
       expect.assertions(4);
+    });
+
+    it('calls the accept callback', async () => {
+      const promise = Promise.resolve();
+
+      onAccept.mockReturnValue(promise);
+      fireEvent.click(screen.getByText('Yes, send this request'));
+
+      expect(onAccept).toHaveBeenCalled();
+
+      const foundButton = screen
+        .getByText('Yes, send this request')
+        .closest('button');
+      expect(foundButton?.disabled).toBeTruthy();
+
+      await act(() => promise);
+
+      expect(foundButton?.disabled).toBeFalsy();
+    });
+
+    it('calls the dismiss callback', () => {
+      fireEvent.click(screen.getByText('No, cancel'));
+
+      expect(onDismiss).toHaveBeenCalled();
     });
 
     describe('with one delivery method', () => {
