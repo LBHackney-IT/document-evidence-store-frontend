@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
@@ -37,28 +37,27 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
 
+  const submitHandler = useCallback(
+    async (values: typeof initialValues) => {
+      if (!request) return setRequest(values);
+      try {
+        await onSubmit(values);
+        setRequest(undefined);
+      } catch (err) {
+        setRequest(undefined);
+        setSubmitError(true);
+      }
+    },
+    [setRequest, request, onSubmit, setSubmitError]
+  );
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={async (values) => {
-        try {
-          setRequest(undefined);
-          await onSubmit(values);
-        } catch (err) {
-          setSubmitError(true);
-        }
-      }}
+      onSubmit={submitHandler}
     >
-      {({
-        values,
-        errors,
-        isValid,
-        touched,
-        dirty,
-        isSubmitting,
-        submitForm,
-      }) => (
+      {({ errors, touched, isSubmitting, submitForm }) => (
         <Form>
           {submitError && (
             <ErrorMessage>
@@ -128,14 +127,7 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
             </fieldset>
           </div>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            onClick={(e) => {
-              e.preventDefault();
-              dirty && isValid && setRequest(values);
-            }}
-          >
+          <Button type="submit" disabled={isSubmitting}>
             Send request
           </Button>
 

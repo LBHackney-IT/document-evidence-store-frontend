@@ -10,7 +10,7 @@ describe('Create evidence requests', () => {
     });
     cy.intercept('POST', '/api/evidence/evidence_requests', {
       fixture: 'evidence-request-response-singular',
-    });
+    }).as('postEvidenceRequests');
 
     cy.visit(`http://localhost:3000/dashboard`);
     cy.injectAxe();
@@ -41,13 +41,16 @@ describe('Create evidence requests', () => {
     cy.get('button').contains('Send request').click();
 
     cy.get('[role=dialog]').within(() => {
+      cy.contains("You're about to send a request by SMS");
       cy.get('li').contains('Frodo Baggins');
       cy.get('li').contains('frodo@bagend.com');
       cy.get('li').contains('+447123456780');
-      cy.get('li').contains('Driving license');
+      cy.get('li').contains('driving license');
 
       cy.get('button').contains('Yes, send this request').click();
     });
+
+    cy.wait('@postEvidenceRequests');
 
     cy.get('body').contains('Thanks!');
   });
