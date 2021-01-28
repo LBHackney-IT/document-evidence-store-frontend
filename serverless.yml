@@ -42,7 +42,7 @@ functions:
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
       EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/evidence_requests/token}
-      EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST: ${ssm:/evidence-api/${self:provider.stage}/post/evidence_requests/token}
+      EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_PATCH: ${ssm:/evidence-api/${self:provider.stage}/patch/evidence_requests/token}
 resources:
   Resources:
     CloudFrontDistribution:

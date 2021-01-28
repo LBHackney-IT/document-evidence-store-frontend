@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import { ReactNode } from 'react';
@@ -28,7 +28,7 @@ const Index = (): ReactNode => {
     if (!evidenceRequest) return;
 
     const requests = evidenceRequest.documentTypes.map(({ id }) =>
-      gateway.createDocumentSubmission(evidenceRequest, id)
+      gateway.createDocumentSubmission(evidenceRequest.id, id)
     );
 
     Promise.all(requests).then(setDocumentSubmissions);
@@ -37,11 +37,6 @@ const Index = (): ReactNode => {
   const onSuccess = useCallback(() => {
     router.push(`/resident/${requestId}/confirmation`);
   }, [requestId]);
-
-  const loading = useMemo(() => {
-    console.log(documentSubmissions);
-    return documentSubmissions.length !== evidenceRequest?.documentTypes.length;
-  }, [evidenceRequest, documentSubmissions]);
 
   return (
     <Layout>
@@ -52,19 +47,18 @@ const Index = (): ReactNode => {
         <div className="govuk-grid-column-two-thirds">
           <Heading level={HeadingLevels.H1}>
             Upload your{' '}
-            {loading || documentSubmissions.length == 1
-              ? 'document'
-              : 'documents'}
+            {documentSubmissions?.length > 1 ? 'documents' : 'document'}
           </Heading>
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {loading ? (
+          {documentSubmissions.length !==
+          evidenceRequest?.documentTypes.length ? (
             <p className="lbh-body">Loading...</p>
           ) : (
             <UploaderForm
+              evidenceRequestId={evidenceRequest.id}
               submissions={documentSubmissions}
-              requestId={requestId as string}
               onSuccess={onSuccess}
             />
           )}

@@ -2,10 +2,10 @@ import { DateTime } from 'luxon';
 import { DocumentType } from './document-type';
 
 export enum DocumentState {
-  PENDING,
-  UPLOADED,
-  APPROVED,
-  REJECTED,
+  PENDING = 'PENDING',
+  UPLOADED = 'UPLOADED',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
 }
 
 export interface UploadPolicy {

@@ -8,6 +8,7 @@ const tokens: TokenDictionary = {
   evidence_requests: {
     GET: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
     POST: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
+    PATCH: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_PATCH,
   },
 };
 

@@ -3,28 +3,23 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
 import { ResponseMapper } from '../boundary/response-mapper';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
-import { FormValues } from 'src/services/upload-form-model';
+import * as MockUploadFormModelImport from '../services/__mocks__/upload-form-model';
+import * as UploadFormModelImport from '../services/upload-form-model';
 
-const mockHandleSubmit = jest.fn();
 const successHandler = jest.fn();
+const {
+  UploadFormModel,
+  mockHandleSubmit,
+} = (UploadFormModelImport as unknown) as jest.Mocked<
+  typeof MockUploadFormModelImport
+>;
 
-jest.mock('../services/upload-form-model', () => {
-  const { UploadFormModel } = jest.requireActual(
-    '../services/upload-form-model'
-  );
-
-  class MockFormModel extends UploadFormModel {
-    handleSubmit(values: FormValues) {
-      mockHandleSubmit(values);
-    }
-  }
-
-  return { UploadFormModel: MockFormModel };
-});
+jest.mock('../services/upload-form-model');
 
 const documentSubmissions = [
   ResponseMapper.mapDocumentSubmission(DocumentSubmissionFixture),
 ];
+const evidenceRequestId = 'evidence-request-id';
 
 const attachFile = (label: string) => {
   const file = new File(['dummy content'], 'example.png', {
@@ -41,7 +36,7 @@ describe('UploaderForm', () => {
   beforeEach(() => {
     render(
       <UploaderForm
-        requestId="foo"
+        evidenceRequestId={evidenceRequestId}
         submissions={documentSubmissions}
         onSuccess={successHandler}
       />
@@ -52,6 +47,13 @@ describe('UploaderForm', () => {
     expect(screen.getByText('Passport'));
     expect(screen.getByText('A valid passport open at the photo page'));
     expect(screen.getByText('Continue'));
+  });
+
+  it('creates a form model with the correct attributes', () => {
+    expect(UploadFormModel).toHaveBeenCalledWith(
+      evidenceRequestId,
+      documentSubmissions
+    );
   });
 
   it('disables the button when submitting', async () => {
