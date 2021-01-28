@@ -41,9 +41,10 @@ export class UploadFormModel {
   }
 
   async handleSubmit(values: FormValues): Promise<void> {
-    const requests = Object.entries(values).map(([id, file]) =>
-      this.uploadFile(id, file)
-    );
+    const requests = Object.entries(values).map(async ([id, file]) => {
+      await this.uploadFile(id, file);
+      await this.updateDocumentState(id);
+    });
 
     await Promise.all(requests);
   }
@@ -53,7 +54,9 @@ export class UploadFormModel {
     if (!submission || !submission.uploadPolicy) return;
 
     await this.s3.upload(file, submission.uploadPolicy);
+  }
 
+  private async updateDocumentState(id: string) {
     await this.gateway.updateDocumentSubmission(this.evidenceRequestId, id, {
       state: DocumentState.UPLOADED,
     });
