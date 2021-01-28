@@ -133,7 +133,6 @@ workflows:
             branches:
               only:
                 - main
-                - prod-deploy
 
       - deploy-staging:
           requires:
