@@ -1,11 +1,12 @@
 {
   "staging": {
-    "DEV_TEAM": "development-team-staging"
+    "Development Team": "development-team-staging",
+    "Hackney Staff": "HackneyAll"
   },
   "production": {
-    "DEV_TEAM": "development-team-production"
+    "Development Team": "development-team-production"
   },
   "dev": {
-    "DEV_TEAM": "development-team-staging"
+    "Development Team": "development-team-staging"
   }
 }
