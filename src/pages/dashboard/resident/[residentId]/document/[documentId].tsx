@@ -2,22 +2,56 @@ import { Button } from 'lbh-frontend-react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import Layout from 'src/components/DashboardLayout';
 import History from 'src/components/History';
 import RejectDialog from 'src/components/RejectDialog';
+import { DocumentState } from 'src/domain/document-submission';
+import { InternalApiGateway } from 'src/gateways/internal-api';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
+// TODO: Replace fixture with http request to get document submission
+import { ResponseMapper } from 'src/boundary/response-mapper';
+import dsFixtureJson from '../../../../../../cypress/fixtures/document-submission-response-singular.json';
+
+const dsFixture = ResponseMapper.mapDocumentSubmission(dsFixtureJson);
+
+const gateway = new InternalApiGateway();
+
+type DocumentDetailPageQuery = {
+  residentId: string;
+  documentId: string;
+  action?: string;
+};
 
 const DocumentDetailPage = (): ReactNode => {
   const router = useRouter();
-  const { residentId, documentId, action } = router.query;
+  const {
+    residentId,
+    documentId,
+    action,
+  } = router.query as DocumentDetailPageQuery;
+  const [documentSubmission, setDocumentSubmission] = useState(dsFixture);
+
+  const handleAccept = useCallback(async () => {
+    const updated = await gateway.updateDocumentSubmission(documentId, {
+      state: DocumentState.APPROVED,
+    });
+    setDocumentSubmission(updated);
+    router.push(
+      `/dashboard/resident/${residentId}/document/${documentSubmission.id}`,
+      undefined,
+      { shallow: true }
+    );
+  }, [documentSubmission]);
 
   return (
     <Layout>
       <Head>
-        <title>Passport | Firstname Surname</title>
+        <title>
+          {documentSubmission.documentType.title} | Firstname Surname
+        </title>
       </Head>
 
       <h1 className="lbh-heading-h2">
@@ -25,25 +59,27 @@ const DocumentDetailPage = (): ReactNode => {
           <a className="lbh-link">Firstname Surname</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
-        Passport
+        {documentSubmission.documentType.title}
       </h1>
 
-      <div className={styles.actions}>
-        <Link
-          href={`/dashboard/resident/${residentId}/document/${documentId}?action=accept`}
-          scroll={false}
-        >
-          <Button>Accept</Button>
-        </Link>
-        <Link
-          href={`/dashboard/resident/${residentId}/document/${documentId}?action=reject`}
-          scroll={false}
-        >
-          <Button className="govuk-button--secondary lbh-button--secondary">
-            Request new file
-          </Button>
-        </Link>
-      </div>
+      {documentSubmission.state === DocumentState.PENDING && (
+        <div className={styles.actions}>
+          <Link
+            href={`/dashboard/resident/${residentId}/document/${documentSubmission.id}?action=accept`}
+            scroll={false}
+          >
+            <Button>Accept</Button>
+          </Link>
+          <Link
+            href={`/dashboard/resident/${residentId}/document/${documentSubmission.id}?action=reject`}
+            scroll={false}
+          >
+            <Button className="govuk-button--secondary lbh-button--secondary">
+              Request new file
+            </Button>
+          </Link>
+        </div>
+      )}
 
       <h2 className="lbh-heading-h3">Preview</h2>
 
@@ -63,9 +99,7 @@ const DocumentDetailPage = (): ReactNode => {
 
       <AcceptDialog
         open={action === 'accept'}
-        onAccept={() => {
-          // handle accept here
-        }}
+        onAccept={handleAccept}
         onDismiss={() =>
           router.push(
             `/dashboard/resident/${residentId}/document/${documentId}`
