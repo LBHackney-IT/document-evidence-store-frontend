@@ -4,7 +4,10 @@ import axios, { AxiosResponse } from 'axios';
 import { ResponseMapper } from '../boundary/response-mapper';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
-import { DocumentState } from '../domain/document-submission';
+import {
+  DocumentState,
+  DocumentSubmission,
+} from '../domain/document-submission';
 
 jest.mock('axios');
 jest.mock('../boundary/response-mapper');
@@ -226,25 +229,41 @@ describe('Internal API Gateway', () => {
   });
 
   describe('updateDocumentSubmission', () => {
-    const evidenceRequestId = 'evidence request id';
     const documentSubmissionId = 'document submission id';
 
     describe('when successful', () => {
+      beforeEach(() => {
+        mockedAxios.patch.mockResolvedValue({
+          data: {
+            ...DocumentSubmissionFixture,
+            state: 'UPLOADED',
+          },
+        });
+      });
+
       it('makes the api request', async () => {
-        await gateway.updateDocumentSubmission(
-          evidenceRequestId,
+        await gateway.updateDocumentSubmission(documentSubmissionId, {
+          state: DocumentState.UPLOADED,
+        });
+
+        expect(
+          mockedAxios.patch
+        ).toHaveBeenCalledWith(
+          `/api/evidence/document_submissions/${documentSubmissionId}`,
+          { state: 'UPLOADED' }
+        );
+      });
+
+      it('returns the updated model', async () => {
+        const result = await gateway.updateDocumentSubmission(
           documentSubmissionId,
           {
             state: DocumentState.UPLOADED,
           }
         );
 
-        expect(
-          mockedAxios.patch
-        ).toHaveBeenCalledWith(
-          `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions/${documentSubmissionId}`,
-          { state: 'UPLOADED' }
-        );
+        expect(result).toBeInstanceOf(DocumentSubmission);
+        expect(result.state).toEqual('UPLOADED');
       });
     });
 
@@ -252,13 +271,9 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         mockedAxios.patch.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.updateDocumentSubmission(
-            evidenceRequestId,
-            documentSubmissionId,
-            {
-              state: DocumentState.UPLOADED,
-            }
-          );
+          gateway.updateDocumentSubmission(documentSubmissionId, {
+            state: DocumentState.UPLOADED,
+          });
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
