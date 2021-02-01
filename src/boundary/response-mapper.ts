@@ -1,33 +1,12 @@
 import { Resident } from '../domain/resident';
-import {
-  DeliveryMethod,
-  EvidenceRequest,
-  IEvidenceRequest,
-} from '../domain/evidence-request';
+import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
 import { DocumentType, IDocumentType } from '../domain/document-type';
 import {
   DocumentState,
   DocumentSubmission,
-  IDocumentSubmission,
 } from '../domain/document-submission';
-
-export type DeliveryMethodResponse = 'sms' | 'email';
-export interface EvidenceRequestResponse
-  extends Omit<
-    IEvidenceRequest,
-    'createdAt' | 'deliveryMethods' | 'documentTypes'
-  > {
-  createdAt: string;
-  deliveryMethods: string[];
-  documentTypes: IDocumentType[];
-}
-export interface DocumentSubmissionResponse
-  extends Omit<IDocumentSubmission, 'createdAt' | 'state' | 'documentType'> {
-  createdAt: string;
-  state: string;
-  documentType: IDocumentType;
-}
+import { DocumentSubmissionResponse, EvidenceRequestResponse } from 'types/api';
 
 export class ResponseMapper {
   static mapEvidenceRequest(attrs: EvidenceRequestResponse): EvidenceRequest {
