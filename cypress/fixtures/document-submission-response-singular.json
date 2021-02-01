@@ -23,5 +23,11 @@
       "bucket": "documents-api-staging-bucket",
       "key": "65c63bc0-211d-4caf-8e66-d8263a111543"
     }
+  },
+  "document": {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "createdAt": "2021-01-29T16:28:11.326Z",
+    "fileSize": 25300,
+    "fileType": "image/png"
   }
 }

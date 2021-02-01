@@ -1,6 +1,15 @@
+import dsFixture from '../fixtures/document-submission-response-singular.json';
+
 describe('Accept and reject evidence', () => {
   beforeEach(() => {
     cy.login();
+
+    cy.intercept('PATCH', '/api/evidence/document_submissions/123', (req) => {
+      const body = { ...dsFixture, id: 123, state: req.body.state };
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
 
     cy.visit(`http://localhost:3000/dashboard/resident/1`);
     cy.injectAxe();
@@ -36,7 +45,7 @@ describe('Accept and reject evidence', () => {
     cy.get('h2').should('contain', 'History');
   });
 
-  it('launches accept dialog', () => {
+  it('can approve the document', () => {
     cy.get('a').contains('Foo').click();
     cy.contains('h1', 'Firstname SurnamePassport');
     cy.get('button').contains('Accept').click();
@@ -46,26 +55,30 @@ describe('Accept and reject evidence', () => {
         'contain',
         'Are you sure you want to accept this file?'
       );
+
+      cy.get('button').contains('Yes, accept').click();
+
+      cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
+        state: 'APPROVED',
+      });
     });
+
+    cy.get('[role=dialog]').should('not.exist');
+    cy.contains('button', 'Accept').should('not.exist');
+    cy.contains('button', 'Request new file').should('not.exist');
   });
 
-  it('launches reject dialog', () => {
+  it('can reject the document', () => {
     cy.get('a').contains('Foo').click();
     cy.contains('h1', 'Firstname SurnamePassport');
     cy.get('button').contains('Request new file').click();
 
     cy.get('[role=dialog]').within(() => {
       cy.get('h2').should('contain', 'Request a new file');
-    });
-  });
 
-  it('demands a reason for rejection', () => {
-    cy.get('a').contains('Foo').click();
-    cy.contains('h1', 'Firstname SurnamePassport');
-    cy.get('button').contains('Request new file').click();
-
-    cy.get('[role=dialog]').within(() => {
       cy.get('span').should('contain', 'For example, text not legible');
+
+      //TODO: test submission here
     });
   });
 });

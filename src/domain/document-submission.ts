@@ -13,14 +13,21 @@ export interface UploadPolicy {
   fields: { [key: string]: string };
 }
 
+export interface IDocument {
+  id: string;
+  fileSize: number;
+  fileType: string;
+}
+
 export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy: UploadPolicy | null;
+  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
+  document?: IDocument;
 }
 
 export class DocumentSubmission implements IDocumentSubmission {
@@ -29,8 +36,9 @@ export class DocumentSubmission implements IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy: UploadPolicy | null;
+  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
+  document?: IDocument;
 
   constructor(params: IDocumentSubmission) {
     this.id = params.id;
@@ -40,5 +48,6 @@ export class DocumentSubmission implements IDocumentSubmission {
     this.state = params.state;
     this.uploadPolicy = params.uploadPolicy;
     this.documentType = params.documentType;
+    this.document = params.document;
   }
 }

@@ -29,8 +29,16 @@ describe('Can upload a document', () => {
       cy
         .intercept(
           'PATCH',
-          `/api/evidence/evidence_requests/${erFixtures.id}/document_submissions/${id}`,
-          { statusCode: 200 }
+          `/api/evidence/document_submissions/${id}`,
+          (req) => {
+            const response = dsFixtures.find((ds) => ds.id === id);
+            if (response) response.state = 'UPLOADED';
+
+            req.responseTimeout = 5000;
+            req.reply((res) => {
+              res.send(200, response);
+            });
+          }
         )
         .as(`patch-document-state-${i + 1}`)
     );

@@ -20,10 +20,9 @@ jest.mock('../gateways/internal-api', () => ({
 
 describe('UploadFormModel', () => {
   let model: UploadFormModel;
-  const evidenceRequestId = 'evidence-request-id';
 
   beforeEach(() => {
-    model = new UploadFormModel(evidenceRequestId, documentSubmissions);
+    model = new UploadFormModel(documentSubmissions);
   });
 
   describe('initialValues', () => {
@@ -65,13 +64,11 @@ describe('UploadFormModel', () => {
 
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         1,
-        evidenceRequestId,
         documentSubmissions[0].id,
         { state: 'UPLOADED' }
       );
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         2,
-        evidenceRequestId,
         documentSubmissions[1].id,
         { state: 'UPLOADED' }
       );

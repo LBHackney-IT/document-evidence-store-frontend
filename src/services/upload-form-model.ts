@@ -13,10 +13,7 @@ export type FormValues = {
 export class UploadFormModel {
   private s3 = new S3Gateway();
   private gateway = new InternalApiGateway();
-  constructor(
-    private evidenceRequestId: string,
-    private submissions: DocumentSubmission[]
-  ) {}
+  constructor(private submissions: DocumentSubmission[]) {}
 
   get schema(): Yup.ObjectSchema {
     return Yup.object(
@@ -57,7 +54,7 @@ export class UploadFormModel {
   }
 
   private async updateDocumentState(id: string) {
-    await this.gateway.updateDocumentSubmission(this.evidenceRequestId, id, {
+    await this.gateway.updateDocumentSubmission(id, {
       state: DocumentState.UPLOADED,
     });
   }

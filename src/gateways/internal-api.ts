@@ -102,15 +102,15 @@ export class InternalApiGateway {
   }
 
   async updateDocumentSubmission(
-    evidenceRequestId: string,
     documentSubmissionId: string,
     params: Partial<IDocumentSubmission>
-  ): Promise<void> {
+  ): Promise<DocumentSubmission> {
     try {
-      await Axios.patch(
-        `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions/${documentSubmissionId}`,
+      const { data } = await Axios.patch<DocumentSubmissionResponse>(
+        `/api/evidence/document_submissions/${documentSubmissionId}`,
         params
       );
+      return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

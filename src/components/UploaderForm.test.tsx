@@ -19,7 +19,6 @@ jest.mock('../services/upload-form-model');
 const documentSubmissions = [
   ResponseMapper.mapDocumentSubmission(DocumentSubmissionFixture),
 ];
-const evidenceRequestId = 'evidence-request-id';
 
 const attachFile = (label: string) => {
   const file = new File(['dummy content'], 'example.png', {
@@ -36,7 +35,6 @@ describe('UploaderForm', () => {
   beforeEach(() => {
     render(
       <UploaderForm
-        evidenceRequestId={evidenceRequestId}
         submissions={documentSubmissions}
         onSuccess={successHandler}
       />
@@ -50,10 +48,7 @@ describe('UploaderForm', () => {
   });
 
   it('creates a form model with the correct attributes', () => {
-    expect(UploadFormModel).toHaveBeenCalledWith(
-      evidenceRequestId,
-      documentSubmissions
-    );
+    expect(UploadFormModel).toHaveBeenCalledWith(documentSubmissions);
   });
 
   it('disables the button when submitting', async () => {
