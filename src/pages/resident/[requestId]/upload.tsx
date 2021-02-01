@@ -57,7 +57,6 @@ const Index = (): ReactNode => {
             <p className="lbh-body">Loading...</p>
           ) : (
             <UploaderForm
-              evidenceRequestId={evidenceRequest.id}
               submissions={documentSubmissions}
               onSuccess={onSuccess}
             />

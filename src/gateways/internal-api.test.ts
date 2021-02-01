@@ -1,7 +1,10 @@
 import { DocumentType } from '../domain/document-type';
 import { InternalApiGateway, InternalServerError } from './internal-api';
 import axios, { AxiosResponse } from 'axios';
-import { ResponseMapper } from '../boundary/response-mapper';
+import {
+  DocumentSubmissionResponse,
+  ResponseMapper,
+} from '../boundary/response-mapper';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence-request-response.json';
 import {
@@ -230,15 +233,18 @@ describe('Internal API Gateway', () => {
 
   describe('updateDocumentSubmission', () => {
     const documentSubmissionId = 'document submission id';
+    const apiResponse = {} as DocumentSubmissionResponse;
+    const expectedResult = {} as DocumentSubmission;
 
     describe('when successful', () => {
       beforeEach(() => {
         mockedAxios.patch.mockResolvedValue({
-          data: {
-            ...DocumentSubmissionFixture,
-            state: 'UPLOADED',
-          },
+          data: apiResponse,
         });
+
+        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
+          expectedResult
+        );
       });
 
       it('makes the api request', async () => {
@@ -262,8 +268,7 @@ describe('Internal API Gateway', () => {
           }
         );
 
-        expect(result).toBeInstanceOf(DocumentSubmission);
-        expect(result.state).toEqual('UPLOADED');
+        expect(result).toBe(expectedResult);
       });
     });
 

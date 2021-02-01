@@ -25,9 +25,9 @@ export interface IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy: UploadPolicy | null;
+  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
-  document: IDocument | null;
+  document?: IDocument;
 }
 
 export class DocumentSubmission implements IDocumentSubmission {
@@ -36,9 +36,9 @@ export class DocumentSubmission implements IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy: UploadPolicy | null;
+  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
-  document: IDocument | null;
+  document?: IDocument;
 
   constructor(params: IDocumentSubmission) {
     this.id = params.id;
