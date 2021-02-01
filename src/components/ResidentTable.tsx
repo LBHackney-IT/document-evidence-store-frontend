@@ -1,10 +1,7 @@
 import { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
-import { Table } from 'lbh-frontend-react';
 
-export const EvidenceRequestTable: FunctionComponent<Props> = ({
-  residents,
-}) => {
+export const ResidentTable: FunctionComponent<Props> = ({ residents }) => {
   const rows = useMemo(
     () =>
       residents.map((row) => {
@@ -18,27 +15,41 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
   );
 
   return (
-    <Table
-      columns={[
-        {
-          Header: 'Resident',
-          accessor: 'resident',
-          sortType: 'basic',
-        },
-        {
-          Header: 'Document',
-          accessor: 'document',
-          sortType: 'basic',
-        },
-        {
-          Header: 'Uploaded',
-          accessor: 'uploaded',
-          sortType: 'basic',
-        },
-      ]}
-      data={rows}
-      dueDateWarning={[]}
-    />
+    <table className="govuk-table  lbh-table">
+      <thead className="govuk-table__head">
+        <tr className="govuk-table__row">
+          <th scope="col" className="govuk-table__header">
+            Resident
+          </th>
+          <th
+            scope="col"
+            className="govuk-table__header govuk-table__header--numeric"
+          >
+            Document
+          </th>
+          <th
+            scope="col"
+            className="govuk-table__header govuk-table__header--numeric"
+          >
+            Uploaded
+          </th>
+        </tr>
+      </thead>
+
+      <tbody className="govuk-table__body">
+        {rows.map((row) => (
+          <tr className="govuk-table__row">
+            <td className="govuk-table__cell">{row.resident}</td>
+            <td className="govuk-table__cell govuk-table__cell--numeric">
+              {row.document}
+            </td>
+            <td className="govuk-table__cell govuk-table__cell--numeric">
+              {row.uploaded}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 };
 

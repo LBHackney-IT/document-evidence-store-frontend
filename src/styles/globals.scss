@@ -73,3 +73,17 @@ h3 {
 .lbh-button--start {
   margin-bottom: 35px !important;
 }
+
+.lbh-link--red {
+  margin-left: 10px;
+  color: #be3a34 !important;
+  &:link {
+    color: #be3a34 !important;
+  }
+  &:visited {
+    color: #be3a34 !important;
+  }
+  &:focus {
+    color: inherit !important;
+  }
+}
