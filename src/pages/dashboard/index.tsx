@@ -4,7 +4,7 @@ import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { ReactNode } from 'react';
 import { EvidenceRequest } from '../../domain/evidence-request';
 import { InternalApiGateway } from '../../gateways/internal-api';
-import { EvidenceRequestTable } from '../../components/EvidenceRequestTable';
+import { ResidentTable } from '../../components/ResidentTable';
 import ResidentSearchForm from '../../components/ResidentSearchForm';
 import Tabs from '../../components/Tabs';
 import TableSkeleton from '../../components/TableSkeleton';
@@ -22,7 +22,7 @@ const BrowseResidents = (): ReactNode => {
     if (!evidenceRequests)
       return <TableSkeleton columns={['Resident', 'Document', 'Made']} />;
 
-    return <EvidenceRequestTable requests={evidenceRequests} />;
+    return <ResidentTable residents={evidenceRequests} />;
   }, [evidenceRequests]);
 
   const handleSearch = () => {
