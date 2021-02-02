@@ -9,7 +9,7 @@ describe('Create evidence requests', () => {
       fixture: 'evidence-request-response',
     });
     cy.intercept('POST', '/api/evidence/evidence_requests', {
-      fixture: 'evidence-request-response-singular',
+      fixture: 'evidence_requests/id',
     }).as('postEvidenceRequests');
 
     cy.visit(`http://localhost:3000/dashboard`);

@@ -3,26 +3,18 @@ import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
-import { ResponseMapper } from 'src/boundary/response-mapper';
+import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
-import { DocumentSubmissionResponse } from 'types/api';
 import Layout from '../../../components/ResidentLayout';
 import UploaderForm from '../../../components/UploaderForm';
 
 type UploadProps = {
-  documentSubmissionsResponse: DocumentSubmissionResponse[];
+  documentSubmissions: DocumentSubmission[];
   requestId: string;
 };
 
-const Upload: NextPage<UploadProps> = ({
-  documentSubmissionsResponse,
-  requestId,
-}) => {
+const Upload: NextPage<UploadProps> = ({ documentSubmissions, requestId }) => {
   const router = useRouter();
-  const documentSubmissions = documentSubmissionsResponse.map(
-    ResponseMapper.mapDocumentSubmission
-  );
-
   const onSuccess = useCallback(() => {
     router.push(`/resident/${requestId}/confirmation`);
   }, []);
@@ -65,10 +57,10 @@ export const getServerSideProps: GetServerSideProps<
     gateway.createDocumentSubmission(evidenceRequest.id, id)
   );
 
-  const documentSubmissionsResponse = await Promise.all(requests);
+  const documentSubmissions = await Promise.all(requests);
 
   return {
-    props: { requestId, documentSubmissionsResponse },
+    props: { requestId, documentSubmissions },
   };
 };
 

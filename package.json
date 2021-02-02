@@ -30,6 +30,7 @@
     "restana": "^4.8.0",
     "serve-static": "^1.14.1",
     "serverless-http": "^2.6.0",
+    "superjson": "../superjson",
     "universal-cookie": "^4.0.4",
     "yup": "^0.31.0"
   },
@@ -47,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
     "axe-core": "^4.1.1",
+    "babel-plugin-superjson-next": "^0.2.1",
     "cypress": "^6.4.0",
     "cypress-axe": "^0.12.0",
     "cypress-dotenv": "^1.2.2",
@@ -70,5 +72,13 @@
     "hooks": {
       "pre-commit": "npm run lint -- --fix && pretty-quick --staged"
     }
+  },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      "superjson-next"
+    ]
   }
 }

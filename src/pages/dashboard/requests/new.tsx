@@ -6,23 +6,17 @@ import {
   EvidenceRequestRequest,
   InternalApiGateway,
 } from '../../../gateways/internal-api';
-import { IDocumentType } from '../../../domain/document-type';
+import { DocumentType } from '../../../domain/document-type';
 import Layout from 'src/components/DashboardLayout';
 import { UserContext } from 'src/contexts/UserContext';
 import { GetServerSideProps, NextPage } from 'next';
-import { ResponseMapper } from 'src/boundary/response-mapper';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 
 type RequestsNewPageProps = {
-  documentTypesResponse: IDocumentType[];
+  documentTypes: DocumentType[];
 };
 
-const RequestsNewPage: NextPage<RequestsNewPageProps> = ({
-  documentTypesResponse,
-}) => {
-  const documentTypes = documentTypesResponse.map(
-    ResponseMapper.mapDocumentType
-  );
+const RequestsNewPage: NextPage<RequestsNewPageProps> = ({ documentTypes }) => {
   const [complete, setComplete] = useState(false);
   const { user } = useContext(UserContext);
 
@@ -54,8 +48,8 @@ const RequestsNewPage: NextPage<RequestsNewPageProps> = ({
 
 export const getServerSideProps: GetServerSideProps<RequestsNewPageProps> = async () => {
   const gateway = new EvidenceApiGateway();
-  const documentTypesResponse = await gateway.getDocumentTypes();
-  return { props: { documentTypesResponse } };
+  const documentTypes = await gateway.getDocumentTypes();
+  return { props: { documentTypes } };
 };
 
 export default RequestsNewPage;

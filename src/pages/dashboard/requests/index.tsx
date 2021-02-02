@@ -2,22 +2,17 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { EvidenceRequestTable } from '../../../components/EvidenceRequestTable';
 import Layout from 'src/components/DashboardLayout';
-import { EvidenceRequestResponse } from 'types/api';
 import { GetServerSideProps, NextPage } from 'next';
-import { ResponseMapper } from 'src/boundary/response-mapper';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { EvidenceRequest } from 'src/domain/evidence-request';
 
 type RequestsIndexPageProps = {
-  evidenceRequestsResponse: EvidenceRequestResponse[];
+  evidenceRequests: EvidenceRequest[];
 };
 
 const RequestsIndexPage: NextPage<RequestsIndexPageProps> = ({
-  evidenceRequestsResponse,
+  evidenceRequests,
 }) => {
-  const evidenceRequests = evidenceRequestsResponse.map(
-    ResponseMapper.mapEvidenceRequest
-  );
-
   return (
     <Layout>
       <Head>
@@ -34,9 +29,9 @@ const RequestsIndexPage: NextPage<RequestsIndexPageProps> = ({
 
 export const getServerSideProps: GetServerSideProps<RequestsIndexPageProps> = async () => {
   const gateway = new EvidenceApiGateway();
-  const evidenceRequestsResponse = await gateway.getEvidenceRequests();
+  const evidenceRequests = await gateway.getEvidenceRequests();
   return {
-    props: { evidenceRequestsResponse },
+    props: { evidenceRequests },
   };
 };
 

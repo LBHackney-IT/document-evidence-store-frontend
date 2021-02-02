@@ -1,4 +1,4 @@
-import dsFixture from '../fixtures/document-submission-response-singular.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/id.json';
 
 describe('Accept and reject evidence', () => {
   beforeEach(() => {

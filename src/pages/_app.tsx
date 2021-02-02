@@ -10,6 +10,7 @@ import {
 } from '../services/request-authorizer';
 import '../styles/globals.scss';
 import { AuthenticationError } from '../../types/auth-errors';
+import '../helpers/register-domain';
 
 export type CustomAppProps = {
   pageProps: AppProps['pageProps'];

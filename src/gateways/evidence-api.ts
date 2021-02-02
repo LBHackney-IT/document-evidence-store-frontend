@@ -5,8 +5,12 @@ import {
   TokenDictionary,
 } from '../../types/api';
 import { InternalServerError } from './internal-api';
-import EvidenceRequestsFixture from '../../cypress/fixtures/evidence-request-response.json';
+import EvidenceRequestsFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { IDocumentType } from 'src/domain/document-type';
+import { ResponseMapper } from 'src/boundary/response-mapper';
+import { DocumentSubmission } from 'src/domain/document-submission';
+import { EvidenceRequest } from 'src/domain/evidence-request';
+import { DocumentType } from 'src/domain/document-type';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -29,7 +33,7 @@ export class EvidenceApiGateway {
     this.client = Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL });
   }
 
-  async getEvidenceRequests(): Promise<EvidenceRequestResponse[]> {
+  async getEvidenceRequests(): Promise<EvidenceRequest[]> {
     try {
       // TODO: Uncomment when endpoint is complete on API
       // const { data } = await this.client.get<EvidenceRequestResponse[]>(
@@ -38,33 +42,33 @@ export class EvidenceApiGateway {
       await new Promise((resolve) => setTimeout(resolve, 100));
       const data = EvidenceRequestsFixture;
 
-      return data;
+      return data.map(ResponseMapper.mapEvidenceRequest);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
 
-  async getDocumentTypes(): Promise<IDocumentType[]> {
+  async getDocumentTypes(): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
         '/document_types',
         { headers: { Authorization: tokens?.document_types?.GET } }
       );
-      return data;
+      return data.map(ResponseMapper.mapDocumentType);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }
 
-  async getEvidenceRequest(id: string): Promise<EvidenceRequestResponse> {
+  async getEvidenceRequest(id: string): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse>(
         `/evidence_requests/${id}`,
         { headers: { Authorization: tokens?.evidence_requests?.GET } }
       );
-      return data;
+      return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
@@ -74,14 +78,14 @@ export class EvidenceApiGateway {
   async createDocumentSubmission(
     evidenceRequestId: string,
     documentType: string
-  ): Promise<DocumentSubmissionResponse> {
+  ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/evidence_requests/${evidenceRequestId}/document_submissions`,
         { documentType },
         { headers: { Authorization: tokens?.document_submissions?.POST } }
       );
-      return data;
+      return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
