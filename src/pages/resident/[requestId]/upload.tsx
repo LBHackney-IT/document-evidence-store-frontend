@@ -1,42 +1,31 @@
-import { useState, useEffect, useCallback } from 'react';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import Layout from '../../../components/ResidentLayout';
-import { ReactNode } from 'react';
+import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useCallback } from 'react';
+import { ResponseMapper } from 'src/boundary/response-mapper';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { DocumentSubmissionResponse } from 'types/api';
+import Layout from '../../../components/ResidentLayout';
 import UploaderForm from '../../../components/UploaderForm';
-import { EvidenceRequest } from '../../../domain/evidence-request';
-import { InternalApiGateway } from '../../../gateways/internal-api';
-import { DocumentSubmission } from 'src/domain/document-submission';
 
-const Index = (): ReactNode => {
+type UploadProps = {
+  documentSubmissionsResponse: DocumentSubmissionResponse[];
+  requestId: string;
+};
+
+const Upload: NextPage<UploadProps> = ({
+  documentSubmissionsResponse,
+  requestId,
+}) => {
   const router = useRouter();
-  const gateway = new InternalApiGateway();
-  const { requestId } = router.query as { requestId: string };
-  const [evidenceRequest, setEvidenceRequest] = useState<EvidenceRequest>();
-  const [documentSubmissions, setDocumentSubmissions] = useState<
-    DocumentSubmission[]
-  >([]);
-
-  useEffect(() => {
-    gateway
-      .getEvidenceRequest(requestId)
-      .then((request) => setEvidenceRequest(request));
-  }, []);
-
-  useEffect(() => {
-    if (!evidenceRequest) return;
-
-    const requests = evidenceRequest.documentTypes.map(({ id }) =>
-      gateway.createDocumentSubmission(evidenceRequest.id, id)
-    );
-
-    Promise.all(requests).then(setDocumentSubmissions);
-  }, [evidenceRequest]);
+  const documentSubmissions = documentSubmissionsResponse.map(
+    ResponseMapper.mapDocumentSubmission
+  );
 
   const onSuccess = useCallback(() => {
     router.push(`/resident/${requestId}/confirmation`);
-  }, [requestId]);
+  }, []);
 
   return (
     <Layout>
@@ -52,19 +41,35 @@ const Index = (): ReactNode => {
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
-          {documentSubmissions.length !==
-          evidenceRequest?.documentTypes.length ? (
-            <p className="lbh-body">Loading...</p>
-          ) : (
-            <UploaderForm
-              submissions={documentSubmissions}
-              onSuccess={onSuccess}
-            />
-          )}
+          <UploaderForm
+            submissions={documentSubmissions}
+            onSuccess={onSuccess}
+          />
         </div>
       </div>
     </Layout>
   );
 };
 
-export default Index;
+export const getServerSideProps: GetServerSideProps<
+  UploadProps,
+  { requestId: string }
+> = async (ctx) => {
+  const requestId = ctx.params?.requestId;
+  if (!requestId) return { notFound: true };
+
+  const gateway = new EvidenceApiGateway();
+  const evidenceRequest = await gateway.getEvidenceRequest(requestId);
+
+  const requests = evidenceRequest.documentTypes.map(({ id }) =>
+    gateway.createDocumentSubmission(evidenceRequest.id, id)
+  );
+
+  const documentSubmissionsResponse = await Promise.all(requests);
+
+  return {
+    props: { requestId, documentSubmissionsResponse },
+  };
+};
+
+export default Upload;
