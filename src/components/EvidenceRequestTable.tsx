@@ -55,7 +55,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.made}
             </td>
-            <td className="govuk-table__cell govuk-table__cell--numeric lbh-body-s">
+            <td className="govuk-table__cell govuk-table__cell--numeric">
               <Link href="#">
                 <a className="lbh-link">Remind</a>
               </Link>
