@@ -1,0 +1,18 @@
+[
+  {
+    "id": "standard",
+    "fixtures": [
+      "get-evidence-requests",
+      "get-evidence-request",
+      "create-evidence-request",
+      "get-document-types",
+      "create-document-submission",
+      "update-document-submission-uploaded"
+    ]
+  },
+  {
+    "id": "approved-document-submission",
+    "from": "standard",
+    "fixtures": ["update-document-submission-approved"]
+  }
+]
