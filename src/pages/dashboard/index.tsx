@@ -1,8 +1,9 @@
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import Layout from '../../components/DashboardLayout';
 import ResidentSearchForm from '../../components/ResidentSearchForm';
 import { ResidentTable } from '../../components/ResidentTable';
@@ -12,7 +13,7 @@ type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
 };
 
-const BrowseResidents: NextPage<BrowseResidentsProps> = ({
+const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
 }) => {
   const handleSearch = () => {
@@ -45,13 +46,13 @@ const BrowseResidents: NextPage<BrowseResidentsProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps<BrowseResidentsProps> = async () => {
+export const getServerSideProps = withAuth<BrowseResidentsProps>(async () => {
   const gateway = new EvidenceApiGateway();
   const evidenceRequests = await gateway.getEvidenceRequests();
 
   return {
     props: { evidenceRequests },
   };
-};
+});
 
 export default BrowseResidents;
