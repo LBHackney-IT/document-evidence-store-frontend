@@ -1,19 +1,22 @@
 import { Button } from 'lbh-frontend-react';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import Layout from 'src/components/DashboardLayout';
 import History from 'src/components/History';
 import RejectDialog from 'src/components/RejectDialog';
 import { DocumentState } from 'src/domain/document-submission';
 import { InternalApiGateway } from 'src/gateways/internal-api';
+import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
+
 // TODO: Replace fixture with http request to get document submission
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import dsFixtureJson from '../../../../../../cypress/fixtures/document-submission-response-singular.json';
+import dsFixtureJson from '../../../../../../cypress/fixtures/document_submissions/id.json';
 
 const dsFixture = ResponseMapper.mapDocumentSubmission(dsFixtureJson);
 
@@ -25,7 +28,7 @@ type DocumentDetailPageQuery = {
   action?: string;
 };
 
-const DocumentDetailPage = (): ReactNode => {
+const DocumentDetailPage: NextPage<WithUser> = () => {
   const router = useRouter();
   const {
     residentId,
@@ -40,7 +43,7 @@ const DocumentDetailPage = (): ReactNode => {
     });
     setDocumentSubmission(updated);
     router.push(
-      `/dashboard/resident/${residentId}/document/${documentSubmission.id}`,
+      `/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
       undefined,
       { shallow: true }
     );
@@ -55,7 +58,7 @@ const DocumentDetailPage = (): ReactNode => {
       </Head>
 
       <h1 className="lbh-heading-h2">
-        <Link href={`/dashboard/resident/${residentId}`}>
+        <Link href={`/dashboard/residents/${residentId}`}>
           <a className="lbh-link">Firstname Surname</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
@@ -65,13 +68,13 @@ const DocumentDetailPage = (): ReactNode => {
       {documentSubmission.state === DocumentState.PENDING && (
         <div className={styles.actions}>
           <Link
-            href={`/dashboard/resident/${residentId}/document/${documentSubmission.id}?action=accept`}
+            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
             scroll={false}
           >
             <Button>Accept</Button>
           </Link>
           <Link
-            href={`/dashboard/resident/${residentId}/document/${documentSubmission.id}?action=reject`}
+            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
             scroll={false}
           >
             <Button className="govuk-button--secondary lbh-button--secondary">
@@ -102,7 +105,7 @@ const DocumentDetailPage = (): ReactNode => {
         onAccept={handleAccept}
         onDismiss={() =>
           router.push(
-            `/dashboard/resident/${residentId}/document/${documentId}`
+            `/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />
@@ -114,12 +117,14 @@ const DocumentDetailPage = (): ReactNode => {
         }}
         onDismiss={() =>
           router.push(
-            `/dashboard/resident/${residentId}/document/${documentId}`
+            `/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />
     </Layout>
   );
 };
+
+export const getServerSideProps = withAuth();
 
 export default DocumentDetailPage;

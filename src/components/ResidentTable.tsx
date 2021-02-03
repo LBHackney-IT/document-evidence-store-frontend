@@ -55,7 +55,7 @@ export const ResidentTable: FunctionComponent<Props> = ({ residents }) => {
               {row.uploaded}
             </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
-              <Link href={`/dashboard/resident/${row.id}`}>
+              <Link href={`/dashboard/residents/${row.id}`}>
                 <a className="lbh-link">Review</a>
               </Link>
             </td>

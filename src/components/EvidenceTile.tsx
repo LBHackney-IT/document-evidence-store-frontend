@@ -13,7 +13,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     <div>
       <Heading level={HeadingLevels.H3} className={styles.title}>
         <Link
-          href={`/dashboard/resident/${props.residentId}/document/${props.id}`}
+          href={`/dashboard/residents/${props.residentId}/document/${props.id}`}
         >
           <a className="lbh-link">{props.title}</a>
         </Link>
@@ -27,13 +27,13 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     {props.toReview && (
       <div className={`lbh-body-s ${styles.actions}`}>
         <Link
-          href={`/dashboard/resident/${props.residentId}/document/${props.id}?action=accept`}
+          href={`/dashboard/residents/${props.residentId}/document/${props.id}?action=accept`}
           scroll={false}
         >
           <a className="lbh-link">Accept</a>
         </Link>
         <Link
-          href={`/dashboard/resident/${props.residentId}/document/${props.id}?action=reject`}
+          href={`/dashboard/residents/${props.residentId}/document/${props.id}?action=reject`}
           scroll={false}
         >
           <a className={`lbh-link ${styles.redLink}`}>Request new file</a>
