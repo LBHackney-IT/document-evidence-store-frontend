@@ -23,7 +23,6 @@ const AUTH_WHITELIST = [
 export interface RequestAuthorizerCommand {
   path: string;
   cookieHeader?: string;
-  serverSide: boolean;
 }
 
 export type RequestAuthorizerResponse =
@@ -70,10 +69,7 @@ export class RequestAuthorizer {
   }
 
   public execute(command: RequestAuthorizerCommand): RequestAuthorizerResponse {
-    const secureEnvironment =
-      command.serverSide && this.environmentKey !== 'dev';
-
-    const user = this.authoriseUser(secureEnvironment, command.cookieHeader);
+    const user = this.authoriseUser(command.cookieHeader);
 
     if (this.pathIsWhitelisted(command.path)) return { success: true, user };
 
@@ -112,10 +108,9 @@ export class RequestAuthorizer {
   //   );
   // };
 
-  private authoriseUser(
-    verify = false,
-    cookieHeader?: string
-  ): User | undefined {
+  private authoriseUser(cookieHeader?: string): User | undefined {
+    const verify = this.environmentKey !== 'dev';
+
     try {
       const cookies = new Cookie(cookieHeader);
       const token = cookies.get(this.cookieName);
