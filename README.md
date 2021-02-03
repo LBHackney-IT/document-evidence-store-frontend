@@ -48,8 +48,16 @@ It uses Jest, `react-testing-library` and cypress for tests. Run them with:
 
 ```
 npm run test:unit
-npm run test:e2e:dev
+npm run test:e2e:dev # requires server to be running
 ```
+
+### Mock Server
+
+The app comes with a [mock server](http://mocks-server.org) for mock requests to external APIs. It runs automcatically when you run the dev server.
+
+Follow [guides](https://www.mocks-server.org/docs/guides-defining-fixtures/) on how to add new fixtures and behaviours.
+
+It also comes with a [CLI](https://www.mocks-server.org/docs/plugins-inquirer-cli) to swap between behaviours during development, and a [Cypress integration](https://www.mocks-server.org/docs/integrations-cypress) to do within test suites.
 
 ## 🌎 Putting it on the internet
 
@@ -74,3 +82,7 @@ You can use a `.env` file to supply environment config locally. Create a fresh o
 | EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET     |                                                                     |                                     |
 | EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET  |                                                                     |                                     |
 | EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST |                                                                     |                                     |
+
+## Context and history
+
+See the [Architectural Decision Log](/docs/adr).
