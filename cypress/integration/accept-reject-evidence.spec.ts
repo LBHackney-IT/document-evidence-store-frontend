@@ -11,7 +11,7 @@ describe('Accept and reject evidence', () => {
       });
     }).as('updateDocumentState');
 
-    cy.visit(`http://localhost:3000/dashboard/resident/1`);
+    cy.visit(`http://localhost:3000/dashboard/residents/1`);
     cy.injectAxe();
   });
 

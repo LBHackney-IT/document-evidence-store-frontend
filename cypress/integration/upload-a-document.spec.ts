@@ -5,12 +5,6 @@ describe('Can upload a document', () => {
   const requestId = 'foo';
 
   beforeEach(() => {
-    cy.intercept('/api/evidence/document_types', {
-      fixture: 'document-types-response.json',
-    });
-    cy.intercept('GET', `/api/evidence/evidence_requests/${requestId}`, {
-      fixture: 'evidence-request-response-singular',
-    });
     cy.intercept(
       'PATCH',
       /\/api\/evidence\/document_submissions\/.+/,
@@ -22,25 +16,7 @@ describe('Can upload a document', () => {
           res.send(200, response);
         });
       }
-    );
-
-    dsFixtures.forEach(({ id }, i) =>
-      cy
-        .intercept(
-          'PATCH',
-          `/api/evidence/document_submissions/${id}`,
-          (req) => {
-            const response = dsFixtures.find((ds) => ds.id === id);
-            if (response) response.state = 'UPLOADED';
-
-            req.responseTimeout = 5000;
-            req.reply((res) => {
-              res.send(200, response);
-            });
-          }
-        )
-        .as(`patch-document-state-${i + 1}`)
-    );
+    ).as('patch-document-state');
 
     cy.visit(`http://localhost:3000/resident/${requestId}`);
     cy.injectAxe();
@@ -77,8 +53,8 @@ describe('Can upload a document', () => {
 
       cy.wait('@s3Upload');
       cy.wait('@s3Upload');
-      cy.wait('@patch-document-state-1');
-      cy.wait('@patch-document-state-2');
+      cy.wait('@patch-document-state');
+      cy.wait('@patch-document-state');
 
       // View confirmation
       cy.get('h1').should('contain', "We've recieved your documents");
@@ -93,15 +69,13 @@ describe('Can upload a document', () => {
       }).as('s3Upload');
     });
 
-    it('shows guidance and lets you upload a file', () => {
+    it('shows an error message', () => {
       cy.get('a').contains('Continue').click();
 
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')
       );
       cy.get('button').contains('Continue').click();
-
-      cy.wait('@s3Upload');
 
       // View error message
       cy.get('span').should(
