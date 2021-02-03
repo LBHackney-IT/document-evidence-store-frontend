@@ -23,11 +23,17 @@ export interface EvidenceRequestRequest {
   userRequestedBy?: string;
 }
 
+type InternalApiDependencies = {
+  client: AxiosInstance;
+};
+
 export class InternalApiGateway {
   private client: AxiosInstance;
 
-  constructor() {
-    this.client = Axios.create({ baseURL: process.env.RUNTIME_APP_URL });
+  constructor(
+    { client }: InternalApiDependencies = { client: Axios.create() }
+  ) {
+    this.client = client;
   }
 
   async createEvidenceRequest(

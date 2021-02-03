@@ -8,7 +8,10 @@ import { InternalServerError } from './internal-api';
 import EvidenceRequestsFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  IDocumentSubmission,
+} from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 
@@ -19,18 +22,25 @@ const tokens: TokenDictionary = {
   evidence_requests: {
     GET: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
     POST: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
-    PATCH: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_PATCH,
   },
   document_submissions: {
-    POST: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_POST,
+    PATCH: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
   },
+};
+
+type EvidenceApiGatewayDependencies = {
+  client: AxiosInstance;
 };
 
 export class EvidenceApiGateway {
   private client: AxiosInstance;
 
-  constructor() {
-    this.client = Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL });
+  constructor(
+    { client }: EvidenceApiGatewayDependencies = {
+      client: Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL }),
+    }
+  ) {
+    this.client = client;
   }
 
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
@@ -83,7 +93,24 @@ export class EvidenceApiGateway {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/evidence_requests/${evidenceRequestId}/document_submissions`,
         { documentType },
-        { headers: { Authorization: tokens?.document_submissions?.POST } }
+        { headers: { Authorization: tokens?.evidence_requests?.POST } }
+      );
+      return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async updateDocumentSubmission(
+    documentSubmissionId: string,
+    params: Partial<IDocumentSubmission>
+  ): Promise<DocumentSubmission> {
+    try {
+      const { data } = await this.client.patch<DocumentSubmissionResponse>(
+        `/document_submissions/${documentSubmissionId}`,
+        params,
+        { headers: { Authorization: tokens?.document_submissions?.PATCH } }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -100,9 +127,8 @@ export class EvidenceApiGateway {
     const token = this.getToken(pathSegments, method);
 
     try {
-      const { status, data } = await Axios.request({
+      const { status, data } = await this.client.request({
         method,
-        baseURL: process.env.EVIDENCE_API_BASE_URL,
         url: `/api/v1/${pathSegments.join('/')}`,
         data: body,
         headers: {
@@ -115,7 +141,7 @@ export class EvidenceApiGateway {
 
       return { data, status };
     } catch (err) {
-      console.log('Error: ' + err);
+      console.log(err);
       return { status: 500 };
     }
   }
