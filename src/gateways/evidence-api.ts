@@ -24,7 +24,7 @@ export class EvidenceApiGateway {
       const { status, data } = await axios.request({
         method,
         baseURL: process.env.EVIDENCE_API_BASE_URL,
-        url: `/${pathSegments.join('/')}`,
+        url: `/api/v1/${pathSegments.join('/')}`,
         data: body,
         headers: {
           Authorization: token,

@@ -37,7 +37,7 @@ describe('Evidence api gateway', () => {
       expect(axios.request).toHaveBeenCalledWith({
         method,
         baseURL: baseUrl,
-        url: `/${path.join('/')}`,
+        url: `/api/v1/${path.join('/')}`,
         data: undefined,
         validateStatus,
         headers: {
@@ -73,7 +73,7 @@ describe('Evidence api gateway', () => {
       expect(axios.request).toHaveBeenCalledWith({
         method,
         baseURL: baseUrl,
-        url: `/${path.join('/')}`,
+        url: `/api/v1/${path.join('/')}`,
         data: body,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
@@ -147,7 +147,7 @@ describe('Evidence api gateway', () => {
       expect(axios.request).toHaveBeenCalledWith({
         method,
         baseURL: baseUrl,
-        url: `/${path.join('/')}`,
+        url: `/api/v1/${path.join('/')}`,
         data: undefined,
         validateStatus,
         headers: {
