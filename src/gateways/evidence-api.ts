@@ -47,7 +47,7 @@ export class EvidenceApiGateway {
     try {
       // TODO: Uncomment when endpoint is complete on API
       // const { data } = await this.client.get<EvidenceRequestResponse[]>(
-      //   '/evidence_requests'
+      //   '/api/v1/evidence_requests'
       // );
       await new Promise((resolve) => setTimeout(resolve, 100));
       const data = EvidenceRequestsFixture;
@@ -62,7 +62,7 @@ export class EvidenceApiGateway {
   async getDocumentTypes(): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        '/document_types',
+        '/api/v1/document_types',
         { headers: { Authorization: tokens?.document_types?.GET } }
       );
       return data.map(ResponseMapper.mapDocumentType);
@@ -75,7 +75,7 @@ export class EvidenceApiGateway {
   async getEvidenceRequest(id: string): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse>(
-        `/evidence_requests/${id}`,
+        `/api/v1/evidence_requests/${id}`,
         { headers: { Authorization: tokens?.evidence_requests?.GET } }
       );
       return ResponseMapper.mapEvidenceRequest(data);
@@ -91,7 +91,7 @@ export class EvidenceApiGateway {
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
-        `/evidence_requests/${evidenceRequestId}/document_submissions`,
+        `/api/v1/evidence_requests/${evidenceRequestId}/document_submissions`,
         { documentType },
         { headers: { Authorization: tokens?.evidence_requests?.POST } }
       );
@@ -108,7 +108,7 @@ export class EvidenceApiGateway {
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
-        `/document_submissions/${documentSubmissionId}`,
+        `/api/v1/document_submissions/${documentSubmissionId}`,
         params,
         { headers: { Authorization: tokens?.document_submissions?.PATCH } }
       );

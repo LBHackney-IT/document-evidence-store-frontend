@@ -240,7 +240,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getEvidenceRequest(id);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/evidence_requests/${id}`,
+          `/api/v1/evidence_requests/${id}`,
           {
             headers: {
               Authorization:
@@ -304,7 +304,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.createDocumentSubmission(evidenceRequestId, documentType);
         expect(client.post).toHaveBeenCalledWith(
-          `/evidence_requests/${evidenceRequestId}/document_submissions`,
+          `/api/v1/evidence_requests/${evidenceRequestId}/document_submissions`,
           {
             documentType,
           },
@@ -356,7 +356,7 @@ describe('Evidence api gateway', () => {
         });
 
         expect(client.patch).toHaveBeenCalledWith(
-          `/document_submissions/${documentSubmissionId}`,
+          `/api/v1/document_submissions/${documentSubmissionId}`,
           { state: 'UPLOADED' },
           {
             headers: {
