@@ -129,5 +129,32 @@ describe('Confirm Request Dialog', () => {
         ).toBeVisible();
       });
     });
+
+    describe('when the submit callback fails', () => {
+      let promise: Promise<void>;
+      beforeEach(() => {
+        promise = Promise.reject('oh noes');
+        onAccept.mockReturnValue(promise);
+      });
+
+      it('enables the button', async () => {
+        fireEvent.click(screen.getByText('Yes, send this request'));
+
+        expect(onAccept).toHaveBeenCalled();
+
+        const foundButton = screen
+          .getByText('Yes, send this request')
+          .closest('button');
+        expect(foundButton?.disabled).toBeTruthy();
+
+        try {
+          await act(() => promise);
+        } catch (err) {
+          // expected to fail
+        }
+
+        expect(foundButton?.disabled).toBeFalsy();
+      });
+    });
   });
 });
