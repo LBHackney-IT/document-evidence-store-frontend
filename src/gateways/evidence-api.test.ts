@@ -5,7 +5,7 @@ import {
   DocumentSubmission,
 } from 'src/domain/document-submission';
 import { DocumentSubmissionResponse } from 'types/api';
-import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/id.json';
+import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';

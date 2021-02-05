@@ -1,6 +1,6 @@
 const evidenceRequestsIndex = require('../../../cypress/fixtures/evidence_requests/index.json');
 const evidenceRequestsId = require('../../../cypress/fixtures/evidence_requests/id.json');
-const documentSubmission = require('../../../cypress/fixtures/document_submissions/id.json');
+const documentSubmission = require('../../../cypress/fixtures/document_submissions/create.json');
 const documentTypes = require('../../../cypress/fixtures/document_types/index.json');
 const { v4: uuidv4 } = require('uuid');
 
