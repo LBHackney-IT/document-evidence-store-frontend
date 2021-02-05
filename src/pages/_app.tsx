@@ -1,8 +1,10 @@
 import { AppProps } from 'next/app';
 import React from 'react';
 import { UserContext } from 'src/contexts/UserContext';
-import '../helpers/register-domain';
+import { registerDomainModels } from '../helpers/register-domain';
 import '../styles/globals.scss';
+
+registerDomainModels();
 
 const CustomApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
   return (

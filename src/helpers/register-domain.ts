@@ -5,16 +5,14 @@ import { DocumentType } from 'src/domain/document-type';
 import superjson from 'superjson';
 import { DocumentSubmission } from 'src/domain/document-submission';
 
-let registered = false;
-
-if (!registered) {
-  registered = true;
-
+export const registerDomainModels = (): void => {
   try {
-    superjson.registerClass(Resident);
-    superjson.registerClass(EvidenceRequest);
-    superjson.registerClass(DocumentType);
-    superjson.registerClass(DocumentSubmission);
+    superjson.registerClass(Resident, { identifier: 'Resident' });
+    superjson.registerClass(EvidenceRequest, { identifier: 'EvidenceRequest' });
+    superjson.registerClass(DocumentType, { identifier: 'DocumentType' });
+    superjson.registerClass(DocumentSubmission, {
+      identifier: 'DocumentSubmission',
+    });
 
     superjson.registerCustom<DateTime, string>(
       {
@@ -27,4 +25,4 @@ if (!registered) {
   } catch (e) {
     // console.error(e);
   }
-}
+};
