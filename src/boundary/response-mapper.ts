@@ -7,6 +7,7 @@ import {
   DocumentSubmission,
 } from '../domain/document-submission';
 import { DocumentSubmissionResponse, EvidenceRequestResponse } from 'types/api';
+import { Document } from 'src/domain/document';
 
 export class ResponseMapper {
   static mapEvidenceRequest(attrs: EvidenceRequestResponse): EvidenceRequest {
@@ -36,6 +37,13 @@ export class ResponseMapper {
     const createdAt = DateTime.fromISO(attrs.createdAt);
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
-    return new DocumentSubmission({ ...attrs, createdAt, state, documentType });
+    const document = attrs.document ? new Document(attrs.document) : undefined;
+    return new DocumentSubmission({
+      ...attrs,
+      createdAt,
+      state,
+      documentType,
+      document,
+    });
   }
 }

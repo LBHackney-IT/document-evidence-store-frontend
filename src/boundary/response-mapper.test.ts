@@ -2,14 +2,17 @@ import { DateTime } from 'luxon';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
 import DocumentSubmissionCreate from '../../cypress/fixtures/document_submissions/create.json';
+import DocumentSubmissionGet from '../../cypress/fixtures/document_submissions/get.json';
 import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { Resident } from '../domain/resident';
 import { ResponseMapper } from './response-mapper';
 import { DocumentType } from '../domain/document-type';
+import { Document } from '../domain/document';
 import {
   DocumentState,
   DocumentSubmission,
 } from '../domain/document-submission';
+import { DocumentSubmissionResponse } from 'types/api';
 
 describe('ResponseMapper', () => {
   describe('.mapEvidenceRequest', () => {
@@ -71,7 +74,7 @@ describe('ResponseMapper', () => {
 
   describe('.mapDocumentSubmission', () => {
     let result: DocumentSubmission;
-    const responseJson = DocumentSubmissionFixture;
+    let responseJson: DocumentSubmissionResponse = DocumentSubmissionCreate;
 
     beforeEach(() => {
       result = ResponseMapper.mapDocumentSubmission(responseJson);
@@ -110,6 +113,16 @@ describe('ResponseMapper', () => {
           description: 'A valid passport open at the photo page',
         })
       );
+    });
+
+    describe('when document is present', () => {
+      beforeAll(() => {
+        responseJson = DocumentSubmissionGet;
+      });
+
+      it('maps the document', () => {
+        expect(result.document).toBeInstanceOf(Document);
+      });
     });
   });
 });
