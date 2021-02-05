@@ -5,7 +5,6 @@ import {
   TokenDictionary,
 } from '../../types/api';
 import { InternalServerError } from './internal-api';
-import EvidenceRequestsFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
 import {
@@ -24,6 +23,7 @@ const tokens: TokenDictionary = {
     POST: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
   },
   document_submissions: {
+    GET: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
     PATCH: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
   },
 };
@@ -45,14 +45,11 @@ export class EvidenceApiGateway {
 
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
     try {
-      // TODO: Uncomment when endpoint is complete on API
-      // const { data } = await this.client.get<EvidenceRequestResponse[]>(
-      //   '/api/v1/evidence_requests'
-      // );
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      const data = EvidenceRequestsFixture;
+      const { data } = await this.client.get<EvidenceRequestResponse[]>(
+        '/api/v1/evidence_requests'
+      );
 
-      return data.map(ResponseMapper.mapEvidenceRequest);
+      return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
@@ -111,6 +108,19 @@ export class EvidenceApiGateway {
         `/api/v1/document_submissions/${documentSubmissionId}`,
         params,
         { headers: { Authorization: tokens?.document_submissions?.PATCH } }
+      );
+      return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getDocumentSubmission(id: string): Promise<DocumentSubmission> {
+    try {
+      const { data } = await this.client.get<DocumentSubmissionResponse>(
+        `/api/v1/document_submissions/${id}`,
+        { headers: { Authorization: tokens?.document_submissions?.GET } }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {

@@ -1,6 +1,6 @@
-import dsFixture from '../../cypress/fixtures/document_submissions/id.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/get.json';
 
-describe('Accept and reject evidence', () => {
+describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
 
@@ -11,11 +11,17 @@ describe('Accept and reject evidence', () => {
       });
     }).as('updateDocumentState');
 
-    cy.visit(`http://localhost:3000/dashboard/residents/1`);
+    cy.visit(`http://localhost:3000/dashboard`);
     cy.injectAxe();
+
+    cy.get('a').contains('Review').click();
+    cy.contains('h1', 'Firstname Surname');
   });
 
-  it('resident detail page has no detectable accessibility issues', () => {
+  it('pages have no detectable accessibility issues', () => {
+    cy.checkA11y();
+    cy.get('a').contains('Foo').click();
+    cy.contains('h1', 'Firstname SurnamePassport');
     cy.checkA11y();
   });
 
@@ -27,13 +33,7 @@ describe('Accept and reject evidence', () => {
     cy.get('h2').should('contain', 'Reviewed');
   });
 
-  it('document detail page has no detectable accessibility issues', () => {
-    cy.get('a').contains('Foo').click();
-    cy.contains('h1', 'Firstname SurnamePassport');
-    cy.checkA11y();
-  });
-
-  it('lets you see a document detail page with accept/reject actions', () => {
+  it('lets you see a document detail page with actions and information', () => {
     cy.get('a').contains('Foo').click();
 
     cy.contains('h1', 'Firstname SurnamePassport');
@@ -42,7 +42,11 @@ describe('Accept and reject evidence', () => {
     cy.get('button').should('contain', 'Request new file');
 
     cy.get('h2').should('contain', 'Preview');
-    cy.get('h2').should('contain', 'History');
+    cy.get('figure').should('contain', 'PNG');
+    cy.get('figure').should('contain', '24.7 KB');
+
+    // TODO: uncomment when History is implemented
+    // cy.get('h2').should('contain', 'History');
   });
 
   it('can approve the document', () => {

@@ -173,21 +173,24 @@ describe('Evidence api gateway', () => {
     });
   });
 
-  xdescribe('getEvidenceRequests', () => {
-    describe('returns the correct response', () => {
+  describe('getEvidenceRequests', () => {
+    describe('when successful', () => {
       const expectedData = EvidenceRequestFixture;
       const mappedData = EvidenceRequestFixture.map(
         ResponseMapper.mapEvidenceRequest
       );
 
       beforeEach(() => {
+        mockedResponseMapper.mapEvidenceRequest.mockClear();
         client.get.mockResolvedValue({
           data: expectedData,
         } as AxiosResponse);
 
-        mockedResponseMapper.mapEvidenceRequest
-          .mockReturnValueOnce(mappedData[0])
-          .mockReturnValueOnce(mappedData[1]);
+        for (let i = 0; i < expectedData.length; i++) {
+          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce(
+            mappedData[i]
+          );
+        }
       });
 
       it('calls axios correctly', async () => {
@@ -199,6 +202,7 @@ describe('Evidence api gateway', () => {
 
       it('maps the response', async () => {
         await gateway.getEvidenceRequests();
+
         for (let i = 0; i < expectedData.length; i++) {
           expect(
             mockedResponseMapper.mapEvidenceRequest
@@ -387,6 +391,57 @@ describe('Evidence api gateway', () => {
             state: DocumentState.UPLOADED,
           });
         await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('getDocumentSubmission', () => {
+    const id = 'id';
+    describe('returns the correct response', () => {
+      const expectedData = DocumentSubmissionFixture;
+      const mappedData = ResponseMapper.mapDocumentSubmission(expectedData);
+
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: expectedData,
+        });
+
+        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(mappedData);
+      });
+
+      it('calls axios correctly', async () => {
+        await gateway.getDocumentSubmission(id);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_submissions/${id}`,
+          {
+            headers: {
+              Authorization:
+                process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
+            },
+          }
+        );
+      });
+
+      it('maps the response', async () => {
+        await gateway.getDocumentSubmission(id);
+        expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
+          expectedData
+        );
+      });
+
+      it('returns mapped EvidenceTypes', async () => {
+        const result = await gateway.getDocumentSubmission(id);
+        expect(result).toEqual(mappedData);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () => gateway.getDocumentSubmission(id);
+        expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
       });
