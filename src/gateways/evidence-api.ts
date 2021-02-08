@@ -10,6 +10,9 @@ const tokens: TokenDictionary = {
     POST: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
     PATCH: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_PATCH,
   },
+  document_submissions: {
+    PATCH: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
+  },
 };
 
 export class EvidenceApiGateway {
