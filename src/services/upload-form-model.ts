@@ -40,7 +40,7 @@ export class UploadFormModel {
   async handleSubmit(values: FormValues): Promise<void> {
     const requests = Object.entries(values).map(async ([id, file]) => {
       await this.uploadFile(id, file);
-      // await this.updateDocumentState(id);
+      await this.updateDocumentState(id);
     });
 
     await Promise.all(requests);
