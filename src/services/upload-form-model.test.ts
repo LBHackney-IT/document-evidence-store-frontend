@@ -59,7 +59,7 @@ describe('UploadFormModel', () => {
       );
     });
 
-    xit('updates the state of each submission', async () => {
+    it('updates the state of each submission', async () => {
       await model.handleSubmit(values);
 
       expect(mockUpdateState).toHaveBeenNthCalledWith(
