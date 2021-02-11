@@ -84,7 +84,7 @@ describe('withAuth', () => {
       });
     });
 
-    it('redirects to the login page', async () => {
+    it('redirects to the access denied page', async () => {
       const result = await getServerSideProps(ctx);
 
       expect(result).toEqual({

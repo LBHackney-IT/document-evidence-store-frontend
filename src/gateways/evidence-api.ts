@@ -32,14 +32,14 @@ type EvidenceApiGatewayDependencies = {
   client: AxiosInstance;
 };
 
+const defaultDependencies: EvidenceApiGatewayDependencies = {
+  client: Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL }),
+};
+
 export class EvidenceApiGateway {
   private client: AxiosInstance;
 
-  constructor(
-    { client }: EvidenceApiGatewayDependencies = {
-      client: Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL }),
-    }
-  ) {
+  constructor({ client } = defaultDependencies) {
     this.client = client;
   }
 
