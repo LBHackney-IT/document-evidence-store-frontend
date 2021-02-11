@@ -1,5 +1,4 @@
-import dsFixture from '../../cypress/fixtures/document_submissions/id.json';
-import erFixtures from '../../cypress/fixtures/evidence_requests/id.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/create.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';

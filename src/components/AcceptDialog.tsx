@@ -23,7 +23,11 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         <Button
           onClick={async () => {
             setLoading(true);
-            await props.onAccept();
+            try {
+              await props.onAccept();
+            } catch (err) {
+              console.error(err);
+            }
             setLoading(false);
           }}
           disabled={loading}

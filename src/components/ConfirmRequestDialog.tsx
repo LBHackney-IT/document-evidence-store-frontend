@@ -61,7 +61,11 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
           disabled={loading}
           onClick={async () => {
             setLoading(true);
-            await onAccept();
+            try {
+              await onAccept();
+            } catch (err) {
+              console.error(err);
+            }
             setLoading(false);
           }}
         >

@@ -7,12 +7,8 @@
       "create-evidence-request",
       "get-document-types",
       "create-document-submission",
-      "update-document-submission-uploaded"
+      "get-document-submission",
+      "update-document-submission"
     ]
-  },
-  {
-    "id": "approved-document-submission",
-    "from": "standard",
-    "fixtures": ["update-document-submission-approved"]
   }
 ]

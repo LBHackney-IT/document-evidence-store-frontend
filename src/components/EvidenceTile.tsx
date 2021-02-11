@@ -8,7 +8,9 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
   <li className={styles.item}>
     <div className={styles.preview}>
       <strong>{props.format}</strong>
-      <span className={styles.filesize}>{humanFileSize(props.fileSize)}</span>
+      <span className={styles.filesize}>
+        {humanFileSize(props.fileSizeInBytes)}
+      </span>
     </div>
     <div>
       <Heading level={HeadingLevels.H3} className={styles.title}>
@@ -58,7 +60,7 @@ interface Props {
   residentId: string;
   id: string;
   format: string;
-  fileSize: number;
+  fileSizeInBytes: number;
   title: string;
   createdAt: string;
   purpose?: string;

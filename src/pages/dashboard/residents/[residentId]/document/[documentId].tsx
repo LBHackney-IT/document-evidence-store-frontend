@@ -6,19 +6,16 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import Layout from 'src/components/DashboardLayout';
-import History from 'src/components/History';
 import RejectDialog from 'src/components/RejectDialog';
-import { DocumentState } from 'src/domain/document-submission';
+import {
+  DocumentState,
+  DocumentSubmission,
+} from 'src/domain/document-submission';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { InternalApiGateway } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
-
-// TODO: Replace fixture with http request to get document submission
-import { ResponseMapper } from 'src/boundary/response-mapper';
-import dsFixtureJson from '../../../../../../cypress/fixtures/document_submissions/id.json';
-
-const dsFixture = ResponseMapper.mapDocumentSubmission(dsFixtureJson);
 
 const gateway = new InternalApiGateway();
 
@@ -28,14 +25,22 @@ type DocumentDetailPageQuery = {
   action?: string;
 };
 
-const DocumentDetailPage: NextPage<WithUser> = () => {
+type DocumentDetailPageProps = {
+  documentSubmission: DocumentSubmission;
+};
+
+const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
+  documentSubmission: _documentSubmission,
+}) => {
   const router = useRouter();
   const {
     residentId,
     documentId,
     action,
   } = router.query as DocumentDetailPageQuery;
-  const [documentSubmission, setDocumentSubmission] = useState(dsFixture);
+  const [documentSubmission, setDocumentSubmission] = useState(
+    _documentSubmission
+  );
 
   const handleAccept = useCallback(async () => {
     const updated = await gateway.updateDocumentSubmission(documentId, {
@@ -48,6 +53,9 @@ const DocumentDetailPage: NextPage<WithUser> = () => {
       { shallow: true }
     );
   }, [documentSubmission]);
+
+  const { document } = documentSubmission;
+  if (!document) return null;
 
   return (
     <Layout>
@@ -89,16 +97,17 @@ const DocumentDetailPage: NextPage<WithUser> = () => {
       <figure className={styles.preview}>
         <img src="http://placehold.it/600x400" alt="example" />
         <figcaption className="lbh-body-s">
-          <strong>PDF</strong> {humanFileSize(2500000)}{' '}
+          <strong>{document.extension?.toUpperCase()}</strong>{' '}
+          {humanFileSize(document.fileSizeInBytes)}{' '}
           <a href="#" className="lbh-link">
             Download
           </a>
         </figcaption>
       </figure>
 
-      <h2 className="lbh-heading-h3">History</h2>
-
-      <History />
+      {/* https://hackney.atlassian.net/browse/DES-63 */}
+      {/* <h2 className="lbh-heading-h3">History</h2> */}
+      {/* <History /> */}
 
       <AcceptDialog
         open={action === 'accept'}
@@ -125,6 +134,12 @@ const DocumentDetailPage: NextPage<WithUser> = () => {
   );
 };
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withAuth(async (ctx) => {
+  const gateway = new EvidenceApiGateway();
+  const { documentId: id } = ctx.params as { documentId: string };
+
+  const documentSubmission = await gateway.getDocumentSubmission(id);
+  return { props: { documentSubmission } };
+});
 
 export default DocumentDetailPage;

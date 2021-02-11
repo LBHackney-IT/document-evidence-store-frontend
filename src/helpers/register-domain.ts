@@ -4,6 +4,7 @@ import { Resident } from 'src/domain/resident';
 import { DocumentType } from 'src/domain/document-type';
 import superjson from 'superjson';
 import { DocumentSubmission } from 'src/domain/document-submission';
+import { Document } from 'src/domain/document';
 
 export const registerDomainModels = (): void => {
   try {
@@ -13,6 +14,7 @@ export const registerDomainModels = (): void => {
     superjson.registerClass(DocumentSubmission, {
       identifier: 'DocumentSubmission',
     });
+    superjson.registerClass(Document, { identifier: 'Document' });
 
     superjson.registerCustom<DateTime, string>(
       {

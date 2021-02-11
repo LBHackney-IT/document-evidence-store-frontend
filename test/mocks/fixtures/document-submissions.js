@@ -1,7 +1,17 @@
-const documentSubmission = require('../../../cypress/fixtures/document_submissions/id.json');
+const documentSubmission = require('../../../cypress/fixtures/document_submissions/get.json');
+
+const getDocumentSubmission = {
+  id: 'get-document-submission',
+  url: '/api/v1/document_submissions/:id',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: documentSubmission,
+  },
+};
 
 const updateDocumentSubmission = {
-  id: 'update-document-submission-uploaded',
+  id: 'update-document-submission',
   url: '/api/v1/document_submissions/:id',
   method: 'PATCH',
   response(req, res) {
@@ -13,4 +23,5 @@ const updateDocumentSubmission = {
 
 module.exports = {
   updateDocumentSubmission,
+  getDocumentSubmission,
 };

@@ -23,8 +23,18 @@ export interface EvidenceRequestResponse
 }
 
 export interface DocumentSubmissionResponse
-  extends Omit<IDocumentSubmission, 'createdAt' | 'state' | 'documentType'> {
+  extends Omit<
+    IDocumentSubmission,
+    'createdAt' | 'state' | 'documentType' | 'document'
+  > {
   createdAt: string;
   state: string;
   documentType: IDocumentType;
+  document?: DocumentResponse;
+}
+
+export interface DocumentResponse {
+  id: string;
+  fileSize: number;
+  fileType: string;
 }
