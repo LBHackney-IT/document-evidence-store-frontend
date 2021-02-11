@@ -7,7 +7,7 @@ import {
   act,
 } from '@testing-library/react';
 import NewRequestForm from './NewRequestForm';
-import documentTypesFixture from '../../cypress/fixtures/document-types-response.json';
+import documentTypesFixture from '../../cypress/fixtures/document_types/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 
 const documentTypes = documentTypesFixture.map((dt) =>

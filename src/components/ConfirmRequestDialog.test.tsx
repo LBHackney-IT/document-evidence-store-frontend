@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
-import DocumentTypesFixture from '../../cypress/fixtures/document-types-response.json';
+import DocumentTypesFixture from '../../cypress/fixtures/document_types/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 import { EvidenceRequestRequest } from '../gateways/internal-api';
 

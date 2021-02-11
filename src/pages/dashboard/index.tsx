@@ -1,30 +1,21 @@
-import { useState, useEffect, useMemo } from 'react';
-import Head from 'next/head';
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import { ReactNode } from 'react';
-import { EvidenceRequest } from '../../domain/evidence-request';
-import { InternalApiGateway } from '../../gateways/internal-api';
-import { ResidentTable } from '../../components/ResidentTable';
-import ResidentSearchForm from '../../components/ResidentSearchForm';
-import Tabs from '../../components/Tabs';
-import TableSkeleton from '../../components/TableSkeleton';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import { EvidenceRequest } from 'src/domain/evidence-request';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import Layout from '../../components/DashboardLayout';
+import ResidentSearchForm from '../../components/ResidentSearchForm';
+import { ResidentTable } from '../../components/ResidentTable';
+import Tabs from '../../components/Tabs';
 
-const BrowseResidents = (): ReactNode => {
-  const [evidenceRequests, setEvidenceRequests] = useState<EvidenceRequest[]>();
+type BrowseResidentsProps = {
+  evidenceRequests: EvidenceRequest[];
+};
 
-  useEffect(() => {
-    const gateway = new InternalApiGateway();
-    gateway.getEvidenceRequests().then(setEvidenceRequests);
-  }, []);
-
-  const table = useMemo(() => {
-    if (!evidenceRequests)
-      return <TableSkeleton columns={['Resident', 'Document', 'Made']} />;
-
-    return <ResidentTable residents={evidenceRequests} />;
-  }, [evidenceRequests]);
-
+const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
+  evidenceRequests,
+}) => {
   const handleSearch = () => {
     // handle search here
   };
@@ -43,16 +34,25 @@ const BrowseResidents = (): ReactNode => {
         children={[
           <div key="1">
             <Heading level={HeadingLevels.H3}>To review</Heading>
-            {table}
+            <ResidentTable residents={evidenceRequests} />
           </div>,
           <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
-            {table}
+            <ResidentTable residents={evidenceRequests} />
           </div>,
         ]}
       />
     </Layout>
   );
 };
+
+export const getServerSideProps = withAuth<BrowseResidentsProps>(async () => {
+  const gateway = new EvidenceApiGateway();
+  const evidenceRequests = await gateway.getEvidenceRequests();
+
+  return {
+    props: { evidenceRequests },
+  };
+});
 
 export default BrowseResidents;

@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently -k \"npm:mock\" \"next dev\"",
     "build": "next build",
     "start": "next start",
+    "start:ci": "concurrently -k \"npm:start\" \"npm:mock\"",
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx",
     "prettier:test": "npx prettier -c .",
     "prettier:fix": "npx prettier --write .",
     "test:unit": "jest",
     "test:e2e:ci": "cypress run",
-    "test:e2e:dev": "cypress open"
+    "test:e2e:dev": "cypress open",
+    "mock": "mocks-server"
   },
   "dependencies": {
     "@reach/alert": "^0.12.1",
@@ -30,10 +32,12 @@
     "restana": "^4.8.0",
     "serve-static": "^1.14.1",
     "serverless-http": "^2.6.0",
+    "superjson": "^1.6.0",
     "universal-cookie": "^4.0.4",
     "yup": "^0.31.0"
   },
   "devDependencies": {
+    "@mocks-server/main": "^1.9.0",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@types/cookie": "^0.4.0",
@@ -47,7 +51,9 @@
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
     "axe-core": "^4.1.1",
-    "cypress": "^6.3.0",
+    "babel-plugin-superjson-next": "^0.2.1",
+    "concurrently": "^5.3.0",
+    "cypress": "^6.4.0",
     "cypress-axe": "^0.12.0",
     "cypress-dotenv": "^1.2.2",
     "cypress-file-upload": "^4.1.1",
@@ -70,5 +76,13 @@
     "hooks": {
       "pre-commit": "npm run lint -- --fix && pretty-quick --staged"
     }
+  },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      "superjson-next"
+    ]
   }
 }

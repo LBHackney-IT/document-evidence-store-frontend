@@ -1,12 +1,13 @@
-import Head from 'next/head';
 import { Button } from 'lbh-frontend-react';
-import { ReactNode } from 'react';
-import Layout from 'src/components/DashboardLayout';
+import { NextPage } from 'next';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Layout from 'src/components/DashboardLayout';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
+import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import styles from 'src/styles/Resident.module.scss';
 
-const ResidentPage = (): ReactNode => {
+const ResidentPage: NextPage<WithUser> = () => {
   const router = useRouter();
   const { residentId } = router.query as {
     residentId: string;
@@ -128,5 +129,7 @@ const ResidentPage = (): ReactNode => {
     </Layout>
   );
 };
+
+export const getServerSideProps = withAuth();
 
 export default ResidentPage;

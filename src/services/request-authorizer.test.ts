@@ -49,65 +49,52 @@ describe('Request Authorizer', () => {
       mockJWT.decode.mockReturnValue(null);
     });
 
-    describe('server side', () => {
+    it('tries to verify the token', () => {
+      const cookieHeader = 'cookie header';
+      instance.execute({ path: '/', cookieHeader });
+
+      expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
+      expect(mockJWT.verify).toHaveBeenCalledWith(token, secret);
+    });
+
+    it('fails and redirects to the login page', () => {
+      result = instance.execute({ path: '/' });
+
+      if (result.success) fail('Should be a faillure');
+
+      expect(result.success).toBeFalsy();
+      expect(result.error).toEqual(AuthenticationError.InvalidToken);
+    });
+
+    describe('but the page is whitelisted', () => {
+      beforeEach(() => {
+        instance = new RequestAuthorizer({
+          cookieName,
+          secret,
+          environmentKey: 'production',
+          authGroups: { VALID: 'valid-group' },
+          authWhitelist: [/\//],
+        });
+      });
+
       it('tries to verify the token', () => {
         const cookieHeader = 'cookie header';
-        instance.execute({ serverSide: true, path: '/', cookieHeader });
+        instance.execute({
+          path: '/?foo=bar#title',
+          cookieHeader,
+        });
 
         expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
         expect(mockJWT.verify).toHaveBeenCalledWith(token, secret);
       });
 
-      it('fails and redirects to the login page', () => {
-        result = instance.execute({ serverSide: true, path: '/' });
+      it('succeeds', () => {
+        result = instance.execute({ path: '/' });
 
-        if (result.success) fail('Should be a faillure');
+        if (!result.success) fail('Should be a success');
 
-        expect(result.success).toBeFalsy();
-        expect(result.error).toEqual(AuthenticationError.InvalidToken);
-      });
-
-      describe('but the page is whitelisted', () => {
-        beforeEach(() => {
-          instance = new RequestAuthorizer({
-            cookieName,
-            secret,
-            environmentKey: 'production',
-            authGroups: { VALID: 'valid-group' },
-            authWhitelist: [/\//],
-          });
-        });
-
-        it('tries to verify the token', () => {
-          const cookieHeader = 'cookie header';
-          instance.execute({
-            serverSide: true,
-            path: '/?foo=bar#title',
-            cookieHeader,
-          });
-
-          expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
-          expect(mockJWT.verify).toHaveBeenCalledWith(token, secret);
-        });
-
-        it('succeeds', () => {
-          result = instance.execute({ serverSide: true, path: '/' });
-
-          if (!result.success) fail('Should be a success');
-
-          expect(result.success).toBeTruthy();
-          expect(result.user).toBe(undefined);
-        });
-      });
-    });
-
-    describe('client side', () => {
-      it('does not try to verify the token', () => {
-        const cookieHeader = 'cookie header';
-        instance.execute({ serverSide: false, path: '/', cookieHeader });
-
-        expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
-        expect(mockJWT.decode).toHaveBeenCalledWith(token);
+        expect(result.success).toBeTruthy();
+        expect(result.user).toBe(undefined);
       });
     });
 
@@ -122,7 +109,7 @@ describe('Request Authorizer', () => {
 
       it('does not try to verify the token', () => {
         const cookieHeader = 'cookie header';
-        instance.execute({ serverSide: false, path: '/', cookieHeader });
+        instance.execute({ path: '/', cookieHeader });
 
         expect(mockCookie).toHaveBeenCalledWith(cookieHeader);
         expect(mockJWT.decode).toHaveBeenCalledWith(token);
@@ -141,7 +128,7 @@ describe('Request Authorizer', () => {
     });
 
     it('succeeds', () => {
-      result = instance.execute({ serverSide: true, path: '/' });
+      result = instance.execute({ path: '/' });
 
       if (!result.success) fail('Should be a success');
 
@@ -158,7 +145,7 @@ describe('Request Authorizer', () => {
       });
 
       it('fails and redirects to access denied', () => {
-        result = instance.execute({ serverSide: true, path: '/' });
+        result = instance.execute({ path: '/' });
 
         if (result.success) fail('Should be a faillure');
 

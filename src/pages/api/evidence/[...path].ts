@@ -13,7 +13,6 @@ const authorizer = new RequestAuthorizer();
 const endpoint: NextApiHandler = async (req, res) => {
   const path = req.query.path as string[];
   const authorizeCommand: RequestAuthorizerCommand = {
-    serverSide: true,
     cookieHeader: req.headers.cookie,
     path: path.join('/'),
   };

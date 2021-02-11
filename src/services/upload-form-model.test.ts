@@ -1,7 +1,7 @@
 import { FormValues, UploadFormModel } from './upload-form-model';
 import * as S3Gateway from '../gateways/s3-gateway';
 import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
-import documentSubmissionFixture from '../../cypress/fixtures/document-submission-response.json';
+import documentSubmissionFixture from '../../cypress/fixtures/document_submissions/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 
 const { uploadMock } = S3Gateway as typeof MockS3Gateway;

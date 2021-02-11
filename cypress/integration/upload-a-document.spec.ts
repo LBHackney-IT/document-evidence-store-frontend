@@ -1,47 +1,22 @@
-import dsFixtures from '../fixtures/document-submission-response.json';
-import erFixtures from '../fixtures/evidence-request-response-singular.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/id.json';
+import erFixtures from '../../cypress/fixtures/evidence_requests/id.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';
 
   beforeEach(() => {
-    cy.intercept('/api/evidence/document_types', {
-      fixture: 'document-types-response.json',
-    });
-    cy.intercept('GET', `/api/evidence/evidence_requests/${requestId}`, {
-      fixture: 'evidence-request-response-singular',
-    });
     cy.intercept(
-      'POST',
-      `/api/evidence/evidence_requests/${erFixtures.id}/document_submissions`,
+      'PATCH',
+      /\/api\/evidence\/document_submissions\/.+/,
       (req) => {
-        const docType = req.body.documentType;
-        const response = dsFixtures.find(
-          (ds) => ds.documentType.id === docType
-        );
+        const response = dsFixture;
+
+        req.responseTimeout = 5000;
         req.reply((res) => {
-          res.send(201, response);
+          res.send(200, response);
         });
       }
-    );
-
-    dsFixtures.forEach(({ id }, i) =>
-      cy
-        .intercept(
-          'PATCH',
-          `/api/evidence/document_submissions/${id}`,
-          (req) => {
-            const response = dsFixtures.find((ds) => ds.id === id);
-            if (response) response.state = 'UPLOADED';
-
-            req.responseTimeout = 5000;
-            req.reply((res) => {
-              res.send(200, response);
-            });
-          }
-        )
-        .as(`patch-document-state-${i + 1}`)
-    );
+    ).as('patch-document-state');
 
     cy.visit(`http://localhost:3000/resident/${requestId}`);
     cy.injectAxe();
@@ -53,7 +28,7 @@ describe('Can upload a document', () => {
 
   context('when upload is successful', () => {
     beforeEach(() => {
-      cy.intercept('POST', dsFixtures[0].uploadPolicy.url, {
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
         statusCode: 201,
         delayMs: 2500,
       }).as('s3Upload');
@@ -78,8 +53,8 @@ describe('Can upload a document', () => {
 
       cy.wait('@s3Upload');
       cy.wait('@s3Upload');
-      cy.wait('@patch-document-state-1');
-      cy.wait('@patch-document-state-2');
+      cy.wait('@patch-document-state');
+      cy.wait('@patch-document-state');
 
       // View confirmation
       cy.get('h1').should('contain', "We've recieved your documents");
@@ -89,20 +64,18 @@ describe('Can upload a document', () => {
 
   context('when upload is unsuccessful', () => {
     beforeEach(() => {
-      cy.intercept('POST', dsFixtures[0].uploadPolicy.url, {
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
         forceNetworkError: true,
       }).as('s3Upload');
     });
 
-    it('shows guidance and lets you upload a file', () => {
+    it('shows an error message', () => {
       cy.get('a').contains('Continue').click();
 
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')
       );
       cy.get('button').contains('Continue').click();
-
-      cy.wait('@s3Upload');
 
       // View error message
       cy.get('span').should(

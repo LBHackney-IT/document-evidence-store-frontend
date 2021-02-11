@@ -1,31 +1,26 @@
-import {
-  ReactNode,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import Head from 'next/head';
 import { Paragraph } from 'lbh-frontend-react';
+import { NextPage } from 'next';
+import Head from 'next/head';
+import { useCallback, useState } from 'react';
+import Layout from 'src/components/DashboardLayout';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import NewRequestForm from '../../../components/NewRequestForm';
+import { DocumentType } from '../../../domain/document-type';
 import {
   EvidenceRequestRequest,
   InternalApiGateway,
 } from '../../../gateways/internal-api';
-import { DocumentType } from '../../../domain/document-type';
-import Layout from 'src/components/DashboardLayout';
-import { UserContext } from 'src/contexts/UserContext';
 
-const RequestsNewPage = (): ReactNode => {
-  const [documentTypes, setDocumentTypes] = useState<DocumentType[]>();
+type RequestsNewPageProps = {
+  documentTypes: DocumentType[];
+};
+
+const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
+  documentTypes,
+  user,
+}) => {
   const [complete, setComplete] = useState(false);
-  const { user } = useContext(UserContext);
-
-  useEffect(() => {
-    const gateway = new InternalApiGateway();
-    gateway.getDocumentTypes().then(setDocumentTypes);
-  }, []);
 
   const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
     const gateway = new InternalApiGateway();
@@ -38,22 +33,25 @@ const RequestsNewPage = (): ReactNode => {
     setComplete(true);
   }, []);
 
-  const form = useMemo(() => {
-    if (!documentTypes) return <Paragraph>Loading</Paragraph>;
-    return (
-      <NewRequestForm documentTypes={documentTypes} onSubmit={handleSubmit} />
-    );
-  }, [documentTypes]);
-
   return (
     <Layout>
       <Head>
         <title>Make a new request</title>
       </Head>
       <h1 className="lbh-heading-h2">Make a new request</h1>
-      {complete ? <Paragraph>Thanks!</Paragraph> : form}
+      {complete ? (
+        <Paragraph>Thanks!</Paragraph>
+      ) : (
+        <NewRequestForm documentTypes={documentTypes} onSubmit={handleSubmit} />
+      )}
     </Layout>
   );
 };
+
+export const getServerSideProps = withAuth<RequestsNewPageProps>(async () => {
+  const gateway = new EvidenceApiGateway();
+  const documentTypes = await gateway.getDocumentTypes();
+  return { props: { documentTypes } };
+});
 
 export default RequestsNewPage;

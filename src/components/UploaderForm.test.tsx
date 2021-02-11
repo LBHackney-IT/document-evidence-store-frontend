@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
 import { ResponseMapper } from '../boundary/response-mapper';
-import DocumentSubmissionFixture from '../../cypress/fixtures/document-submission-response-singular.json';
+import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/id.json';
 import * as MockUploadFormModelImport from '../services/__mocks__/upload-form-model';
 import * as UploadFormModelImport from '../services/upload-form-model';
 

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+adr generate toc -o docs/adr/_intro.md > docs/adr/README.md

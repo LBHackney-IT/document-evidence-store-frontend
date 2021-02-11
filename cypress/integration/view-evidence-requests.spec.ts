@@ -3,7 +3,7 @@ describe('View evidence requests', () => {
     cy.login();
 
     cy.intercept('/api/evidence/evidence_requests', {
-      fixture: 'evidence-request-response',
+      fixture: 'evidence_requests/index',
     });
 
     cy.visit(`http://localhost:3000/dashboard`);
