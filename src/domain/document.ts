@@ -1,14 +1,19 @@
 import mimeTypes from 'mime-types';
-import { IDocument } from 'types/api';
+
+export interface IDocument {
+  id: string;
+  fileSizeInBytes: number;
+  fileType: string;
+}
 
 export class Document implements IDocument {
   id: string;
-  fileSize: number;
+  fileSizeInBytes: number;
   fileType: string;
 
   constructor(params: IDocument) {
     this.id = params.id;
-    this.fileSize = params.fileSize;
+    this.fileSizeInBytes = params.fileSizeInBytes;
     this.fileType = params.fileType;
   }
 

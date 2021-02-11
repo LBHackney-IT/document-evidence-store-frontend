@@ -6,7 +6,7 @@ describe('Document', () => {
   beforeEach(() => {
     doc = new Document({
       id: 'id',
-      fileSize: 5000,
+      fileSizeInBytes: 5000,
       fileType: 'image/png',
     });
   });

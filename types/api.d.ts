@@ -30,10 +30,10 @@ export interface DocumentSubmissionResponse
   createdAt: string;
   state: string;
   documentType: IDocumentType;
-  document?: IDocument;
+  document?: DocumentResponse;
 }
 
-export interface IDocument {
+export interface DocumentResponse {
   id: string;
   fileSize: number;
   fileType: string;

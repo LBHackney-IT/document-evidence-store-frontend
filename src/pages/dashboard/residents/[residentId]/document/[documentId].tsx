@@ -98,15 +98,15 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <img src="http://placehold.it/600x400" alt="example" />
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
-          {humanFileSize(document.fileSize)}{' '}
+          {humanFileSize(document.fileSizeInBytes)}{' '}
           <a href="#" className="lbh-link">
             Download
           </a>
         </figcaption>
       </figure>
 
+      {/* https://hackney.atlassian.net/browse/DES-63 */}
       {/* <h2 className="lbh-heading-h3">History</h2> */}
-
       {/* <History /> */}
 
       <AcceptDialog

@@ -6,7 +6,11 @@ import {
   DocumentState,
   DocumentSubmission,
 } from '../domain/document-submission';
-import { DocumentSubmissionResponse, EvidenceRequestResponse } from 'types/api';
+import {
+  DocumentResponse,
+  DocumentSubmissionResponse,
+  EvidenceRequestResponse,
+} from 'types/api';
 import { Document } from 'src/domain/document';
 
 export class ResponseMapper {
@@ -37,7 +41,9 @@ export class ResponseMapper {
     const createdAt = DateTime.fromISO(attrs.createdAt);
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
-    const document = attrs.document ? new Document(attrs.document) : undefined;
+    const document = attrs.document
+      ? this.mapDocument(attrs.document)
+      : undefined;
     return new DocumentSubmission({
       ...attrs,
       createdAt,
@@ -45,5 +51,9 @@ export class ResponseMapper {
       documentType,
       document,
     });
+  }
+
+  private static mapDocument(attrs: DocumentResponse): Document {
+    return new Document({ ...attrs, fileSizeInBytes: attrs.fileSize });
   }
 }

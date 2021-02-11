@@ -28,7 +28,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -38,7 +38,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -48,7 +48,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
           toReview
@@ -103,7 +103,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
         />
@@ -112,7 +112,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
         />
@@ -121,7 +121,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           id="123"
           title="Foo"
           createdAt="1 day ago"
-          fileSize={1300000}
+          fileSizeInBytes={1300000}
           format="PDF"
           purpose="Example form"
         />

@@ -122,6 +122,9 @@ describe('ResponseMapper', () => {
 
       it('maps the document', () => {
         expect(result.document).toBeInstanceOf(Document);
+        expect(result.document?.fileSizeInBytes).toEqual(
+          responseJson.document?.fileSize
+        );
       });
     });
   });

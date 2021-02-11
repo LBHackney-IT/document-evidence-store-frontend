@@ -10,7 +10,7 @@ describe('EvidenceTile', () => {
         id="123"
         title="Foo"
         createdAt="1 day ago"
-        fileSize={1024}
+        fileSizeInBytes={1024}
         format="PDF"
         purpose="Example form"
         toReview
@@ -31,7 +31,7 @@ describe('EvidenceTile', () => {
         id="123"
         title="Foo"
         createdAt="1 day ago"
-        fileSize={1024}
+        fileSizeInBytes={1024}
         format="PDF"
         purpose="Example form"
       />
