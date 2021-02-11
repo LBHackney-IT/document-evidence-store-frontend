@@ -8,10 +8,31 @@ It's also known as **Hackney Upload**.
 
 It's a [Next.js](https://nextjs.org) app that works with:
 
+- Hackney's [evidence platform API](https://github.com/LBHackney-IT/evidence-api)
 - Hackney's [document platform API](https://github.com/LBHackney-IT/documents-api)
 - Hackney's [Google oAuth service](https://github.com/LBHackney-IT/LBH-Google-auth)
 
 It's built using the [React port](https://github.com/LBHackney-IT/lbh-frontend-react) of Hackney Frontend.
+
+## 🧐 What does it do?
+
+This application has two sides: the _officer dashboard_ side, for council officers to log in and manage evidence, and the _resident_ side for residents to upload evidence.
+
+### Officer Dashboard
+
+_🔐 This side of the application is authenticated_
+
+- **`/dashboard`** - The homepage for offices, which displays evidence requests which require attention from officers
+  - **`/dashboard/requests`** - View the evidence requests which are waiting for resident action
+  - **`/dashboard/requests/new`** - Send a new evidence request to a resident
+  - **`/dashboard/resident/:id`** - View all evidence requests for particular resident
+  - **`/dashboard/resident/:id/documents/:id`** - View the details of a partular document, and approve/reject it.
+
+### Resident Flow
+
+- **`/resident/:id`** - The start page of the resident upload flow for a specific evidence request
+  - **`/resident/:id/upload`** - Upload documents
+  - **`/resident/:id/confirmation`** - Upload confimation
 
 ## 💻 Running it locally
 
@@ -21,7 +42,7 @@ First, clone the repo
 
 ```bash
 npm i
-npm run dev
+npm run dev # boots the Next.js server and the mocks server
 ```
 
 It'll be on [http://localhost:3000](http://localhost:3000).
