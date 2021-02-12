@@ -22,11 +22,11 @@ This application has two sides: the _officer dashboard_ side, for council office
 
 _🔐 This side of the application is authenticated_
 
-- **`/dashboard`** - The homepage for offices, which displays evidence requests which require attention from officers
+- **`/dashboard`** - The homepage for officers, which displays evidence requests that require attention from officers
   - **`/dashboard/requests`** - View the evidence requests which are waiting for resident action
   - **`/dashboard/requests/new`** - Send a new evidence request to a resident
   - **`/dashboard/resident/:id`** - View all evidence requests for particular resident
-  - **`/dashboard/resident/:id/documents/:id`** - View the details of a partular document, and approve/reject it.
+  - **`/dashboard/resident/:id/documents/:id`** - View the details of a particular document, and approve/reject it.
 
 ### Resident Flow
 
