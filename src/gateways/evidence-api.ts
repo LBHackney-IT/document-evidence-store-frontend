@@ -47,7 +47,11 @@ export class EvidenceApiGateway {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
         '/api/v1/evidence_requests',
-        { headers: { Authorization: tokens?.evidence_requests?.GET } }
+        {
+          headers: { Authorization: tokens?.evidence_requests?.GET },
+          // TODO: pass this in from the users chosen service after DES-25
+          params: { serviceRequestedBy: 'Housing benefit' },
+        }
       );
 
       return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
