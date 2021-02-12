@@ -103,7 +103,7 @@ describe('Request Authorizer', () => {
         instance = new RequestAuthorizer({
           cookieName,
           secret,
-          environmentKey: 'dev',
+          environmentKey: 'development',
         });
       });
 
