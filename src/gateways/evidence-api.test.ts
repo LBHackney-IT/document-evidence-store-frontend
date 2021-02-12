@@ -196,7 +196,13 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getEvidenceRequests();
         expect(client.get).toHaveBeenLastCalledWith(
-          '/api/v1/evidence_requests'
+          '/api/v1/evidence_requests',
+          {
+            headers: {
+              Authorization:
+                process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+            },
+          }
         );
       });
 
