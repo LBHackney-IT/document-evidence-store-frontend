@@ -4,7 +4,7 @@ import 'cypress-file-upload';
 export const defaultUser: UserData = {
   email: 'test@hackney.gov.uk',
   name: 'Test User',
-  groups: ['development-team-staging'],
+  groups: ['development-team-staging', 'development-team-production'],
 };
 
 Cypress.Commands.add('login', (userData: UserData = defaultUser) => {
