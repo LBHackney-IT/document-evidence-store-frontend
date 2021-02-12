@@ -45,9 +45,9 @@ export interface RequestAuthorizerDependencies {
 
 const defaultDependencies = {
   secret: process.env.HACKNEY_JWT_SECRET as string,
-  cookieName: process.env.RUNTIME_HACKNEY_COOKIE_NAME as string,
-  environmentKey: process.env.RUNTIME_HOST_ENV as EnvironmentKey,
-  authGroups: authGroupsJson[process.env.RUNTIME_HOST_ENV as EnvironmentKey],
+  cookieName: process.env.HACKNEY_COOKIE_NAME as string,
+  environmentKey: process.env.NODE_ENV as EnvironmentKey,
+  authGroups: authGroupsJson[process.env.NODE_ENV as EnvironmentKey],
   authWhitelist: AUTH_WHITELIST,
 };
 
@@ -109,7 +109,7 @@ export class RequestAuthorizer {
   // };
 
   private authoriseUser(cookieHeader?: string): User | undefined {
-    const verify = this.environmentKey !== 'dev';
+    const verify = this.environmentKey !== 'development';
 
     try {
       const cookies = new Cookie(cookieHeader);
