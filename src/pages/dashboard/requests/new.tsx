@@ -26,6 +26,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     const gateway = new InternalApiGateway();
     const payload: EvidenceRequestRequest = {
       ...values,
+      // TODO: pass this in from the users chosen service after DES-25
       serviceRequestedBy: 'Housing benefit',
       userRequestedBy: user?.email,
     };

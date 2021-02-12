@@ -75,8 +75,8 @@ You can use a `.env` file to supply environment config locally. Create a fresh o
 | ----------------------------------------- | ------------------------------------------------------------------- | ----------------------------------- |
 | RUNTIME_APP_URL                           |                                                                     | http://localdev.hackney.gov.uk:3000 |
 | HACKNEY_JWT_SECRET                        |                                                                     |                                     |
-| RUNTIME_HACKNEY_COOKIE_NAME               |                                                                     | hackneyToken                        |
-| RUNTIME_HOST_ENV                          |                                                                     | dev                                 |
+| HACKNEY_COOKIE_NAME                       |                                                                     | hackneyToken                        |
+| NODE_ENV                                  |                                                                     | dev                                 |
 | FEEDBACK_FORM_URL                         | The URL to a form where users can submit feedback about the service | https://example.com                 |
 | EVIDENCE_API_BASE_URL                     |                                                                     | https://example.com/api/v1/         |
 | EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET     |                                                                     |                                     |

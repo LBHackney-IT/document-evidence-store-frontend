@@ -35,8 +35,8 @@ describe('Request Authorizer', () => {
     instance = new RequestAuthorizer({
       cookieName,
       secret,
-      environmentKey: 'production',
       authGroups: { VALID: 'valid-group' },
+      verifyToken: true,
     });
   });
 
@@ -71,9 +71,9 @@ describe('Request Authorizer', () => {
         instance = new RequestAuthorizer({
           cookieName,
           secret,
-          environmentKey: 'production',
           authGroups: { VALID: 'valid-group' },
           authWhitelist: [/\//],
+          verifyToken: true,
         });
       });
 
@@ -98,12 +98,12 @@ describe('Request Authorizer', () => {
       });
     });
 
-    describe('in development', () => {
+    describe('when skipping verification', () => {
       beforeEach(() => {
         instance = new RequestAuthorizer({
           cookieName,
           secret,
-          environmentKey: 'dev',
+          verifyToken: false,
         });
       });
 

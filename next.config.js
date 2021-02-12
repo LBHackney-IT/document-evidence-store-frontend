@@ -1,5 +1,3 @@
-const nextEnv = require('next-env');
-
 const config = {
   distDir: 'build/_next',
   target: 'server',
@@ -16,8 +14,4 @@ const config = {
   },
 };
 
-const withNextEnv = nextEnv({
-  publicPrefix: 'RUNTIME_',
-});
-
-module.exports = withNextEnv(config);
+module.exports = config;

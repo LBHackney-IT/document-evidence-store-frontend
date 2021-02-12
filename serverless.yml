@@ -36,9 +36,9 @@ functions:
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
-      RUNTIME_APP_URL: https://${self:custom.alias}
-      RUNTIME_HACKNEY_COOKIE_NAME: hackneyToken
-      RUNTIME_HOST_ENV: ${self:provider.stage}
+      APP_URL: https://${self:custom.alias}
+      HACKNEY_COOKIE_NAME: hackneyToken
+      NODE_ENV: ${self:provider.stage}
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
       EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/evidence_requests/token}

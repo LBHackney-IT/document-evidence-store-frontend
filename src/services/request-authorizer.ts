@@ -38,34 +38,33 @@ export type RequestAuthorizerResponse =
 export interface RequestAuthorizerDependencies {
   secret: string;
   cookieName: string;
-  environmentKey: EnvironmentKey;
   authGroups: Record<string, string>;
   authWhitelist: RegExp[];
+  verifyToken: boolean;
 }
 
 const defaultDependencies = {
   secret: process.env.HACKNEY_JWT_SECRET as string,
-  cookieName: process.env.RUNTIME_HACKNEY_COOKIE_NAME as string,
-  environmentKey: process.env.RUNTIME_HOST_ENV as EnvironmentKey,
-  authGroups: authGroupsJson[process.env.RUNTIME_HOST_ENV as EnvironmentKey],
+  cookieName: process.env.HACKNEY_COOKIE_NAME as string,
+  authGroups: authGroupsJson[process.env.NODE_ENV as EnvironmentKey],
   authWhitelist: AUTH_WHITELIST,
+  verifyToken: process.env.SKIP_VERIFY_TOKEN !== 'true',
 };
 
 export class RequestAuthorizer {
   private secret: string;
   private cookieName: string;
-  private environmentKey: string;
   private authGroups: Record<string, string>;
   private authWhitelist: RegExp[];
+  private verifyToken: boolean;
 
   constructor(deps: Partial<RequestAuthorizerDependencies> = {}) {
     this.secret = deps.secret ?? defaultDependencies.secret;
     this.cookieName = deps.cookieName ?? defaultDependencies.cookieName;
-    this.environmentKey =
-      deps.environmentKey ?? defaultDependencies.environmentKey;
     this.authGroups = deps.authGroups ?? defaultDependencies.authGroups;
     this.authWhitelist =
       deps.authWhitelist ?? defaultDependencies.authWhitelist;
+    this.verifyToken = deps.verifyToken ?? defaultDependencies.verifyToken;
   }
 
   public execute(command: RequestAuthorizerCommand): RequestAuthorizerResponse {
@@ -109,15 +108,13 @@ export class RequestAuthorizer {
   // };
 
   private authoriseUser(cookieHeader?: string): User | undefined {
-    const verify = this.environmentKey !== 'dev';
-
     try {
       const cookies = new Cookie(cookieHeader);
       const token = cookies.get(this.cookieName);
 
       if (!token) return;
 
-      const user = (verify
+      const user = (this.verifyToken
         ? jsonwebtoken.verify(token, this.secret)
         : jsonwebtoken.decode(token)) as User | undefined;
 

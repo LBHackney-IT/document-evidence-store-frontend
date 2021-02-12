@@ -202,6 +202,7 @@ describe('Evidence api gateway', () => {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
             },
+            params: { serviceRequestedBy: 'Housing benefit' },
           }
         );
       });

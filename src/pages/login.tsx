@@ -1,22 +1,19 @@
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
-import { ReactNode, useMemo } from 'react';
-import { useRouter } from 'next/router';
-import Layout from '../components/ResidentLayout';
+import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useMemo } from 'react';
+import Layout from '../components/ResidentLayout';
 
-const baseUrl = process.env.RUNTIME_APP_URL as string;
+type LoginProps = { appUrl: string };
 
-const createLoginUrl = (redirect: string): string => {
-  return `https://auth.hackney.gov.uk/auth?redirect_uri=${baseUrl}${redirect}`;
-};
-
-const Home = (): ReactNode => {
+const Home: NextPage<LoginProps> = ({ appUrl }) => {
   const router = useRouter();
   const loginUrl = useMemo(() => {
     let { redirect } = router.query as { redirect?: string };
     if (!redirect || redirect == '/') redirect = '/dashboard';
-    return createLoginUrl(redirect);
-  }, [router]);
+    return `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`;
+  }, [router, appUrl]);
 
   return (
     <Layout>
@@ -48,6 +45,13 @@ const Home = (): ReactNode => {
       </p>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps<LoginProps> = async () => {
+  const appUrl = process.env.APP_URL;
+  if (!appUrl) throw new Error('Missing APP_URL');
+
+  return { props: { appUrl } };
 };
 
 export default Home;

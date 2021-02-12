@@ -1,1 +1,1 @@
-export type EnvironmentKey = 'dev' | 'staging' | 'production';
+export type EnvironmentKey = 'development' | 'staging' | 'production';
