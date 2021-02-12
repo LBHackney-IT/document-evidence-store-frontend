@@ -46,7 +46,8 @@ export class EvidenceApiGateway {
   async getEvidenceRequests(): Promise<EvidenceRequest[]> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
-        '/api/v1/evidence_requests'
+        '/api/v1/evidence_requests',
+        { headers: { Authorization: tokens?.evidence_requests?.GET } }
       );
 
       return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
