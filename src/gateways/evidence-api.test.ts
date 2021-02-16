@@ -4,6 +4,7 @@ import {
   DocumentState,
   DocumentSubmission,
 } from 'src/domain/document-submission';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { DocumentSubmissionResponse } from 'types/api';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
@@ -194,7 +195,7 @@ describe('Evidence api gateway', () => {
       });
 
       it('calls axios correctly', async () => {
-        await gateway.getEvidenceRequests();
+        await gateway.getEvidenceRequests(EvidenceRequestState.PENDING);
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/evidence_requests',
           {
@@ -202,7 +203,10 @@ describe('Evidence api gateway', () => {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
             },
-            params: { serviceRequestedBy: 'Housing benefit' },
+            params: {
+              serviceRequestedBy: 'Housing benefit',
+              state: EvidenceRequestState.PENDING,
+            },
           }
         );
       });

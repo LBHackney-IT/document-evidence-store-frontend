@@ -13,6 +13,7 @@ import {
 } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -43,14 +44,16 @@ export class EvidenceApiGateway {
     this.client = client;
   }
 
-  async getEvidenceRequests(): Promise<EvidenceRequest[]> {
+  async getEvidenceRequests(
+    state?: EvidenceRequestState | null
+  ): Promise<EvidenceRequest[]> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
         '/api/v1/evidence_requests',
         {
           headers: { Authorization: tokens?.evidence_requests?.GET },
           // TODO: pass this in from the users chosen service after DES-25
-          params: { serviceRequestedBy: 'Housing benefit' },
+          params: { serviceRequestedBy: 'Housing benefit', state: state },
         }
       );
 
