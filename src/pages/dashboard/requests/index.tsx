@@ -31,7 +31,9 @@ const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
 
 export const getServerSideProps = withAuth<RequestsIndexPageProps>(async () => {
   const gateway = new EvidenceApiGateway();
-  const evidenceRequests = await gateway.getEvidenceRequests(EvidenceRequestState.PENDING);
+  const evidenceRequests = await gateway.getEvidenceRequests(
+    EvidenceRequestState.PENDING
+  );
   return {
     props: { evidenceRequests },
   };
