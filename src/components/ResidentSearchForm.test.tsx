@@ -20,4 +20,16 @@ describe('ResidentSearchForm', () => {
     fireEvent.click(screen.getByText('Search'));
     expect(mockHandler).toHaveBeenCalledTimes(1);
   });
+
+  it('does not submit if search query is white space', async () => {
+    const mockHandler = jest.fn();
+    render(<ResidentSearchForm handleSearch={mockHandler} />);
+    fireEvent.change(screen.getByPlaceholderText('Search for a resident...'), {
+      target: {
+        value: '   ',
+      },
+    });
+    fireEvent.click(screen.getByText('Search'));
+    expect(mockHandler).toHaveBeenCalledTimes(0);
+  });
 });

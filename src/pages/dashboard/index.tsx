@@ -7,6 +7,11 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import Layout from '../../components/DashboardLayout';
 import ResidentSearchForm from '../../components/ResidentSearchForm';
 import { ResidentTable } from '../../components/ResidentTable';
+import { useCallback, useState } from 'react';
+import { InternalApiGateway } from '../../gateways/internal-api';
+import { Resident } from '../../domain/resident';
+import { ResidentSummaryTable } from '../../components/ResidentSummaryTable';
+import TableSkeleton from '../../components/TableSkeleton';
 import Tabs from '../../components/Tabs';
 
 type BrowseResidentsProps = {
@@ -16,9 +21,23 @@ type BrowseResidentsProps = {
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
 }) => {
-  const handleSearch = () => {
-    // handle search here
-  };
+  // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
+  const [results, setResults] = useState<Resident[]>();
+  const [formSearchQuery, setFormSearchQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = useCallback(async (searchQuery: string) => {
+    try {
+      setFormSearchQuery(searchQuery);
+      setLoading(true);
+      const gateway = new InternalApiGateway();
+      const data = await gateway.searchResidents(searchQuery);
+      setLoading(false);
+      setResults(data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
 
   return (
     <Layout>
@@ -28,6 +47,18 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       <h1 className="lbh-heading-h2">Browse residents</h1>
 
       <ResidentSearchForm handleSearch={handleSearch} />
+
+      {(loading || results) && (
+        <h2 className="lbh-heading-h3">
+          Search results for: {formSearchQuery}
+        </h2>
+      )}
+
+      {loading && <TableSkeleton columns={['Name', 'Email', 'Phone Number']} />}
+
+      {results && <ResidentSummaryTable residents={results} />}
+
+      <h2 className="lbh-heading-h3">Pending Requests</h2>
 
       <Tabs
         tabTitles={['To review (3)', 'All (3)']}

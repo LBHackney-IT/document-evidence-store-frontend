@@ -7,7 +7,12 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
 
   return (
     <form
-      onSubmit={() => props.handleSearch(searchQuery)}
+      onSubmit={(event) => {
+        if (searchQuery.trim() != '') {
+          props.handleSearch(searchQuery);
+        }
+        event.preventDefault();
+      }}
       className={styles.form}
     >
       <label className={styles.label} htmlFor="search-query">

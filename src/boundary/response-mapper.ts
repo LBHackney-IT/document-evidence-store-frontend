@@ -10,6 +10,7 @@ import {
   DocumentResponse,
   DocumentSubmissionResponse,
   EvidenceRequestResponse,
+  ResidentResponse,
 } from 'types/api';
 import { Document } from 'src/domain/document';
 
@@ -50,6 +51,16 @@ export class ResponseMapper {
       state,
       documentType,
       document,
+    });
+  }
+
+  static mapResidentResponseList(attrs: ResidentResponse[]): Resident[] {
+    return attrs.map((r) => this.mapResidentResponse(r));
+  }
+
+  static mapResidentResponse(attr: ResidentResponse): Resident {
+    return new Resident({
+      ...attr,
     });
   }
 

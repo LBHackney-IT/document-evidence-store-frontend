@@ -38,3 +38,10 @@ export interface DocumentResponse {
   fileSize: number;
   fileType: string;
 }
+
+export interface ResidentResponse {
+  name: string;
+  email: string;
+  phoneNumber: string;
+  id: string;
+}

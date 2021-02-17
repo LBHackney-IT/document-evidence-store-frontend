@@ -3,6 +3,7 @@ import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/ind
 import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
 import DocumentSubmissionCreate from '../../cypress/fixtures/document_submissions/create.json';
 import DocumentSubmissionGet from '../../cypress/fixtures/document_submissions/get.json';
+import ResidentsSearchFixture from '../../cypress/fixtures/residents/search.json';
 import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { Resident } from '../domain/resident';
 import { ResponseMapper } from './response-mapper';
@@ -12,7 +13,7 @@ import {
   DocumentState,
   DocumentSubmission,
 } from '../domain/document-submission';
-import { DocumentSubmissionResponse } from 'types/api';
+import { DocumentSubmissionResponse, ResidentResponse } from 'types/api';
 
 describe('ResponseMapper', () => {
   describe('.mapEvidenceRequest', () => {
@@ -126,6 +127,15 @@ describe('ResponseMapper', () => {
           responseJson.document?.fileSize
         );
       });
+    });
+  });
+
+  describe('.mapResidentResponseList', () => {
+    it('maps basic attributes', () => {
+      const responseJson: ResidentResponse[] = ResidentsSearchFixture;
+      const result = ResponseMapper.mapResidentResponseList(responseJson);
+
+      expect(result).toMatchObject(responseJson);
     });
   });
 });
