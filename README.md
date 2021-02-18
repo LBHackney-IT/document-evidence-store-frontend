@@ -119,12 +119,12 @@ At the time of writing we have two Gateways which are for specific use cases:
 
 - **`internal-api.ts`**
 
-  - This acts a means of routing client side requests, for example form submissions, to a proxy endpoint on the Next.js server.
+  - This acts as a means of routing client side requests, for example form submissions, to a proxy endpoint on the Next.js server.
   - Taking an example: we make `POST/api/evidence/evidence_requests` which Next.js routes to `pages/api/evidence/[..path].ts`
   - `[...path].ts` uses the Next.js [catch all routes](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) functionality.
   - This then forwards the request onto the EvidenceAPI using `evidenceApiGateway.request()`
   - In our example this is sent to `EVIDENCE_API_BASE_URL/api/v1/evidence_requests` and we attach the `Authorization` headers found in the `evidence-api.ts`'s `TokenDictionary`
 
 - **`evidence-api.ts`**
-  - This acts a means of sending server side requests to the EvidenceAPI.
+  - This acts as a means of sending server side requests to the EvidenceAPI.
   - As discussed in [Architectural Decision Record 2](/docs/adr/0002-switch-from-client-side-api-requests-to-server-side.md) we use `getServerSideProps`
