@@ -1,7 +1,7 @@
 import ServiceAreaJson from '../../../services.json';
 import { ServiceArea } from '../../domain/service-area';
-import { WithUser } from '../../helpers/authed-server-side-props';
-import { GetServerSideProps, NextPage } from 'next';
+import { withAuth, WithUser } from '../../helpers/authed-server-side-props';
+import { NextPage } from 'next';
 import Head from 'next/head';
 import { ServicesLayout } from '../../components/ServicesLayout';
 import Layout from '../../components/DashboardLayout';
@@ -28,8 +28,7 @@ const Services: NextPage<WithUser<ServiceAreaProps>> = ({ serviceAreas }) => {
     </Layout>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = withAuth<ServiceAreaProps>(async (ctx) => {
   const requestAuthorizer = new RequestAuthorizer();
   const serviceAreaHelper = new ServiceAreaHelper();
 
@@ -50,6 +49,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       serviceAreas: userServiceAreas,
     },
   };
-};
+});
 
 export default Services;
