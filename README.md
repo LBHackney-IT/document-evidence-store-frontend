@@ -94,7 +94,7 @@ You can use a `.env` file to supply environment config locally. Create a fresh o
 
 | Variable                                  | Description                                                         | Example                             |
 | ----------------------------------------- | ------------------------------------------------------------------- | ----------------------------------- |
-| RUNTIME_APP_URL                           |                                                                     | http://localdev.hackney.gov.uk:3000 |
+| APP_URL                                   |                                                                     | http://localdev.hackney.gov.uk:3000 |
 | HACKNEY_JWT_SECRET                        |                                                                     |                                     |
 | HACKNEY_COOKIE_NAME                       |                                                                     | hackneyToken                        |
 | NODE_ENV                                  |                                                                     | dev                                 |
@@ -103,7 +103,28 @@ You can use a `.env` file to supply environment config locally. Create a fresh o
 | EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET     |                                                                     |                                     |
 | EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET  |                                                                     |                                     |
 | EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST |                                                                     |                                     |
+| EVIDENCE_API_TOKEN_RESIDENTS_GET          |                                                                     |                                     |
 
 ## Context and history
 
 See the [Architectural Decision Log](/docs/adr).
+
+## Gateways
+
+Following [Hackney's API Playbook](https://github.com/LBHackney-IT/API-Playbook-v2-beta) we have a `Gateways` directory which:
+
+> Holds the class responsible for establishing connection with the data source and retrieving/inserting/updating data queries to perform the given action against the data source
+
+At the time of writing we have two Gateways which are for specific use cases:
+
+- **`internal-api.ts`**
+
+  - This acts as a means of routing client side requests, for example form submissions, to a proxy endpoint on the Next.js server.
+  - Taking an example: we make `POST/api/evidence/evidence_requests` which Next.js routes to `pages/api/evidence/[..path].ts`
+  - `[...path].ts` uses the Next.js [catch all routes](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) functionality.
+  - This then forwards the request onto the EvidenceAPI using `evidenceApiGateway.request()`
+  - In our example this is sent to `EVIDENCE_API_BASE_URL/api/v1/evidence_requests` and we attach the `Authorization` headers found in the `evidence-api.ts`'s `TokenDictionary`
+
+- **`evidence-api.ts`**
+  - This acts as a means of sending server side requests to the EvidenceAPI.
+  - As discussed in [Architectural Decision Record 2](/docs/adr/0002-switch-from-client-side-api-requests-to-server-side.md) we use `getServerSideProps`

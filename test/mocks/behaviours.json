@@ -8,7 +8,8 @@
       "get-document-types",
       "create-document-submission",
       "get-document-submission",
-      "update-document-submission"
+      "update-document-submission",
+      "get-residents"
     ]
   }
 ]

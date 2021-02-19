@@ -4,8 +4,12 @@ import {
   IDocumentSubmission,
 } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
-import { IResident } from 'src/domain/resident';
-import { DocumentSubmissionResponse, EvidenceRequestResponse } from 'types/api';
+import { IResident, Resident } from 'src/domain/resident';
+import {
+  DocumentSubmissionResponse,
+  EvidenceRequestResponse,
+  ResidentResponse,
+} from 'types/api';
 import { ResponseMapper } from '../boundary/response-mapper';
 
 export class InternalServerError extends Error {
@@ -27,6 +31,7 @@ type InternalApiDependencies = {
   client: AxiosInstance;
 };
 
+/** See README.md for an explanation of this. */
 export class InternalApiGateway {
   private client: AxiosInstance;
 
@@ -62,6 +67,18 @@ export class InternalApiGateway {
         params
       );
       return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async searchResidents(searchQuery: string): Promise<Resident[]> {
+    try {
+      const { data } = await this.client.get<ResidentResponse[]>(
+        `/api/evidence/residents/search/${searchQuery}`
+      );
+      return ResponseMapper.mapResidentResponseList(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
