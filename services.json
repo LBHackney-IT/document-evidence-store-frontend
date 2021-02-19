@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Housing Service Area",
+    "googleGroup": "HackneyAll",
+    "services": [
+      {
+        "name": "Housing Service Name 1",
+        "id": 123
+      },
+      {
+        "name": "Housing Service Name 2",
+        "id": 456
+      }
+    ]
+  },
+  {
+    "name": "Development Team Housing Service Area",
+    "googleGroup": "development-team-staging",
+    "services": [
+      {
+        "name": "Housing Service Name 2",
+        "id": 789
+      },
+      {
+        "name": "Housing Service Name 3",
+        "id": 1011
+      }
+    ]
+  }
+]

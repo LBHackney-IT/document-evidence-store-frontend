@@ -107,7 +107,7 @@ export class RequestAuthorizer {
   //   );
   // };
 
-  private authoriseUser(cookieHeader?: string): User | undefined {
+  public authoriseUser(cookieHeader?: string): User | undefined {
     try {
       const cookies = new Cookie(cookieHeader);
       const token = cookies.get(this.cookieName);
