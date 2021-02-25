@@ -103,4 +103,62 @@ describe('Team Helper', () => {
     const result = instance.getTeamFromId(teamJson, '1');
     expect(result).toBeUndefined();
   });
+
+  it('when the user should be able to view both teams', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team',
+        id: '1',
+        reasons: [],
+      },
+      {
+        name: 'Team 2',
+        googleGroup: 'another-team',
+        id: '2',
+        reasons: [],
+      },
+    ];
+
+    let result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    expect(result).toBeTruthy();
+    result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
+    expect(result).toBeTruthy();
+  });
+
+  it('when the user should be able to view one team', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team',
+        id: '1',
+        reasons: [],
+      },
+      {
+        name: 'Team 2',
+        googleGroup: 'different-team',
+        id: '2',
+        reasons: [],
+      },
+    ];
+
+    let result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    expect(result).toBeTruthy();
+    result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
+    expect(result).toBeFalsy();
+  });
+
+  it('when the user should not be able to view any teams', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'different-team',
+        id: '1',
+        reasons: [],
+      },
+    ];
+
+    const result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    expect(result).toBeFalsy();
+  });
 });

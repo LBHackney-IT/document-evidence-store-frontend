@@ -1,7 +1,6 @@
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
@@ -14,19 +13,18 @@ import { Resident } from '../../../../domain/resident';
 import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
 import TableSkeleton from '../../../../components/TableSkeleton';
 import Tabs from '../../../../components/Tabs';
+import { RequestAuthorizer } from '../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../services/team-helper';
 
 type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
+  teamId: string;
 };
 
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
+  teamId,
 }) => {
-  const router = useRouter();
-  const { teamId } = router.query as {
-    teamId: string;
-  };
-
   // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
@@ -83,13 +81,46 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   );
 };
 
-export const getServerSideProps = withAuth<BrowseResidentsProps>(async () => {
-  const gateway = new EvidenceApiGateway();
-  const evidenceRequests = await gateway.getEvidenceRequests();
+export const getServerSideProps = withAuth<BrowseResidentsProps>(
+  async (ctx) => {
+    const requestAuthorizer = new RequestAuthorizer();
+    const user = requestAuthorizer.authoriseUser(ctx.req?.headers.cookie);
 
-  return {
-    props: { evidenceRequests },
-  };
-});
+    if (user == undefined) {
+      return {
+        redirect: {
+          destination: '/login',
+          permanent: false,
+        },
+      };
+    }
+
+    const teamHelper = new TeamHelper();
+    const { teamId } = ctx.query as {
+      teamId: string;
+    };
+    const userAuthorizedToViewTeam = teamHelper.userAuthorizedToViewTeam(
+      teamHelper.getTeamsJson(),
+      user,
+      teamId
+    );
+
+    if (!userAuthorizedToViewTeam) {
+      console.log('User:', user, 'is not authorized to view team ID:', teamId);
+      return {
+        redirect: {
+          destination: '/teams',
+          permanent: false,
+        },
+      };
+    }
+
+    const gateway = new EvidenceApiGateway();
+    const evidenceRequests = await gateway.getEvidenceRequests();
+    return {
+      props: { evidenceRequests, teamId },
+    };
+  }
+);
 
 export default BrowseResidents;

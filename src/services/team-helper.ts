@@ -13,6 +13,18 @@ export class TeamHelper {
     return teamsJson.filter((team) => user.groups.includes(team.googleGroup));
   }
 
+  public userAuthorizedToViewTeam(
+    teamsJson: Team[],
+    user: User,
+    teamId: string
+  ): boolean {
+    const userTeams = this.filterTeamsForUser(teamsJson, user);
+    const filterUserTeamsByTeamId = userTeams.filter(
+      (team) => team.id == teamId
+    );
+    return filterUserTeamsByTeamId.length > 0;
+  }
+
   public getTeamFromId(teamsJson: Team[], teamId: string): Team | undefined {
     return teamsJson.find((team) => team.id == teamId);
   }
