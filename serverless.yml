@@ -20,7 +20,7 @@ functions:
     package:
       include:
         - auth-groups.json
-        - services.json
+        - teams.json
         - src/lambda.js
         - next.config.js
         - public/**
