@@ -10,7 +10,6 @@ const jwtPayload = {
 
 describe('Team Helper', () => {
   let instance: TeamHelper;
-  let result: Team[];
 
   beforeEach(() => {
     instance = new TeamHelper();
@@ -32,7 +31,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(2);
   });
 
@@ -52,7 +51,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(1);
     expect(result[0].googleGroup).toBe('team');
   });
@@ -73,7 +72,35 @@ describe('Team Helper', () => {
       },
     ];
 
-    result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(0);
+  });
+
+  it('when the team can be found from the ID', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '1',
+        reasons: [],
+      },
+    ];
+
+    const result = instance.getTeamFromId(teamJson, '1');
+    expect(result?.name).toBe('Team 1');
+  });
+
+  it('when the team cannot be found from the ID', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '123',
+        reasons: [],
+      },
+    ];
+
+    const result = instance.getTeamFromId(teamJson, '1');
+    expect(result).toBeUndefined();
   });
 });

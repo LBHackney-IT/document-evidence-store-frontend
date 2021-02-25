@@ -5,11 +5,19 @@ import styles from '../styles/DashboardLayout.module.scss';
 import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
 import ResidentLayout from './ResidentLayout';
+import { TeamHelper } from '../services/team-helper';
+import Link from 'next/link';
 
-const Layout: FunctionComponent = ({ children }) => {
+const Layout: FunctionComponent<Props> = (props, { children }) => {
   const { user } = useContext(UserContext);
 
   if (!user) return <ResidentLayout>{children}</ResidentLayout>;
+
+  const teamHelper = new TeamHelper();
+  const currentTeam = teamHelper.getTeamFromId(
+    teamHelper.getTeamsJson(),
+    props.teamId
+  );
 
   return (
     <>
@@ -23,20 +31,27 @@ const Layout: FunctionComponent = ({ children }) => {
         serviceName="Upload"
         isServiceNameShort={true}
         isStackedOnMobile={true}
-        homepageUrl="/dashboard"
+        homepageUrl="/teams"
       >
         <p>{user.name}</p>
         <a href="#">Sign out</a>
       </Header>
 
       <Container>
-        <nav className={styles.switcher} aria-label="Switch service">
+        <nav className={styles.switcher} aria-label="Switch teams">
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
-            Housing benefit
+            {currentTeam?.name}
           </strong>
-          <a href="#" className={`lbh-link ${styles['switcher__link']} `}>
-            Switch service
-          </a>
+          <Link
+            href={{
+              pathname: '/teams',
+              query: { teamId: props.teamId },
+            }}
+          >
+            <a className={`lbh-link ${styles['switcher__link']}`}>
+              Switch team
+            </a>
+          </Link>
         </nav>
       </Container>
 
@@ -45,21 +60,29 @@ const Layout: FunctionComponent = ({ children }) => {
           <nav className={styles['layout__sidebar']}>
             <ul className="lbh-list">
               <li>
-                <NavLink href="/dashboard">Residents</NavLink>
+                <NavLink href={`/teams/${props.teamId}/dashboard`}>
+                  Residents
+                </NavLink>
               </li>
               <li>
-                <NavLink href="/dashboard/requests">Requests</NavLink>
+                <NavLink href={`/teams/${props.teamId}/dashboard/requests`}>
+                  Requests
+                </NavLink>
               </li>
             </ul>
           </nav>
 
           <main className={styles['layout__pane']} id="main-content">
-            {children}
+            {props.children}
           </main>
         </div>
       </div>
     </>
   );
 };
+
+interface Props {
+  teamId: string;
+}
 
 export default Layout;

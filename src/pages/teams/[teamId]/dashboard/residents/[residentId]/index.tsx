@@ -9,12 +9,13 @@ import styles from 'src/styles/Resident.module.scss';
 
 const ResidentPage: NextPage<WithUser> = () => {
   const router = useRouter();
-  const { residentId } = router.query as {
+  const { teamId, residentId } = router.query as {
+    teamId: string;
     residentId: string;
   };
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>Firstname Surname</title>
       </Head>

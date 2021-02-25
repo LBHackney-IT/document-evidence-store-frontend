@@ -1,16 +1,17 @@
 import { Paragraph } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
-import NewRequestForm from '../../../components/NewRequestForm';
-import { DocumentType } from '../../../domain/document-type';
+import NewRequestForm from '../../../../../components/NewRequestForm';
+import { DocumentType } from '../../../../../domain/document-type';
 import {
   EvidenceRequestRequest,
   InternalApiGateway,
-} from '../../../gateways/internal-api';
+} from '../../../../../gateways/internal-api';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
@@ -20,6 +21,11 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
   user,
 }) => {
+  const router = useRouter();
+  const { teamId } = router.query as {
+    teamId: string;
+  };
+
   const [complete, setComplete] = useState(false);
 
   const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
@@ -35,7 +41,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   }, []);
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>Make a new request</title>
       </Head>

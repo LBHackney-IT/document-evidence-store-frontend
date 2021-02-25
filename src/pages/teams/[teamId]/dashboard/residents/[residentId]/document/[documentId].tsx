@@ -33,6 +33,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
 }) => {
   const router = useRouter();
+  const { teamId } = router.query as {
+    teamId: string;
+  };
   const {
     residentId,
     documentId,
@@ -58,7 +61,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   if (!document) return null;
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>
           {documentSubmission.documentType.title} | Firstname Surname

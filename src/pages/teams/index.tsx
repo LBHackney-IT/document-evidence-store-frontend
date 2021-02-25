@@ -1,4 +1,3 @@
-import TeamsJson from '../../../teams.json';
 import { Team } from '../../domain/team';
 import { withAuth, WithUser } from '../../helpers/authed-server-side-props';
 import { NextPage } from 'next';
@@ -11,8 +10,6 @@ import TeamsList from '../../components/TeamsList';
 type TeamsProps = {
   teams: Team[];
 };
-
-const teamsJson: Team[] = JSON.parse(JSON.stringify(TeamsJson));
 
 const Teams: NextPage<WithUser<TeamsProps>> = ({ teams }) => {
   return (
@@ -30,7 +27,7 @@ const Teams: NextPage<WithUser<TeamsProps>> = ({ teams }) => {
 
 export const getServerSideProps = withAuth<TeamsProps>(async (ctx) => {
   const requestAuthorizer = new RequestAuthorizer();
-  const serviceAreaHelper = new TeamHelper();
+  const teamHelper = new TeamHelper();
 
   const user = requestAuthorizer.authoriseUser(ctx.req?.headers.cookie);
   let userTeams: Team[];
@@ -38,7 +35,7 @@ export const getServerSideProps = withAuth<TeamsProps>(async (ctx) => {
   if (user == undefined) {
     userTeams = [];
   } else {
-    userTeams = serviceAreaHelper.filterTeamsForUser(teamsJson, user);
+    userTeams = teamHelper.filterTeamsForUser(teamHelper.getTeamsJson(), user);
   }
 
   return {

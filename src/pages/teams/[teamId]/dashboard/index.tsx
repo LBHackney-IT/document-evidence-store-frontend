@@ -1,18 +1,19 @@
 import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
-import Layout from '../../components/DashboardLayout';
-import ResidentSearchForm from '../../components/ResidentSearchForm';
-import { ResidentTable } from '../../components/ResidentTable';
+import Layout from '../../../../components/DashboardLayout';
+import ResidentSearchForm from '../../../../components/ResidentSearchForm';
+import { ResidentTable } from '../../../../components/ResidentTable';
 import { useCallback, useState } from 'react';
-import { InternalApiGateway } from '../../gateways/internal-api';
-import { Resident } from '../../domain/resident';
-import { ResidentSummaryTable } from '../../components/ResidentSummaryTable';
-import TableSkeleton from '../../components/TableSkeleton';
-import Tabs from '../../components/Tabs';
+import { InternalApiGateway } from '../../../../gateways/internal-api';
+import { Resident } from '../../../../domain/resident';
+import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
+import TableSkeleton from '../../../../components/TableSkeleton';
+import Tabs from '../../../../components/Tabs';
 
 type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
@@ -21,6 +22,11 @@ type BrowseResidentsProps = {
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
 }) => {
+  const router = useRouter();
+  const { teamId } = router.query as {
+    teamId: string;
+  };
+
   // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
@@ -40,7 +46,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   }, []);
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>Browse residents</title>
       </Head>
