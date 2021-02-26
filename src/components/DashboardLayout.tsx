@@ -13,9 +13,8 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
 
   if (!user) return <ResidentLayout>{children}</ResidentLayout>;
 
-  const teamHelper = new TeamHelper();
-  const currentTeam = teamHelper.getTeamFromId(
-    teamHelper.getTeamsJson(),
+  const currentTeam = TeamHelper.getTeamFromId(
+    TeamHelper.getTeamsJson(),
     props.teamId
   );
 

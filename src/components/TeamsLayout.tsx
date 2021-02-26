@@ -16,9 +16,8 @@ const TeamsLayout: FunctionComponent = (props) => {
     teamId: string;
   };
   let currentTeam;
-  if (teamId != undefined) {
-    const teamHelper = new TeamHelper();
-    currentTeam = teamHelper.getTeamFromId(teamHelper.getTeamsJson(), teamId);
+  if (teamId !== undefined) {
+    currentTeam = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
   }
 
   return (

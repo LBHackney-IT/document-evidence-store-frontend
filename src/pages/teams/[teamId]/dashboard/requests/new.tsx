@@ -1,7 +1,6 @@
 import { Paragraph } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
@@ -12,20 +11,19 @@ import {
   EvidenceRequestRequest,
   InternalApiGateway,
 } from '../../../../../gateways/internal-api';
+import { RequestAuthorizer } from '../../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../../services/team-helper';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
+  teamId: string;
 };
 
 const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
+  teamId,
   user,
 }) => {
-  const router = useRouter();
-  const { teamId } = router.query as {
-    teamId: string;
-  };
-
   const [complete, setComplete] = useState(false);
 
   const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
@@ -55,10 +53,32 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   );
 };
 
-export const getServerSideProps = withAuth<RequestsNewPageProps>(async () => {
-  const gateway = new EvidenceApiGateway();
-  const documentTypes = await gateway.getDocumentTypes();
-  return { props: { documentTypes } };
-});
+export const getServerSideProps = withAuth<RequestsNewPageProps>(
+  async (ctx) => {
+    const { teamId } = ctx.query as {
+      teamId: string;
+    };
+
+    const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+    const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+      TeamHelper.getTeamsJson(),
+      user,
+      teamId
+    );
+
+    if (!userAuthorizedToViewTeam) {
+      return {
+        redirect: {
+          destination: '/teams',
+          permanent: false,
+        },
+      };
+    }
+
+    const gateway = new EvidenceApiGateway();
+    const documentTypes = await gateway.getDocumentTypes();
+    return { props: { documentTypes, teamId } };
+  }
+);
 
 export default RequestsNewPage;

@@ -1,19 +1,22 @@
 import { Button } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import styles from 'src/styles/Resident.module.scss';
+import { TeamHelper } from '../../../../../../services/team-helper';
+import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 
-const ResidentPage: NextPage<WithUser> = () => {
-  const router = useRouter();
-  const { teamId, residentId } = router.query as {
-    teamId: string;
-    residentId: string;
-  };
+type ResidentsProps = {
+  teamId: string;
+  residentId: string;
+};
 
+const ResidentPage: NextPage<WithUser<ResidentsProps>> = ({
+  teamId,
+  residentId,
+}) => {
   return (
     <Layout teamId={teamId}>
       <Head>
@@ -137,6 +140,29 @@ const ResidentPage: NextPage<WithUser> = () => {
   );
 };
 
-export const getServerSideProps = withAuth();
+export const getServerSideProps = withAuth<ResidentsProps>(async (ctx) => {
+  const { teamId, residentId } = ctx.query as {
+    teamId: string;
+    residentId: string;
+  };
+
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
+
+  if (!userAuthorizedToViewTeam) {
+    return {
+      redirect: {
+        destination: '/teams',
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: { teamId, residentId } };
+});
 
 export default ResidentPage;

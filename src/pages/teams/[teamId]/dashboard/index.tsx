@@ -83,30 +83,18 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
 
 export const getServerSideProps = withAuth<BrowseResidentsProps>(
   async (ctx) => {
-    const requestAuthorizer = new RequestAuthorizer();
-    const user = requestAuthorizer.authoriseUser(ctx.req?.headers.cookie);
-
-    if (user == undefined) {
-      return {
-        redirect: {
-          destination: '/login',
-          permanent: false,
-        },
-      };
-    }
-
-    const teamHelper = new TeamHelper();
     const { teamId } = ctx.query as {
       teamId: string;
     };
-    const userAuthorizedToViewTeam = teamHelper.userAuthorizedToViewTeam(
-      teamHelper.getTeamsJson(),
+
+    const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+    const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+      TeamHelper.getTeamsJson(),
       user,
       teamId
     );
 
     if (!userAuthorizedToViewTeam) {
-      console.log('User:', user, 'is not authorized to view team ID:', teamId);
       return {
         redirect: {
           destination: '/teams',

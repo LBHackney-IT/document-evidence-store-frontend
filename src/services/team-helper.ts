@@ -5,15 +5,36 @@ import TeamsJson from '../../teams.json';
 const teamsJson: Team[] = JSON.parse(JSON.stringify(TeamsJson));
 
 export class TeamHelper {
-  public getTeamsJson(): Team[] {
+  public static getTeamsJson(): Team[] {
     return teamsJson;
   }
 
-  public filterTeamsForUser(teamsJson: Team[], user: User): Team[] {
+  public static filterTeamsForUser(teamsJson: Team[], user: User): Team[] {
     return teamsJson.filter((team) => user.groups.includes(team.googleGroup));
   }
 
-  public userAuthorizedToViewTeam(
+  public static userAuthorizedToViewTeam(
+    teamsJson: Team[],
+    user: User | undefined,
+    teamId: string
+  ): boolean {
+    if (user == undefined) {
+      return false;
+    }
+
+    const userAuthorizedToViewTeam = this.userMemberOfTeamGoogleGroup(
+      teamsJson,
+      user,
+      teamId
+    );
+
+    if (!userAuthorizedToViewTeam) {
+      console.log('User:', user, 'is not authorized to view team ID:', teamId);
+    }
+    return userAuthorizedToViewTeam;
+  }
+
+  private static userMemberOfTeamGoogleGroup(
     teamsJson: Team[],
     user: User,
     teamId: string
@@ -25,7 +46,10 @@ export class TeamHelper {
     return filterUserTeamsByTeamId.length > 0;
   }
 
-  public getTeamFromId(teamsJson: Team[], teamId: string): Team | undefined {
+  public static getTeamFromId(
+    teamsJson: Team[],
+    teamId: string
+  ): Team | undefined {
     return teamsJson.find((team) => team.id == teamId);
   }
 }

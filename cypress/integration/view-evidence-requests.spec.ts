@@ -28,8 +28,4 @@ describe('View evidence requests', () => {
   });
 });
 
-// 2 more
-// user is null
-// user cannot view evidence request for the given team ID
-
 export {};

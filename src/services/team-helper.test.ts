@@ -9,12 +9,6 @@ const jwtPayload = {
 } as User;
 
 describe('Team Helper', () => {
-  let instance: TeamHelper;
-
-  beforeEach(() => {
-    instance = new TeamHelper();
-  });
-
   it('when the user is a member of all team groups', () => {
     const teamJson: Team[] = [
       {
@@ -31,7 +25,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = TeamHelper.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(2);
   });
 
@@ -51,7 +45,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = TeamHelper.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(1);
     expect(result[0].googleGroup).toBe('team');
   });
@@ -72,7 +66,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.filterTeamsForUser(teamJson, jwtPayload);
+    const result = TeamHelper.filterTeamsForUser(teamJson, jwtPayload);
     expect(result).toHaveLength(0);
   });
 
@@ -86,7 +80,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.getTeamFromId(teamJson, '1');
+    const result = TeamHelper.getTeamFromId(teamJson, '1');
     expect(result?.name).toBe('Team 1');
   });
 
@@ -100,7 +94,7 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.getTeamFromId(teamJson, '1');
+    const result = TeamHelper.getTeamFromId(teamJson, '1');
     expect(result).toBeUndefined();
   });
 
@@ -120,9 +114,9 @@ describe('Team Helper', () => {
       },
     ];
 
-    let result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    let result = TeamHelper.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
     expect(result).toBeTruthy();
-    result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
+    result = TeamHelper.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
     expect(result).toBeTruthy();
   });
 
@@ -142,9 +136,9 @@ describe('Team Helper', () => {
       },
     ];
 
-    let result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    let result = TeamHelper.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
     expect(result).toBeTruthy();
-    result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
+    result = TeamHelper.userAuthorizedToViewTeam(teamJson, jwtPayload, '2');
     expect(result).toBeFalsy();
   });
 
@@ -158,7 +152,11 @@ describe('Team Helper', () => {
       },
     ];
 
-    const result = instance.userAuthorizedToViewTeam(teamJson, jwtPayload, '1');
+    const result = TeamHelper.userAuthorizedToViewTeam(
+      teamJson,
+      jwtPayload,
+      '1'
+    );
     expect(result).toBeFalsy();
   });
 });

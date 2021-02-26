@@ -26,16 +26,13 @@ const Teams: NextPage<WithUser<TeamsProps>> = ({ teams }) => {
 };
 
 export const getServerSideProps = withAuth<TeamsProps>(async (ctx) => {
-  const requestAuthorizer = new RequestAuthorizer();
-  const teamHelper = new TeamHelper();
-
-  const user = requestAuthorizer.authoriseUser(ctx.req?.headers.cookie);
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
   let userTeams: Team[];
 
   if (user == undefined) {
     userTeams = [];
   } else {
-    userTeams = teamHelper.filterTeamsForUser(teamHelper.getTeamsJson(), user);
+    userTeams = TeamHelper.filterTeamsForUser(TeamHelper.getTeamsJson(), user);
   }
 
   return {

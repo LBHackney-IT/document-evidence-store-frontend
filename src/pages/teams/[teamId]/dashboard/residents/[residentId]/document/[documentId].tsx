@@ -16,6 +16,8 @@ import { InternalApiGateway } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
+import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../../../../services/team-helper';
 
 const gateway = new InternalApiGateway();
 
@@ -27,15 +29,14 @@ type DocumentDetailPageQuery = {
 
 type DocumentDetailPageProps = {
   documentSubmission: DocumentSubmission;
+  teamId: string;
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
+  teamId,
 }) => {
   const router = useRouter();
-  const { teamId } = router.query as {
-    teamId: string;
-  };
   const {
     residentId,
     documentId,
@@ -139,10 +140,29 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const gateway = new EvidenceApiGateway();
-  const { documentId: id } = ctx.params as { documentId: string };
+  const { teamId, documentId: id } = ctx.params as {
+    teamId: string;
+    documentId: string;
+  };
+
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
+
+  if (!userAuthorizedToViewTeam) {
+    return {
+      redirect: {
+        destination: '/teams',
+        permanent: false,
+      },
+    };
+  }
 
   const documentSubmission = await gateway.getDocumentSubmission(id);
-  return { props: { documentSubmission } };
+  return { props: { documentSubmission, teamId } };
 });
 
 export default DocumentDetailPage;

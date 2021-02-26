@@ -6,6 +6,7 @@ describe('EvidenceTile', () => {
   it('renders all the data expected', async () => {
     render(
       <EvidenceTile
+        teamId="123"
         residentId="123"
         id="123"
         title="Foo"
@@ -27,6 +28,7 @@ describe('EvidenceTile', () => {
   it('renders without actions if document has already been reviewed', async () => {
     render(
       <EvidenceTile
+        teamId="123"
         residentId="123"
         id="123"
         title="Foo"
