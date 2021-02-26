@@ -25,6 +25,7 @@ const ResidentPage: NextPage<WithUser> = () => {
       <h2 className="lbh-heading-h3">To review</h2>
       <EvidenceList>
         <EvidenceTile
+          teamId={teamId}
           residentId={residentId}
           id="123"
           title="Foo"
@@ -35,6 +36,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           toReview
         />
         <EvidenceTile
+          teamId={teamId}
           residentId={residentId}
           id="123"
           title="Foo"
@@ -45,6 +47,7 @@ const ResidentPage: NextPage<WithUser> = () => {
           toReview
         />
         <EvidenceTile
+          teamId={teamId}
           residentId={residentId}
           id="123"
           title="Foo"
@@ -100,15 +103,7 @@ const ResidentPage: NextPage<WithUser> = () => {
 
       <EvidenceList twoColumns>
         <EvidenceTile
-          residentId={residentId as string}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-        />
-        <EvidenceTile
+          teamId={teamId}
           residentId={residentId}
           id="123"
           title="Foo"
@@ -118,6 +113,17 @@ const ResidentPage: NextPage<WithUser> = () => {
           purpose="Example form"
         />
         <EvidenceTile
+          teamId={teamId}
+          residentId={residentId}
+          id="123"
+          title="Foo"
+          createdAt="1 day ago"
+          fileSizeInBytes={1300000}
+          format="PDF"
+          purpose="Example form"
+        />
+        <EvidenceTile
+          teamId={teamId}
           residentId={residentId}
           id="123"
           title="Foo"

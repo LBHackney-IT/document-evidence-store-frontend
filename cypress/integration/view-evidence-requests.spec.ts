@@ -6,7 +6,7 @@ describe('View evidence requests', () => {
       fixture: 'evidence_requests/index',
     });
 
-    cy.visit(`http://localhost:3000/dashboard`);
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
   });
 
@@ -27,5 +27,9 @@ describe('View evidence requests', () => {
       .and('contain', 'ago');
   });
 });
+
+// 2 more
+// user is null
+// user cannot view evidence request for the given team ID
 
 export {};

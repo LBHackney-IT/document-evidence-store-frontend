@@ -51,7 +51,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     });
     setDocumentSubmission(updated);
     router.push(
-      `/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
+      `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
       undefined,
       { shallow: true }
     );
@@ -69,7 +69,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       </Head>
 
       <h1 className="lbh-heading-h2">
-        <Link href={`/dashboard/residents/${residentId}`}>
+        <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
           <a className="lbh-link">Firstname Surname</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
@@ -79,13 +79,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       {documentSubmission.state === DocumentState.PENDING && (
         <div className={styles.actions}>
           <Link
-            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
+            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
             scroll={false}
           >
             <Button>Accept</Button>
           </Link>
           <Link
-            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
+            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
             scroll={false}
           >
             <Button className="govuk-button--secondary lbh-button--secondary">
@@ -117,7 +117,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         onAccept={handleAccept}
         onDismiss={() =>
           router.push(
-            `/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />
@@ -129,7 +129,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         }}
         onDismiss={() =>
           router.push(
-            `/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />

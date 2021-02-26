@@ -60,7 +60,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
 
       {loading && <TableSkeleton columns={['Name', 'Email', 'Phone Number']} />}
 
-      {results && <ResidentSummaryTable residents={results} />}
+      {results && <ResidentSummaryTable residents={results} teamId={teamId} />}
 
       <h2 className="lbh-heading-h3">Pending Requests</h2>
 
@@ -69,11 +69,11 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         children={[
           <div key="1">
             <Heading level={HeadingLevels.H3}>To review</Heading>
-            <ResidentTable residents={evidenceRequests} />
+            <ResidentTable residents={evidenceRequests} teamId={teamId} />
           </div>,
           <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
-            <ResidentTable residents={evidenceRequests} />
+            <ResidentTable residents={evidenceRequests} teamId={teamId} />
           </div>,
         ]}
       />

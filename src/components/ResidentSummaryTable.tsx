@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 export const ResidentSummaryTable: FunctionComponent<Props> = ({
   residents,
+  teamId,
 }) => {
   const rows = useMemo(
     () =>
@@ -48,7 +49,7 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
               {row.phoneNumber}
             </td>
             <td className="govuk-table__cell">
-              <Link href={`/dashboard/residents/${row.id}`}>
+              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
                 <a className="lbh-link">Review</a>
               </Link>
             </td>
@@ -61,6 +62,7 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
 
 interface Props {
   residents: Array<Resident>;
+  teamId: string;
 }
 
 export default ResidentSummaryTable;

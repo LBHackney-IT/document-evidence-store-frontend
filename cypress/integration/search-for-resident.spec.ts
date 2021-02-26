@@ -10,7 +10,7 @@ describe('Can search for a resident', () => {
       fixture: 'residents/search',
     });
 
-    cy.visit(`http://localhost:3000/dashboard`);
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
   });
 

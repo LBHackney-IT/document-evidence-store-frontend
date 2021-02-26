@@ -2,7 +2,10 @@ import Link from 'next/link';
 import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
 
-export const ResidentTable: FunctionComponent<Props> = ({ residents }) => {
+export const ResidentTable: FunctionComponent<Props> = ({
+  residents,
+  teamId,
+}) => {
   const rows = useMemo(
     () =>
       residents.map((row) => {
@@ -55,7 +58,7 @@ export const ResidentTable: FunctionComponent<Props> = ({ residents }) => {
               {row.uploaded}
             </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
-              <Link href={`/dashboard/residents/${row.id}`}>
+              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
                 <a className="lbh-link">Review</a>
               </Link>
             </td>
@@ -68,4 +71,5 @@ export const ResidentTable: FunctionComponent<Props> = ({ residents }) => {
 
 type Props = {
   residents: EvidenceRequest[];
+  teamId: string;
 };
