@@ -23,5 +23,5 @@ const getResident = {
 
 module.exports = {
   getResidents,
-  getResident
+  getResident,
 };

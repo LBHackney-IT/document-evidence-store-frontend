@@ -11,19 +11,28 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import styles from 'src/styles/Resident.module.scss';
 
 type ResidentPageProps = {
-  documentSubmissions: DocumentSubmission[],
-  resident: Resident
-}
+  documentSubmissions: DocumentSubmission[];
+  resident: Resident;
+};
 
-const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({ documentSubmissions, resident }) => {
+const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
+  documentSubmissions,
+  resident,
+}) => {
   const router = useRouter();
   const { residentId } = router.query as {
     residentId: string;
   };
-  const toReviewDocumentSubmissions = documentSubmissions.filter(ds => ds.state == 'UPLOADED');
-  const pendingDocumentSubmissions = documentSubmissions.filter(ds => ds.state == 'PENDING');
-  const reviewedDocumentSubmissions = documentSubmissions.filter(ds => ds.state == 'APPROVED');
-  
+  const toReviewDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'UPLOADED'
+  );
+  const pendingDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'PENDING'
+  );
+  const reviewedDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'APPROVED'
+  );
+
   return (
     <Layout>
       <Head>
@@ -33,66 +42,82 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({ documentSubmissio
       <p className="lbh-body">{resident.phoneNumber}</p>
       <p className="lbh-body">{resident.email}</p>
       <h2 className="lbh-heading-h3">To review</h2>
-      <EvidenceList >
-        {toReviewDocumentSubmissions && toReviewDocumentSubmissions.length > 0? toReviewDocumentSubmissions.map((ds) => (
-          <EvidenceTile
-          residentId={residentId}
-          id={ds.id}
-          title={String(ds.documentType.title)}
-          createdAt={String(ds.createdAt.toRelativeCalendar())}
-          fileSizeInBytes={ds.document? ds.document.fileSizeInBytes : 0}
-          format={ds.document? ds.document.extension : "unknown"}
-          // purpose="Example form"
-          toReview
-        />
-        )) : <h3>There are no documents to review</h3>}
+      <EvidenceList>
+        {toReviewDocumentSubmissions &&
+        toReviewDocumentSubmissions.length > 0 ? (
+          toReviewDocumentSubmissions.map((ds) => (
+            <EvidenceTile
+              residentId={residentId}
+              id={ds.id}
+              title={String(ds.documentType.title)}
+              createdAt={String(ds.createdAt.toRelativeCalendar())}
+              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+              format={ds.document ? ds.document.extension : 'unknown'}
+              // purpose="Example form"
+              toReview
+            />
+          ))
+        ) : (
+          <h3>There are no documents to review</h3>
+        )}
       </EvidenceList>
-      
+
       <h2 className="lbh-heading-h3">Pending requests</h2>
 
-      {pendingDocumentSubmissions && pendingDocumentSubmissions.length > 0 ? 
-      (<>
-        <table className={`govuk-table lbh-table ${styles.table}`}>
-          <thead className="govuk-table__head">
-            <tr className="govuk-table__row">
-              <th scope="col" className="govuk-table__header">
-                Document
-              </th>
-              <th scope="col" className="govuk-table__header">
-                Requested
-              </th>
-              <th scope="col" className="govuk-table__header">
-                <span className="lbu-visually-hidden">Actions</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="govuk-table__body">
-            {pendingDocumentSubmissions.map((ds) => (
+      {pendingDocumentSubmissions && pendingDocumentSubmissions.length > 0 ? (
+        <>
+          <table className={`govuk-table lbh-table ${styles.table}`}>
+            <thead className="govuk-table__head">
               <tr className="govuk-table__row">
-              <td className="govuk-table__cell">{ds.documentType.title}</td>
-              <td className="govuk-table__cell">{ds.createdAt.toRelativeCalendar()}</td>
-              <td className="govuk-table__cell  govuk-table__cell--numeric">
-                <Button className={styles.button}>Remind</Button>
-              </td>
-            </tr>
-            ))}
-          </tbody>
-        </table>
-      </>) : <h4>There are no pending documents</h4>}
+                <th scope="col" className="govuk-table__header">
+                  Document
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  Requested
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  <span className="lbu-visually-hidden">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="govuk-table__body">
+              {pendingDocumentSubmissions.map((ds) => (
+                <tr className="govuk-table__row">
+                  <td className="govuk-table__cell">{ds.documentType.title}</td>
+                  <td className="govuk-table__cell">
+                    {ds.createdAt.toRelativeCalendar()}
+                  </td>
+                  <td className="govuk-table__cell  govuk-table__cell--numeric">
+                    <Button className={styles.button}>Remind</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <h4>There are no pending documents</h4>
+      )}
 
       <h2 className="lbh-heading-h3">Reviewed</h2>
 
       <EvidenceList twoColumns>
-      {reviewedDocumentSubmissions && reviewedDocumentSubmissions.length > 0? reviewedDocumentSubmissions.map((ds) => (<EvidenceTile
-          residentId={residentId}
-          id={ds.id}
-          title={String(ds.documentType.title)}
-          createdAt={String(ds.createdAt.toRelativeCalendar())}
-          fileSizeInBytes={ds.document? ds.document.fileSizeInBytes : 0}
-          format={ds.document? ds.document.extension : "unknown"}
-          // purpose="Example form"
-        />
-        )) : <h3>There are no reviewed documents</h3>}
+        {reviewedDocumentSubmissions &&
+        reviewedDocumentSubmissions.length > 0 ? (
+          reviewedDocumentSubmissions.map((ds) => (
+            <EvidenceTile
+              residentId={residentId}
+              id={ds.id}
+              title={String(ds.documentType.title)}
+              createdAt={String(ds.createdAt.toRelativeCalendar())}
+              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+              format={ds.document ? ds.document.extension : 'unknown'}
+              // purpose="Example form"
+            />
+          ))
+        ) : (
+          <h3>There are no reviewed documents</h3>
+        )}
       </EvidenceList>
     </Layout>
   );

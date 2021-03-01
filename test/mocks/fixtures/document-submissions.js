@@ -1,5 +1,5 @@
 const documentSubmission = require('../../../cypress/fixtures/document_submissions/get.json');
-const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json')
+const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
 
 const getDocumentSubmission = {
   id: 'get-document-submission',
@@ -13,13 +13,14 @@ const getDocumentSubmission = {
 
 const getDocumentSubmissionWithResident = {
   id: 'get-document-submissions-with-resident',
-  url: '/api/v1/document_submissions?serviceRequestedBy=Housing+benefit&residentId=:residentId',
+  url:
+    '/api/v1/document_submissions?serviceRequestedBy=Housing+benefit&residentId=:residentId',
   method: 'GET',
   response: {
     status: 200,
     body: documentSubmissionsWithResident,
   },
-}
+};
 
 const updateDocumentSubmission = {
   id: 'update-document-submission',
@@ -35,5 +36,5 @@ const updateDocumentSubmission = {
 module.exports = {
   updateDocumentSubmission,
   getDocumentSubmission,
-  getDocumentSubmissionWithResident
+  getDocumentSubmissionWithResident,
 };

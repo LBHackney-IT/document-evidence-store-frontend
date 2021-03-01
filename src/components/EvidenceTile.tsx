@@ -59,7 +59,7 @@ interface ListProps {
 interface Props {
   residentId: string;
   id: string;
-  format: string;
+  format: string | undefined;
   fileSizeInBytes: number;
   title: string;
   createdAt: string;
