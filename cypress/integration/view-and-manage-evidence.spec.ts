@@ -4,7 +4,7 @@ describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('PATCH', '/api/evidence/document_submissions/123', (req) => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
       const body = { ...dsFixture, id: 123, state: req.body.state };
       req.reply((res) => {
         res.send(200, body);
@@ -15,18 +15,18 @@ describe('Can view and manage evidence', () => {
     cy.injectAxe();
 
     cy.get('a').contains('Review').click();
-    cy.contains('h1', 'Firstname Surname');
+    cy.contains('h1', 'Namey McName');
   });
 
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
-    cy.get('a').contains('Foo').click();
+    cy.get('a').contains('Passport').click();
     cy.contains('h1', 'Firstname SurnamePassport');
     cy.checkA11y();
   });
 
   it('shows resident contact details and all evidence states', () => {
-    cy.get('h1').should('contain', 'Firstname Surname');
+    cy.get('h1').should('contain', 'Namey McName');
 
     cy.get('h2').should('contain', 'To review');
     cy.get('h2').should('contain', 'Pending requests');
@@ -34,7 +34,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see a document detail page with actions and information', () => {
-    cy.get('a').contains('Foo').click();
+    cy.get('a').contains('Passport').click();
 
     cy.contains('h1', 'Firstname SurnamePassport');
 
@@ -50,7 +50,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
-    cy.get('a').contains('Foo').click();
+    cy.get('a').contains('Passport').click();
     cy.contains('h1', 'Firstname SurnamePassport');
     cy.get('button').contains('Accept').click();
 
@@ -73,7 +73,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject the document', () => {
-    cy.get('a').contains('Foo').click();
+    cy.get('a').contains('Passport').click();
     cy.contains('h1', 'Firstname SurnamePassport');
     cy.get('button').contains('Request new file').click();
 

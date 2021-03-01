@@ -17,7 +17,7 @@ describe('EvidenceTile', () => {
       />
     );
     expect(screen.getByText('Foo'));
-    expect(screen.getByText('1 day ago with Example form'));
+    expect(screen.getByText('1 day ago'));
     expect(screen.getByText('1.0 KB'));
     expect(screen.getByText('PDF'));
     expect(screen.getByText('Accept'));

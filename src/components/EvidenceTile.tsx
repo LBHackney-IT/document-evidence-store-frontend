@@ -22,7 +22,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
       </Heading>
       <p className={`lbh-body-s ${styles.meta}`}>
         {props.createdAt}
-        {props.purpose && <> with {props.purpose}</>}
+        {/* {props.purpose && <> with {props.purpose}</>} */}
       </p>
     </div>
 
@@ -59,7 +59,7 @@ interface ListProps {
 interface Props {
   residentId: string;
   id: string;
-  format: string;
+  format: string | undefined;
   fileSizeInBytes: number;
   title: string;
   createdAt: string;
