@@ -23,7 +23,8 @@ export interface EvidenceRequestRequest {
   deliveryMethods: string[];
   documentTypes: string[];
   resident: Omit<IResident, 'id'>;
-  serviceRequestedBy?: string;
+  serviceRequestedBy: string;
+  reason: string;
   userRequestedBy?: string;
 }
 

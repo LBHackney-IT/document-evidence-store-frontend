@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
@@ -8,6 +8,8 @@ import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
 import { EvidenceRequestRequest } from 'src/gateways/internal-api';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
+import SelectOption from './SelectOption';
+import { Team } from '../domain/team';
 
 const schema = Yup.object().shape({
   resident: Yup.object().shape({
@@ -19,6 +21,8 @@ const schema = Yup.object().shape({
       "Please enter the resident's phone number"
     ),
   }),
+  reason: Yup.string(),
+  serviceRequestedBy: Yup.string(),
   deliveryMethods: Yup.array(),
   documentTypes: Yup.array().min(1, 'Please choose a document type'),
 });
@@ -29,13 +33,24 @@ const initialValues = {
     email: '',
     phoneNumber: '',
   },
+  reason: '',
+  serviceRequestedBy: '',
   documentTypes: [],
   deliveryMethods: ['SMS', 'EMAIL'],
 };
 
-const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
+const NewRequestForm = ({
+  documentTypes,
+  onSubmit,
+  team,
+}: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
+
+  useEffect(() => {
+    initialValues.serviceRequestedBy = team.googleGroup;
+    initialValues.reason = team.reasons[0].name;
+  });
 
   const submitHandler = useCallback(
     async (values: typeof initialValues) => {
@@ -84,6 +99,14 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
                 : null
             }
           />
+
+          <div className="govuk-form-group lbh-form-group">
+            <SelectOption
+              label="What is this request for?"
+              name="reason"
+              values={team.reasons.map((reason) => reason.name)}
+            />
+          </div>
 
           <div className="govuk-form-group lbh-form-group">
             <div className="govuk-checkboxes lbh-checkboxes">
@@ -146,6 +169,7 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
 interface Props {
   documentTypes: Array<DocumentType>;
   onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
+  team: Team;
 }
 
 export default NewRequestForm;
