@@ -9,15 +9,19 @@ import { Resident } from 'src/domain/resident';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import styles from 'src/styles/Resident.module.scss';
+import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../../../services/team-helper';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
   resident: Resident;
+  teamId: string;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   documentSubmissions,
   resident,
+  teamId,
 }) => {
   const router = useRouter();
   const { residentId } = router.query as {
@@ -34,7 +38,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   );
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>{resident.name}</title>
       </Head>
@@ -47,6 +51,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         toReviewDocumentSubmissions.length > 0 ? (
           toReviewDocumentSubmissions.map((ds) => (
             <EvidenceTile
+              teamId={teamId}
               residentId={residentId}
               id={ds.id}
               title={String(ds.documentType.title)}
@@ -106,6 +111,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         reviewedDocumentSubmissions.length > 0 ? (
           reviewedDocumentSubmissions.map((ds) => (
             <EvidenceTile
+              teamId={teamId}
               residentId={residentId}
               id={ds.id}
               title={String(ds.documentType.title)}
@@ -124,16 +130,36 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 };
 
 export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
+  const { teamId, residentId } = ctx.query as {
+    teamId: string;
+    residentId: string;
+  };
+
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
+
+  if (!userAuthorizedToViewTeam) {
+    return {
+      redirect: {
+        destination: '/teams',
+        permanent: false,
+      },
+    };
+  }
+
   const gateway = new EvidenceApiGateway();
   // need to pass parameter for serviceRequestedBy after DES-25
-  const { residentId: residentId } = ctx.params as { residentId: string };
   const documentSubmissions = await gateway.getDocumentSubmissionsForResident(
     'Housing benefit',
     residentId
   );
   const resident = await gateway.getResident(residentId);
   return {
-    props: { documentSubmissions, resident },
+    props: { documentSubmissions, resident, teamId },
   };
 });
 
