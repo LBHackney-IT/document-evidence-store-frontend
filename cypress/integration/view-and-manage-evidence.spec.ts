@@ -11,7 +11,7 @@ describe('Can view and manage evidence', () => {
       });
     }).as('updateDocumentState');
 
-    cy.visit(`http://localhost:3000/dashboard`);
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
 
     cy.get('a').contains('Review').click();

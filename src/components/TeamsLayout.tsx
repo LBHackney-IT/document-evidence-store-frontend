@@ -4,11 +4,21 @@ import styles from '../styles/DashboardLayout.module.scss';
 import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
 import Link from 'next/link';
-import { Team } from '../domain/team';
+import { useRouter } from 'next/router';
+import { TeamHelper } from '../services/team-helper';
 
-const TeamsLayout: FunctionComponent<Props> = (props) => {
+const TeamsLayout: FunctionComponent = (props) => {
   const { user } = useContext(UserContext);
   if (!user) return <></>;
+
+  const router = useRouter();
+  const { teamId } = router.query as {
+    teamId: string;
+  };
+  let currentTeam;
+  if (teamId !== undefined) {
+    currentTeam = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  }
 
   return (
     <>
@@ -29,12 +39,12 @@ const TeamsLayout: FunctionComponent<Props> = (props) => {
         <a href="#">Sign out</a>
       </Header>
 
-      {props.currentTeam && (
+      {teamId && (
         <Container>
           <nav className={styles.switcher} aria-label="Switch service">
             <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
-              <Link href={`/teams/${props.currentTeam.id}/dashboard`}>
-                <a className="lbh-link">Back to {props.currentTeam?.name}</a>
+              <Link href={`/teams/${teamId}/dashboard`}>
+                <a className="lbh-link">Back to {currentTeam?.name}</a>
               </Link>
             </strong>
           </nav>
@@ -51,9 +61,5 @@ const TeamsLayout: FunctionComponent<Props> = (props) => {
     </>
   );
 };
-
-interface Props {
-  currentTeam?: Team;
-}
 
 export default TeamsLayout;

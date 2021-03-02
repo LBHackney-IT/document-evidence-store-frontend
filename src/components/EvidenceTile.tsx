@@ -15,7 +15,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     <div>
       <Heading level={HeadingLevels.H3} className={styles.title}>
         <Link
-          href={`/dashboard/residents/${props.residentId}/document/${props.id}`}
+          href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}`}
         >
           <a className="lbh-link">{props.title}</a>
         </Link>
@@ -29,13 +29,13 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
     {props.toReview && (
       <div className={`lbh-body-s ${styles.actions}`}>
         <Link
-          href={`/dashboard/residents/${props.residentId}/document/${props.id}?action=accept`}
+          href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}?action=accept`}
           scroll={false}
         >
           <a className="lbh-link">Accept</a>
         </Link>
         <Link
-          href={`/dashboard/residents/${props.residentId}/document/${props.id}?action=reject`}
+          href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}?action=reject`}
           scroll={false}
         >
           <a className={`lbh-link ${styles.redLink}`}>Request new file</a>
@@ -57,6 +57,7 @@ interface ListProps {
 }
 
 interface Props {
+  teamId: string;
   residentId: string;
   id: string;
   format: string | undefined;

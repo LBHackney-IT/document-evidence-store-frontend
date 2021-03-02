@@ -16,6 +16,8 @@ import { InternalApiGateway } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
+import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../../../../services/team-helper';
 
 const gateway = new InternalApiGateway();
 
@@ -27,10 +29,12 @@ type DocumentDetailPageQuery = {
 
 type DocumentDetailPageProps = {
   documentSubmission: DocumentSubmission;
+  teamId: string;
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
+  teamId,
 }) => {
   const router = useRouter();
   const {
@@ -48,7 +52,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     });
     setDocumentSubmission(updated);
     router.push(
-      `/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
+      `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
       undefined,
       { shallow: true }
     );
@@ -58,7 +62,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   if (!document) return null;
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>
           {documentSubmission.documentType.title} | Firstname Surname
@@ -66,7 +70,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       </Head>
 
       <h1 className="lbh-heading-h2">
-        <Link href={`/dashboard/residents/${residentId}`}>
+        <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
           <a className="lbh-link">Firstname Surname</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
@@ -76,13 +80,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       {documentSubmission.state === DocumentState.PENDING && (
         <div className={styles.actions}>
           <Link
-            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
+            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
             scroll={false}
           >
             <Button>Accept</Button>
           </Link>
           <Link
-            href={`/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
+            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
             scroll={false}
           >
             <Button className="govuk-button--secondary lbh-button--secondary">
@@ -114,7 +118,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         onAccept={handleAccept}
         onDismiss={() =>
           router.push(
-            `/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />
@@ -126,7 +130,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         }}
         onDismiss={() =>
           router.push(
-            `/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
           )
         }
       />
@@ -136,10 +140,29 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const gateway = new EvidenceApiGateway();
-  const { documentId: id } = ctx.params as { documentId: string };
+  const { teamId, documentId: id } = ctx.params as {
+    teamId: string;
+    documentId: string;
+  };
+
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
+
+  if (!userAuthorizedToViewTeam) {
+    return {
+      redirect: {
+        destination: '/teams',
+        permanent: false,
+      },
+    };
+  }
 
   const documentSubmission = await gateway.getDocumentSubmission(id);
-  return { props: { documentSubmission } };
+  return { props: { documentSubmission, teamId } };
 });
 
 export default DocumentDetailPage;

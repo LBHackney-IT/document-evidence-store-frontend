@@ -5,19 +5,23 @@ import { useCallback, useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
-import NewRequestForm from '../../../components/NewRequestForm';
-import { DocumentType } from '../../../domain/document-type';
+import NewRequestForm from '../../../../../components/NewRequestForm';
+import { DocumentType } from '../../../../../domain/document-type';
 import {
   EvidenceRequestRequest,
   InternalApiGateway,
-} from '../../../gateways/internal-api';
+} from '../../../../../gateways/internal-api';
+import { RequestAuthorizer } from '../../../../../services/request-authorizer';
+import { TeamHelper } from '../../../../../services/team-helper';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
+  teamId: string;
 };
 
 const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
+  teamId,
   user,
 }) => {
   const [complete, setComplete] = useState(false);
@@ -35,7 +39,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   }, []);
 
   return (
-    <Layout>
+    <Layout teamId={teamId}>
       <Head>
         <title>Make a new request</title>
       </Head>
@@ -49,10 +53,32 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   );
 };
 
-export const getServerSideProps = withAuth<RequestsNewPageProps>(async () => {
-  const gateway = new EvidenceApiGateway();
-  const documentTypes = await gateway.getDocumentTypes();
-  return { props: { documentTypes } };
-});
+export const getServerSideProps = withAuth<RequestsNewPageProps>(
+  async (ctx) => {
+    const { teamId } = ctx.query as {
+      teamId: string;
+    };
+
+    const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+    const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+      TeamHelper.getTeamsJson(),
+      user,
+      teamId
+    );
+
+    if (!userAuthorizedToViewTeam) {
+      return {
+        redirect: {
+          destination: '/teams',
+          permanent: false,
+        },
+      };
+    }
+
+    const gateway = new EvidenceApiGateway();
+    const documentTypes = await gateway.getDocumentTypes();
+    return { props: { documentTypes, teamId } };
+  }
+);
 
 export default RequestsNewPage;
