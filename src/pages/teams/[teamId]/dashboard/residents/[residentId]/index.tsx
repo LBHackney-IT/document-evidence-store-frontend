@@ -1,168 +1,140 @@
 import { Button } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
+import { DocumentSubmission } from 'src/domain/document-submission';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { Resident } from 'src/domain/resident';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import styles from 'src/styles/Resident.module.scss';
-import { TeamHelper } from '../../../../../../services/team-helper';
-import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 
-type ResidentsProps = {
-  teamId: string;
-  residentId: string;
+type ResidentPageProps = {
+  documentSubmissions: DocumentSubmission[];
+  resident: Resident;
 };
 
-const ResidentPage: NextPage<WithUser<ResidentsProps>> = ({
-  teamId,
-  residentId,
+const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
+  documentSubmissions,
+  resident,
 }) => {
+  const router = useRouter();
+  const { residentId } = router.query as {
+    residentId: string;
+  };
+  const toReviewDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'UPLOADED'
+  );
+  const pendingDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'PENDING'
+  );
+  const reviewedDocumentSubmissions = documentSubmissions.filter(
+    (ds) => ds.state == 'APPROVED'
+  );
+
   return (
-    <Layout teamId={teamId}>
+    <Layout>
       <Head>
-        <title>Firstname Surname</title>
+        <title>{resident.name}</title>
       </Head>
-      <h1 className="lbh-heading-h2">Firstname Surname</h1>
-      <p className="lbh-body">0777 777 7777</p>
-      <p className="lbh-body">email@email.com</p>
+      <h1 className="lbh-heading-h2">{resident.name}</h1>
+      <p className="lbh-body">{resident.phoneNumber}</p>
+      <p className="lbh-body">{resident.email}</p>
       <h2 className="lbh-heading-h3">To review</h2>
       <EvidenceList>
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-          toReview
-        />
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-          toReview
-        />
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-          toReview
-        />
+        {toReviewDocumentSubmissions &&
+        toReviewDocumentSubmissions.length > 0 ? (
+          toReviewDocumentSubmissions.map((ds) => (
+            <EvidenceTile
+              residentId={residentId}
+              id={ds.id}
+              title={String(ds.documentType.title)}
+              createdAt={String(ds.createdAt.toRelativeCalendar())}
+              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+              format={ds.document ? ds.document.extension : 'unknown'}
+              // purpose="Example form"
+              toReview
+            />
+          ))
+        ) : (
+          <h3>There are no documents to review</h3>
+        )}
       </EvidenceList>
+
       <h2 className="lbh-heading-h3">Pending requests</h2>
 
-      <table className={`govuk-table lbh-table ${styles.table}`}>
-        <thead className="govuk-table__head">
-          <tr className="govuk-table__row">
-            <th scope="col" className="govuk-table__header">
-              Document
-            </th>
-            <th scope="col" className="govuk-table__header">
-              Requested
-            </th>
-            <th scope="col" className="govuk-table__header">
-              <span className="lbu-visually-hidden">Actions</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="govuk-table__body">
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Passport</td>
-            <td className="govuk-table__cell">1 day ago</td>
-            <td className="govuk-table__cell  govuk-table__cell--numeric">
-              <Button className={styles.button}>Remind</Button>
-            </td>
-          </tr>
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Proof of address</td>
-            <td className="govuk-table__cell">1 day ago</td>
-            <td className="govuk-table__cell  govuk-table__cell--numeric">
-              <Button className={styles.button}>Remind</Button>
-            </td>
-          </tr>
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Proof of benefit entitlement</td>
-            <td className="govuk-table__cell">2 days ago</td>
-            <td className="govuk-table__cell  govuk-table__cell--numeric">
-              <Button className={styles.button}>Remind</Button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {pendingDocumentSubmissions && pendingDocumentSubmissions.length > 0 ? (
+        <>
+          <table className={`govuk-table lbh-table ${styles.table}`}>
+            <thead className="govuk-table__head">
+              <tr className="govuk-table__row">
+                <th scope="col" className="govuk-table__header">
+                  Document
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  Requested
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  <span className="lbu-visually-hidden">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="govuk-table__body">
+              {pendingDocumentSubmissions.map((ds) => (
+                <tr className="govuk-table__row">
+                  <td className="govuk-table__cell">{ds.documentType.title}</td>
+                  <td className="govuk-table__cell">
+                    {ds.createdAt.toRelativeCalendar()}
+                  </td>
+                  <td className="govuk-table__cell  govuk-table__cell--numeric">
+                    <Button className={styles.button}>Remind</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <h4>There are no pending documents</h4>
+      )}
 
       <h2 className="lbh-heading-h3">Reviewed</h2>
 
       <EvidenceList twoColumns>
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-        />
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-        />
-        <EvidenceTile
-          teamId={teamId}
-          residentId={residentId}
-          id="123"
-          title="Foo"
-          createdAt="1 day ago"
-          fileSizeInBytes={1300000}
-          format="PDF"
-          purpose="Example form"
-        />
+        {reviewedDocumentSubmissions &&
+        reviewedDocumentSubmissions.length > 0 ? (
+          reviewedDocumentSubmissions.map((ds) => (
+            <EvidenceTile
+              residentId={residentId}
+              id={ds.id}
+              title={String(ds.documentType.title)}
+              createdAt={String(ds.createdAt.toRelativeCalendar())}
+              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+              format={ds.document ? ds.document.extension : 'unknown'}
+              // purpose="Example form"
+            />
+          ))
+        ) : (
+          <h3>There are no reviewed documents</h3>
+        )}
       </EvidenceList>
     </Layout>
   );
 };
 
-export const getServerSideProps = withAuth<ResidentsProps>(async (ctx) => {
-  const { teamId, residentId } = ctx.query as {
-    teamId: string;
-    residentId: string;
-  };
-
-  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
-  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
-    TeamHelper.getTeamsJson(),
-    user,
-    teamId
+export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
+  const gateway = new EvidenceApiGateway();
+  // need to pass parameter for serviceRequestedBy after DES-25
+  const { residentId: residentId } = ctx.params as { residentId: string };
+  const documentSubmissions = await gateway.getDocumentSubmissionsForResident(
+    'Housing benefit',
+    residentId
   );
-
-  if (!userAuthorizedToViewTeam) {
-    return {
-      redirect: {
-        destination: '/teams',
-        permanent: false,
-      },
-    };
-  }
-
-  return { props: { teamId, residentId } };
+  const resident = await gateway.getResident(residentId);
+  return {
+    props: { documentSubmissions, resident },
+  };
 });
 
 export default ResidentPage;

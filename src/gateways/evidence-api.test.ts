@@ -7,6 +7,7 @@ import {
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { DocumentSubmissionResponse } from 'types/api';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get.json';
+import DocumentSubmissionsFixture from '../../cypress/fixtures/document_submissions/get-many.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';
@@ -452,6 +453,82 @@ describe('Evidence api gateway', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () => gateway.getDocumentSubmission(id);
+        expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('getDocumentSubmissionsByResidentId', () => {
+    const residentId = 'id';
+    const serviceRequestedBy = 'service';
+    describe('returns the correct response', () => {
+      const expectedData = DocumentSubmissionsFixture;
+      const mappedData = expectedData.map((ds) =>
+        ResponseMapper.mapDocumentSubmission(ds)
+      );
+
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: expectedData,
+        });
+
+        mappedData.map((data) =>
+          mockedResponseMapper.mapDocumentSubmission.mockReturnValue(data)
+        );
+      });
+
+      it('calls axios correctly', async () => {
+        await gateway.getDocumentSubmissionsForResident(
+          serviceRequestedBy,
+          residentId
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          '/api/v1/document_submissions',
+          {
+            headers: {
+              Authorization:
+                process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
+            },
+            params: {
+              serviceRequestedBy: serviceRequestedBy,
+              residentId: residentId,
+            },
+          }
+        );
+      });
+
+      it('maps the response', async () => {
+        await gateway.getDocumentSubmissionsForResident(
+          serviceRequestedBy,
+          residentId
+        );
+
+        expectedData.map((ds) =>
+          expect(
+            mockedResponseMapper.mapDocumentSubmission
+          ).toHaveBeenCalledWith(ds)
+        );
+      });
+
+      it('returns mapped EvidenceTypes', async () => {
+        const result = await gateway.getDocumentSubmissionsForResident(
+          serviceRequestedBy,
+          residentId
+        );
+        expect(result).toEqual(mappedData);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () =>
+          gateway.getDocumentSubmissionsForResident(
+            serviceRequestedBy,
+            residentId
+          );
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
