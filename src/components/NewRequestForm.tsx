@@ -163,8 +163,8 @@ const NewRequestForm = ({
 
 interface Props {
   documentTypes: Array<DocumentType>;
-  onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
   team: Team;
+  onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
 }
 
 export default NewRequestForm;
