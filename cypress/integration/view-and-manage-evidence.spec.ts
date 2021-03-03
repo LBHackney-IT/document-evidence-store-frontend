@@ -29,7 +29,7 @@ describe('Can view and manage evidence', () => {
     cy.get('h1').should('contain', 'Namey McName');
 
     cy.get('h2').should('contain', 'To review');
-    cy.get('h2').should('contain', 'Pending requests');
+    // cy.get('h2').should('contain', 'Pending requests');
     cy.get('h2').should('contain', 'Reviewed');
   });
 
