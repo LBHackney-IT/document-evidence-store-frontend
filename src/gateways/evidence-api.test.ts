@@ -196,7 +196,10 @@ describe('Evidence api gateway', () => {
       });
 
       it('calls axios correctly', async () => {
-        await gateway.getEvidenceRequests(EvidenceRequestState.PENDING);
+        await gateway.getEvidenceRequests(
+          'Housing benefit',
+          EvidenceRequestState.PENDING
+        );
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/evidence_requests',
           {
@@ -213,7 +216,7 @@ describe('Evidence api gateway', () => {
       });
 
       it('maps the response', async () => {
-        await gateway.getEvidenceRequests();
+        await gateway.getEvidenceRequests('Housing benefit');
 
         for (let i = 0; i < expectedData.length; i++) {
           expect(
@@ -223,7 +226,7 @@ describe('Evidence api gateway', () => {
       });
 
       it('returns mapped EvidenceTypes', async () => {
-        const result = await gateway.getEvidenceRequests();
+        const result = await gateway.getEvidenceRequests('Housing benefit');
         expect(result).toEqual(mappedData);
       });
     });
@@ -231,7 +234,8 @@ describe('Evidence api gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Network error'));
-        const functionCall = () => gateway.getEvidenceRequests();
+        const functionCall = () =>
+          gateway.getEvidenceRequests('Housing benefit');
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );

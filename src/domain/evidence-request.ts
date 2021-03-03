@@ -9,6 +9,7 @@ export interface IEvidenceRequest {
   deliveryMethods: DeliveryMethod[];
   documentTypes: DocumentType[];
   serviceRequestedBy: string;
+  reason: string;
 }
 
 export enum DeliveryMethod {
@@ -23,6 +24,7 @@ export class EvidenceRequest implements IEvidenceRequest {
   deliveryMethods: DeliveryMethod[];
   documentTypes: DocumentType[];
   serviceRequestedBy: string;
+  reason: string;
 
   constructor(params: IEvidenceRequest) {
     this.id = params.id;
@@ -31,5 +33,6 @@ export class EvidenceRequest implements IEvidenceRequest {
     this.deliveryMethods = params.deliveryMethods;
     this.documentTypes = params.documentTypes;
     this.serviceRequestedBy = params.serviceRequestedBy;
+    this.reason = params.reason;
   }
 }

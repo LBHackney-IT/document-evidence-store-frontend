@@ -13,15 +13,16 @@ import {
 } from '../../../../../gateways/internal-api';
 import { RequestAuthorizer } from '../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../services/team-helper';
+import { Team } from '../../../../../domain/team';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
-  teamId: string;
+  team: Team;
 };
 
 const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
-  teamId,
+  team,
   user,
 }) => {
   const [complete, setComplete] = useState(false);
@@ -30,8 +31,6 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     const gateway = new InternalApiGateway();
     const payload: EvidenceRequestRequest = {
       ...values,
-      // TODO: pass this in from the users chosen service after DES-25
-      serviceRequestedBy: 'Housing benefit',
       userRequestedBy: user?.email,
     };
     await gateway.createEvidenceRequest(payload);
@@ -39,7 +38,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   }, []);
 
   return (
-    <Layout teamId={teamId}>
+    <Layout teamId={team.id}>
       <Head>
         <title>Make a new request</title>
       </Head>
@@ -47,7 +46,11 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       {complete ? (
         <Paragraph>Thanks!</Paragraph>
       ) : (
-        <NewRequestForm documentTypes={documentTypes} onSubmit={handleSubmit} />
+        <NewRequestForm
+          documentTypes={documentTypes}
+          team={team}
+          onSubmit={handleSubmit}
+        />
       )}
     </Layout>
   );
@@ -66,7 +69,8 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
       teamId
     );
 
-    if (!userAuthorizedToViewTeam) {
+    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+    if (!userAuthorizedToViewTeam || team === undefined) {
       return {
         redirect: {
           destination: '/teams',
@@ -77,7 +81,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
 
     const gateway = new EvidenceApiGateway();
     const documentTypes = await gateway.getDocumentTypes();
-    return { props: { documentTypes, teamId } };
+    return { props: { documentTypes, team } };
   }
 );
 

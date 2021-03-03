@@ -8,6 +8,8 @@ import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
 import { EvidenceRequestRequest } from 'src/gateways/internal-api';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
+import SelectOption from './SelectOption';
+import { Team } from '../domain/team';
 
 const schema = Yup.object().shape({
   resident: Yup.object().shape({
@@ -19,23 +21,31 @@ const schema = Yup.object().shape({
       "Please enter the resident's phone number"
     ),
   }),
+  serviceRequestedBy: Yup.string(),
+  reason: Yup.string(),
   deliveryMethods: Yup.array(),
   documentTypes: Yup.array().min(1, 'Please choose a document type'),
 });
 
-const initialValues = {
-  resident: {
-    name: '',
-    email: '',
-    phoneNumber: '',
-  },
-  documentTypes: [],
-  deliveryMethods: ['SMS', 'EMAIL'],
-};
-
-const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
+const NewRequestForm = ({
+  documentTypes,
+  team,
+  onSubmit,
+}: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
+
+  const initialValues = {
+    resident: {
+      name: '',
+      email: '',
+      phoneNumber: '',
+    },
+    serviceRequestedBy: team.name,
+    reason: team.reasons[0].name,
+    documentTypes: [],
+    deliveryMethods: ['SMS', 'EMAIL'],
+  };
 
   const submitHandler = useCallback(
     async (values: typeof initialValues) => {
@@ -84,6 +94,14 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
                 : null
             }
           />
+
+          <div className="govuk-form-group lbh-form-group">
+            <SelectOption
+              label="What is this request for?"
+              name="reason"
+              values={team.reasons.map((reason) => reason.name)}
+            />
+          </div>
 
           <div className="govuk-form-group lbh-form-group">
             <div className="govuk-checkboxes lbh-checkboxes">
@@ -145,6 +163,7 @@ const NewRequestForm = ({ documentTypes, onSubmit }: Props): JSX.Element => {
 
 interface Props {
   documentTypes: Array<DocumentType>;
+  team: Team;
   onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
 }
 

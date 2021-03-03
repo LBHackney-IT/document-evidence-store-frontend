@@ -32,6 +32,9 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       onDismiss={onDismiss}
       title="Are you sure you want to send this request?"
     >
+      <p className="lbh-body">
+        Request reason: <strong>{request.reason}</strong>
+      </p>
       <p className="lbh-body">{formatSentence(request.deliveryMethods)}</p>
 
       <ul className="lbh-list">

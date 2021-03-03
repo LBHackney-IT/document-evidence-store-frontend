@@ -50,6 +50,7 @@ export class EvidenceApiGateway {
   }
 
   async getEvidenceRequests(
+    teamName: string,
     state?: EvidenceRequestState | null
   ): Promise<EvidenceRequest[]> {
     try {
@@ -57,8 +58,7 @@ export class EvidenceApiGateway {
         '/api/v1/evidence_requests',
         {
           headers: { Authorization: tokens?.evidence_requests?.GET },
-          // TODO: pass this in from the users chosen service after DES-25
-          params: { serviceRequestedBy: 'Housing benefit', state: state },
+          params: { serviceRequestedBy: teamName, state: state },
         }
       );
 
