@@ -48,8 +48,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       ) : (
         <NewRequestForm
           documentTypes={documentTypes}
-          onSubmit={handleSubmit}
           team={team}
+          onSubmit={handleSubmit}
         />
       )}
     </Layout>

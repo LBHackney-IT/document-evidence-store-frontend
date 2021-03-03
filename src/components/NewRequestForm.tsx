@@ -29,8 +29,8 @@ const schema = Yup.object().shape({
 
 const NewRequestForm = ({
   documentTypes,
-  onSubmit,
   team,
+  onSubmit,
 }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();

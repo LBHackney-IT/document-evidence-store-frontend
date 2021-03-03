@@ -14,6 +14,18 @@ const documentTypes = documentTypesFixture.map((dt) =>
   ResponseMapper.mapDocumentType(dt)
 );
 
+const team = {
+  name: 'Example Service',
+  googleGroup: 'example-service',
+  id: '1',
+  reasons: [
+    {
+      name: 'example-reason',
+      id: '123',
+    },
+  ],
+};
+
 const promise = Promise.resolve();
 const mockHandler = jest.fn(() => promise);
 
@@ -25,6 +37,8 @@ const values = {
     name: 'Example name',
     phoneNumber: '07777777777',
   },
+  serviceRequestedBy: 'Example Service',
+  reason: 'example-reason',
 };
 
 const fillInForm = () => {
@@ -43,7 +57,11 @@ const fillInForm = () => {
 describe('NewRequestFormForm', () => {
   it('renders an uploader panel and a continue button', async () => {
     render(
-      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+      <NewRequestForm
+        documentTypes={documentTypes}
+        team={team}
+        onSubmit={mockHandler}
+      />
     );
     expect(screen.getByLabelText('Name')).toBeVisible();
     expect(screen.getByLabelText('Email')).toBeVisible();
@@ -61,7 +79,11 @@ describe('NewRequestFormForm', () => {
 
   it('validates all three contact details and an evidence type are present', async () => {
     render(
-      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+      <NewRequestForm
+        documentTypes={documentTypes}
+        team={team}
+        onSubmit={mockHandler}
+      />
     );
     fireEvent.click(screen.getByText('Send request'));
 
@@ -81,7 +103,11 @@ describe('NewRequestFormForm', () => {
 
   it('calls the submit handler', async () => {
     render(
-      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+      <NewRequestForm
+        documentTypes={documentTypes}
+        team={team}
+        onSubmit={mockHandler}
+      />
     );
 
     fillInForm();
@@ -100,7 +126,11 @@ describe('NewRequestFormForm', () => {
 
   it('prevents double-submits', async () => {
     render(
-      <NewRequestForm documentTypes={documentTypes} onSubmit={mockHandler} />
+      <NewRequestForm
+        documentTypes={documentTypes}
+        team={team}
+        onSubmit={mockHandler}
+      />
     );
 
     fillInForm();
