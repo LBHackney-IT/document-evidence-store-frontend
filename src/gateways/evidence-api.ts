@@ -2,6 +2,7 @@ import Axios, { AxiosInstance, Method } from 'axios';
 import {
   DocumentSubmissionResponse,
   EvidenceRequestResponse,
+  ResidentResponse,
   TokenDictionary,
 } from '../../types/api';
 import { InternalServerError } from './internal-api';
@@ -14,6 +15,7 @@ import {
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
+import { Resident } from 'src/domain/resident';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -134,6 +136,47 @@ export class EvidenceApiGateway {
         { headers: { Authorization: tokens?.document_submissions?.GET } }
       );
       return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getDocumentSubmissionsForResident(
+    // update this with the correct name after DES-25
+    serviceRequestedBy: string,
+    residentId: string
+  ): Promise<DocumentSubmission[]> {
+    try {
+      const { data } = await this.client.get<DocumentSubmissionResponse[]>(
+        '/api/v1/document_submissions',
+        {
+          headers: { Authorization: tokens?.document_submissions?.GET },
+          params: {
+            serviceRequestedBy: serviceRequestedBy,
+            residentId: residentId,
+          },
+        }
+      );
+      return data.map((ds) => ResponseMapper.mapDocumentSubmission(ds));
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getResident(residentId: string): Promise<Resident> {
+    try {
+      const { data } = await this.client.get<ResidentResponse>(
+        `/api/v1/residents/${residentId}`,
+        {
+          headers: { Authorization: tokens?.residents?.GET },
+          params: {
+            residentId: residentId,
+          },
+        }
+      );
+      return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

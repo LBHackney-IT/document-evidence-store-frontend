@@ -36,25 +36,20 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         Request reason: <strong>{request.reason}</strong>
       </p>
       <p className="lbh-body">{formatSentence(request.deliveryMethods)}</p>
-      <ul className="lbh-list lbh-list--bullet">
+
+      <ul className="lbh-list">
         <li>
           <strong>{request.resident.name}</strong>
         </li>
-        <li>
-          <strong>{request.resident.email}</strong>
-        </li>
-        <li>
-          <strong>{request.resident.phoneNumber}</strong>
-        </li>
+        <li>{request.resident.email}</li>
+        <li>{request.resident.phoneNumber}</li>
       </ul>
 
       <p className="lbh-body">for the following evidence:</p>
       <ul className="lbh-list lbh-list--bullet">
         {request.documentTypes.map((id) => (
           <li key={id}>
-            <strong>
-              {documentTypes.find((dt) => dt.id == id)?.title.toLowerCase()}
-            </strong>
+            {documentTypes.find((dt) => dt.id == id)?.title.toLowerCase()}
           </li>
         ))}
       </ul>
