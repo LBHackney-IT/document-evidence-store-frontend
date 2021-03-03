@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
@@ -21,23 +21,11 @@ const schema = Yup.object().shape({
       "Please enter the resident's phone number"
     ),
   }),
-  reason: Yup.string(),
   serviceRequestedBy: Yup.string(),
+  reason: Yup.string(),
   deliveryMethods: Yup.array(),
   documentTypes: Yup.array().min(1, 'Please choose a document type'),
 });
-
-const initialValues = {
-  resident: {
-    name: '',
-    email: '',
-    phoneNumber: '',
-  },
-  reason: '',
-  serviceRequestedBy: '',
-  documentTypes: [],
-  deliveryMethods: ['SMS', 'EMAIL'],
-};
 
 const NewRequestForm = ({
   documentTypes,
@@ -47,10 +35,17 @@ const NewRequestForm = ({
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
 
-  useEffect(() => {
-    initialValues.serviceRequestedBy = team.googleGroup;
-    initialValues.reason = team.reasons[0].name;
-  });
+  const initialValues = {
+    resident: {
+      name: '',
+      email: '',
+      phoneNumber: '',
+    },
+    serviceRequestedBy: team.name,
+    reason: team.reasons[0].name,
+    documentTypes: [],
+    deliveryMethods: ['SMS', 'EMAIL'],
+  };
 
   const submitHandler = useCallback(
     async (values: typeof initialValues) => {

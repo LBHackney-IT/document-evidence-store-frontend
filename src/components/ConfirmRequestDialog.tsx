@@ -9,14 +9,13 @@ const humanisedMethods: Record<string, string> = {
   EMAIL: 'email',
   SMS: 'SMS',
 };
-const formatSentence = (deliveryMethods: string[], reason: string) => {
-  if (!deliveryMethods.length)
-    return `You're about to make a ${reason} request to`;
+const formatSentence = (deliveryMethods: string[]) => {
+  if (!deliveryMethods.length) return "You're about to make a request to:";
 
   const methods = deliveryMethods
     .map((dm) => humanisedMethods[dm])
     .join(' and ');
-  return `You're about to send a ${reason} request by ${methods} to:`;
+  return `You're about to send a request by ${methods} to:`;
 };
 
 const ConfirmRequestDialog: FunctionComponent<Props> = ({
@@ -34,8 +33,9 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       title="Are you sure you want to send this request?"
     >
       <p className="lbh-body">
-        {formatSentence(request.deliveryMethods, request.reason)}
+        Request reason: <strong>{request.reason}</strong>
       </p>
+      <p className="lbh-body">{formatSentence(request.deliveryMethods)}</p>
       <ul className="lbh-list lbh-list--bullet">
         <li>
           <strong>{request.resident.name}</strong>

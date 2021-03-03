@@ -94,7 +94,8 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
       teamId
     );
 
-    if (!userAuthorizedToViewTeam) {
+    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+    if (!userAuthorizedToViewTeam || team === undefined) {
       return {
         redirect: {
           destination: '/teams',
@@ -104,7 +105,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     }
 
     const gateway = new EvidenceApiGateway();
-    const evidenceRequests = await gateway.getEvidenceRequests();
+    const evidenceRequests = await gateway.getEvidenceRequests(team.name);
     return {
       props: { evidenceRequests, teamId },
     };

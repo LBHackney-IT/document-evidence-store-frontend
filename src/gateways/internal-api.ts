@@ -19,6 +19,8 @@ export class InternalServerError extends Error {
   }
 }
 
+// It was recently that Service Area and Service were renamed to Team and Reason
+// We have decided to keep serviceRequestedBy as it is for now, then later rename it to teamRequestedBy
 export interface EvidenceRequestRequest {
   deliveryMethods: string[];
   documentTypes: string[];

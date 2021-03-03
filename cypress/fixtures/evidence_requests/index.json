@@ -16,7 +16,8 @@
         "description": "A valid passport open at the photo page"
       }
     ],
-    "serviceRequestedBy": "development-team-staging"
+    "serviceRequestedBy": "development-team-staging",
+    "reason": "staging-reason"
   },
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
@@ -35,7 +36,8 @@
         "description": "A valid UK full or provisional UK driving license"
       }
     ],
-    "serviceRequestedBy": "development-team-staging"
+    "serviceRequestedBy": "development-team-staging",
+    "reason": "staging-reason"
   },
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
@@ -54,6 +56,7 @@
         "description": "A valid passport open at the photo page"
       }
     ],
-    "serviceRequestedBy": "development-team-staging"
+    "serviceRequestedBy": "development-team-staging",
+    "reason": "staging-reason"
   }
 ]

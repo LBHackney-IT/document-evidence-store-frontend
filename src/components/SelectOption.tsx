@@ -9,7 +9,6 @@ const SelectOption = (props: Props): JSX.Element => (
     <FormikField
       name={props.name}
       id={props.name}
-      value={props.values[0]}
       as="select"
       className="govuk-select  lbh-select__label"
     >

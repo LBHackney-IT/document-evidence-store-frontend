@@ -20,5 +20,6 @@
       "description": "A valid UK full or provisional UK driving license"
     }
   ],
-  "serviceRequestedBy": "development-team-staging"
+  "serviceRequestedBy": "development-team-staging",
+  "reason": "staging-reason"
 }
