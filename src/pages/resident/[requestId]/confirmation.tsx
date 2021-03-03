@@ -23,7 +23,7 @@ const Index = (): ReactNode => {
             <p className="lbh-body">Your reference number: {requestId}</p>
           </Panel>
 
-          <p className="lbh-body">We have sent you a confirmation email.</p>
+          {/* <p className="lbh-body">We have sent you a confirmation email.</p> */}
 
           <Heading level={HeadingLevels.H2}>What happens next</Heading>
           <p className="lbh-body">
