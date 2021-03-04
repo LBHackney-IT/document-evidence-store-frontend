@@ -142,7 +142,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     teamId
   );
 
-  if (!userAuthorizedToViewTeam) {
+  const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  if (!userAuthorizedToViewTeam || team === undefined) {
     return {
       redirect: {
         destination: '/teams',
@@ -152,9 +153,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   }
 
   const gateway = new EvidenceApiGateway();
-  // need to pass parameter for serviceRequestedBy after DES-25
   const documentSubmissions = await gateway.getDocumentSubmissionsForResident(
-    'Housing benefit',
+    team.name,
     residentId
   );
   const resident = await gateway.getResident(residentId);
