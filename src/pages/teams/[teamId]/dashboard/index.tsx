@@ -1,4 +1,4 @@
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
+// import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { EvidenceRequest } from 'src/domain/evidence-request';
@@ -12,7 +12,7 @@ import { InternalApiGateway } from '../../../../gateways/internal-api';
 import { Resident } from '../../../../domain/resident';
 import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
 import TableSkeleton from '../../../../components/TableSkeleton';
-import Tabs from '../../../../components/Tabs';
+// import Tabs from '../../../../components/Tabs';
 import { RequestAuthorizer } from '../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../services/team-helper';
 
@@ -49,34 +49,29 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         <title>Browse residents</title>
       </Head>
       <h1 className="lbh-heading-h2">Browse residents</h1>
-
       <ResidentSearchForm handleSearch={handleSearch} />
-
       {(loading || results) && (
         <h2 className="lbh-heading-h3">
           Search results for: {formSearchQuery}
         </h2>
       )}
-
       {loading && <TableSkeleton columns={['Name', 'Email', 'Phone Number']} />}
-
       {results && <ResidentSummaryTable residents={results} teamId={teamId} />}
-
       <h2 className="lbh-heading-h3">Pending Requests</h2>
-
-      <Tabs
+      {/* <Tabs
         tabTitles={['To review (3)', 'All (3)']}
-        children={[
-          <div key="1">
-            <Heading level={HeadingLevels.H3}>To review</Heading>
-            <ResidentTable residents={evidenceRequests} teamId={teamId} />
-          </div>,
-          <div key="2">
+        children={[ */}
+      <div key="1">
+        {/* <Heading level={HeadingLevels.H3}>To review</Heading> */}
+        <ResidentTable residents={evidenceRequests} teamId={teamId} />
+      </div>
+      ,
+      {/* <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
             <ResidentTable residents={evidenceRequests} teamId={teamId} />
           </div>,
         ]}
-      />
+      /> */}
     </Layout>
   );
 };

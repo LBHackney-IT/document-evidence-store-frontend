@@ -1,4 +1,4 @@
-import { Button } from 'lbh-frontend-react';
+// import { Button } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -8,7 +8,7 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
-import styles from 'src/styles/Resident.module.scss';
+// import styles from 'src/styles/Resident.module.scss';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 
@@ -30,9 +30,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const toReviewDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'UPLOADED'
   );
-  const pendingDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'PENDING'
-  );
+  // const pendingDocumentSubmissions = documentSubmissions.filter(
+  //   (ds) => ds.state == 'PENDING'
+  // );
   const reviewedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'APPROVED'
   );
@@ -67,7 +67,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         )}
       </EvidenceList>
 
-      <h2 className="lbh-heading-h3">Pending requests</h2>
+      {/* <h2 className="lbh-heading-h3">Pending requests</h2>
 
       {pendingDocumentSubmissions && pendingDocumentSubmissions.length > 0 ? (
         <>
@@ -102,7 +102,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         </>
       ) : (
         <h4>There are no pending documents</h4>
-      )}
+      )} */}
 
       <h2 className="lbh-heading-h3">Reviewed</h2>
 

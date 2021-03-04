@@ -1,6 +1,6 @@
 import { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
-import Link from 'next/link';
+// import Link from 'next/link';
 
 export const EvidenceRequestTable: FunctionComponent<Props> = ({
   requests,
@@ -55,14 +55,14 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.made}
             </td>
-            <td className="govuk-table__cell govuk-table__cell--numeric">
+            {/* <td className="govuk-table__cell govuk-table__cell--numeric">
               <Link href="#">
                 <a className="lbh-link">Remind</a>
               </Link>
               <Link href="#">
                 <a className="lbh-link lbh-link--red">Cancel</a>
               </Link>
-            </td>
+            </td> */}
           </tr>
         ))}
       </tbody>
