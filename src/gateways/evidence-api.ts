@@ -143,7 +143,6 @@ export class EvidenceApiGateway {
   }
 
   async getDocumentSubmissionsForResident(
-    // update this with the correct name after DES-25
     serviceRequestedBy: string,
     residentId: string
   ): Promise<DocumentSubmission[]> {
