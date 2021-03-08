@@ -11,6 +11,7 @@ import {
   DocumentState,
   DocumentSubmission,
 } from 'src/domain/document-submission';
+import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { InternalApiGateway } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
@@ -30,11 +31,13 @@ type DocumentDetailPageQuery = {
 type DocumentDetailPageProps = {
   documentSubmission: DocumentSubmission;
   teamId: string;
+  downloadUrl: string
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
   teamId,
+  downloadUrl
 }) => {
   const router = useRouter();
   const {
@@ -103,7 +106,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <a href="#" className="lbh-link">
+          <a href={`${downloadUrl}`} className="lbh-link">
             Download
           </a>
         </figcaption>
@@ -140,10 +143,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
 export const getServerSideProps = withAuth(async (ctx) => {
   const gateway = new EvidenceApiGateway();
-  const { teamId, documentId: id } = ctx.params as {
+  const { teamId, documentId } = ctx.params as {
     teamId: string;
     documentId: string;
   };
+
+  const documentsApiGateway = new DocumentsApiGateway();
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
@@ -161,8 +166,9 @@ export const getServerSideProps = withAuth(async (ctx) => {
     };
   }
 
-  const documentSubmission = await gateway.getDocumentSubmission(id);
-  return { props: { documentSubmission, teamId } };
+  const documentSubmission = await gateway.getDocumentSubmission(documentId);
+  const downloadUrl = await documentsApiGateway.generateDownloadUrl(documentSubmission.claimId, documentId);
+  return { props: { documentSubmission, teamId, downloadUrl } };
 });
 
 export default DocumentDetailPage;
