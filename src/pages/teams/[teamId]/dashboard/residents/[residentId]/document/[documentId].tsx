@@ -142,13 +142,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 };
 
 export const getServerSideProps = withAuth(async (ctx) => {
-  const gateway = new EvidenceApiGateway();
+  const evidenceApiGateway = new EvidenceApiGateway();
+  const documentsApiGateway = new DocumentsApiGateway();
   const { teamId, documentId } = ctx.params as {
     teamId: string;
     documentId: string;
   };
-
-  const documentsApiGateway = new DocumentsApiGateway();
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
@@ -166,7 +165,9 @@ export const getServerSideProps = withAuth(async (ctx) => {
     };
   }
 
-  const documentSubmission = await gateway.getDocumentSubmission(documentId);
+  const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
+    documentId
+  );
   const downloadUrl = await documentsApiGateway.generateDownloadUrl(
     documentSubmission.claimId,
     documentId
