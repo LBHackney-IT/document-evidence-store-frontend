@@ -31,13 +31,13 @@ type DocumentDetailPageQuery = {
 type DocumentDetailPageProps = {
   documentSubmission: DocumentSubmission;
   teamId: string;
-  downloadUrl: string
+  downloadUrl: string;
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
   teamId,
-  downloadUrl
+  downloadUrl,
 }) => {
   const router = useRouter();
   const {
@@ -167,7 +167,10 @@ export const getServerSideProps = withAuth(async (ctx) => {
   }
 
   const documentSubmission = await gateway.getDocumentSubmission(documentId);
-  const downloadUrl = await documentsApiGateway.generateDownloadUrl(documentSubmission.claimId, documentId);
+  const downloadUrl = await documentsApiGateway.generateDownloadUrl(
+    documentSubmission.claimId,
+    documentId
+  );
   return { props: { documentSubmission, teamId, downloadUrl } };
 });
 
