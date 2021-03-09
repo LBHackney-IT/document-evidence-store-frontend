@@ -11,6 +11,7 @@ import {
   DocumentState,
   DocumentSubmission,
 } from 'src/domain/document-submission';
+import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { InternalApiGateway } from 'src/gateways/internal-api';
@@ -29,14 +30,16 @@ type DocumentDetailPageQuery = {
 };
 
 type DocumentDetailPageProps = {
-  documentSubmission: DocumentSubmission;
   teamId: string;
+  resident: Resident;
+  documentSubmission: DocumentSubmission;
   downloadUrl: string;
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
-  documentSubmission: _documentSubmission,
   teamId,
+  resident,
+  documentSubmission: _documentSubmission,
   downloadUrl,
 }) => {
   const router = useRouter();
@@ -71,13 +74,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     <Layout teamId={teamId}>
       <Head>
         <title>
-          {documentSubmission.documentType.title} | Firstname Surname
+          {documentSubmission.documentType.title} | {resident.name}
         </title>
       </Head>
 
       <h1 className="lbh-heading-h2">
         <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
-          <a className="lbh-link">Firstname Surname</a>
+          <a className="lbh-link">{resident.name}</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {documentSubmission.documentType.title}
@@ -105,7 +108,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       <h2 className="lbh-heading-h3">Preview</h2>
 
       <figure className={styles.preview}>
-        <img src="http://placehold.it/600x400" alt="example" />
+        <img src={downloadUrl} alt="example" />
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
@@ -147,8 +150,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceApiGateway = new EvidenceApiGateway();
   const documentsApiGateway = new DocumentsApiGateway();
-  const { teamId, documentSubmissionId } = ctx.params as {
+  const { teamId, residentId, documentSubmissionId } = ctx.params as {
     teamId: string;
+    residentId: string;
     documentSubmissionId: string;
   };
 
@@ -171,6 +175,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
     documentSubmissionId
   );
+  const resident = await evidenceApiGateway.getResident(residentId);
 
   let downloadUrl = '';
   if (documentSubmission && documentSubmission.document) {
@@ -179,7 +184,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
       documentSubmission.document.id
     );
   }
-  return { props: { documentSubmission, teamId, downloadUrl } };
+  return { props: { teamId, resident, documentSubmission, downloadUrl } };
 });
 
 export default DocumentDetailPage;
