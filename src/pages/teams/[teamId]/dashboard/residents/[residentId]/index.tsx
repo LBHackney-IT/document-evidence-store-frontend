@@ -53,6 +53,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <EvidenceTile
               teamId={teamId}
               residentId={residentId}
+              key={ds.id}
               id={ds.id}
               title={String(ds.documentType.title)}
               createdAt={String(ds.createdAt.toRelativeCalendar())}
@@ -113,6 +114,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <EvidenceTile
               teamId={teamId}
               residentId={residentId}
+              key={ds.id}
               id={ds.id}
               title={String(ds.documentType.title)}
               createdAt={String(ds.createdAt.toRelativeCalendar())}

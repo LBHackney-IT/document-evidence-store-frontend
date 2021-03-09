@@ -65,7 +65,6 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         {/* <Heading level={HeadingLevels.H3}>To review</Heading> */}
         <ResidentTable residents={evidenceRequests} teamId={teamId} />
       </div>
-      ,
       {/* <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
             <ResidentTable residents={evidenceRequests} teamId={teamId} />
