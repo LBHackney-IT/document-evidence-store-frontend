@@ -24,7 +24,7 @@ const gateway = new InternalApiGateway();
 
 type DocumentDetailPageQuery = {
   residentId: string;
-  documentId: string;
+  documentSubmissionId: string;
   action?: string;
 };
 
@@ -42,7 +42,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const router = useRouter();
   const {
     residentId,
-    documentId,
+    documentSubmissionId,
     action,
   } = router.query as DocumentDetailPageQuery;
   const [documentSubmission, setDocumentSubmission] = useState(
@@ -50,9 +50,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const handleAccept = useCallback(async () => {
-    const updated = await gateway.updateDocumentSubmission(documentId, {
-      state: DocumentState.APPROVED,
-    });
+    const updated = await gateway.updateDocumentSubmission(
+      documentSubmissionId,
+      {
+        state: DocumentState.APPROVED,
+      }
+    );
     setDocumentSubmission(updated);
     router.push(
       `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
@@ -121,7 +124,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         onAccept={handleAccept}
         onDismiss={() =>
           router.push(
-            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmissionId}`
           )
         }
       />
@@ -133,7 +136,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         }}
         onDismiss={() =>
           router.push(
-            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentId}`
+            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmissionId}`
           )
         }
       />
@@ -144,9 +147,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceApiGateway = new EvidenceApiGateway();
   const documentsApiGateway = new DocumentsApiGateway();
-  const { teamId, documentId } = ctx.params as {
+  const { teamId, documentSubmissionId } = ctx.params as {
     teamId: string;
-    documentId: string;
+    documentSubmissionId: string;
   };
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
@@ -166,12 +169,16 @@ export const getServerSideProps = withAuth(async (ctx) => {
   }
 
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
-    documentId
+    documentSubmissionId
   );
-  const downloadUrl = await documentsApiGateway.generateDownloadUrl(
-    documentSubmission.claimId,
-    documentId
-  );
+
+  let downloadUrl = '';
+  if (documentSubmission && documentSubmission.document) {
+    downloadUrl = await documentsApiGateway.generateDownloadUrl(
+      documentSubmission.claimId,
+      documentSubmission.document.id
+    );
+  }
   return { props: { documentSubmission, teamId, downloadUrl } };
 });
 

@@ -31,7 +31,7 @@ export class DocumentsApiGateway {
     try {
       const { data } = await this.client.post<string>(
         `/api/v1/claims/${claimId}/download_links`,
-        documentId,
+        { documentId },
         { headers: { Authorization: tokens?.claims?.POST } }
       );
       return data;
