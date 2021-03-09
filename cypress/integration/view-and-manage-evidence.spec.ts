@@ -21,7 +21,7 @@ describe('Can view and manage evidence', () => {
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
     cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Firstname SurnamePassport');
+    cy.contains('h1', 'Namey McNamePassport');
     cy.checkA11y();
   });
 
@@ -36,7 +36,7 @@ describe('Can view and manage evidence', () => {
   it('lets you see a document detail page with actions and information', () => {
     cy.get('a').contains('Passport').click();
 
-    cy.contains('h1', 'Firstname SurnamePassport');
+    cy.contains('h1', 'Namey McNamePassport');
 
     cy.get('button').should('contain', 'Accept');
     cy.get('button').should('contain', 'Request new file');
@@ -51,7 +51,7 @@ describe('Can view and manage evidence', () => {
 
   it('can approve the document', () => {
     cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Firstname SurnamePassport');
+    cy.contains('h1', 'Namey McNamePassport');
     cy.get('button').contains('Accept').click();
 
     cy.get('[role=dialog]').within(() => {
@@ -74,7 +74,7 @@ describe('Can view and manage evidence', () => {
 
   it('can reject the document', () => {
     cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Firstname SurnamePassport');
+    cy.contains('h1', 'Namey McNamePassport');
     cy.get('button').contains('Request new file').click();
 
     cy.get('[role=dialog]').within(() => {
