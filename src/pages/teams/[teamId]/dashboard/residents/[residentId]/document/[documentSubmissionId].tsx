@@ -105,31 +105,29 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </div>
       )}
 
-      {console.log(documentSubmission)}
-      {document.extension === 'jpeg' ||
-        (document.extension === 'png' ? (
-          <>
-            <h2 className="lbh-heading-h3">Preview</h2>
-            <figure className={styles.preview}>
-              <img src={downloadUrl} alt="example" />
-              <figcaption className="lbh-body-s">
-                <strong>{document.extension?.toUpperCase()}</strong>{' '}
-                {humanFileSize(document.fileSizeInBytes)}{' '}
-                <a href={`${downloadUrl}`} className="lbh-link">
-                  Download
-                </a>
-              </figcaption>
-            </figure>
-          </>
-        ) : (
-          <figcaption className="lbh-body-s">
-            <strong>{document.extension?.toUpperCase()}</strong>{' '}
-            {humanFileSize(document.fileSizeInBytes)}{' '}
-            <a href={`${downloadUrl}`} className="lbh-link">
-              Download
-            </a>
-          </figcaption>
-        ))}
+      {document.extension === 'jpeg' || document.extension === 'png' ? (
+        <>
+          <h2 className="lbh-heading-h3">Preview</h2>
+          <figure className={styles.preview}>
+            <img src={downloadUrl} alt="example" />
+            <figcaption className="lbh-body-s">
+              <strong>{document.extension?.toUpperCase()}</strong>{' '}
+              {humanFileSize(document.fileSizeInBytes)}{' '}
+              <a href={`${downloadUrl}`} className="lbh-link">
+                Download
+              </a>
+            </figcaption>
+          </figure>
+        </>
+      ) : (
+        <figcaption className="lbh-body-s">
+          <strong>{document.extension?.toUpperCase()}</strong>{' '}
+          {humanFileSize(document.fileSizeInBytes)}{' '}
+          <a href={`${downloadUrl}`} className="lbh-link">
+            Download
+          </a>
+        </figcaption>
+      )}
 
       {/* https://hackney.atlassian.net/browse/DES-63 */}
       {/* <h2 className="lbh-heading-h3">History</h2> */}

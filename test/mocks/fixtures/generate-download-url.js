@@ -4,7 +4,7 @@ const generateDownloadUrl = {
   method: 'POST',
   response: {
     status: 201,
-    body: 'http://www.google.com',
+    body: 'https://en.wikipedia.org/static/images/project-logos/enwiki.png',
   },
 };
 
