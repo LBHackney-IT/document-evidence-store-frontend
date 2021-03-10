@@ -106,7 +106,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       )}
 
       {console.log(documentSubmission)}
-      {document.extension === 'jpg' ||
+      {document.extension === 'jpeg' ||
         (document.extension === 'png' ? (
           <>
             <h2 className="lbh-heading-h3">Preview</h2>
