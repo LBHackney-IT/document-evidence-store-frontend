@@ -2,6 +2,8 @@ const documentSubmissionPng = require('../../../cypress/fixtures/document_submis
 const documentSubmissionPdf = require('../../../cypress/fixtures/document_submissions/get-pdf.json');
 const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
 
+// There may be a neater way of doing this with MocksServer variants but I couldn't get it to work.
+// Instead I have created two behaviours.
 const getDocumentSubmissionPng = {
   id: 'get-document-submission-png',
   url: '/api/v1/document_submissions/3fa85f64-5717-4562-b3fc-2c963f66afa6',

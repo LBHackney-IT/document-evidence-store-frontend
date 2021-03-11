@@ -62,8 +62,8 @@ describe('Can view and manage evidence', () => {
     cy.get('button').should('contain', 'Accept');
     cy.get('button').should('contain', 'Request new file');
 
-    cy.get('figure').should('contain', 'PDF');
-    cy.get('figure').should('contain', '54.7 KB');
+    cy.contains('PDF');
+    cy.contains('54.0 KB');
     cy.get('a').should('contain', 'Download').and('have.attr', 'href');
 
     // TODO: uncomment when History is implemented
