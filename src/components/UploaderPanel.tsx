@@ -30,6 +30,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
           props.setFieldValue(props.name, e.currentTarget.files[0]);
       }}
       aria-describedby={props.hint && `${props.name}-hint`}
+      multiple={true}
     />
   </div>
 );
