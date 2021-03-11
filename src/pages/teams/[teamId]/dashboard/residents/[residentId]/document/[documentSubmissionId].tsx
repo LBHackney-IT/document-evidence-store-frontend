@@ -86,7 +86,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         {documentSubmission.documentType.title}
       </h1>
 
-      {documentSubmission.state === DocumentState.PENDING && (
+      {documentSubmission.state === DocumentState.UPLOADED && (
         <div className={styles.actions}>
           <Link
             href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}

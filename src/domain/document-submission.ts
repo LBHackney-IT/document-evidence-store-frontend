@@ -3,7 +3,6 @@ import { DocumentType } from './document-type';
 import { Document } from './document';
 
 export enum DocumentState {
-  PENDING = 'PENDING',
   UPLOADED = 'UPLOADED',
   APPROVED = 'APPROVED',
   REJECTED = 'REJECTED',

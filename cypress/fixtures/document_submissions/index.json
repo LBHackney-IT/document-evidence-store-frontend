@@ -9,7 +9,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "rejectionReason": "string",
-    "state": "PENDING",
+    "state": "UPLOADED",
     "uploadPolicy": {
       "url": "https://s3.eu-west-2.amazonaws.com/documents-api-staging-bucket",
       "fields": {
@@ -36,7 +36,7 @@
     "createdAt": "2021-01-14T10:24:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
     "rejectionReason": null,
-    "state": "PENDING",
+    "state": "UPLOADED",
     "uploadPolicy": {
       "url": "https://s3.eu-west-2.amazonaws.com/documents-api-staging-bucket",
       "fields": {
