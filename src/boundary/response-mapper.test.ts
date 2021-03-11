@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
 import DocumentSubmissionCreate from '../../cypress/fixtures/document_submissions/create.json';
-import DocumentSubmissionGet from '../../cypress/fixtures/document_submissions/get.json';
+import DocumentSubmissionGet from '../../cypress/fixtures/document_submissions/get-png.json';
 import ResidentsSearchFixture from '../../cypress/fixtures/residents/search.json';
 import { DeliveryMethod, EvidenceRequest } from '../domain/evidence-request';
 import { Resident } from '../domain/resident';
