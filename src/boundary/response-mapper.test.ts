@@ -103,7 +103,7 @@ describe('ResponseMapper', () => {
     });
 
     it('maps the document state', () => {
-      expect(result.state).toEqual(DocumentState.PENDING);
+      expect(result.state).toEqual(DocumentState.UPLOADED);
     });
 
     it('maps the document type', () => {
