@@ -45,28 +45,31 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <h1 className="lbh-heading-h2">{resident.name}</h1>
       <p className="lbh-body">{resident.phoneNumber}</p>
       <p className="lbh-body">{resident.email}</p>
-      <h2 className="lbh-heading-h3">To review</h2>
-      <EvidenceList>
-        {toReviewDocumentSubmissions &&
-        toReviewDocumentSubmissions.length > 0 ? (
-          toReviewDocumentSubmissions.map((ds) => (
-            <EvidenceTile
-              teamId={teamId}
-              residentId={residentId}
-              key={ds.id}
-              id={ds.id}
-              title={String(ds.documentType.title)}
-              createdAt={String(ds.createdAt.toRelativeCalendar())}
-              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-              format={ds.document ? ds.document.extension : 'unknown'}
-              // purpose="Example form"
-              toReview
-            />
-          ))
-        ) : (
-          <h3>There are no documents to review</h3>
-        )}
-      </EvidenceList>
+
+      <div className="toReview">
+        <h2 className="lbh-heading-h3">To review</h2>
+        <EvidenceList>
+          {toReviewDocumentSubmissions &&
+          toReviewDocumentSubmissions.length > 0 ? (
+            toReviewDocumentSubmissions.map((ds) => (
+              <EvidenceTile
+                teamId={teamId}
+                residentId={residentId}
+                key={ds.id}
+                id={ds.id}
+                title={String(ds.documentType.title)}
+                createdAt={String(ds.createdAt.toRelativeCalendar())}
+                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+                format={ds.document ? ds.document.extension : 'unknown'}
+                // purpose="Example form"
+                toReview
+              />
+            ))
+          ) : (
+            <h3>There are no documents to review</h3>
+          )}
+        </EvidenceList>
+      </div>
 
       {/* <h2 className="lbh-heading-h3">Pending requests</h2>
 
@@ -105,28 +108,30 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <h4>There are no pending documents</h4>
       )} */}
 
-      <h2 className="lbh-heading-h3">Reviewed</h2>
+      <div className="reviewed">
+        <h2 className="lbh-heading-h3">Reviewed</h2>
 
-      <EvidenceList twoColumns>
-        {reviewedDocumentSubmissions &&
-        reviewedDocumentSubmissions.length > 0 ? (
-          reviewedDocumentSubmissions.map((ds) => (
-            <EvidenceTile
-              teamId={teamId}
-              residentId={residentId}
-              key={ds.id}
-              id={ds.id}
-              title={String(ds.documentType.title)}
-              createdAt={String(ds.createdAt.toRelativeCalendar())}
-              fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-              format={ds.document ? ds.document.extension : 'unknown'}
-              // purpose="Example form"
-            />
-          ))
-        ) : (
-          <h3>There are no reviewed documents</h3>
-        )}
-      </EvidenceList>
+        <EvidenceList twoColumns>
+          {reviewedDocumentSubmissions &&
+          reviewedDocumentSubmissions.length > 0 ? (
+            reviewedDocumentSubmissions.map((ds) => (
+              <EvidenceTile
+                teamId={teamId}
+                residentId={residentId}
+                key={ds.id}
+                id={ds.id}
+                title={String(ds.documentType.title)}
+                createdAt={String(ds.createdAt.toRelativeCalendar())}
+                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
+                format={ds.document ? ds.document.extension : 'unknown'}
+                // purpose="Example form"
+              />
+            ))
+          ) : (
+            <h3>There are no reviewed documents</h3>
+          )}
+        </EvidenceList>
+      </div>
     </Layout>
   );
 };

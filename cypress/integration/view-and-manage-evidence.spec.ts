@@ -34,7 +34,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an image document detail page with actions and information', () => {
-    cy.get('a').contains('Passport').click();
+    cy.get('.toReview a').eq(0).contains('Passport').click();
 
     cy.contains('h1', 'Namey McNamePassport');
 
@@ -53,9 +53,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get(':nth-child(2) > :nth-child(2) > .lbh-heading-h3 > .lbh-link')
-      .contains('Passport')
-      .click();
+    cy.get('.toReview a').eq(3).contains('Passport').click();
 
     cy.contains('h1', 'Namey McNamePassport');
 
