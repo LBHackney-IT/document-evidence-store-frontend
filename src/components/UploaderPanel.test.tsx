@@ -55,6 +55,28 @@ test('accepts pdf files', async () => {
   expect(mockHandler).toHaveBeenCalledTimes(1);
 });
 
+test('accepts multiple files', async () => {
+  const mockHandler = jest.fn();
+  const mockImage = new File(['example'], 'file.jpg', { type: 'image/jpeg' });
+  const mockPdf = new File(['example'], 'file.pdf', {
+    type: 'application/pdf',
+  });
+
+  render(
+    <UploaderPanel
+      label="Example label"
+      name="exampleName"
+      setFieldValue={mockHandler}
+    />
+  );
+
+  Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
+    value: [mockImage, mockPdf],
+  });
+  fireEvent.change(screen.getByTestId('fileInput'));
+  expect(mockHandler).toHaveBeenCalledTimes(1);
+});
+
 test('displays hints', async () => {
   render(
     <UploaderPanel
