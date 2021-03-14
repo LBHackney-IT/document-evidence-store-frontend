@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import UploaderForm from './UploaderForm';
 import { ResponseMapper } from '../boundary/response-mapper';
-import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/create.json';
+import DocumentTypesFixture from '../../cypress/fixtures/document_types/index.json';
 import * as MockUploadFormModelImport from '../services/__mocks__/upload-form-model';
 import * as UploadFormModelImport from '../services/upload-form-model';
 
@@ -16,9 +16,7 @@ const {
 
 jest.mock('../services/upload-form-model');
 
-const documentSubmissions = [
-  ResponseMapper.mapDocumentSubmission(DocumentSubmissionFixture),
-];
+const documentTypes = DocumentTypesFixture.map(ResponseMapper.mapDocumentType);
 
 const attachFile = (label: string) => {
   const file = new File(['dummy content'], 'example.png', {
@@ -35,7 +33,8 @@ describe('UploaderForm', () => {
   beforeEach(() => {
     render(
       <UploaderForm
-        submissions={documentSubmissions}
+        evidenceRequestId={'123'}
+        documentTypes={documentTypes}
         onSuccess={successHandler}
       />
     );
@@ -48,7 +47,7 @@ describe('UploaderForm', () => {
   });
 
   it('creates a form model with the correct attributes', () => {
-    expect(UploadFormModel).toHaveBeenCalledWith(documentSubmissions);
+    expect(UploadFormModel).toHaveBeenCalledWith(documentTypes);
   });
 
   it('disables the button when submitting', async () => {
