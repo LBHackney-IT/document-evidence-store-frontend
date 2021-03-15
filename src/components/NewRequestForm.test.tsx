@@ -24,6 +24,7 @@ const team = {
       id: '123',
     },
   ],
+  slaMessage: 'example message',
 };
 
 const promise = Promise.resolve();

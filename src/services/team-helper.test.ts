@@ -16,12 +16,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -36,12 +38,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -57,12 +61,14 @@ describe('Team Helper', () => {
         googleGroup: 'different-team-one',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team-two',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -77,6 +83,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
@@ -91,6 +98,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '123',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
@@ -105,12 +113,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -127,12 +137,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -149,6 +161,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
