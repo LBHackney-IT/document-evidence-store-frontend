@@ -12,7 +12,8 @@
         "name": "Housing Reason 2",
         "id": "456"
       }
-    ]
+    ],
+    "slaMessage": "This is the Housing team SLA message"
   },
   {
     "name": "Development Housing Team",
@@ -27,6 +28,7 @@
         "name": "Housing Reason 4",
         "id": "1011"
       }
-    ]
+    ],
+    "slaMessage": "This is the Development Housing Team SLA message"
   }
 ]

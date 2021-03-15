@@ -52,4 +52,11 @@ export class TeamHelper {
   ): Team | undefined {
     return teamsJson.find((team) => team.id == teamId);
   }
+
+  public static getTeamByName(
+    teamsJson: Team[],
+    teamName: string
+  ): Team | undefined {
+    return teamsJson.find((team) => team.name == teamName);
+  }
 }
