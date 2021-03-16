@@ -1,4 +1,5 @@
 import dsFixture from '../../cypress/fixtures/document_submissions/create.json';
+import teams from '../../teams.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';
@@ -58,6 +59,7 @@ describe('Can upload a document', () => {
       // View confirmation
       cy.get('h1').should('contain', "We've recieved your documents");
       cy.get('p').should('contain', `Your reference number: ${requestId}`);
+      cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });
   });
 
