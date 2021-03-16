@@ -172,4 +172,37 @@ describe('Team Helper', () => {
     );
     expect(result).toBeFalsy();
   });
+
+  it('when the team can be found by name', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '1',
+        reasons: [],
+        slaMessage: 'example message team 1',
+      },
+    ];
+
+    const result = TeamHelper.getTeamByName(teamJson, 'Team 1');
+    expect(result?.name).toBe('Team 1');
+    expect(result?.googleGroup).toBe('team-one');
+    expect(result?.id).toBe('1');
+    expect(result?.slaMessage).toBe('example message team 1');
+  });
+
+  it('when the team cannot be found by name', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '123',
+        reasons: [],
+        slaMessage: 'example message team 1',
+      },
+    ];
+
+    const result = TeamHelper.getTeamByName(teamJson, 'Team 2');
+    expect(result).toBeUndefined();
+  });
 });
