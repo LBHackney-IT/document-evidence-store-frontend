@@ -18,7 +18,7 @@ const getError = (
   const dirty = touched[id as keyof typeof touched];
   if (!dirty) return null;
   if (errors) return null;
-  //return errors[id as keyof typeof errors] as string;
+  return errors[id as keyof typeof errors] as string;
 };
 
 const UploaderForm: FunctionComponent<Props> = ({

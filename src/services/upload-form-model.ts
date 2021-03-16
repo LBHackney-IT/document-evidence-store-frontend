@@ -52,12 +52,12 @@ export class UploadFormModel {
     formValues: FormValues,
     evidenceRequestId: string
   ): Promise<void> {
-    const documentSubmissionsForFiles: FileDocumentSubmission[] = this.createDocumentSubmissionForEachFile(
+    const fileDocumentSubmissions = await this.createDocumentSubmissionForEachFile(
       formValues,
       evidenceRequestId
     );
 
-    const uploadFilesAndUpdateDocumentState = documentSubmissionsForFiles.map(
+    const uploadFilesAndUpdateDocumentStateRequests = fileDocumentSubmissions.map(
       async (fileDocumentSubmission) => {
         await this.uploadFile(
           fileDocumentSubmission.file,
@@ -69,36 +69,26 @@ export class UploadFormModel {
       }
     );
 
-    await Promise.all(uploadFilesAndUpdateDocumentState);
+    await Promise.all(uploadFilesAndUpdateDocumentStateRequests);
   }
 
-  private createDocumentSubmissionForEachFile(
+  private async createDocumentSubmissionForEachFile(
     formValues: FormValues,
     evidenceRequestId: string
-  ): FileDocumentSubmission[] {
+  ): Promise<FileDocumentSubmission[]> {
     const fileDocumentSubmissions: FileDocumentSubmission[] = [];
-    Object.entries(formValues).map(([documentTypeId, fileList]) => {
-      Array.from(fileList).forEach(async (file) => {
-        const documentSubmission = await this.createDocumentSubmission(
+    for (const [documentTypeId, fileList] of Object.entries(formValues)) {
+      for (const file of Array.from(fileList)) {
+        const documentSubmission = await this.gateway.createDocumentSubmission(
           evidenceRequestId,
           documentTypeId
         );
         fileDocumentSubmissions.push(
           new FileDocumentSubmission(file, documentSubmission)
         );
-      });
-    });
+      }
+    }
     return fileDocumentSubmissions;
-  }
-
-  private async createDocumentSubmission(
-    evidenceRequestId: string,
-    documentType: string
-  ) {
-    return await this.gateway.createDocumentSubmission(
-      evidenceRequestId,
-      documentType
-    );
   }
 
   private async uploadFile(file: File, documentSubmission: DocumentSubmission) {
