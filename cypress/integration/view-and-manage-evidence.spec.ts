@@ -1,4 +1,4 @@
-import dsFixture from '../../cypress/fixtures/document_submissions/get.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/get-png.json';
 
 describe('Can view and manage evidence', () => {
   beforeEach(() => {
@@ -33,8 +33,8 @@ describe('Can view and manage evidence', () => {
     cy.get('h2').should('contain', 'Reviewed');
   });
 
-  it('lets you see a document detail page with actions and information', () => {
-    cy.get('a').contains('Passport').click();
+  it('lets you see an image document detail page with actions and information', () => {
+    cy.get('.toReview a').eq(0).contains('Passport').click();
 
     cy.contains('h1', 'Namey McNamePassport');
 
@@ -42,8 +42,27 @@ describe('Can view and manage evidence', () => {
     cy.get('button').should('contain', 'Request new file');
 
     cy.get('h2').should('contain', 'Preview');
+    cy.get('img').should('be.visible');
+
     cy.get('figure').should('contain', 'PNG');
     cy.get('figure').should('contain', '24.7 KB');
+    cy.get('a').should('contain', 'Download').and('have.attr', 'href');
+
+    // TODO: uncomment when History is implemented
+    // cy.get('h2').should('contain', 'History');
+  });
+
+  it('lets you see an PDF document detail page with actions and information', () => {
+    cy.get('.toReview a').eq(3).contains('Passport').click();
+
+    cy.contains('h1', 'Namey McNamePassport');
+
+    cy.get('button').should('contain', 'Accept');
+    cy.get('button').should('contain', 'Request new file');
+
+    cy.contains('PDF');
+    cy.contains('54.0 KB');
+    cy.get('a').should('contain', 'Download').and('have.attr', 'href');
 
     // TODO: uncomment when History is implemented
     // cy.get('h2').should('contain', 'History');

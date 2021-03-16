@@ -6,7 +6,7 @@ import {
 } from 'src/domain/document-submission';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { DocumentSubmissionResponse } from 'types/api';
-import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get.json';
+import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get-png.json';
 import DocumentSubmissionsFixture from '../../cypress/fixtures/document_submissions/get-many.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { EvidenceApiGateway } from './evidence-api';
