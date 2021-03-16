@@ -8,7 +8,7 @@ import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 
 export type FormValues = {
-  [documentTypeId: string]: FileList;
+  [documentTypeId: string]: File[];
 };
 
 class FileDocumentSubmission {
@@ -77,8 +77,8 @@ export class UploadFormModel {
     evidenceRequestId: string
   ): Promise<FileDocumentSubmission[]> {
     const fileDocumentSubmissions: FileDocumentSubmission[] = [];
-    for (const [documentTypeId, fileList] of Object.entries(formValues)) {
-      for (const file of Array.from(fileList)) {
+    for (const [documentTypeId, files] of Object.entries(formValues)) {
+      for (const file of files) {
         const documentSubmission = await this.gateway.createDocumentSubmission(
           evidenceRequestId,
           documentTypeId

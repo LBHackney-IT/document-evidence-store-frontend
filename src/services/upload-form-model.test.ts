@@ -5,16 +5,22 @@ import documentSubmissionFixture from '../../cypress/fixtures/document_submissio
 import { ResponseMapper } from '../boundary/response-mapper';
 
 const { uploadMock } = S3Gateway as typeof MockS3Gateway;
-const documentSubmissions = documentSubmissionFixture.map((ds) =>
+const evidenceRequestId = '123';
+const documentSubmission = documentSubmissionFixture.map((ds) =>
   ResponseMapper.mapDocumentSubmission(ds)
+)[0];
+const documentTypes = documentSubmissionFixture.map(
+  (ds) => ResponseMapper.mapDocumentSubmission(ds).documentType
 );
 
 jest.mock('../gateways/s3-gateway');
 
 const mockUpdateState = jest.fn();
+const mockCreateDocumentSubmission = jest.fn(() => documentSubmission);
 jest.mock('../gateways/internal-api', () => ({
   InternalApiGateway: jest.fn(() => ({
     updateDocumentSubmission: mockUpdateState,
+    createDocumentSubmission: mockCreateDocumentSubmission,
   })),
 }));
 
@@ -22,54 +28,87 @@ describe('UploadFormModel', () => {
   let model: UploadFormModel;
 
   beforeEach(() => {
-    model = new UploadFormModel(documentSubmissions);
+    model = new UploadFormModel(documentTypes);
   });
 
   describe('initialValues', () => {
     it('has the correct IDs', () => {
       const values = model.initialValues;
       expect(values).toMatchObject({
-        [documentSubmissions[0].id]: null,
-        [documentSubmissions[1].id]: null,
+        [documentTypes[0].id]: null,
+        [documentTypes[1].id]: null,
       });
     });
   });
 
   describe('handleSubmit', () => {
-    const file1 = new File(['foo'], 'foo.txt');
-    const file2 = new File(['bar'], 'bar.png');
+    const fileList1 = [new File(['foo'], 'foo.txt')];
+    const fileList2 = [
+      new File(['bar'], 'bar.png'),
+      new File(['baz'], 'bax.png'),
+    ];
 
     const values: FormValues = {
-      [documentSubmissions[0].id]: file1,
-      [documentSubmissions[1].id]: file2,
+      [documentTypes[0].id]: fileList1,
+      [documentTypes[1].id]: fileList2,
     };
 
+    it('creates document submission for each file', async () => {
+      await model.handleSubmit(values, evidenceRequestId);
+
+      expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
+        1,
+        evidenceRequestId,
+        documentTypes[0].id
+      );
+      expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
+        2,
+        evidenceRequestId,
+        documentTypes[1].id
+      );
+      expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
+        2,
+        evidenceRequestId,
+        documentTypes[1].id
+      );
+    });
+
     it('calls s3 for each submission', async () => {
-      await model.handleSubmit(values);
+      await model.handleSubmit(values, evidenceRequestId);
 
       expect(uploadMock).toHaveBeenNthCalledWith(
         1,
-        file1,
-        documentSubmissions[0].uploadPolicy
+        fileList1[0],
+        documentSubmission.uploadPolicy
       );
       expect(uploadMock).toHaveBeenNthCalledWith(
         2,
-        file2,
-        documentSubmissions[1].uploadPolicy
+        fileList2[0],
+        documentSubmission.uploadPolicy
+      );
+      expect(uploadMock).toHaveBeenNthCalledWith(
+        3,
+        fileList2[0],
+        documentSubmission.uploadPolicy
       );
     });
 
     it('updates the state of each submission', async () => {
-      await model.handleSubmit(values);
+      await model.handleSubmit(values, evidenceRequestId);
 
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         1,
-        documentSubmissions[0].id,
+        documentSubmission.id,
         { state: 'UPLOADED' }
       );
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         2,
-        documentSubmissions[1].id,
+        documentSubmission.id,
+        { state: 'UPLOADED' }
+      );
+      expect(mockUpdateState).toHaveBeenNthCalledWith(
+        3,
+        documentSubmission.id,
         { state: 'UPLOADED' }
       );
     });
