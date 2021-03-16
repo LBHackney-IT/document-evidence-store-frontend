@@ -16,12 +16,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -36,12 +38,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -57,12 +61,14 @@ describe('Team Helper', () => {
         googleGroup: 'different-team-one',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team-two',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -77,6 +83,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
@@ -91,6 +98,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '123',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
@@ -105,12 +113,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -127,12 +137,14 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
       {
         name: 'Team 2',
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        slaMessage: 'example message team 2',
       },
     ];
 
@@ -149,6 +161,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team',
         id: '1',
         reasons: [],
+        slaMessage: 'example message team 1',
       },
     ];
 
@@ -158,5 +171,38 @@ describe('Team Helper', () => {
       '1'
     );
     expect(result).toBeFalsy();
+  });
+
+  it('when the team can be found by name', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '1',
+        reasons: [],
+        slaMessage: 'example message team 1',
+      },
+    ];
+
+    const result = TeamHelper.getTeamByName(teamJson, 'Team 1');
+    expect(result?.name).toBe('Team 1');
+    expect(result?.googleGroup).toBe('team-one');
+    expect(result?.id).toBe('1');
+    expect(result?.slaMessage).toBe('example message team 1');
+  });
+
+  it('when the team cannot be found by name', () => {
+    const teamJson: Team[] = [
+      {
+        name: 'Team 1',
+        googleGroup: 'team-one',
+        id: '123',
+        reasons: [],
+        slaMessage: 'example message team 1',
+      },
+    ];
+
+    const result = TeamHelper.getTeamByName(teamJson, 'Team 2');
+    expect(result).toBeUndefined();
   });
 });
