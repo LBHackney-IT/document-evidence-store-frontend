@@ -18,7 +18,7 @@ const Index = (): ReactNode => {
         <div className="govuk-grid-column-two-thirds">
           <Panel>
             <Heading level={HeadingLevels.H1}>
-              We've recieved your documents
+              We've received your documents
             </Heading>
             <p className="lbh-body">Your reference number: {requestId}</p>
           </Panel>

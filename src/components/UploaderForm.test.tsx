@@ -61,15 +61,18 @@ describe('UploaderForm', () => {
     });
   });
 
-  it('validates files are attached', async () => {
+  it('validates at least one file is attached to each UploaderPanel', async () => {
     submitForm();
     await waitFor(() => {
-      expect(screen.getByText('Please select a file'));
+      // we have 3 DocumentTypes so there should be as many warning messages printed
+      expect(screen.getAllByText('Please select a file').length).toEqual(3);
     });
   });
 
   it('calls submit handler on form model', async () => {
     attachFile('Passport');
+    attachFile('Driving license');
+    attachFile('Bank statement');
     submitForm();
 
     await waitFor(() => {
@@ -82,6 +85,8 @@ describe('UploaderForm', () => {
       throw new Error('oh no');
     });
     attachFile('Passport');
+    attachFile('Driving license');
+    attachFile('Bank statement');
     submitForm();
 
     await waitFor(() => {
@@ -92,6 +97,8 @@ describe('UploaderForm', () => {
   it('calls success callback when upload completes', async () => {
     mockHandleSubmit.mockResolvedValue(true);
     attachFile('Passport');
+    attachFile('Driving license');
+    attachFile('Bank statement');
     submitForm();
 
     await waitFor(() => {

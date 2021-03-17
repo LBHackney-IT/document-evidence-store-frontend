@@ -7,17 +7,16 @@ import React, {
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
 import UploaderPanel from './UploaderPanel';
-import { FormValues, UploadFormModel } from '../services/upload-form-model';
+import { UploadFormModel } from '../services/upload-form-model';
 import { DocumentType } from '../domain/document-type';
 
 const getError = (
   id: string,
-  touched: FormikTouched<FormValues>,
-  errors: FormikErrors<FormValues>
+  touched: FormikTouched<File>,
+  errors: FormikErrors<File>
 ) => {
   const dirty = touched[id as keyof typeof touched];
   if (!dirty) return null;
-  if (errors) return null;
   return errors[id as keyof typeof errors] as string;
 };
 

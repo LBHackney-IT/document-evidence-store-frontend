@@ -45,7 +45,7 @@ describe('UploadFormModel', () => {
     const fileList1 = [new File(['foo'], 'foo.txt')];
     const fileList2 = [
       new File(['bar'], 'bar.png'),
-      new File(['baz'], 'bax.png'),
+      new File(['baz'], 'baz.png'),
     ];
 
     const values: FormValues = {
@@ -88,7 +88,7 @@ describe('UploadFormModel', () => {
       );
       expect(uploadMock).toHaveBeenNthCalledWith(
         3,
-        fileList2[0],
+        fileList2[1],
         documentSubmission.uploadPolicy
       );
     });
