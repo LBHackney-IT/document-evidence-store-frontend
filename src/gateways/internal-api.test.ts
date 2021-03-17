@@ -5,7 +5,11 @@ import {
   DocumentState,
   DocumentSubmission,
 } from '../domain/document-submission';
-import { EvidenceRequestRequest, InternalApiGateway, InternalServerError } from './internal-api';
+import {
+  EvidenceRequestRequest,
+  InternalApiGateway,
+  InternalServerError,
+} from './internal-api';
 import { Resident } from '../domain/resident';
 import { EvidenceRequest } from '../domain/evidence-request';
 
@@ -151,9 +155,7 @@ describe('Internal API Gateway', () => {
           data: apiResponse,
         });
 
-        mockedResponseMapper.mapEvidenceRequest.mockReturnValue(
-          expectedResult
-        );
+        mockedResponseMapper.mapEvidenceRequest.mockReturnValue(expectedResult);
       });
 
       it('makes the api request', async () => {
@@ -175,8 +177,7 @@ describe('Internal API Gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
-        const functionCall = () =>
-          gateway.createEvidenceRequest(baseRequest);
+        const functionCall = () => gateway.createEvidenceRequest(baseRequest);
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
