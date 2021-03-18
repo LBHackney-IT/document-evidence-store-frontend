@@ -294,66 +294,6 @@ describe('Evidence api gateway', () => {
     });
   });
 
-  describe('createDocumentSubmission', () => {
-    const documentType = 'passport-scan';
-    const evidenceRequestId = 'evidence request id';
-
-    describe('when there is an error', () => {
-      it('returns internal server error', async () => {
-        client.post.mockRejectedValue(new Error('Internal server error'));
-        const functionCall = () =>
-          gateway.createDocumentSubmission(evidenceRequestId, documentType);
-        await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
-        );
-      });
-    });
-
-    describe('when successful', () => {
-      const mappedResponse = ResponseMapper.mapDocumentSubmission(
-        DocumentSubmissionFixture
-      );
-
-      beforeEach(() => {
-        client.post.mockResolvedValue({ data: DocumentSubmissionFixture });
-        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-          mappedResponse
-        );
-      });
-
-      it('calls axios correctly', async () => {
-        await gateway.createDocumentSubmission(evidenceRequestId, documentType);
-        expect(client.post).toHaveBeenCalledWith(
-          `/api/v1/evidence_requests/${evidenceRequestId}/document_submissions`,
-          {
-            documentType,
-          },
-          {
-            headers: {
-              Authorization:
-                process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
-            },
-          }
-        );
-      });
-
-      it('maps the response correctly', async () => {
-        await gateway.createDocumentSubmission(evidenceRequestId, documentType);
-        expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
-          DocumentSubmissionFixture
-        );
-      });
-
-      it('returns the correct response', async () => {
-        const result = await gateway.createDocumentSubmission(
-          evidenceRequestId,
-          documentType
-        );
-        expect(result).toEqual(mappedResponse);
-      });
-    });
-  });
-
   describe('updateDocumentSubmission', () => {
     const documentSubmissionId = 'document submission id';
     const apiResponse = {} as DocumentSubmissionResponse;

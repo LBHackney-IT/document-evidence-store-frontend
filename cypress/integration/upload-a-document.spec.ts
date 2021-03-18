@@ -57,7 +57,38 @@ describe('Can upload a document', () => {
       cy.wait('@patch-document-state');
 
       // View confirmation
-      cy.get('h1').should('contain', "We've recieved your documents");
+      cy.get('h1').should('contain', "We've received your documents");
+      cy.get('p').should('contain', `Your reference number: ${requestId}`);
+    });
+
+    it('shows guidance and lets you upload multiple files for each document type', () => {
+      // View guidance
+      cy.get('h1').should(
+        'contain',
+        'You’ll need to photograph your documents'
+      );
+      cy.get('a').contains('Continue').click();
+
+      // Attach a file
+      cy.get('h1').should('contain', 'Upload your documents');
+      cy.get('input[type=file]').each((input) => {
+        cy.wrap(input).attachFile('example.png').attachFile('example.png');
+      });
+      cy.get('button').contains('Continue').click();
+
+      cy.get('button').contains('Continue').should('have.attr', 'disabled');
+
+      cy.wait('@s3Upload');
+      cy.wait('@s3Upload');
+      cy.wait('@s3Upload');
+      cy.wait('@s3Upload');
+      cy.wait('@patch-document-state');
+      cy.wait('@patch-document-state');
+      cy.wait('@patch-document-state');
+      cy.wait('@patch-document-state');
+
+      // View confirmation
+      cy.get('h1').should('contain', "We've received your documents");
       cy.get('p').should('contain', `Your reference number: ${requestId}`);
       cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });

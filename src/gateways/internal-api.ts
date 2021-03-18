@@ -60,6 +60,22 @@ export class InternalApiGateway {
     }
   }
 
+  async createDocumentSubmission(
+    evidenceRequestId: string,
+    documentType: string
+  ): Promise<DocumentSubmission> {
+    try {
+      const { data } = await this.client.post<DocumentSubmissionResponse>(
+        `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
+        { documentType }
+      );
+      return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
   async updateDocumentSubmission(
     documentSubmissionId: string,
     params: Partial<IDocumentSubmission>

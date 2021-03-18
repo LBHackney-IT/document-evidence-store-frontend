@@ -26,8 +26,9 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
       data-testid="fileInput"
       accept="image/*,application/pdf"
       onChange={(e) => {
-        if (e.currentTarget.files !== null)
-          props.setFieldValue(props.name, e.currentTarget.files[0]);
+        if (e.currentTarget.files !== null) {
+          props.setFieldValue(props.name, Array.from(e.currentTarget.files));
+        }
       }}
       aria-describedby={props.hint && `${props.name}-hint`}
       multiple={true}
@@ -36,7 +37,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
 );
 
 interface Props {
-  setFieldValue(key: string, value: File): void;
+  setFieldValue(key: string, value: File[]): void;
   name: string;
   label: string;
   hint?: string;

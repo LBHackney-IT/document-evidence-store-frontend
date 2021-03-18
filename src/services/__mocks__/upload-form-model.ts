@@ -1,4 +1,4 @@
-import { DocumentSubmission } from 'src/domain/document-submission';
+import { FormValues } from '../upload-form-model';
 
 const { UploadFormModel: ActualFormModel } = jest.requireActual(
   '../upload-form-model'
@@ -6,8 +6,8 @@ const { UploadFormModel: ActualFormModel } = jest.requireActual(
 
 export const mockHandleSubmit = jest.fn();
 export const UploadFormModel = jest.fn(
-  (id: string, submissions: DocumentSubmission[]) => {
-    const model = new ActualFormModel(id, submissions);
+  (formValues: FormValues, evidenceRequestId: string) => {
+    const model = new ActualFormModel(formValues, evidenceRequestId);
     model.handleSubmit = mockHandleSubmit;
 
     return model;

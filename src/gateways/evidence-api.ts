@@ -95,23 +95,6 @@ export class EvidenceApiGateway {
     }
   }
 
-  async createDocumentSubmission(
-    evidenceRequestId: string,
-    documentType: string
-  ): Promise<DocumentSubmission> {
-    try {
-      const { data } = await this.client.post<DocumentSubmissionResponse>(
-        `/api/v1/evidence_requests/${evidenceRequestId}/document_submissions`,
-        { documentType },
-        { headers: { Authorization: tokens?.evidence_requests?.POST } }
-      );
-      return ResponseMapper.mapDocumentSubmission(data);
-    } catch (err) {
-      console.error(err);
-      throw new InternalServerError('Internal server error');
-    }
-  }
-
   async updateDocumentSubmission(
     documentSubmissionId: string,
     params: Partial<IDocumentSubmission>

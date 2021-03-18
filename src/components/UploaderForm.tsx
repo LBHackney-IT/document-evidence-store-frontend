@@ -7,8 +7,8 @@ import React, {
 import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
 import UploaderPanel from './UploaderPanel';
-import { DocumentSubmission } from '../domain/document-submission';
 import { UploadFormModel } from '../services/upload-form-model';
+import { DocumentType } from '../domain/document-type';
 
 const getError = (
   id: string,
@@ -20,14 +20,20 @@ const getError = (
   return errors[id as keyof typeof errors] as string;
 };
 
-const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
+const UploaderForm: FunctionComponent<Props> = ({
+  evidenceRequestId,
+  documentTypes,
+  onSuccess,
+}) => {
   const [submitError, setSubmitError] = useState(false);
-  const model = useMemo(() => new UploadFormModel(submissions), [submissions]);
+  const model = useMemo(() => new UploadFormModel(documentTypes), [
+    documentTypes,
+  ]);
 
   const handleSubmit = useCallback(
     async (values) => {
       try {
-        await model.handleSubmit(values);
+        await model.handleSubmit(values, evidenceRequestId);
         onSuccess();
       } catch (err) {
         console.log(err);
@@ -51,15 +57,15 @@ const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
             </ErrorMessage>
           )}
 
-          {submissions.map(({ id, documentType }) => (
+          {documentTypes.map((documentType) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
-              key={id}
+              key={documentType.id}
               label={documentType.title}
               hint={documentType.description}
-              name={id}
-              set={!!values[id as keyof typeof values]}
-              error={getError(id, touched, errors)}
+              name={documentType.id}
+              set={!!values[documentType.id as keyof typeof values]}
+              error={getError(documentType.id, touched, errors)}
             />
           ))}
 
@@ -73,7 +79,8 @@ const UploaderForm: FunctionComponent<Props> = ({ submissions, onSuccess }) => {
 };
 
 interface Props {
-  submissions: DocumentSubmission[];
+  evidenceRequestId: string;
+  documentTypes: DocumentType[];
   onSuccess(): void;
 }
 
