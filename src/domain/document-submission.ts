@@ -21,7 +21,7 @@ export interface IDocumentSubmission {
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
-  staffSelectedDocumentType: DocumentType;
+  staffSelectedDocumentType?: DocumentType;
   document?: Document;
 }
 
@@ -33,7 +33,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
-  staffSelectedDocumentType: DocumentType;
+  staffSelectedDocumentType?: DocumentType;
   document?: Document;
 
   constructor(params: IDocumentSubmission) {
