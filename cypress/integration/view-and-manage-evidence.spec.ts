@@ -25,14 +25,12 @@ describe('Can view and manage evidence', () => {
     cy.checkA11y();
   });
 
-  it('shows resident contact details and document submissions in all states', () => {
+  it('shows resident contact details and all evidence states', () => {
     cy.get('h1').should('contain', 'Namey McName');
-    cy.get('.toReview a').eq(0).contains('Passport');
 
     cy.get('h2').should('contain', 'To review');
     // cy.get('h2').should('contain', 'Pending requests');
     cy.get('h2').should('contain', 'Reviewed');
-    cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
   });
 
   it('lets you see an image document detail page with actions and information', () => {
