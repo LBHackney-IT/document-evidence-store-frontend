@@ -1,28 +1,25 @@
 import React from 'react';
 import { Field as FormikField } from 'formik';
-import { Label } from 'lbh-frontend-react';
 
 const SelectOption = (props: Props): JSX.Element => (
-  <div className="govuk-select">
-    <Label labelFor={props.name}>{props.label}</Label>
+  <>
+    <label className="govuk-label lbh-label" htmlFor={props.name}>
+      {props.label}
+    </label>
 
     <FormikField
       name={props.name}
       id={props.name}
       as="select"
-      className="govuk-select  lbh-select__label"
+      className="govuk-select lbh-select"
     >
       {props.values.map((option) => (
-        <option
-          className="govuk-select  lbh-select__option"
-          value={option}
-          key={option}
-        >
+        <option value={option} key={option}>
           {option}
         </option>
       ))}
     </FormikField>
-  </div>
+  </>
 );
 
 export interface Props {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field as FormikField } from 'formik';
-import { Label, Hint, ErrorMessage } from 'lbh-frontend-react';
 
 const Field = (props: Props): JSX.Element => (
   <div
@@ -8,9 +7,19 @@ const Field = (props: Props): JSX.Element => (
       props.error ? 'govuk-form-group--error' : null
     }`}
   >
-    <Label labelFor={props.name}>{props.label}</Label>
-    {props.hint && <Hint id={`${props.name}-hint`}>{props.hint}</Hint>}
-    {props.error && <ErrorMessage>{props.error}</ErrorMessage>}
+    <label className="govuk-label lbh-label" htmlFor={props.name}>
+      {props.label}
+    </label>
+    {props.hint && (
+      <span className="govuk-hint lbh-hint" id={`${props.name}-hint`}>
+        {props.hint}
+      </span>
+    )}
+    {props.error && (
+      <span className="govuk-error-message lbh-error-message">
+        <span className="govuk-visually-hidden">Error:</span> {props.error}
+      </span>
+    )}
     {props.textarea ? (
       <FormikField
         name={props.name}

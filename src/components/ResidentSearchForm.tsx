@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from 'lbh-frontend-react';
 import styles from '../styles/ResidentSearch.module.scss';
 
 const ResidentSearchForm = (props: Props): JSX.Element => {
@@ -26,7 +25,7 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Search for a resident..."
       />
-      <Button>Search</Button>
+      <button className="govuk-button lbh-button">Search</button>
     </form>
   );
 };

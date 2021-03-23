@@ -1,6 +1,5 @@
 import React from 'react';
 import { Field as FormikField } from 'formik';
-import { Label } from 'lbh-frontend-react';
 
 const Radio = (props: Props): JSX.Element => (
   <div className="govuk-radios__item">
@@ -11,12 +10,12 @@ const Radio = (props: Props): JSX.Element => (
       className="govuk-radios__input"
       value={props.value}
     />
-    <Label
-      labelFor={`${props.name}-${props.value}`}
+    <label
+      htmlFor={`${props.name}-${props.value}`}
       className="govuk-label govuk-radios__label"
     >
       {props.label}
-    </Label>
+    </label>
   </div>
 );
 

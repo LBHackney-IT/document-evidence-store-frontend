@@ -10,10 +10,7 @@ const Field = (props: Props): JSX.Element => (
       value={props.value}
       className="govuk-checkboxes__input"
     />
-    <label
-      htmlFor={props.name}
-      className="govuk-label lbh-label govuk-checkboxes__label"
-    >
+    <label htmlFor={props.name} className="govuk-label govuk-checkboxes__label">
       {props.label}
     </label>
   </div>

@@ -1,4 +1,3 @@
-// import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { EvidenceRequest } from 'src/domain/evidence-request';
