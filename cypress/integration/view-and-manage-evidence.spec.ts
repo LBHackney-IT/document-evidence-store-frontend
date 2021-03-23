@@ -14,7 +14,7 @@ describe('Can view and manage evidence', () => {
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
 
-    cy.get('a').contains('Review').click();
+    cy.get('a').contains('Namey McName').click();
     cy.contains('h1', 'Namey McName');
   });
 

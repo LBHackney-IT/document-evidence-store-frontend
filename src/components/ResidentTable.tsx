@@ -50,17 +50,16 @@ export const ResidentTable: FunctionComponent<Props> = ({
       <tbody className="govuk-table__body">
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
-            <td className="govuk-table__cell">{row.resident}</td>
+            <td className="govuk-table__cell">
+              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
+                <a className="lbh-link">{row.resident}</a>
+              </Link>
+            </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.document}
             </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.uploaded}
-            </td>
-            <td className="govuk-table__cell govuk-table__cell--numeric">
-              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
-                <a className="lbh-link">Review</a>
-              </Link>
             </td>
           </tr>
         ))}
