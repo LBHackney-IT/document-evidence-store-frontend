@@ -72,8 +72,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   if (!document) return null;
 
   const download = (downloadUrl: string): void => {
-    saveAs(downloadUrl, "image");
-  }
+    saveAs(downloadUrl, 'image');
+  };
 
   return (
     <Layout teamId={teamId}>
@@ -118,10 +118,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
               {humanFileSize(document.fileSizeInBytes)}{' '}
-              <Button 
+              <Button
                 onClick={() => {
                   download(downloadUrl);
-                }} 
+                }}
               >
                 Download
               </Button>
@@ -132,10 +132,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <Button 
+          <Button
             onClick={() => {
               download(downloadUrl);
-            }} 
+            }}
           >
             Download
           </Button>
