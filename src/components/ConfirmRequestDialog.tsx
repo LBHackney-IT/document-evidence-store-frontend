@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
 import Dialog from './Dialog';
-import { Button } from 'lbh-frontend-react';
 import styles from '../styles/Dialog.module.scss';
 import { EvidenceRequestRequest } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
@@ -55,7 +54,8 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       </ul>
 
       <div className={styles.actions}>
-        <Button
+        <button
+          className="govuk-button lbh-button"
           disabled={loading}
           onClick={async () => {
             setLoading(true);
@@ -68,7 +68,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
           }}
         >
           Yes, send this request
-        </Button>
+        </button>
         <button
           onClick={onDismiss}
           type="button"
