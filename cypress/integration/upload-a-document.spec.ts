@@ -40,14 +40,14 @@ describe('Can upload a document', () => {
         'contain',
         'You’ll need to photograph your documents'
       );
-      cy.get('a').contains('Continue').click();
+      cy.get('a').contains('Continue').click({ force: true });
 
       // Attach a file
       cy.get('h1').should('contain', 'Upload your documents');
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')
       );
-      cy.get('button').contains('Continue').click();
+      cy.get('button').contains('Continue').click({ force: true });
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
@@ -67,7 +67,7 @@ describe('Can upload a document', () => {
         'contain',
         'You’ll need to photograph your documents'
       );
-      cy.get('a').contains('Continue').click();
+      cy.get('a').contains('Continue').click({ force: true });
 
       // Attach a file
       cy.get('h1').should('contain', 'Upload your documents');
@@ -102,7 +102,7 @@ describe('Can upload a document', () => {
     });
 
     it('shows an error message', () => {
-      cy.get('a').contains('Continue').click();
+      cy.get('a').contains('Continue').click({ force: true });
 
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')

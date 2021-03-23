@@ -53,7 +53,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(3).contains('Passport').click();
+    cy.get('.toReview a').eq(3).contains('Passport').click({ force: true });
 
     cy.contains('h1', 'Namey McNamePassport');
 

@@ -29,8 +29,8 @@ describe('Create evidence requests', () => {
       .next('input')
       .type('+447123456780');
 
-    cy.get('label').contains('Send request by SMS').click();
-    cy.get('label').contains('Driving license').click();
+    cy.get('label').contains('Send request by SMS').click({ force: true });
+    cy.get('label').contains('Driving license').click({ force: true });
 
     cy.get('button').contains('Send request').click();
 

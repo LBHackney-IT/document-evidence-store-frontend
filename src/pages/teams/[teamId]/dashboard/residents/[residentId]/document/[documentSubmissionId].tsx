@@ -97,7 +97,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
             scroll={false}
           >
-            <button className="govuk-button--secondary lbh-button--secondary">
+            <button className="govuk-button govuk-secondary lbh-button lbh-button--secondary">
               Request new file
             </button>
           </Link>
