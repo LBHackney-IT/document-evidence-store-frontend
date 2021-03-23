@@ -20,6 +20,7 @@ import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
 import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../../services/team-helper';
+import { saveAs } from 'file-saver';
 
 const gateway = new InternalApiGateway();
 
@@ -70,6 +71,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const { document } = documentSubmission;
   if (!document) return null;
 
+  const download = (downloadUrl: string): void => {
+    saveAs(downloadUrl, "image");
+  }
+
   return (
     <Layout teamId={teamId}>
       <Head>
@@ -113,9 +118,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
               {humanFileSize(document.fileSizeInBytes)}{' '}
-              <a href={`${downloadUrl}`} className="lbh-link">
+              <Button 
+                onClick={() => {
+                  download(downloadUrl);
+                }} 
+              >
                 Download
-              </a>
+              </Button>
             </figcaption>
           </figure>
         </>
@@ -123,9 +132,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <a href={`${downloadUrl}`} className="lbh-link">
+          <Button 
+            onClick={() => {
+              download(downloadUrl);
+            }} 
+          >
             Download
-          </a>
+          </Button>
         </figcaption>
       )}
 
