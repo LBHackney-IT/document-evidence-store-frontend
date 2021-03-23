@@ -46,7 +46,7 @@ describe('Can view and manage evidence', () => {
 
     cy.get('figure').should('contain', 'PNG');
     cy.get('figure').should('contain', '24.7 KB');
-    cy.get('a').should('contain', 'Download').and('have.attr', 'href');
+    cy.get('button').should('contain', 'Download');
 
     // TODO: uncomment when History is implemented
     // cy.get('h2').should('contain', 'History');
@@ -62,7 +62,7 @@ describe('Can view and manage evidence', () => {
 
     cy.contains('PDF');
     cy.contains('54.0 KB');
-    cy.get('a').should('contain', 'Download').and('have.attr', 'href');
+    cy.get('button').should('contain', 'Download');
 
     // TODO: uncomment when History is implemented
     // cy.get('h2').should('contain', 'History');
