@@ -45,11 +45,15 @@ export class ResponseMapper {
     const document = attrs.document
       ? this.mapDocument(attrs.document)
       : undefined;
+    const staffSelectedDocumentType = attrs.staffSelectedDocumentType
+      ? new DocumentType(attrs.staffSelectedDocumentType)
+      : undefined;
     return new DocumentSubmission({
       ...attrs,
       createdAt,
       state,
       documentType,
+      staffSelectedDocumentType,
       document,
     });
   }

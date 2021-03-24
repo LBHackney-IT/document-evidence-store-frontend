@@ -80,7 +80,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     }
 
     const gateway = new EvidenceApiGateway();
-    const documentTypes = await gateway.getDocumentTypes();
+    const documentTypes = await gateway.getDocumentTypes(team.name);
     return { props: { documentTypes, team } };
   }
 );

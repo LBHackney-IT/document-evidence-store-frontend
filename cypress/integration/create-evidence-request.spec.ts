@@ -30,7 +30,7 @@ describe('Create evidence requests', () => {
       .type('+447123456780');
 
     cy.get('label').contains('Send request by SMS').click();
-    cy.get('label').contains('Driving license').click();
+    cy.get('label').contains('Proof of ID').click();
 
     cy.get('button').contains('Send request').click();
 
@@ -39,7 +39,7 @@ describe('Create evidence requests', () => {
       cy.get('li').contains('Frodo Baggins');
       cy.get('li').contains('frodo@bagend.com');
       cy.get('li').contains('+447123456780');
-      cy.get('li').contains('driving license');
+      cy.get('li').contains('proof of id');
 
       cy.get('button').contains('Yes, send this request').click();
     });

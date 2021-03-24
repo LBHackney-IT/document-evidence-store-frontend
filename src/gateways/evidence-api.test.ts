@@ -39,7 +39,44 @@ describe('Evidence api gateway', () => {
       data: expectedData,
       status: expectedStatus,
     };
-    const path = ['document_types'];
+    const path = ['document_types', 'test-team-name'];
+    const method = 'GET';
+
+    beforeEach(() => {
+      client.request.mockImplementation(
+        async () =>
+          ({
+            data: expectedData,
+            status: expectedStatus,
+          } as AxiosResponse)
+      );
+    });
+
+    it('the request returns the correct response', async () => {
+      const response = await gateway.request(path, method);
+      expect(response).toEqual(expectedResponse);
+      expect(client.request).toHaveBeenCalledWith({
+        method,
+        url: `/api/v1/${path.join('/')}`,
+        data: undefined,
+        validateStatus,
+        headers: {
+          Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+        },
+      });
+    });
+  });
+
+  describe('GET request to /document_types/staff_selected', () => {
+    const expectedData = {
+      key: 'response to GET',
+    };
+    const expectedStatus = 200;
+    const expectedResponse = {
+      data: expectedData,
+      status: expectedStatus,
+    };
+    const path = ['document_types', 'staff_selected', 'test-team-name'];
     const method = 'GET';
 
     beforeEach(() => {

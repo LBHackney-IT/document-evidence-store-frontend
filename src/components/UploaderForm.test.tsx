@@ -41,8 +41,10 @@ describe('UploaderForm', () => {
   });
 
   it('renders an uploader panel and a continue button', async () => {
-    expect(screen.getByText('Passport'));
-    expect(screen.getByText('A valid passport open at the photo page'));
+    expect(screen.getByText('Proof of ID'));
+    expect(
+      screen.getByText('A valid document that can be used to prove identity')
+    );
     expect(screen.getByText('Continue'));
   });
 
@@ -51,7 +53,7 @@ describe('UploaderForm', () => {
   });
 
   it('disables the button when submitting', async () => {
-    attachFile('Passport');
+    attachFile('Proof of ID');
     submitForm();
 
     await waitFor(() => {
@@ -65,14 +67,13 @@ describe('UploaderForm', () => {
     submitForm();
     await waitFor(() => {
       // we have 3 DocumentTypes so there should be as many warning messages printed
-      expect(screen.getAllByText('Please select a file').length).toEqual(3);
+      expect(screen.getAllByText('Please select a file').length).toEqual(2);
     });
   });
 
   it('calls submit handler on form model', async () => {
-    attachFile('Passport');
-    attachFile('Driving license');
-    attachFile('Bank statement');
+    attachFile('Proof of ID');
+    attachFile('Repairs photo');
     submitForm();
 
     await waitFor(() => {
@@ -84,9 +85,8 @@ describe('UploaderForm', () => {
     mockHandleSubmit.mockImplementation(() => {
       throw new Error('oh no');
     });
-    attachFile('Passport');
-    attachFile('Driving license');
-    attachFile('Bank statement');
+    attachFile('Proof of ID');
+    attachFile('Repairs photo');
     submitForm();
 
     await waitFor(() => {
@@ -96,9 +96,8 @@ describe('UploaderForm', () => {
 
   it('calls success callback when upload completes', async () => {
     mockHandleSubmit.mockResolvedValue(true);
-    attachFile('Passport');
-    attachFile('Driving license');
-    attachFile('Bank statement');
+    attachFile('Proof of ID');
+    attachFile('Repairs photo');
     submitForm();
 
     await waitFor(() => {

@@ -1,9 +1,9 @@
 [
   {
     "documentType": {
-      "id": "passport-scan",
-      "title": "Passport",
-      "description": "A valid passport open at the photo page"
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
     },
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",
@@ -19,9 +19,9 @@
   },
   {
     "documentType": {
-      "id": "passport-scan",
-      "title": "Passport",
-      "description": "A valid passport open at the photo page"
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
     },
     "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
     "createdAt": "2021-01-14T10:23:42.958Z",
@@ -37,9 +37,9 @@
   },
   {
     "documentType": {
-      "id": "passport-scan",
-      "title": "Passport",
-      "description": "A valid passport open at the photo page"
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
     },
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
     "createdAt": "2021-01-14T10:23:42.958Z",

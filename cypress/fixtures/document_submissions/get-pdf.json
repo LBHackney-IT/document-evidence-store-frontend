@@ -1,8 +1,8 @@
 {
   "documentType": {
-    "id": "passport-scan",
-    "title": "Passport",
-    "description": "A valid passport open at the photo page"
+    "id": "proof-of-id",
+    "title": "Proof of ID",
+    "description": "A valid document that can be used to prove identity"
   },
   "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
   "createdAt": "2021-01-14T10:23:42.958Z",

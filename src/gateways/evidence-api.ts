@@ -69,11 +69,30 @@ export class EvidenceApiGateway {
     }
   }
 
-  async getDocumentTypes(): Promise<DocumentType[]> {
+  async getDocumentTypes(teamName: string): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        '/api/v1/document_types',
-        { headers: { Authorization: tokens?.document_types?.GET } }
+        `/api/v1/document_types/${teamName}`,
+        {
+          headers: { Authorization: tokens?.document_types?.GET },
+        }
+      );
+      return data.map(ResponseMapper.mapDocumentType);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getStaffSelectedDocumentTypes(
+    teamName: string
+  ): Promise<DocumentType[]> {
+    try {
+      const { data } = await this.client.get<IDocumentType[]>(
+        `/api/v1/document_types/staff_selected/${teamName}`,
+        {
+          headers: { Authorization: tokens?.document_types?.GET },
+        }
       );
       return data.map(ResponseMapper.mapDocumentType);
     } catch (err) {

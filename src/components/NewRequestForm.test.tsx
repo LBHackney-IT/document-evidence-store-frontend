@@ -32,7 +32,7 @@ const mockHandler = jest.fn(() => promise);
 
 const values = {
   deliveryMethods: ['SMS', 'EMAIL'],
-  documentTypes: ['passport-scan'],
+  documentTypes: ['proof-of-id'],
   resident: {
     email: 'example@email.com',
     name: 'Example name',
@@ -71,9 +71,8 @@ describe('NewRequestFormForm', () => {
     expect(screen.getByLabelText('Send request by SMS')).toBeChecked();
     expect(screen.getByLabelText('Send request by email')).toBeChecked();
 
-    expect(screen.getByText('Passport')).toBeVisible();
-    expect(screen.getByText('Driving license')).toBeVisible();
-    expect(screen.getByText('Bank statement')).toBeVisible();
+    expect(screen.getByText('Proof of ID')).toBeVisible();
+    expect(screen.getByText('Repairs photo')).toBeVisible();
 
     expect(screen.getByText('Send request')).toBeVisible();
   });

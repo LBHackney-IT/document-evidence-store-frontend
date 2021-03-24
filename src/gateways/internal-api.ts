@@ -1,8 +1,5 @@
 import Axios, { AxiosInstance } from 'axios';
-import {
-  DocumentSubmission,
-  IDocumentSubmission,
-} from 'src/domain/document-submission';
+import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { IResident, Resident } from 'src/domain/resident';
 import {
@@ -28,6 +25,11 @@ export interface EvidenceRequestRequest {
   serviceRequestedBy: string;
   reason: string;
   userRequestedBy?: string;
+}
+
+export interface DocumentSubmissionRequest {
+  state: string;
+  staffSelectedDocumentTypeId?: string;
 }
 
 type InternalApiDependencies = {
@@ -78,7 +80,7 @@ export class InternalApiGateway {
 
   async updateDocumentSubmission(
     documentSubmissionId: string,
-    params: Partial<IDocumentSubmission>
+    params: DocumentSubmissionRequest
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(

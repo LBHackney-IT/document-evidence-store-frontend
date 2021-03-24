@@ -109,6 +109,16 @@ describe('ResponseMapper', () => {
     it('maps the document type', () => {
       expect(result.documentType).toEqual(
         new DocumentType({
+          id: 'proof-of-id',
+          title: 'Proof of ID',
+          description: 'A valid document that can be used to prove identity',
+        })
+      );
+    });
+
+    it('maps the staff selected document type', () => {
+      expect(result.staffSelectedDocumentType).toEqual(
+        new DocumentType({
           id: 'passport-scan',
           title: 'Passport',
           description: 'A valid passport open at the photo page',
