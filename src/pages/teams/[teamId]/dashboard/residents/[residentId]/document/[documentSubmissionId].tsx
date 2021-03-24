@@ -133,8 +133,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
               {humanFileSize(document.fileSizeInBytes)}{' '}
-              <a href={`${downloadUrl}`} className="lbh-link">
-                Download
+              <a href={`${downloadUrl}`} target="blank" className="lbh-link">
+                Open in new tab
               </a>
             </figcaption>
           </figure>
@@ -143,8 +143,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <a href={`${downloadUrl}`} className="lbh-link">
-            Download
+          <a href={`${downloadUrl}`} target="blank" className="lbh-link">
+            Open in new tab
           </a>
         </figcaption>
       )}
