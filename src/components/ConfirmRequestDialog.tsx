@@ -32,7 +32,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       title="Are you sure you want to send this request?"
     >
       <p className="lbh-body">
-        Request reason: <strong>{request.reason}</strong>
+        Reason: <strong>{request.reason}</strong>
       </p>
       <p className="lbh-body">{formatSentence(request.deliveryMethods)}</p>
 
