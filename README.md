@@ -12,7 +12,7 @@ It's a [Next.js](https://nextjs.org) app that works with:
 - Hackney's [document platform API](https://github.com/LBHackney-IT/documents-api)
 - Hackney's [Google oAuth service](https://github.com/LBHackney-IT/LBH-Google-auth)
 
-It's built using the [React port](https://github.com/LBHackney-IT/lbh-frontend-react) of Hackney Frontend.
+It's built using the [Hackney Design System](https://design-system.hackney.gov.uk/).
 
 ## 🧐 What does it do?
 
