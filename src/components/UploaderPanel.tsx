@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { Label, ErrorMessage } from 'lbh-frontend-react';
 import styles from '../styles/UploaderPanel.module.scss';
 
 const classNameFromProps = (props: Props) => {
@@ -11,13 +10,19 @@ const classNameFromProps = (props: Props) => {
 
 const UploaderPanel: FunctionComponent<Props> = (props) => (
   <div className={classNameFromProps(props)}>
-    <Label labelFor={props.name}>{props.label}</Label>
+    <label className="govuk-label lbh-label" htmlFor={props.name}>
+      {props.label}
+    </label>
     {props.hint && (
       <p className="lbh-body-s" id={`${props.name}-hint`}>
         {props.hint}
       </p>
     )}
-    {props.error && <ErrorMessage>{props.error}</ErrorMessage>}
+    {props.error && (
+      <span className="govuk-error-message lbh-error-message">
+        <span className="govuk-visually-hidden">Error:</span> {props.error}
+      </span>
+    )}
     <input
       type="file"
       className="govuk-file-upload  lbh-file-upload"

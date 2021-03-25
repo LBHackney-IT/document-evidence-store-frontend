@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { Button, ErrorMessage } from 'lbh-frontend-react';
 import Field from './Field';
 import Checkbox from './Checkbox';
 import Radio from './Radio';
@@ -70,9 +69,9 @@ const NewRequestForm = ({
       {({ errors, touched, isSubmitting, submitForm }) => (
         <Form>
           {submitError && (
-            <ErrorMessage>
-              There was an error. Please try again later
-            </ErrorMessage>
+            <span className="govuk-error-message lbh-error-message">
+              There was an error. Please try again later.
+            </span>
           )}
 
           <Field
@@ -130,7 +129,10 @@ const NewRequestForm = ({
                 What document do you want to request?
               </legend>
               {touched.documentTypes && errors.documentTypes && (
-                <ErrorMessage>{errors.documentTypes}</ErrorMessage>
+                <span className="govuk-error-message lbh-error-message">
+                  <span className="govuk-visually-hidden">Error:</span>{' '}
+                  {errors.documentTypes}
+                </span>
               )}
               <div className="govuk-radios lbh-radios">
                 {documentTypes.map((type) => (
@@ -145,9 +147,13 @@ const NewRequestForm = ({
             </fieldset>
           </div>
 
-          <Button type="submit" disabled={isSubmitting}>
+          <button
+            className="govuk-button lbh-button"
+            type="submit"
+            disabled={isSubmitting}
+          >
             Send request
-          </Button>
+          </button>
 
           <ConfirmRequestDialog
             documentTypes={documentTypes}

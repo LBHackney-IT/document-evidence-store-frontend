@@ -1,4 +1,3 @@
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import Panel from '../../../components/Panel';
 import { useRouter } from 'next/router';
@@ -25,15 +24,13 @@ const Index: NextPage<ConfirmationProps> = ({ team }) => {
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <Panel>
-            <Heading level={HeadingLevels.H1}>
-              We've received your documents
-            </Heading>
+            <h1 className="lbh-heading-h1">We've received your documents</h1>
             <p className="lbh-body">Your reference number: {requestId}</p>
           </Panel>
 
           {/* <p className="lbh-body">We have sent you a confirmation email.</p> */}
 
-          <Heading level={HeadingLevels.H2}>What happens next</Heading>
+          <h2 className="lbh-heading-h2">What happens next</h2>
           <p className="lbh-body">{team.slaMessage}</p>
           <p className="lbh-body">
             We’ve sent your evidence to the service that requested it. They will

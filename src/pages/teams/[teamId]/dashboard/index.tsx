@@ -1,4 +1,3 @@
-// import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { EvidenceRequest } from 'src/domain/evidence-request';
@@ -57,7 +56,6 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       )}
       {loading && <TableSkeleton columns={['Name', 'Email', 'Phone Number']} />}
       {results && <ResidentSummaryTable residents={results} teamId={teamId} />}
-      <h2 className="lbh-heading-h3">Pending Requests</h2>
       {/* <Tabs
         tabTitles={['To review (3)', 'All (3)']}
         children={[ */}

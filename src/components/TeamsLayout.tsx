@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { Container, Header } from 'lbh-frontend-react';
+import Header from './Header';
 import styles from '../styles/DashboardLayout.module.scss';
 import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
@@ -29,18 +29,10 @@ const TeamsLayout: FunctionComponent = (props) => {
         Skip to main content
       </a>
 
-      <Header
-        serviceName="Upload"
-        isServiceNameShort={true}
-        isStackedOnMobile={true}
-        homepageUrl="/teams"
-      >
-        <p>{user.name}</p>
-        <a href="#">Sign out</a>
-      </Header>
+      <Header userName={user.name} />
 
       {teamId && (
-        <Container>
+        <div className="lbh-container">
           <nav className={styles.switcher} aria-label="Switch service">
             <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
               <Link href={`/teams/${teamId}/dashboard`}>
@@ -48,7 +40,7 @@ const TeamsLayout: FunctionComponent = (props) => {
               </Link>
             </strong>
           </nav>
-        </Container>
+        </div>
       )}
 
       <div className="lbh-main-wrapper">

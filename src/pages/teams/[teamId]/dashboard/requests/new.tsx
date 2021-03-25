@@ -1,4 +1,3 @@
-import { Paragraph } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useCallback, useState } from 'react';
@@ -44,7 +43,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       </Head>
       <h1 className="lbh-heading-h2">Make a new request</h1>
       {complete ? (
-        <Paragraph>Thanks!</Paragraph>
+        <p className="lbh-body">Thanks!</p>
       ) : (
         <NewRequestForm
           documentTypes={documentTypes}
