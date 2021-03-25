@@ -31,22 +31,26 @@ const Header: FunctionComponent<Props> = (props) => (
               </g>
             </svg>
             <span className="lbh-header__logo-text"> Hackney </span>
-            <span className="lbh-header__service-name lbh-header__service-name--short">
-              Upload
-            </span>
+            {props.userName && (
+              <span className="lbh-header__service-name lbh-header__service-name--short">
+                Upload
+              </span>
+            )}
           </a>
         </div>
-        <div className="lbh-header__links">
-          <p>{props.userName}</p>
-          <a href="#">Sign out</a>
-        </div>
+        {props.userName && (
+          <div className="lbh-header__links">
+            <p>{props.userName}</p>
+            <a href="#">Sign out</a>
+          </div>
+        )}
       </div>
     </div>
   </header>
 );
 
 interface Props {
-  userName: string;
+  userName?: string;
 }
 
 export default Header;
