@@ -1,7 +1,6 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 import Link from 'next/link';
 import styles from '../styles/EvidenceTile.module.scss';
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { humanFileSize } from '../helpers/formatters';
 
 export const EvidenceTile: FunctionComponent<Props> = (props) => (
@@ -13,13 +12,13 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
       </span>
     </div>
     <div>
-      <Heading level={HeadingLevels.H3} className={styles.title}>
+      <h3 className={`${styles.title} lbh-heading-h3`}>
         <Link
           href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}`}
         >
           <a className="lbh-link">{props.title}</a>
         </Link>
-      </Heading>
+      </h3>
       <p className={`lbh-body-s ${styles.meta}`}>
         {props.createdAt}
         {/* {props.purpose && <> with {props.purpose}</>} */}

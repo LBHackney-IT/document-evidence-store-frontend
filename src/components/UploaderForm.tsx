@@ -4,7 +4,6 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { Button, ErrorMessage } from 'lbh-frontend-react';
 import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
 import UploaderPanel from './UploaderPanel';
 import { UploadFormModel } from '../services/upload-form-model';
@@ -52,9 +51,9 @@ const UploaderForm: FunctionComponent<Props> = ({
       {({ values, errors, touched, setFieldValue, isSubmitting }) => (
         <Form>
           {submitError && (
-            <ErrorMessage>
+            <span className="govuk-error-message lbh-error-message">
               There was an error. Please try again later
-            </ErrorMessage>
+            </span>
           )}
 
           {documentTypes.map((documentType) => (
@@ -69,9 +68,13 @@ const UploaderForm: FunctionComponent<Props> = ({
             />
           ))}
 
-          <Button type="submit" disabled={isSubmitting}>
+          <button
+            className="govuk-button lbh-button"
+            type="submit"
+            disabled={isSubmitting}
+          >
             Continue
-          </Button>
+          </button>
         </Form>
       )}
     </Formik>

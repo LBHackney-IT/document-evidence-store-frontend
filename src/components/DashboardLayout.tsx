@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useContext } from 'react';
-import { Container, Header } from 'lbh-frontend-react';
 import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
 import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
 import ResidentLayout from './ResidentLayout';
+import Header from './Header';
 import { TeamHelper } from '../services/team-helper';
 import Link from 'next/link';
 
@@ -26,17 +26,10 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
       >
         Skip to main content
       </a>
-      <Header
-        serviceName="Upload"
-        isServiceNameShort={true}
-        isStackedOnMobile={true}
-        homepageUrl="/teams"
-      >
-        <p>{user.name}</p>
-        <a href="#">Sign out</a>
-      </Header>
 
-      <Container>
+      <Header userName={user.name} />
+
+      <div className="lbh-container">
         <nav className={styles.switcher} aria-label="Switch teams">
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             {currentTeam?.name}
@@ -52,7 +45,7 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
             </a>
           </Link>
         </nav>
-      </Container>
+      </div>
 
       <div className="lbh-main-wrapper">
         <div className={`lbh-container ${styles.layout}`}>

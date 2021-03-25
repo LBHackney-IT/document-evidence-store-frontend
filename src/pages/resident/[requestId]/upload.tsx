@@ -1,4 +1,3 @@
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -31,9 +30,9 @@ const Upload: NextPage<UploadProps> = ({
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <Heading level={HeadingLevels.H1}>
+          <h1 className="lbh-heading-h1">
             Upload your {documentTypes?.length > 1 ? 'documents' : 'document'}
-          </Heading>
+          </h1>
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>

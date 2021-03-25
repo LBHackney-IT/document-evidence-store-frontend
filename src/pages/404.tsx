@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../components/ResidentLayout';
 import { ReactNode } from 'react';
 
@@ -10,7 +9,7 @@ const PageNotFound = (): ReactNode => (
     </Head>
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">
-        <Heading level={HeadingLevels.H1}>Page not found</Heading>
+        <h1 className="lbh-heading-h1">Page not found</h1>
         <p className="lbh-body">
           {' '}
           If you typed the web address, check it is correct.

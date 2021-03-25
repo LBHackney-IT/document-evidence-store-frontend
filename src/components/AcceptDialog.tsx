@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import Dialog from './Dialog';
-import { Button, ErrorMessage } from 'lbh-frontend-react';
 import styles from '../styles/Dialog.module.scss';
 import Radio from './Radio';
 import { Form, Formik } from 'formik';
@@ -72,13 +71,14 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
             </div>
 
             <div className={styles.actions}>
-              <Button type="submit" onClick={props.onDismiss}>
+              <button type="submit" onClick={props.onDismiss}>
                 Yes, accept
-              </Button>
+              </button>
               <button
                 onClick={props.onDismiss}
                 type="button"
                 className={`${styles.cancelButton} lbh-body lbh-link`}
+                disabled={loading}
               >
                 No, cancel
               </button>
