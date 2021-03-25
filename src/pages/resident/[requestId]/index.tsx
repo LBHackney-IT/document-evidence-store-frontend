@@ -1,4 +1,3 @@
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import Layout from '../../../components/ResidentLayout';
 import InterruptionCard from '../../../components/InterruptionCard';
 import { ReactNode } from 'react';
@@ -16,9 +15,9 @@ const Index = (): ReactNode => {
         <title>You’ll need to photograph your documents</title>
       </Head>
       <InterruptionCard image="/illustration.svg">
-        <Heading level={HeadingLevels.H1}>
+        <h1 className="lbh-heading-h1">
           You’ll need to photograph your documents
-        </Heading>
+        </h1>
         <p className="lbh-body">You can use your smartphone camera.</p>
         <p className="lbh-body">First, make sure you’re in a well-lit place.</p>
         <p className="lbh-body">

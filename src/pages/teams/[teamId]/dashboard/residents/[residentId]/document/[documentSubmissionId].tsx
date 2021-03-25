@@ -1,4 +1,3 @@
-import { Button } from 'lbh-frontend-react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -92,15 +91,15 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
             scroll={false}
           >
-            <Button>Accept</Button>
+            <button className="govuk-button lbh-button">Accept</button>
           </Link>
           <Link
             href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
             scroll={false}
           >
-            <Button className="govuk-button--secondary lbh-button--secondary">
+            <button className="govuk-button govuk-secondary lbh-button lbh-button--secondary">
               Request new file
-            </Button>
+            </button>
           </Link>
         </div>
       )}
@@ -113,8 +112,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
               {humanFileSize(document.fileSizeInBytes)}{' '}
-              <a href={`${downloadUrl}`} className="lbh-link">
-                Download
+              <a href={`${downloadUrl}`} target="blank" className="lbh-link">
+                Open in new tab
               </a>
             </figcaption>
           </figure>
@@ -123,8 +122,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <a href={`${downloadUrl}`} className="lbh-link">
-            Download
+          <a href={`${downloadUrl}`} target="blank" className="lbh-link">
+            Open in new tab
           </a>
         </figcaption>
       )}

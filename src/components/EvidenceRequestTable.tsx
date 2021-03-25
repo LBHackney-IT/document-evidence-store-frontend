@@ -34,7 +34,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
             scope="col"
             className="govuk-table__header govuk-table__header--numeric"
           >
-            Made
+            Requested
           </th>
           <th
             scope="col"

@@ -1,6 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
 import Dialog from './Dialog';
-import { Button } from 'lbh-frontend-react';
 import styles from '../styles/Dialog.module.scss';
 
 const AcceptDialog: FunctionComponent<Props> = (props) => {
@@ -20,7 +19,8 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
       </ul>
 
       <div className={styles.actions}>
-        <Button
+        <button
+          className="govuk-button lbh-button"
           onClick={async () => {
             setLoading(true);
             try {
@@ -33,7 +33,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
           disabled={loading}
         >
           Yes, accept
-        </Button>
+        </button>
         <button
           onClick={props.onDismiss}
           type="button"

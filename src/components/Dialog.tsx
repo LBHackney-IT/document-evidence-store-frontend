@@ -1,5 +1,4 @@
 import React, { FunctionComponent } from 'react';
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { Dialog as ReachDialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 import styles from '../styles/Dialog.module.scss';
@@ -11,7 +10,7 @@ const Dialog: FunctionComponent<Props> = (props) => (
     onDismiss={props.onDismiss}
     className={styles.dialog}
   >
-    <Heading level={HeadingLevels.H2}>{props.title}</Heading>
+    <h2 className="lbh-heading-h2">{props.title}</h2>
     {props.children}
   </ReachDialog>
 );

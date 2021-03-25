@@ -1,4 +1,3 @@
-import { Heading, HeadingLevels } from 'lbh-frontend-react';
 import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -17,11 +16,11 @@ const Home: NextPage<LoginProps> = ({ appUrl }) => {
 
   return (
     <Layout>
-      <Heading level={HeadingLevels.H1}>Staff login</Heading>
+      <h1 className="lbh-heading-h1">Staff sign in</h1>
 
       <Link href={loginUrl}>
         <a className="govuk-button lbh-button lbh-button--start govuk-button--start">
-          Log in with Google{' '}
+          Sign in with Google{' '}
           <svg
             className="govuk-button__start-icon"
             xmlns="http://www.w3.org/2000/svg"
