@@ -11,7 +11,7 @@ const Home: NextPage<LoginProps> = ({ appUrl }) => {
   const router = useRouter();
   const loginUrl = useMemo(() => {
     let { redirect } = router.query as { redirect?: string };
-    if (!redirect || redirect == '/') redirect = '/dashboard';
+    if (!redirect || redirect == '/') redirect = '/teams';
     return `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`;
   }, [router, appUrl]);
 
