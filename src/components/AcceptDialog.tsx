@@ -53,9 +53,10 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 </legend>
                 {touched.staffSelectedDocumentTypeId &&
                   errors.staffSelectedDocumentTypeId && (
-                    <ErrorMessage>
+                    <span className="govuk-error-message lbh-error-message">
+                      <span className="govuk-visually-hidden">Error:</span>{' '}
                       {errors.staffSelectedDocumentTypeId}
-                    </ErrorMessage>
+                    </span>
                   )}
                 <div className="govuk-radios lbh-radios">
                   {props.staffSelectedDocumentTypes.map((documentType) => (
@@ -71,14 +72,17 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
             </div>
 
             <div className={styles.actions}>
-              <button type="submit" onClick={props.onDismiss}>
+              <button
+                onClick={props.onDismiss}
+                className="govuk-button lbh-button"
+                type="submit"
+              >
                 Yes, accept
               </button>
               <button
                 onClick={props.onDismiss}
-                type="button"
                 className={`${styles.cancelButton} lbh-body lbh-link`}
-                disabled={loading}
+                type="button"
               >
                 No, cancel
               </button>

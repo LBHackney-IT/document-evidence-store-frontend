@@ -102,7 +102,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       </h1>
 
       {submitError && (
-        <ErrorMessage>There was an error. Please try again later</ErrorMessage>
+        <span className="govuk-error-message lbh-error-message">
+          There was an error. Please try again later.
+        </span>
       )}
 
       {documentSubmission.state === DocumentState.UPLOADED && (
