@@ -66,7 +66,7 @@ describe('UploaderForm', () => {
   it('validates at least one file is attached to each UploaderPanel', async () => {
     submitForm();
     await waitFor(() => {
-      // we have 3 DocumentTypes so there should be as many warning messages printed
+      // we have 2 DocumentTypes so there should be as many warning messages printed
       expect(screen.getAllByText('Please select a file').length).toEqual(2);
     });
   });
