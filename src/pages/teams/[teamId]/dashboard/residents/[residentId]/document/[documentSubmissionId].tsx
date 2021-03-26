@@ -13,12 +13,16 @@ import {
 import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
-import { InternalApiGateway } from 'src/gateways/internal-api';
+import {
+  DocumentSubmissionRequest,
+  InternalApiGateway,
+} from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
 import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../../services/team-helper';
+import { DocumentType } from '../../../../../../../domain/document-type';
 
 const gateway = new InternalApiGateway();
 
@@ -32,6 +36,7 @@ type DocumentDetailPageProps = {
   teamId: string;
   resident: Resident;
   documentSubmission: DocumentSubmission;
+  staffSelectedDocumentTypes: DocumentType[];
   downloadUrl: string;
 };
 
@@ -39,6 +44,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   teamId,
   resident,
   documentSubmission: _documentSubmission,
+  staffSelectedDocumentTypes,
   downloadUrl,
 }) => {
   const router = useRouter();
@@ -51,20 +57,30 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     _documentSubmission
   );
 
-  const handleAccept = useCallback(async () => {
-    const updated = await gateway.updateDocumentSubmission(
-      documentSubmissionId,
-      {
-        state: DocumentState.APPROVED,
+  const handleAccept = useCallback(
+    async (values: DocumentSubmissionRequest) => {
+      try {
+        const updated = await gateway.updateDocumentSubmission(
+          documentSubmissionId,
+          {
+            state: values.state,
+            staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+          }
+        );
+        setDocumentSubmission(updated);
+        router.push(
+          `/teams/${teamId}/dashboard/residents/${residentId}`,
+          undefined,
+          { shallow: true }
+        );
+      } catch (err) {
+        console.error(err);
+        setSubmitError(true);
       }
-    );
-    setDocumentSubmission(updated);
-    router.push(
-      `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}`,
-      undefined,
-      { shallow: true }
-    );
-  }, [documentSubmission]);
+    },
+    [documentSubmission]
+  );
+  const [submitError, setSubmitError] = useState(false);
 
   const { document } = documentSubmission;
   if (!document) return null;
@@ -84,6 +100,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {documentSubmission.documentType.title}
       </h1>
+
+      {submitError && (
+        <span className="govuk-error-message lbh-error-message">
+          There was an error. Please try again later.
+        </span>
+      )}
 
       {documentSubmission.state === DocumentState.UPLOADED && (
         <div className={styles.actions}>
@@ -134,6 +156,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       <AcceptDialog
         open={action === 'accept'}
+        staffSelectedDocumentTypes={staffSelectedDocumentTypes}
         onAccept={handleAccept}
         onDismiss={() =>
           router.push(
@@ -173,7 +196,8 @@ export const getServerSideProps = withAuth(async (ctx) => {
     teamId
   );
 
-  if (!userAuthorizedToViewTeam) {
+  const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  if (!userAuthorizedToViewTeam || team === undefined) {
     return {
       redirect: {
         destination: '/teams',
@@ -181,9 +205,11 @@ export const getServerSideProps = withAuth(async (ctx) => {
       },
     };
   }
-
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
     documentSubmissionId
+  );
+  const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
+    team.name
   );
   const resident = await evidenceApiGateway.getResident(residentId);
 
@@ -194,7 +220,15 @@ export const getServerSideProps = withAuth(async (ctx) => {
       documentSubmission.document.id
     );
   }
-  return { props: { teamId, resident, documentSubmission, downloadUrl } };
+  return {
+    props: {
+      teamId,
+      resident,
+      documentSubmission,
+      staffSelectedDocumentTypes,
+      downloadUrl,
+    },
+  };
 });
 
 export default DocumentDetailPage;

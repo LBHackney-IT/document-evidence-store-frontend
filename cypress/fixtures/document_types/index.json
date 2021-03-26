@@ -1,17 +1,12 @@
 [
   {
-    "id": "passport-scan",
-    "title": "Passport",
-    "description": "A valid passport open at the photo page"
+    "id": "proof-of-id",
+    "title": "Proof of ID",
+    "description": "A valid document that can be used to prove identity"
   },
   {
-    "id": "driving-license",
-    "title": "Driving license",
-    "description": "A valid UK full or provisional UK driving license"
-  },
-  {
-    "id": "bank-statement",
-    "title": "Bank statement",
-    "description": "From the past three months"
+    "id": "repairs-photo",
+    "title": "Repairs photo",
+    "description": "A photo of the issue that need to be repaired"
   }
 ]

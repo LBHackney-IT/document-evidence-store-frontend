@@ -5,7 +5,13 @@ describe('Can view and manage evidence', () => {
     cy.login();
 
     cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      const body = { ...dsFixture, id: 123, state: req.body.state };
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+      console.log(body);
       req.reply((res) => {
         res.send(200, body);
       });
@@ -20,8 +26,8 @@ describe('Can view and manage evidence', () => {
 
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
-    cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Namey McNamePassport');
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
     cy.checkA11y();
   });
 
@@ -34,9 +40,9 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an image document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(0).contains('Passport').click();
+    cy.get('.toReview a').eq(0).contains('Proof of ID').click();
 
-    cy.contains('h1', 'Namey McNamePassport');
+    cy.contains('h1', 'Namey McNameProof of ID');
 
     cy.get('button').should('contain', 'Accept');
     cy.get('button').should('contain', 'Request new file');
@@ -53,9 +59,9 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(3).contains('Passport').click();
+    cy.get('.toReview a').eq(3).contains('Proof of ID').click();
 
-    cy.contains('h1', 'Namey McNamePassport');
+    cy.contains('h1', 'Namey McNameProof of ID');
 
     cy.get('button').should('contain', 'Accept');
     cy.get('button').should('contain', 'Request new file');
@@ -69,8 +75,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
-    cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Namey McNamePassport');
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Accept').click();
 
     cy.get('[role=dialog]').within(() => {
@@ -79,10 +85,13 @@ describe('Can view and manage evidence', () => {
         'Are you sure you want to accept this file?'
       );
 
+      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+
       cy.get('button').contains('Yes, accept').click();
 
       cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
         state: 'APPROVED',
+        staffSelectedDocumentTypeId: 'passport-scan',
       });
     });
 
@@ -92,8 +101,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject the document', () => {
-    cy.get('a').contains('Passport').click();
-    cy.contains('h1', 'Namey McNamePassport');
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Request new file').click();
 
     cy.get('[role=dialog]').within(() => {

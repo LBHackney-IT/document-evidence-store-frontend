@@ -42,6 +42,9 @@ export class ResponseMapper {
     const createdAt = DateTime.fromISO(attrs.createdAt);
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
+    const staffSelectedDocumentType = attrs.staffSelectedDocumentType
+      ? new DocumentType(attrs.staffSelectedDocumentType)
+      : undefined;
     const document = attrs.document
       ? this.mapDocument(attrs.document)
       : undefined;
@@ -50,6 +53,7 @@ export class ResponseMapper {
       createdAt,
       state,
       documentType,
+      staffSelectedDocumentType,
       document,
     });
   }

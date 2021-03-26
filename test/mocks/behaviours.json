@@ -6,6 +6,7 @@
       "get-evidence-request",
       "create-evidence-request",
       "get-document-types",
+      "get-staff-selected-document-types",
       "create-document-submission",
       "get-document-submission-png",
       "get-document-submission-pdf",

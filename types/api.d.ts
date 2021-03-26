@@ -10,8 +10,6 @@ export type TokenDictionary = {
     | undefined;
 };
 
-export type DeliveryMethodResponse = 'sms' | 'email';
-
 export interface EvidenceRequestResponse
   extends Omit<
     IEvidenceRequest,
@@ -25,11 +23,16 @@ export interface EvidenceRequestResponse
 export interface DocumentSubmissionResponse
   extends Omit<
     IDocumentSubmission,
-    'createdAt' | 'state' | 'documentType' | 'document'
+    | 'createdAt'
+    | 'state'
+    | 'documentType'
+    | 'staffSelectedDocumentType'
+    | 'document'
   > {
   createdAt: string;
   state: string;
   documentType: IDocumentType;
+  staffSelectedDocumentType?: IDocumentType;
   document?: DocumentResponse;
 }
 

@@ -1,9 +1,9 @@
 [
   {
     "documentType": {
-      "id": "passport-scan",
-      "title": "Passport",
-      "description": "A valid passport open at the photo page"
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
     },
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",
@@ -28,9 +28,9 @@
   },
   {
     "documentType": {
-      "id": "driving-license",
-      "title": "Driving license",
-      "description": "A valid UK full or provisional UK driving license"
+      "id": "repairs-photo",
+      "title": "Repairs photo",
+      "description": "A photo of the issue that need to be repaired"
     },
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
     "createdAt": "2021-01-14T10:24:42.958Z",
