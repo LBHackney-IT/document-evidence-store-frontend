@@ -33,7 +33,7 @@ describe('Can view and manage evidence', () => {
 
   it('shows resident contact details and document submissions in all states', () => {
     cy.get('h1').should('contain', 'Namey McName');
-    cy.get('.toReview a').eq(0).contains('Passport');
+    cy.get('.toReview a').eq(0).contains('Proof of ID');
 
     cy.get('h2').should('contain', 'To review');
     // cy.get('h2').should('contain', 'Pending requests');
