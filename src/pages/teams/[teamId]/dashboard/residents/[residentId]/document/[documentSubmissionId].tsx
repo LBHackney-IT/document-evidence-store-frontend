@@ -85,11 +85,15 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const { document } = documentSubmission;
   if (!document) return null;
 
+  const documentTypeTitle = documentSubmission.staffSelectedDocumentType
+    ? documentSubmission.staffSelectedDocumentType.title
+    : documentSubmission.documentType.title;
+
   return (
     <Layout teamId={teamId}>
       <Head>
         <title>
-          {documentSubmission.documentType.title} | {resident.name}
+          {documentTypeTitle} | {resident.name}
         </title>
       </Head>
 
@@ -98,7 +102,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
           <a className="lbh-link">{resident.name}</a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
-        {documentSubmission.documentType.title}
+        {documentTypeTitle}
       </h1>
 
       {submitError && (
