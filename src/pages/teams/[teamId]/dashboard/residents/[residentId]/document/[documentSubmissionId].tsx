@@ -130,21 +130,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </div>
       )}
 
-      {document.extension === 'jpeg' || document.extension === 'png' ? (
-        <>
-          <h2 className="lbh-heading-h3">Preview</h2>
-          <figure className={styles.preview}>
-            <img src={downloadUrl} alt="example" />
-            <figcaption className="lbh-body-s">
-              <strong>{document.extension?.toUpperCase()}</strong>{' '}
-              {humanFileSize(document.fileSizeInBytes)}{' '}
-              <a href={`${downloadUrl}`} target="blank" className="lbh-link">
-                Open in new tab
-              </a>
-            </figcaption>
-          </figure>
-        </>
-      ) : (
+      <h2 className="lbh-heading-h3">Preview</h2>
+      <figure className={styles.preview}>
+        {document.extension === 'jpeg' || document.extension === 'png' ? (
+          <img src={downloadUrl} alt="example" />
+        ) : (
+          <iframe src={downloadUrl} />
+        )}
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
@@ -152,7 +144,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             Open in new tab
           </a>
         </figcaption>
-      )}
+      </figure>
 
       {/* https://hackney.atlassian.net/browse/DES-63 */}
       {/* <h2 className="lbh-heading-h3">History</h2> */}
