@@ -1,8 +1,10 @@
+import evidenceRequestsFixture from '../../cypress/fixtures/evidence_requests/id.json';
 import dsFixture from '../../cypress/fixtures/document_submissions/create.json';
 import teams from '../../teams.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';
+  const residentReferenceId = evidenceRequestsFixture.residentReferenceId;
 
   beforeEach(() => {
     cy.intercept(
@@ -58,7 +60,10 @@ describe('Can upload a document', () => {
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
-      cy.get('p').should('contain', `Your reference number: ${requestId}`);
+      cy.get('p').should(
+        'contain',
+        `Your reference number: ${residentReferenceId}`
+      );
     });
 
     it('shows guidance and lets you upload multiple files for each document type', () => {
@@ -89,7 +94,10 @@ describe('Can upload a document', () => {
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
-      cy.get('p').should('contain', `Your reference number: ${requestId}`);
+      cy.get('p').should(
+        'contain',
+        `Your reference number: ${residentReferenceId}`
+      );
       cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });
   });
