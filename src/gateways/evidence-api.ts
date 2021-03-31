@@ -187,7 +187,8 @@ export class EvidenceApiGateway {
   async request(
     pathSegments: string[],
     method: Method,
-    body?: unknown
+    body?: unknown,
+    params?: unknown
   ): Promise<{ data?: string; status: number }> {
     const token = this.getToken(pathSegments, method);
 
@@ -196,6 +197,7 @@ export class EvidenceApiGateway {
         method,
         url: `/api/v1/${pathSegments.join('/')}`,
         data: body,
+        params: params,
         headers: {
           Authorization: token,
         },

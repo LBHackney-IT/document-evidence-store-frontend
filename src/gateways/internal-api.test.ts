@@ -202,15 +202,27 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.searchResidents(searchQuery);
+        await gateway.searchResidents({
+          serviceRequestedBy: searchQuery,
+          searchQuery: searchQuery,
+        });
 
         expect(client.get).toHaveBeenCalledWith(
-          `/api/evidence/residents/search/${searchQuery}`
+          `/api/evidence/residents/search`,
+          {
+            params: {
+              serviceRequestedBy: searchQuery,
+              searchQuery: searchQuery,
+            },
+          }
         );
       });
 
       it('returns the updated model', async () => {
-        const result = await gateway.searchResidents(searchQuery);
+        const result = await gateway.searchResidents({
+          serviceRequestedBy: searchQuery,
+          searchQuery: searchQuery,
+        });
 
         expect(result).toBe(expectedResult);
       });
@@ -219,7 +231,11 @@ describe('Internal API Gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Internal server error'));
-        const functionCall = () => gateway.searchResidents(searchQuery);
+        const functionCall = () =>
+          gateway.searchResidents({
+            serviceRequestedBy: searchQuery,
+            searchQuery: searchQuery,
+          });
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );

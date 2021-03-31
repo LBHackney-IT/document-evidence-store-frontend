@@ -11,6 +11,7 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
       residents.map((row) => {
         return {
           id: row.id,
+          referenceId: row.referenceId,
           name: row.name,
           email: row.email,
           phoneNumber: row.phoneNumber,
@@ -27,31 +28,32 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
             Name
           </th>
           <th scope="col" className="govuk-table__header">
+            Reference ID
+          </th>
+          <th scope="col" className="govuk-table__header">
             Email
           </th>
-
           <th
             scope="col"
             className="govuk-table__header govuk-table__header--numeric"
           >
             Mobile phone number
           </th>
-          <th scope="col" className="govuk-table__header" />
         </tr>
       </thead>
 
       <tbody className="govuk-table__body">
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
-            <td className="govuk-table__cell">{row.name}</td>
+            <td className="govuk-table__cell">
+              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
+                <a className="lbh-link">{row.name}</a>
+              </Link>
+            </td>
+            <td className="govuk-table__cell">{row.referenceId}</td>
             <td className="govuk-table__cell">{row.email}</td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.phoneNumber}
-            </td>
-            <td className="govuk-table__cell">
-              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
-                <a className="lbh-link">Review</a>
-              </Link>
             </td>
           </tr>
         ))}

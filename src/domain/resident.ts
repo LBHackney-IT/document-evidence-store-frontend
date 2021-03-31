@@ -3,6 +3,7 @@ export interface IResident {
   email: string;
   phoneNumber: string;
   id: string;
+  referenceId?: string;
 }
 
 export class Resident implements IResident {
@@ -10,11 +11,13 @@ export class Resident implements IResident {
   email: string;
   phoneNumber: string;
   id: string;
+  referenceId?: string;
 
   constructor(params: IResident) {
     this.name = params.name;
     this.email = params.email;
     this.phoneNumber = params.phoneNumber;
     this.id = params.id;
+    this.referenceId = params.referenceId;
   }
 }

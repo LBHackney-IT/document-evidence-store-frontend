@@ -3,11 +3,11 @@
   "createdAt": "2020-11-25T15:34:12.299Z",
   "resident": {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "referenceId": "123456",
     "name": "Namey McName",
     "email": "frodo@bagend.com",
     "phoneNumber": "+447123456780"
   },
-  "residentReferenceId": "123456",
   "deliveryMethods": ["SMS", "EMAIL"],
   "documentTypes": [
     {

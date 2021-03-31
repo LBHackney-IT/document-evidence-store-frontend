@@ -21,7 +21,7 @@ export class InternalServerError extends Error {
 export interface EvidenceRequestRequest {
   deliveryMethods: string[];
   documentTypes: string[];
-  resident: Omit<IResident, 'id'>;
+  resident: Omit<IResident, 'id' | 'referenceId'>;
   serviceRequestedBy: string;
   reason: string;
   userRequestedBy?: string;
@@ -30,6 +30,11 @@ export interface EvidenceRequestRequest {
 export interface DocumentSubmissionRequest {
   state: string;
   staffSelectedDocumentTypeId?: string;
+}
+
+export interface ResidentRequest {
+  serviceRequestedBy: string;
+  searchQuery: string;
 }
 
 type InternalApiDependencies = {
@@ -94,10 +99,13 @@ export class InternalApiGateway {
     }
   }
 
-  async searchResidents(searchQuery: string): Promise<Resident[]> {
+  async searchResidents(params: ResidentRequest): Promise<Resident[]> {
     try {
       const { data } = await this.client.get<ResidentResponse[]>(
-        `/api/evidence/residents/search/${searchQuery}`
+        `/api/evidence/residents/search`,
+        {
+          params: params,
+        }
       );
       return ResponseMapper.mapResidentResponseList(data);
     } catch (err) {

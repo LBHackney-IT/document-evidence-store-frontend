@@ -58,7 +58,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
     requestId
   );
-  const residentReferenceId = evidenceRequest.residentReferenceId;
+  const residentReferenceId = evidenceRequest.resident.referenceId;
 
   const teamName = evidenceRequest.serviceRequestedBy;
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
