@@ -23,7 +23,7 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
         className="govuk-input lbh-input"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search for a resident..."
+        placeholder="Search by name or contact detail"
       />
       <button className="govuk-button lbh-button">Search</button>
     </form>
