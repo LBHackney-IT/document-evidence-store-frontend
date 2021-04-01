@@ -25,10 +25,10 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
       <thead className="govuk-table__head">
         <tr className="govuk-table__row">
           <th scope="col" className="govuk-table__header">
-            Name
+            ID
           </th>
           <th scope="col" className="govuk-table__header">
-            Reference ID
+            Name
           </th>
           <th scope="col" className="govuk-table__header">
             Email
@@ -45,12 +45,12 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
       <tbody className="govuk-table__body">
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
+            <td className="govuk-table__cell">{row.referenceId}</td>
             <td className="govuk-table__cell">
               <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
                 <a className="lbh-link">{row.name}</a>
               </Link>
             </td>
-            <td className="govuk-table__cell">{row.referenceId}</td>
             <td className="govuk-table__cell">{row.email}</td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.phoneNumber}

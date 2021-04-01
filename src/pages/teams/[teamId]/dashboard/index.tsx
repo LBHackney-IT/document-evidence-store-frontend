@@ -60,7 +60,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       )}
       {loading && (
         <TableSkeleton
-          columns={['Name', 'Reference ID', 'Email', 'Mobile phone number']}
+          columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
       {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
