@@ -25,8 +25,18 @@ describe('ResponseMapper', () => {
     });
 
     it('maps basic attributes', () => {
-      const { id, serviceRequestedBy, reason } = responseJson;
-      expect(result).toMatchObject({ id, serviceRequestedBy, reason });
+      const {
+        id,
+        serviceRequestedBy,
+        reason,
+        residentReferenceId,
+      } = responseJson;
+      expect(result).toMatchObject({
+        id,
+        serviceRequestedBy,
+        reason,
+        residentReferenceId,
+      });
       expect(result).toBeInstanceOf(EvidenceRequest);
     });
 

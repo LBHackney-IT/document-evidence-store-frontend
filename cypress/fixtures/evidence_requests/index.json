@@ -8,6 +8,7 @@
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"
     },
+    "residentReferenceId": "123456",
     "deliveryMethods": ["SMS", "EMAIL"],
     "documentTypes": [
       {
@@ -28,6 +29,7 @@
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"
     },
+    "residentReferenceId": "123456",
     "deliveryMethods": ["SMS", "EMAIL"],
     "documentTypes": [
       {
@@ -48,6 +50,7 @@
       "email": "frodo@bagend.com",
       "phoneNumber": "+447123456780"
     },
+    "residentReferenceId": "123456",
     "deliveryMethods": ["SMS", "EMAIL"],
     "documentTypes": [
       {

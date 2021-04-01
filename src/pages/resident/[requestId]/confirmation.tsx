@@ -1,6 +1,5 @@
 import Layout from '../../../components/ResidentLayout';
 import Panel from '../../../components/Panel';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
@@ -9,13 +8,11 @@ import { TeamHelper } from '../../../services/team-helper';
 import { Team } from 'src/domain/team';
 
 type ConfirmationProps = {
+  residentReferenceId: string;
   team: Team;
 };
 
-const Index: NextPage<ConfirmationProps> = ({ team }) => {
-  const router = useRouter();
-  const { requestId } = router.query;
-
+const Index: NextPage<ConfirmationProps> = ({ residentReferenceId, team }) => {
   return (
     <Layout>
       <Head>
@@ -25,7 +22,9 @@ const Index: NextPage<ConfirmationProps> = ({ team }) => {
         <div className="govuk-grid-column-two-thirds">
           <Panel>
             <h1 className="lbh-heading-h1">We've received your documents</h1>
-            <p className="lbh-body">Your reference number: {requestId}</p>
+            <p className="lbh-body">
+              Your reference number: {residentReferenceId}
+            </p>
           </Panel>
 
           {/* <p className="lbh-body">We have sent you a confirmation email.</p> */}
@@ -56,16 +55,15 @@ export const getServerSideProps = withAuth(async (ctx) => {
     requestId: string;
   };
   const evidenceApiGateway = new EvidenceApiGateway();
-
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
     requestId
   );
+  const residentReferenceId = evidenceRequest.residentReferenceId;
 
   const teamName = evidenceRequest.serviceRequestedBy;
-
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
 
-  return { props: { team } };
+  return { props: { residentReferenceId, team } };
 });
 
 export default Index;
