@@ -52,7 +52,9 @@ export const ResidentTable: FunctionComponent<Props> = ({
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
             <td className="govuk-table__cell">
-              <Link href={`/teams/${teamId}/dashboard/residents/${row.residentId}`}>
+              <Link
+                href={`/teams/${teamId}/dashboard/residents/${row.residentId}`}
+              >
                 <a className="lbh-link">{row.residentName}</a>
               </Link>
             </td>
