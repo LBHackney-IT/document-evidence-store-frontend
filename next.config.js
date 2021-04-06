@@ -14,4 +14,15 @@ const config = {
   },
 };
 
-module.exports = config;
+module.exports = {
+  config,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/teams',
+        permanent: true,
+      },
+    ];
+  },
+};
