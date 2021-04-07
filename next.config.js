@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
   distDir: 'build/_next',
   target: 'server',
   webpack: (config, { webpack, isServer }) => {
@@ -12,6 +12,13 @@ const config = {
 
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/teams',
+        permanent: true,
+      },
+    ];
+  },
 };
-
-module.exports = config;
