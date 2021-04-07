@@ -16,7 +16,6 @@ const schema = Yup.object().shape({
 const initialValues = {
   state: DocumentState.REJECTED,
   rejectionReason: '',
-  staffSelectedDocumentTypeId: '',
 };
 
 const RejectDialog: FunctionComponent<Props> = (props) => {
