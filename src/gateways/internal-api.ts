@@ -29,6 +29,7 @@ export interface EvidenceRequestRequest {
 
 export interface DocumentSubmissionRequest {
   state: string;
+  rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
 }
 

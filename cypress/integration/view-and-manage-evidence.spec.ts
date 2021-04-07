@@ -111,8 +111,12 @@ describe('Can view and manage evidence', () => {
       cy.get('h2').should('contain', 'Request a new file');
 
       cy.get('span').should('contain', 'For example, text not legible');
-
-      //TODO: test submission here
+      cy.get('textarea').type('some rejection reason');
+      cy.get('button').contains('Request new file').click();
+    });
+    cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
+      state: 'REJECTED',
+      rejectionReason: 'some rejection reason',
     });
   });
 });

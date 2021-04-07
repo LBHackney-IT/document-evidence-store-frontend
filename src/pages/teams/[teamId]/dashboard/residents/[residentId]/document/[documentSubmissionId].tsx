@@ -80,6 +80,30 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     },
     [documentSubmission]
   );
+
+  const handleReject = useCallback(
+    async (values: DocumentSubmissionRequest) => {
+      try {
+        const updated = await gateway.updateDocumentSubmission(
+          documentSubmissionId,
+          {
+            state: values.state,
+            rejectionReason: values.rejectionReason,
+          }
+        );
+        setDocumentSubmission(updated);
+        router.push(
+          `/teams/${teamId}/dashboard/residents/${residentId}`,
+          undefined,
+          { shallow: true }
+        );
+      } catch (err) {
+        console.error(err);
+        setSubmitError(true);
+      }
+    },
+    [documentSubmission]
+  );
   const [submitError, setSubmitError] = useState(false);
 
   const { document } = documentSubmission;
@@ -171,9 +195,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       <RejectDialog
         open={action === 'reject'}
-        onReject={() => {
-          // handle reject here
-        }}
+        onReject={handleReject}
         onDismiss={() =>
           router.push(
             `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmissionId}`

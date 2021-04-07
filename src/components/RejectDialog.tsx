@@ -4,12 +4,19 @@ import { Formik, Form } from 'formik';
 import Field from './Field';
 import * as Yup from 'yup';
 import styles from '../styles/Dialog.module.scss';
+import { DocumentState } from '../domain/document-submission';
+import { DocumentSubmissionRequest } from '../gateways/internal-api';
 
 const schema = Yup.object().shape({
-  reason: Yup.string()
+  rejectionReason: Yup.string()
     .required('Please give a reason')
     .min(2, 'Reason needs to be at least three characters'),
 });
+
+const initialValues = {
+  state: DocumentState.REJECTED,
+  rejectionReason: '',
+};
 
 const RejectDialog: FunctionComponent<Props> = (props) => {
   return (
@@ -19,22 +26,18 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
       title="Request a new file"
     >
       <Formik
-        onSubmit={(values) => {
-          props.onReject(values.reason);
-        }}
+        onSubmit={props.onReject}
         validationSchema={schema}
-        initialValues={{
-          reason: '',
-        }}
+        initialValues={initialValues}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
             <Field
               label="Reason for rejection"
               hint="For example, text not legible"
-              name="reason"
+              name="rejectionReason"
               textarea
-              error={touched.reason ? errors.reason : null}
+              error={touched.rejectionReason ? errors.rejectionReason : null}
             />
             <div className={styles.actions}>
               <button
@@ -61,7 +64,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
 
 interface Props {
   open: boolean;
-  onReject(reason: string): void;
+  onReject: (values: DocumentSubmissionRequest) => Promise<void>;
   onDismiss(): void;
 }
 
