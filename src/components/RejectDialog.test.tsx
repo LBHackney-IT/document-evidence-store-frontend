@@ -67,9 +67,6 @@ describe('RejectDialog', () => {
 
     await waitFor(() => {
       expect(mockHandler).toBeCalledTimes(1);
-      expect(mockHandler).toBeCalledWith(
-        expect.stringContaining('Example reason')
-      );
     });
   });
 });
