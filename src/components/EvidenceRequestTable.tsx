@@ -1,4 +1,4 @@
-import { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
 // import Link from 'next/link';
 
@@ -9,6 +9,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
     () =>
       requests.map((row) => {
         return {
+          id: row.id,
           resident: row.resident.name,
           document: row.documentTypes[0].title,
           made: `${row.createdAt.toRelative()}`,
@@ -47,7 +48,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
 
       <tbody className="govuk-table__body">
         {rows.map((row) => (
-          <tr className="govuk-table__row">
+          <tr className="govuk-table__row" key={row.id}>
             <td className="govuk-table__cell">{row.resident}</td>
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.document}

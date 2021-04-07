@@ -10,8 +10,9 @@ export const ResidentTable: FunctionComponent<Props> = ({
     () =>
       residents.map((row) => {
         return {
-          id: row.resident.id,
-          resident: row.resident.name,
+          id: row.resident.id + row.createdAt,
+          residentId: row.resident.id,
+          residentName: row.resident.name,
           document: row.documentTypes.map((dt) => dt.title).join(', '),
           uploaded: `${row.createdAt.toRelative()}`,
         };
@@ -51,8 +52,10 @@ export const ResidentTable: FunctionComponent<Props> = ({
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
             <td className="govuk-table__cell">
-              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
-                <a className="lbh-link">{row.resident}</a>
+              <Link
+                href={`/teams/${teamId}/dashboard/residents/${row.residentId}`}
+              >
+                <a className="lbh-link">{row.residentName}</a>
               </Link>
             </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">

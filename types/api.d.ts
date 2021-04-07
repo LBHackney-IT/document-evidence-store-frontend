@@ -47,4 +47,5 @@ export interface ResidentResponse {
   email: string;
   phoneNumber: string;
   id: string;
+  referenceId?: string;
 }

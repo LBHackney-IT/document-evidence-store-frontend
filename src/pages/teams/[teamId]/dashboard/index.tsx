@@ -14,15 +14,16 @@ import TableSkeleton from '../../../../components/TableSkeleton';
 // import Tabs from '../../../../components/Tabs';
 import { RequestAuthorizer } from '../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../services/team-helper';
+import { Team } from '../../../../domain/team';
 
 type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
-  teamId: string;
+  team: Team;
 };
 
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
-  teamId,
+  team,
 }) => {
   // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
   const [results, setResults] = useState<Resident[]>();
@@ -34,7 +35,10 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       setFormSearchQuery(searchQuery);
       setLoading(true);
       const gateway = new InternalApiGateway();
-      const data = await gateway.searchResidents(searchQuery);
+      const data = await gateway.searchResidents({
+        serviceRequestedBy: team.name,
+        searchQuery: searchQuery,
+      });
       setLoading(false);
       setResults(data);
     } catch (err) {
@@ -43,7 +47,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   }, []);
 
   return (
-    <Layout teamId={teamId}>
+    <Layout teamId={team.id}>
       <Head>
         <title>Browse residents</title>
       </Head>
@@ -54,14 +58,18 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
           Search results for: {formSearchQuery}
         </h2>
       )}
-      {loading && <TableSkeleton columns={['Name', 'Email', 'Phone Number']} />}
-      {results && <ResidentSummaryTable residents={results} teamId={teamId} />}
+      {loading && (
+        <TableSkeleton
+          columns={['ID', 'Name', 'Email', 'Mobile phone number']}
+        />
+      )}
+      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
       {/* <Tabs
         tabTitles={['To review (3)', 'All (3)']}
         children={[ */}
       <div key="1">
         {/* <Heading level={HeadingLevels.H3}>To review</Heading> */}
-        <ResidentTable residents={evidenceRequests} teamId={teamId} />
+        <ResidentTable residents={evidenceRequests} teamId={team.id} />
       </div>
       {/* <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
@@ -99,7 +107,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     const gateway = new EvidenceApiGateway();
     const evidenceRequests = await gateway.getEvidenceRequests(team.name);
     return {
-      props: { evidenceRequests, teamId },
+      props: { evidenceRequests, team },
     };
   }
 );

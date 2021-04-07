@@ -4,7 +4,7 @@ import teams from '../../teams.json';
 
 describe('Can upload a document', () => {
   const requestId = 'foo';
-  const residentReferenceId = evidenceRequestsFixture.residentReferenceId;
+  const residentReferenceId = evidenceRequestsFixture.resident.referenceId;
 
   beforeEach(() => {
     cy.intercept(
