@@ -27,10 +27,18 @@ export interface EvidenceRequestRequest {
   userRequestedBy?: string;
 }
 
+export interface DocumentSubmissionForm {
+  state: string;
+  rejectionReason?: string;
+  staffSelectedDocumentTypeId?: string;
+  validUntilArray?: string[];
+}
+
 export interface DocumentSubmissionRequest {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
+  validUntil?: string;
 }
 
 export interface ResidentRequest {

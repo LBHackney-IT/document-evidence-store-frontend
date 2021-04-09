@@ -5,8 +5,9 @@ import Radio from './Radio';
 import { Form, Formik } from 'formik';
 import { DocumentType } from '../domain/document-type';
 import * as Yup from 'yup';
-import { DocumentSubmissionRequest } from '../gateways/internal-api';
+import { DocumentSubmissionForm } from '../gateways/internal-api';
 import { DocumentState } from '../domain/document-submission';
+import DateForm from './DateForm';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
@@ -17,6 +18,7 @@ const schema = Yup.object().shape({
 const initialValues = {
   state: DocumentState.APPROVED,
   staffSelectedDocumentTypeId: '',
+  validUntilArray: [],
 };
 
 const AcceptDialog: FunctionComponent<Props> = (props) => {
@@ -69,6 +71,13 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                   ))}
                 </div>
               </fieldset>
+
+              <fieldset className="govuk-fieldset" role="group">
+                <legend className="govuk-fieldset__legend">
+                  When does this document expire?
+                </legend>
+                <DateForm />
+              </fieldset>
             </div>
 
             <div className={styles.actions}>
@@ -97,7 +106,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
 interface Props {
   open: boolean;
   staffSelectedDocumentTypes: Array<DocumentType>;
-  onAccept: (values: DocumentSubmissionRequest) => Promise<void>;
+  onAccept: (values: DocumentSubmissionForm) => Promise<void>;
   onDismiss(): void;
 }
 
