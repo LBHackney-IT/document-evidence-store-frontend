@@ -59,10 +59,10 @@ export class UploadFormModel {
 
     const uploadFilesAndUpdateDocumentStateRequests = fileDocumentSubmissions.map(
       async (fileDocumentSubmission) => {
-        /*await this.uploadFile(
+        await this.uploadFile(
           fileDocumentSubmission.file,
           fileDocumentSubmission.documentSubmission
-        );*/
+        );
         await this.updateDocumentState(
           fileDocumentSubmission.documentSubmission.id
         );
