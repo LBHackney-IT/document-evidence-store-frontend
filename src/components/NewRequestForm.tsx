@@ -11,15 +11,24 @@ import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
 
 const schema = Yup.object().shape({
-  resident: Yup.object().shape({
-    name: Yup.string().required("Please enter the resident's name"),
-    email: Yup.string()
-      .required("Please enter the resident's email address")
-      .email('Please give a valid email address'),
-    phoneNumber: Yup.string().required(
-      "Please enter the resident's phone number"
-    ),
-  }),
+  resident: Yup.object().shape(
+    {
+      name: Yup.string().required("Please enter the resident's name"),
+      email: Yup.string().when(['phoneNumber'], {
+        is: (phoneNumber) => !phoneNumber,
+        then: Yup.string()
+          .required('Please provide either an email or a phone number')
+          .email('Please give a valid email address'),
+      }),
+      phoneNumber: Yup.string().when(['email'], {
+        is: (email) => !email,
+        then: Yup.string().required(
+          'Please provide either an email or a phone number'
+        ),
+      }),
+    },
+    [['email', 'phoneNumber']]
+  ),
   serviceRequestedBy: Yup.string(),
   reason: Yup.string(),
   deliveryMethods: Yup.array(),
@@ -66,7 +75,7 @@ const NewRequestForm = ({
       validationSchema={schema}
       onSubmit={submitHandler}
     >
-      {({ errors, touched, isSubmitting, submitForm }) => (
+      {({ values, errors, touched, isSubmitting, submitForm }) => (
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
@@ -107,12 +116,16 @@ const NewRequestForm = ({
               <Checkbox
                 label="Send request by email"
                 name="deliveryMethods"
-                value="EMAIL"
+                value={values.resident?.email}
+                disabled={values.resident?.email ? false : true}
+                //checked={!errors.resident?.email}
               />
               <Checkbox
                 label="Send request by SMS"
                 name="deliveryMethods"
-                value="SMS"
+                value={values.resident?.phoneNumber}
+                disabled={values.resident?.phoneNumber ? false : true}
+                // checked={values.resident?.phoneNumber ? true : false}
               />
             </div>
           </div>
