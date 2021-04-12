@@ -27,6 +27,19 @@ export interface EvidenceRequestRequest {
   userRequestedBy?: string;
 }
 
+export interface EvidenceRequestForm {
+  resident: {
+    name: string;
+    email: string;
+    phoneNumber: string;
+  };
+  serviceRequestedBy: string;
+  reason: string;
+  documentTypes: [];
+  emailCheckbox: [];
+  phoneNumberCheckbox: [];
+}
+
 export interface DocumentSubmissionRequest {
   state: string;
   rejectionReason?: string;

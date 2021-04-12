@@ -5,7 +5,10 @@ import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
-import { EvidenceRequestRequest } from 'src/gateways/internal-api';
+import {
+  EvidenceRequestRequest,
+  EvidenceRequestForm,
+} from 'src/gateways/internal-api';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
@@ -52,14 +55,16 @@ const NewRequestForm = ({
     serviceRequestedBy: team.name,
     reason: team.reasons[0].name,
     documentTypes: [],
-    deliveryMethods: ['SMS', 'EMAIL'],
+    emailCheckbox: '',
+    phoneNumberCheckbox: '',
   };
 
   const submitHandler = useCallback(
-    async (values: typeof initialValues) => {
-      if (!request) return setRequest(values);
+    async (values) => {
+      const payload = buildEvidenceRequestRequest(values);
+      if (!request) return setRequest(payload);
       try {
-        await onSubmit(values);
+        await onSubmit(payload);
         setRequest(undefined);
       } catch (err) {
         setRequest(undefined);
@@ -68,6 +73,27 @@ const NewRequestForm = ({
     },
     [setRequest, request, onSubmit, setSubmitError]
   );
+
+  const buildEvidenceRequestRequest = (values: EvidenceRequestForm) => {
+    const deliveryMethods: string[] = [];
+    console.log('VALUES', values);
+    if (values.emailCheckbox.length !== 0 && values.resident.email !== '') {
+      deliveryMethods.push('EMAIL');
+    }
+
+    if (
+      values.phoneNumberCheckbox.length !== 0 &&
+      values.resident.phoneNumber !== ''
+    ) {
+      deliveryMethods.push('SMS');
+    }
+    const payload: EvidenceRequestRequest = {
+      ...values,
+      deliveryMethods: deliveryMethods,
+    };
+
+    return payload;
+  };
 
   return (
     <Formik
@@ -115,17 +141,15 @@ const NewRequestForm = ({
             <div className="govuk-checkboxes lbh-checkboxes">
               <Checkbox
                 label="Send request by email"
-                name="deliveryMethods"
+                name="emailCheckbox"
                 value={values.resident?.email}
                 disabled={values.resident?.email ? false : true}
-                //checked={!errors.resident?.email}
               />
               <Checkbox
                 label="Send request by SMS"
-                name="deliveryMethods"
+                name="phoneNumberCheckbox"
                 value={values.resident?.phoneNumber}
                 disabled={values.resident?.phoneNumber ? false : true}
-                // checked={values.resident?.phoneNumber ? true : false}
               />
             </div>
           </div>
