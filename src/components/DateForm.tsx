@@ -7,13 +7,16 @@ const DateForm = (props: Props): JSX.Element => (
       props.error ? 'govuk-form-group--error' : null
     }`}
   >
+    <span className="govuk-hint lbh-hint" id={`${props.name}-hint`}>
+      For example, 31 3 1980
+    </span>
     <div className={`"govuk-date-input lbh-date-input"`}>
       <div className={`"govuk-date-input__item"`}>
         <label className="govuk-label lbh-label" htmlFor="day">
           Day
         </label>
         <FormikField
-          name="validUntilArray.[0]"
+          name={`${props.name}.[0]`}
           id="day"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -26,8 +29,7 @@ const DateForm = (props: Props): JSX.Element => (
           Month
         </label>
         <FormikField
-          name="validUntilArray.[1]"
-          //name={`${props.array}."month"`}
+          name={`${props.name}.[1]`}
           id="month"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -39,8 +41,7 @@ const DateForm = (props: Props): JSX.Element => (
         Year
       </label>
       <FormikField
-        name="validUntilArray.[2]"
-        //name={`${props.array}."year"`}
+        name={`${props.name}.[2]`}
         id="year"
         className="govuk-input govuk-date-input__input govuk-input--width-2"
         type="text"
@@ -52,11 +53,7 @@ const DateForm = (props: Props): JSX.Element => (
 );
 
 export interface Props {
-  //array: string[];
-  //label: string;
-  //name: string;
-  textarea?: boolean;
-  hint?: string;
+  name: string;
   error?: string | null;
 }
 

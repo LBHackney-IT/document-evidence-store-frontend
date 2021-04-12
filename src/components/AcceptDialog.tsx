@@ -18,7 +18,7 @@ const schema = Yup.object().shape({
 const initialValues = {
   state: DocumentState.APPROVED,
   staffSelectedDocumentTypeId: '',
-  validUntilArray: [],
+  validUntilDates: [],
 };
 
 const AcceptDialog: FunctionComponent<Props> = (props) => {
@@ -71,12 +71,20 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                   ))}
                 </div>
               </fieldset>
+            </div>
 
-              <fieldset className="govuk-fieldset" role="group">
+            <div
+              className={`govuk-form-group lbh-form-group ${
+                touched.validUntilDates &&
+                errors.validUntilDates &&
+                'govuk-form-group--error'
+              }`}
+            >
+              <fieldset className="govuk-fieldset">
                 <legend className="govuk-fieldset__legend">
                   When does this document expire?
                 </legend>
-                <DateForm />
+                <DateForm name="validUntilDates" />
               </fieldset>
             </div>
 
