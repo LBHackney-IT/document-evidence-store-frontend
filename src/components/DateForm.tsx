@@ -13,7 +13,7 @@ const DateForm = (props: Props): JSX.Element => (
           Day
         </label>
         <FormikField
-          name="validUntilArray.[0]"
+          name={`${props.name}.[0]`}
           id="day"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -26,8 +26,7 @@ const DateForm = (props: Props): JSX.Element => (
           Month
         </label>
         <FormikField
-          name="validUntilArray.[1]"
-          //name={`${props.array}."month"`}
+          name={`${props.name}.[1]`}
           id="month"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -39,8 +38,7 @@ const DateForm = (props: Props): JSX.Element => (
         Year
       </label>
       <FormikField
-        name="validUntilArray.[2]"
-        //name={`${props.array}."year"`}
+        name={`${props.name}.[2]`}
         id="year"
         className="govuk-input govuk-date-input__input govuk-input--width-2"
         type="text"
@@ -52,10 +50,7 @@ const DateForm = (props: Props): JSX.Element => (
 );
 
 export interface Props {
-  //array: string[];
-  //label: string;
-  //name: string;
-  textarea?: boolean;
+  name: string;
   hint?: string;
   error?: string | null;
 }

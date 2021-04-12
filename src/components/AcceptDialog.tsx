@@ -76,7 +76,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 <legend className="govuk-fieldset__legend">
                   When does this document expire?
                 </legend>
-                <DateForm />
+                <DateForm name="validUntilArray" />
               </fieldset>
             </div>
 

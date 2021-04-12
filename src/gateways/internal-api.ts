@@ -31,7 +31,7 @@ export interface DocumentSubmissionForm {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
-  validUntilArray?: string[];
+  validUntilDates?: string[];
 }
 
 export interface DocumentSubmissionRequest {

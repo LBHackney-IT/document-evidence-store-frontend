@@ -65,7 +65,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
           {
             state: values.state,
             staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
-            validUntil: values.validUntilArray?.join('-'),
+            validUntil: values.validUntilDates?.join('-'),
           }
         );
         setDocumentSubmission(updated);
