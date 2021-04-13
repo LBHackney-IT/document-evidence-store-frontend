@@ -27,11 +27,17 @@ export interface EvidenceRequestRequest {
   userRequestedBy?: string;
 }
 
-export interface DocumentSubmissionForm {
-  state: string;
-  rejectionReason?: string;
-  staffSelectedDocumentTypeId?: string;
-  validUntilDates?: string[];
+export interface EvidenceRequestForm {
+  resident: {
+    name: string;
+    email: string;
+    phoneNumber: string;
+  };
+  serviceRequestedBy: string;
+  reason: string;
+  documentTypes: [];
+  emailCheckbox: [];
+  phoneNumberCheckbox: [];
 }
 
 export interface DocumentSubmissionRequest {
@@ -39,6 +45,13 @@ export interface DocumentSubmissionRequest {
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
   validUntil?: string;
+}
+
+export interface DocumentSubmissionForm {
+  state: string;
+  rejectionReason?: string;
+  staffSelectedDocumentTypeId?: string;
+  validUntilDates?: string[];
 }
 
 export interface ResidentRequest {

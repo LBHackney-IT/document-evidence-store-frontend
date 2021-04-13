@@ -30,5 +30,17 @@
       }
     ],
     "slaMessage": "This is the Development Housing Team SLA message"
+  },
+  {
+    "name": "Security Team",
+    "googleGroup": "Security_Team",
+    "id": "3",
+    "reasons": [
+      {
+        "name": "Security Reason 1",
+        "id": "1213"
+      }
+    ],
+    "slaMessage": "This is the Security team SLA message"
   }
 ]

@@ -5,21 +5,33 @@ import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
-import { EvidenceRequestRequest } from 'src/gateways/internal-api';
+import {
+  EvidenceRequestRequest,
+  EvidenceRequestForm,
+} from 'src/gateways/internal-api';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
 
 const schema = Yup.object().shape({
-  resident: Yup.object().shape({
-    name: Yup.string().required("Please enter the resident's name"),
-    email: Yup.string()
-      .required("Please enter the resident's email address")
-      .email('Please give a valid email address'),
-    phoneNumber: Yup.string().required(
-      "Please enter the resident's phone number"
-    ),
-  }),
+  resident: Yup.object().shape(
+    {
+      name: Yup.string().required("Please enter the resident's name"),
+      email: Yup.string().when(['phoneNumber'], {
+        is: (phoneNumber) => !phoneNumber,
+        then: Yup.string()
+          .required('Please provide either an email or a phone number')
+          .email('Please give a valid email address'),
+      }),
+      phoneNumber: Yup.string().when(['email'], {
+        is: (email) => !email,
+        then: Yup.string().required(
+          'Please provide either an email or a phone number'
+        ),
+      }),
+    },
+    [['email', 'phoneNumber']]
+  ),
   serviceRequestedBy: Yup.string(),
   reason: Yup.string(),
   deliveryMethods: Yup.array(),
@@ -43,14 +55,16 @@ const NewRequestForm = ({
     serviceRequestedBy: team.name,
     reason: team.reasons[0].name,
     documentTypes: [],
-    deliveryMethods: ['SMS', 'EMAIL'],
+    emailCheckbox: '',
+    phoneNumberCheckbox: '',
   };
 
   const submitHandler = useCallback(
-    async (values: typeof initialValues) => {
-      if (!request) return setRequest(values);
+    async (values) => {
+      const payload = buildEvidenceRequestRequest(values);
+      if (!request) return setRequest(payload);
       try {
-        await onSubmit(values);
+        await onSubmit(payload);
         setRequest(undefined);
       } catch (err) {
         setRequest(undefined);
@@ -60,13 +74,33 @@ const NewRequestForm = ({
     [setRequest, request, onSubmit, setSubmitError]
   );
 
+  const buildEvidenceRequestRequest = (values: EvidenceRequestForm) => {
+    const deliveryMethods: string[] = [];
+    if (values.emailCheckbox.length !== 0 && values.resident.email !== '') {
+      deliveryMethods.push('EMAIL');
+    }
+
+    if (
+      values.phoneNumberCheckbox.length !== 0 &&
+      values.resident.phoneNumber !== ''
+    ) {
+      deliveryMethods.push('SMS');
+    }
+    const payload: EvidenceRequestRequest = {
+      ...values,
+      deliveryMethods: deliveryMethods,
+    };
+
+    return payload;
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
       onSubmit={submitHandler}
     >
-      {({ errors, touched, isSubmitting, submitForm }) => (
+      {({ values, errors, touched, isSubmitting, submitForm }) => (
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
@@ -106,13 +140,15 @@ const NewRequestForm = ({
             <div className="govuk-checkboxes lbh-checkboxes">
               <Checkbox
                 label="Send request by email"
-                name="deliveryMethods"
-                value="EMAIL"
+                name="emailCheckbox"
+                value={values.resident?.email}
+                disabled={values.resident?.email ? false : true}
               />
               <Checkbox
                 label="Send request by SMS"
-                name="deliveryMethods"
-                value="SMS"
+                name="phoneNumberCheckbox"
+                value={values.resident?.phoneNumber}
+                disabled={values.resident?.phoneNumber ? false : true}
               />
             </div>
           </div>

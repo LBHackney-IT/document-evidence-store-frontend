@@ -31,7 +31,7 @@ const promise = Promise.resolve();
 const mockHandler = jest.fn(() => promise);
 
 const values = {
-  deliveryMethods: ['SMS', 'EMAIL'],
+  deliveryMethods: ['EMAIL', 'SMS'],
   documentTypes: ['proof-of-id'],
   resident: {
     email: 'example@email.com',
@@ -40,6 +40,8 @@ const values = {
   },
   serviceRequestedBy: 'Example Service',
   reason: 'example-reason',
+  emailCheckbox: ['example@email.com'],
+  phoneNumberCheckbox: ['07777777777'],
 };
 
 const fillInForm = () => {
@@ -52,6 +54,8 @@ const fillInForm = () => {
   fireEvent.change(screen.getByLabelText('Mobile phone number'), {
     target: { value: values.resident.phoneNumber },
   });
+  fireEvent.click(screen.getByLabelText('Send request by SMS'));
+  fireEvent.click(screen.getByLabelText('Send request by email'));
   fireEvent.click(screen.getByText(documentTypes[0].title));
 };
 
@@ -68,8 +72,8 @@ describe('NewRequestFormForm', () => {
     expect(screen.getByLabelText('Email')).toBeVisible();
     expect(screen.getByLabelText('Mobile phone number')).toBeVisible();
 
-    expect(screen.getByLabelText('Send request by SMS')).toBeChecked();
-    expect(screen.getByLabelText('Send request by email')).toBeChecked();
+    expect(screen.getByLabelText('Send request by SMS')).toBeDisabled();
+    expect(screen.getByLabelText('Send request by email')).toBeDisabled();
 
     expect(screen.getByText('Proof of ID')).toBeVisible();
     expect(screen.getByText('Repairs photo')).toBeVisible();
@@ -92,11 +96,8 @@ describe('NewRequestFormForm', () => {
         screen.getByText("Please enter the resident's name")
       ).toBeVisible();
       expect(
-        screen.getByText("Please enter the resident's email address")
-      ).toBeVisible();
-      expect(
-        screen.getByText("Please enter the resident's phone number")
-      ).toBeVisible();
+        screen.getAllByText('Please provide either an email or a phone number')
+      ).toHaveLength(2);
       expect(screen.getByText('Please choose a document type')).toBeVisible();
     });
   });
