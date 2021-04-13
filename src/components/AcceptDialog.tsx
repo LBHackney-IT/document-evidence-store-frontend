@@ -7,7 +7,7 @@ import { DocumentType } from '../domain/document-type';
 import * as Yup from 'yup';
 import { DocumentSubmissionForm } from '../gateways/internal-api';
 import { DocumentState } from '../domain/document-submission';
-import DateForm from './DateForm';
+import DateFields from './DateFields';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
@@ -40,7 +40,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         validationSchema={schema}
         onSubmit={props.onAccept}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, isSubmitting }) => (
           <Form>
             <div
               className={`govuk-form-group lbh-form-group ${
@@ -84,7 +84,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 <legend className="govuk-fieldset__legend">
                   When does this document expire?
                 </legend>
-                <DateForm name="validUntilDates" />
+                <DateFields name="validUntilDates" />
               </fieldset>
             </div>
 
@@ -93,6 +93,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 onClick={props.onDismiss}
                 className="govuk-button lbh-button"
                 type="submit"
+                disabled={isSubmitting}
               >
                 Yes, accept
               </button>

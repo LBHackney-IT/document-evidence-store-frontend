@@ -60,13 +60,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const handleAccept = useCallback(
     async (values: DocumentSubmissionForm) => {
       try {
+        const payload = buildAcceptDocumentSubmissionRequest(values);
         const updated = await gateway.updateDocumentSubmission(
           documentSubmissionId,
-          {
-            state: values.state,
-            staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
-            validUntil: values.validUntilDates?.join('-'),
-          }
+          payload
         );
         setDocumentSubmission(updated);
         router.push(
@@ -81,6 +78,23 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     },
     [documentSubmission]
   );
+
+  const buildAcceptDocumentSubmissionRequest = (
+    values: DocumentSubmissionForm
+  ) => {
+    if (values.validUntilDates && values.validUntilDates.length > 0) {
+      return {
+        state: values.state,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+        validUntil: values.validUntilDates.join('-'),
+      };
+    } else {
+      return {
+        state: values.state,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+      };
+    }
+  };
 
   const handleReject = useCallback(
     async (values: DocumentSubmissionForm) => {
@@ -105,6 +119,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     },
     [documentSubmission]
   );
+
   const [submitError, setSubmitError] = useState(false);
 
   const { document } = documentSubmission;
