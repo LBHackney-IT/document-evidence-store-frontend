@@ -10,8 +10,8 @@ const DateFields = (props: Props): JSX.Element => (
     <span className="govuk-hint lbh-hint" id={`${props.name}-hint`}>
       For example, 31 3 1980
     </span>
-    <div className={`"govuk-date-input lbh-date-input"`}>
-      <div className={`"govuk-date-input__item"`}>
+    <div className={`govuk-date-input lbh-date-input`}>
+      <div className={`govuk-date-input__item`}>
         <label className="govuk-label lbh-label" htmlFor="day">
           Day
         </label>
@@ -24,7 +24,7 @@ const DateFields = (props: Props): JSX.Element => (
           inputMode="numeric"
         />
       </div>
-      <div className={`"govuk-date-input__item"`}>
+      <div className={`govuk-date-input__item`}>
         <label className="govuk-label lbh-label" htmlFor="month">
           Month
         </label>
@@ -37,7 +37,7 @@ const DateFields = (props: Props): JSX.Element => (
           inputMode="numeric"
         />
       </div>
-      <div className={`"govuk-date-input__item"`}>
+      <div className={`govuk-date-input__item`}>
         <label className="govuk-label lbh-label" htmlFor="year">
           Year
         </label>
