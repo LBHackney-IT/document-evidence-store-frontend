@@ -5,8 +5,9 @@ import Radio from './Radio';
 import { Form, Formik } from 'formik';
 import { DocumentType } from '../domain/document-type';
 import * as Yup from 'yup';
-import { DocumentSubmissionRequest } from '../gateways/internal-api';
+import { DocumentSubmissionForm } from '../gateways/internal-api';
 import { DocumentState } from '../domain/document-submission';
+import DateFields from './DateFields';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
@@ -17,6 +18,7 @@ const schema = Yup.object().shape({
 const initialValues = {
   state: DocumentState.APPROVED,
   staffSelectedDocumentTypeId: '',
+  validUntilDates: [],
 };
 
 const AcceptDialog: FunctionComponent<Props> = (props) => {
@@ -38,7 +40,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         validationSchema={schema}
         onSubmit={props.onAccept}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, isSubmitting }) => (
           <Form>
             <div
               className={`govuk-form-group lbh-form-group ${
@@ -71,11 +73,27 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
               </fieldset>
             </div>
 
+            <div
+              className={`govuk-form-group lbh-form-group ${
+                touched.validUntilDates &&
+                errors.validUntilDates &&
+                'govuk-form-group--error'
+              }`}
+            >
+              <fieldset className="govuk-fieldset">
+                <legend className="govuk-fieldset__legend">
+                  When does this document expire?
+                </legend>
+                <DateFields name="validUntilDates" />
+              </fieldset>
+            </div>
+
             <div className={styles.actions}>
               <button
                 onClick={props.onDismiss}
                 className="govuk-button lbh-button"
                 type="submit"
+                disabled={isSubmitting}
               >
                 Yes, accept
               </button>
@@ -97,7 +115,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
 interface Props {
   open: boolean;
   staffSelectedDocumentTypes: Array<DocumentType>;
-  onAccept: (values: DocumentSubmissionRequest) => Promise<void>;
+  onAccept: (values: DocumentSubmissionForm) => Promise<void>;
   onDismiss(): void;
 }
 

@@ -14,7 +14,7 @@ import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import {
-  DocumentSubmissionRequest,
+  DocumentSubmissionForm,
   InternalApiGateway,
 } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
@@ -58,14 +58,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const handleAccept = useCallback(
-    async (values: DocumentSubmissionRequest) => {
+    async (values: DocumentSubmissionForm) => {
       try {
+        const payload = buildAcceptDocumentSubmissionRequest(values);
         const updated = await gateway.updateDocumentSubmission(
           documentSubmissionId,
-          {
-            state: values.state,
-            staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
-          }
+          payload
         );
         setDocumentSubmission(updated);
         router.push(
@@ -81,8 +79,25 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     [documentSubmission]
   );
 
+  const buildAcceptDocumentSubmissionRequest = (
+    values: DocumentSubmissionForm
+  ) => {
+    if (values.validUntilDates && values.validUntilDates.length > 0) {
+      return {
+        state: values.state,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+        validUntil: values.validUntilDates.join('-'),
+      };
+    } else {
+      return {
+        state: values.state,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+      };
+    }
+  };
+
   const handleReject = useCallback(
-    async (values: DocumentSubmissionRequest) => {
+    async (values: DocumentSubmissionForm) => {
       try {
         const updated = await gateway.updateDocumentSubmission(
           documentSubmissionId,
@@ -104,6 +119,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     },
     [documentSubmission]
   );
+
   const [submitError, setSubmitError] = useState(false);
 
   const { document } = documentSubmission;

@@ -89,11 +89,16 @@ describe('Can view and manage evidence', () => {
 
       cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
 
+      cy.get('label').contains('Day').next('input').type('30');
+      cy.get('label').contains('Month').next('input').type('4');
+      cy.get('label').contains('Year').next('input').type('2022');
+
       cy.get('button').contains('Yes, accept').click();
 
       cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
         state: 'APPROVED',
         staffSelectedDocumentTypeId: 'passport-scan',
+        validUntil: '30-4-2022',
       });
     });
 

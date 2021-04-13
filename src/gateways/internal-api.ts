@@ -44,6 +44,14 @@ export interface DocumentSubmissionRequest {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
+  validUntil?: string;
+}
+
+export interface DocumentSubmissionForm {
+  state: string;
+  rejectionReason?: string;
+  staffSelectedDocumentTypeId?: string;
+  validUntilDates?: string[];
 }
 
 export interface ResidentRequest {
