@@ -9,8 +9,6 @@ const Field = (props: Props): JSX.Element => (
       id={props.name}
       value={props.value}
       disabled={props.disabled}
-      //checked={props.value != ''}
-      //checked={!props.disabled && props.value != ''}
       className="govuk-checkboxes__input"
     />
     <label htmlFor={props.name} className="govuk-label govuk-checkboxes__label">
@@ -24,7 +22,6 @@ export interface Props {
   name: string;
   value?: string;
   disabled?: boolean;
-  checked?: boolean;
 }
 
 export default Field;

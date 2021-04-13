@@ -76,7 +76,6 @@ const NewRequestForm = ({
 
   const buildEvidenceRequestRequest = (values: EvidenceRequestForm) => {
     const deliveryMethods: string[] = [];
-    console.log('VALUES', values);
     if (values.emailCheckbox.length !== 0 && values.resident.email !== '') {
       deliveryMethods.push('EMAIL');
     }
