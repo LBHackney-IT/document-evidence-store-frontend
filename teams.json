@@ -32,8 +32,8 @@
     "slaMessage": "This is the Development Housing Team SLA message"
   },
   {
-    "name": "Security Team",
-    "googleGroup": "Security_Team",
+    "name": "Security Testing",
+    "googleGroup": "Security_Testing",
     "id": "3",
     "reasons": [
       {
@@ -41,6 +41,6 @@
         "id": "1213"
       }
     ],
-    "slaMessage": "This is the Security team SLA message"
+    "slaMessage": "This is the Security Testing SLA message"
   }
 ]
