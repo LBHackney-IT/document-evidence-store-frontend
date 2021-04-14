@@ -4,9 +4,11 @@
   },
   "staging": {
     "Development Team": "development-team-staging",
-    "Hackney Staff": "HackneyAll"
+    "Hackney Staff": "HackneyAll",
+    "Security Testing": "Security_Testing"
   },
   "production": {
-    "Development Team": "development-team-production"
+    "Development Team": "development-team-production",
+    "Security Testing": "Security_Testing"
   }
 }
