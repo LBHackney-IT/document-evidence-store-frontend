@@ -20,7 +20,7 @@ export const registerDomainModels = (): void => {
       {
         isApplicable: (v): v is DateTime => v instanceof DateTime,
         serialize: (v) => v.toISO(),
-        deserialize: (v) => DateTime.fromISO(v),
+        deserialize: (v) => DateTime.fromISO(v, { zone: 'utc' }),
       },
       'datetime'
     );
