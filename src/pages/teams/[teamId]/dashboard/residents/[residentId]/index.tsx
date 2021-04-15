@@ -10,6 +10,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 // import styles from 'src/styles/Resident.module.scss';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
+import { formatDate } from '../../../../../../helpers/formatters';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
@@ -47,6 +48,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
       <div className="toReview">
         <h2 className="lbh-heading-h3">To review</h2>
+
         <EvidenceList>
           {toReviewDocumentSubmissions &&
           toReviewDocumentSubmissions.length > 0 ? (
@@ -57,7 +59,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.documentType.title)}
-                createdAt={String(ds.createdAt.toRelativeCalendar())}
+                createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
@@ -120,7 +122,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.staffSelectedDocumentType?.title)}
-                createdAt={String(ds.createdAt.toRelativeCalendar())}
+                createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"

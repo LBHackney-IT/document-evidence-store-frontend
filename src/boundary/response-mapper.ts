@@ -17,7 +17,7 @@ import { Document } from 'src/domain/document';
 export class ResponseMapper {
   static mapEvidenceRequest(attrs: EvidenceRequestResponse): EvidenceRequest {
     const resident = new Resident(attrs.resident);
-    const createdAt = DateTime.fromISO(attrs.createdAt);
+    const createdAt = DateTime.fromISO(attrs.createdAt, { zone: 'utc' });
     const deliveryMethods = attrs.deliveryMethods.map(
       (dm) => DeliveryMethod[dm as keyof typeof DeliveryMethod]
     );
@@ -39,7 +39,7 @@ export class ResponseMapper {
   static mapDocumentSubmission(
     attrs: DocumentSubmissionResponse
   ): DocumentSubmission {
-    const createdAt = DateTime.fromISO(attrs.createdAt);
+    const createdAt = DateTime.fromISO(attrs.createdAt, { zone: 'utc' });
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
     const staffSelectedDocumentType = attrs.staffSelectedDocumentType

@@ -58,7 +58,11 @@ describe('ResponseMapper', () => {
         year: 2020,
         month: 11,
         day: 30,
+        hour: 15,
+        minute: 34,
+        second: 12,
       });
+      expect(result.createdAt.zoneName).toEqual('UTC');
     });
 
     it('maps the resident', () => {
@@ -103,7 +107,11 @@ describe('ResponseMapper', () => {
         year: 2021,
         month: 1,
         day: 14,
+        hour: 10,
+        minute: 23,
+        second: 42,
       });
+      expect(result.createdAt.zoneName).toEqual('UTC');
     });
 
     it('maps the document state', () => {
