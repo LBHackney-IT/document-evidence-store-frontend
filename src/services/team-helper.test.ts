@@ -16,6 +16,7 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
       {
@@ -23,6 +24,7 @@ describe('Team Helper', () => {
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 2',
       },
     ];
@@ -38,6 +40,7 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
       {
@@ -45,6 +48,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 2',
       },
     ];
@@ -61,6 +65,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team-one',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
       {
@@ -68,6 +73,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team-two',
         id: '2',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 2',
       },
     ];
@@ -83,6 +89,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
     ];
@@ -98,6 +105,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '123',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
     ];
@@ -113,6 +121,7 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
       {
@@ -120,6 +129,7 @@ describe('Team Helper', () => {
         googleGroup: 'another-team',
         id: '2',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 2',
       },
     ];
@@ -137,6 +147,7 @@ describe('Team Helper', () => {
         googleGroup: 'team',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
       {
@@ -144,6 +155,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team',
         id: '2',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 2',
       },
     ];
@@ -161,6 +173,7 @@ describe('Team Helper', () => {
         googleGroup: 'different-team',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
     ];
@@ -180,6 +193,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '1',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
     ];
@@ -198,6 +212,7 @@ describe('Team Helper', () => {
         googleGroup: 'team-one',
         id: '123',
         reasons: [],
+        landingMessage: 'example message team 1',
         slaMessage: 'example message team 1',
       },
     ];

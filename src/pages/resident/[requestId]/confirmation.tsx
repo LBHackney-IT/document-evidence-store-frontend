@@ -12,7 +12,10 @@ type ConfirmationProps = {
   team: Team;
 };
 
-const Index: NextPage<ConfirmationProps> = ({ residentReferenceId, team }) => {
+const Confirmation: NextPage<ConfirmationProps> = ({
+  residentReferenceId,
+  team,
+}) => {
   return (
     <Layout>
       <Head>
@@ -66,4 +69,4 @@ export const getServerSideProps = withAuth(async (ctx) => {
   return { props: { residentReferenceId, team } };
 });
 
-export default Index;
+export default Confirmation;

@@ -5,6 +5,7 @@ export interface ITeam {
   googleGroup: string;
   id: string;
   reasons: Reason[];
+  landingMessage: string;
   slaMessage: string;
 }
 
@@ -13,6 +14,7 @@ export class Team implements ITeam {
   googleGroup: string;
   id: string;
   reasons: Reason[];
+  landingMessage: string;
   slaMessage: string;
 
   constructor(params: ITeam) {
@@ -20,6 +22,7 @@ export class Team implements ITeam {
     this.googleGroup = params.googleGroup;
     this.id = params.id;
     this.reasons = params.reasons;
+    this.landingMessage = params.landingMessage;
     this.slaMessage = params.slaMessage;
   }
 }

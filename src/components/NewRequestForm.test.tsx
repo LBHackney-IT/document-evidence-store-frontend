@@ -24,6 +24,7 @@ const team = {
       id: '123',
     },
   ],
+  landingMessage: 'example landing',
   slaMessage: 'example message',
 };
 
