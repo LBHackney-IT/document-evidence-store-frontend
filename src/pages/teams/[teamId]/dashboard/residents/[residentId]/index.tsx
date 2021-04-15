@@ -7,6 +7,7 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
+// import styles from 'src/styles/Resident.module.scss';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
@@ -29,6 +30,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const toReviewDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'UPLOADED'
   );
+  // const pendingDocumentSubmissions = documentSubmissions.filter(
+  //   (ds) => ds.state == 'PENDING'
+  // );
   const reviewedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'APPROVED'
   );
@@ -67,6 +71,43 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           )}
         </EvidenceList>
       </div>
+
+      {/* <h2 className="lbh-heading-h3">Pending requests</h2>
+
+      {pendingDocumentSubmissions && pendingDocumentSubmissions.length > 0 ? (
+        <>
+          <table className={`govuk-table lbh-table ${styles.table}`}>
+            <thead className="govuk-table__head">
+              <tr className="govuk-table__row">
+                <th scope="col" className="govuk-table__header">
+                  Document
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  Requested
+                </th>
+                <th scope="col" className="govuk-table__header">
+                  <span className="lbu-visually-hidden">Actions</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody className="govuk-table__body">
+              {pendingDocumentSubmissions.map((ds) => (
+                <tr className="govuk-table__row">
+                  <td className="govuk-table__cell">{ds.documentType.title}</td>
+                  <td className="govuk-table__cell">
+                    {ds.createdAt.toRelativeCalendar()}
+                  </td>
+                  <td className="govuk-table__cell  govuk-table__cell--numeric">
+                    <Button className={styles.button}>Remind</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </>
+      ) : (
+        <h4>There are no pending documents</h4>
+      )} */}
 
       <div className="reviewed">
         <h2 className="lbh-heading-h3">Reviewed</h2>
