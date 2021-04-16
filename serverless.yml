@@ -52,6 +52,7 @@ functions:
       DOCUMENTS_API_BASE_URL: ${ssm:/documents-api/${self:provider.stage}/base-url}
       DOCUMENTS_API_GET_CLAIMS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/get/claims/token}
       DOCUMENTS_API_POST_CLAIMS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/post/claims/token}
+      FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url
 resources:
   Resources:
     CloudFrontDistribution:

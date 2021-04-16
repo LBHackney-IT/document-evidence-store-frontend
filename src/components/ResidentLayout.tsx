@@ -3,6 +3,10 @@ import PhaseBanner from '../components/PhaseBanner';
 import Header from './Header';
 import styles from 'src/styles/SkipLink.module.scss';
 
+const data = {
+  feedbackUrl: process.env.FEEDBACK_FORM_RESIDENT_URL as string,
+};
+
 const ResidentLayout: FunctionComponent = (props) => (
   <>
     <a href="#main-content" className={`lbh-body-s ${styles.skipLink}`}>
@@ -11,7 +15,7 @@ const ResidentLayout: FunctionComponent = (props) => (
 
     <Header />
 
-    <PhaseBanner />
+    <PhaseBanner feedbackUrl={data.feedbackUrl} />
 
     <main id="main-content" className="lbh-main-wrapper">
       <div className="lbh-container">{props.children}</div>
