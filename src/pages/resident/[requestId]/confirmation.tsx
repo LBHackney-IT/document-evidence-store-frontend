@@ -37,7 +37,7 @@ const Index: NextPage<ConfirmationProps> = ({ residentReferenceId, team }) => {
           </p>
           <p className="lbh-body">
             <a
-              href={process.env.FEEDBACK_FORM_RESIDENT_URL}
+              href={`${process.env.FEEDBACK_FORM_RESIDENT_URL}`}
               className="govuk-link lbh-link"
             >
               What did you think of this service?
