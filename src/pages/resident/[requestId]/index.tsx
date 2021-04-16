@@ -9,11 +9,11 @@ import { Team } from '../../../domain/team';
 import { NextPage } from 'next';
 
 type IndexProps = {
-  residentReferenceId: string;
+  requestId: string;
   team: Team;
 };
 
-const Index: NextPage<IndexProps> = ({ residentReferenceId, team }) => {
+const Index: NextPage<IndexProps> = ({ requestId, team }) => {
   return (
     <Layout>
       <Head>
@@ -34,7 +34,7 @@ const Index: NextPage<IndexProps> = ({ residentReferenceId, team }) => {
           Make sure the whole document is in the frame.
         </p>
         <p className="lbh-body">{team.landingMessage}</p>
-        <Link href={`/resident/${residentReferenceId}/upload`}>
+        <Link href={`/resident/${requestId}/upload`}>
           <a className="govuk-button lbh-button">Continue</a>
         </Link>
       </InterruptionCard>
@@ -50,12 +50,11 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
     requestId
   );
-  const residentReferenceId = evidenceRequest.resident.referenceId;
 
   const teamName = evidenceRequest.serviceRequestedBy;
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
 
-  return { props: { residentReferenceId, team } };
+  return { props: { requestId, team } };
 });
 
 export default Index;
