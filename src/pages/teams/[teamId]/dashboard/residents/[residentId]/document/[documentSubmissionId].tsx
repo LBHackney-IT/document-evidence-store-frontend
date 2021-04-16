@@ -131,11 +131,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     : documentSubmission.documentType.title;
 
   async function copyPageUrl() {
-    const link = router.query.toString();
     try {
-      await navigator.clipboard.writeText(link);
+      await navigator.clipboard.writeText(window.location.href);
       setButtonClicked();
-      console.log('Page URL copied to clipboard');
     } catch (err) {
       console.error('Failed to copy: ', err);
     }
