@@ -13,6 +13,7 @@
         "id": "456"
       }
     ],
+    "landingMessage": "This is the Housing team landing message",
     "slaMessage": "This is the Housing team SLA message"
   },
   {
@@ -29,6 +30,7 @@
         "id": "1011"
       }
     ],
+    "landingMessage": "This is the Development Housing Team landing message",
     "slaMessage": "This is the Development Housing Team SLA message"
   },
   {
@@ -41,6 +43,7 @@
         "id": "1213"
       }
     ],
+    "landingMessage": "This is the Security Testing landing message",
     "slaMessage": "This is the Security Testing SLA message"
   }
 ]
