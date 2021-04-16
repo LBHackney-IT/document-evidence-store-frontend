@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styles from '../styles/PhaseBanner.module.scss';
 
-const PhaseBanner: FunctionComponent = () => (
+const PhaseBanner: FunctionComponent<Props> = (props) => (
   <div
     role="complementary"
     className={`govuk-phase-banner lbh-phase-banner lbh-container ${styles.banner}`}
@@ -14,7 +14,7 @@ const PhaseBanner: FunctionComponent = () => (
       </strong>
       <span className="govuk-phase-banner__text lbh-body-xs">
         This is a new website.{' '}
-        <a className="lbh-link" href={process.env.FEEDBACK_FORM_URL as string}>
+        <a href={props.feedbackUrl} className="lbh-link">
           Your feedback
         </a>{' '}
         will help us improve it.
@@ -22,5 +22,9 @@ const PhaseBanner: FunctionComponent = () => (
     </p>
   </div>
 );
+
+export interface Props {
+  feedbackUrl: string;
+}
 
 export default PhaseBanner;
