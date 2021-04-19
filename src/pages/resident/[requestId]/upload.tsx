@@ -11,12 +11,14 @@ type UploadProps = {
   requestId: string;
   evidenceRequestId: string;
   documentTypes: DocumentType[];
+  feedbackUrl: string;
 };
 
 const Upload: NextPage<UploadProps> = ({
   requestId,
   evidenceRequestId,
   documentTypes,
+  feedbackUrl,
 }) => {
   const router = useRouter();
   const onSuccess = useCallback(() => {
@@ -24,7 +26,7 @@ const Upload: NextPage<UploadProps> = ({
   }, []);
 
   return (
-    <Layout>
+    <Layout feedbackUrl={feedbackUrl}>
       <Head>
         <title>Upload your documents</title>
       </Head>
@@ -58,9 +60,10 @@ export const getServerSideProps: GetServerSideProps<
   const evidenceRequest = await gateway.getEvidenceRequest(requestId);
   const evidenceRequestId = evidenceRequest.id;
   const documentTypes = evidenceRequest.documentTypes;
+  const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
   return {
-    props: { requestId, evidenceRequestId, documentTypes },
+    props: { requestId, evidenceRequestId, documentTypes, feedbackUrl },
   };
 };
 

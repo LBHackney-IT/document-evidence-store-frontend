@@ -10,7 +10,7 @@ const Index = (): ReactNode => {
   const { requestId } = router.query;
 
   return (
-    <Layout>
+    <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
       <Head>
         <title>You’ll need to photograph your documents</title>
       </Head>
