@@ -124,6 +124,11 @@ describe('Can view and manage evidence', () => {
       rejectionReason: 'some rejection reason',
     });
   });
+
+  it('can view approved documents', () => {
+    cy.get('.reviewed a').contains('Proof of ID').click();
+    cy.get('button').contains('Copy page URL');
+  });
 });
 
 export {};

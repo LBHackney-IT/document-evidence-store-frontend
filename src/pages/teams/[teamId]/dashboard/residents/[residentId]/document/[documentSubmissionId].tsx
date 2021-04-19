@@ -56,6 +56,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const [documentSubmission, setDocumentSubmission] = useState(
     _documentSubmission
   );
+  const [isClicked, setIsClicked] = useState(false);
 
   const handleAccept = useCallback(
     async (values: DocumentSubmissionForm) => {
@@ -129,6 +130,19 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     ? documentSubmission.staffSelectedDocumentType.title
     : documentSubmission.documentType.title;
 
+  async function copyPageUrl() {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      setButtonClicked();
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  }
+
+  function setButtonClicked() {
+    setIsClicked(true);
+  }
+
   return (
     <Layout teamId={teamId}>
       <Head>
@@ -168,6 +182,16 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             </button>
           </Link>
         </div>
+      )}
+
+      {documentSubmission.state === DocumentState.APPROVED && (
+        <button
+          onClick={copyPageUrl}
+          className="govuk-button govuk-secondary lbh-button lbh-button--secondary"
+          aria-live="polite"
+        >
+          {!isClicked ? 'Copy page URL' : 'Copied'}
+        </button>
       )}
 
       {document.extension === 'jpeg' || document.extension === 'png' ? (
