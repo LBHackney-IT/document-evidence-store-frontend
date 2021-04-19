@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import Layout from '../components/ResidentLayout';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 const PageNotFound = (): ReactNode => (
-  <Layout>
+  <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
     <Head>
       <title>Page not found</title>
     </Head>
