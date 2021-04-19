@@ -125,7 +125,7 @@ describe('Can view and manage evidence', () => {
     });
   });
 
-  it('can copy the page URL using button', () => {
+  it('can view approved documents', () => {
     cy.get('.reviewed a').contains('Proof of ID').click();
     cy.get('button').contains('Copy page URL');
   });
