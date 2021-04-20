@@ -18,6 +18,11 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
     props.teamId
   );
 
+  const userTeams = TeamHelper.filterTeamsForUser(
+    TeamHelper.getTeamsJson(),
+    user
+  );
+
   return (
     <>
       <a
@@ -34,16 +39,18 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             {currentTeam?.name}
           </strong>
-          <Link
-            href={{
-              pathname: '/teams',
-              query: { teamId: props.teamId },
-            }}
-          >
-            <a className={`lbh-link ${styles['switcher__link']}`}>
-              Switch team
-            </a>
-          </Link>
+          {userTeams.length > 1 && (
+            <Link
+              href={{
+                pathname: '/teams',
+                query: { teamId: props.teamId },
+              }}
+            >
+              <a className={`lbh-link ${styles['switcher__link']}`}>
+                Switch team
+              </a>
+            </Link>
+          )}
         </nav>
       </div>
 

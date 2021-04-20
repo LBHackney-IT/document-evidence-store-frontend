@@ -45,5 +45,22 @@
     ],
     "landingMessage": "This is the Security Testing landing message",
     "slaMessage": "This is the Security Testing SLA message"
+  },
+  {
+    "name": "Development Housing Team",
+    "googleGroup": "development-team-production",
+    "id": "4",
+    "reasons": [
+      {
+        "name": "Housing Reason 3",
+        "id": "789"
+      },
+      {
+        "name": "Housing Reason 4",
+        "id": "1011"
+      }
+    ],
+    "landingMessage": "This is the Development Housing Team landing message",
+    "slaMessage": "This is the Development Housing Team SLA message"
   }
 ]
