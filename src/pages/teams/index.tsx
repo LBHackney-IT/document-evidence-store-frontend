@@ -35,6 +35,15 @@ export const getServerSideProps = withAuth<TeamsProps>(async (ctx) => {
     userTeams = TeamHelper.filterTeamsForUser(TeamHelper.getTeamsJson(), user);
   }
 
+  if (userTeams.length === 1) {
+    return {
+      redirect: {
+        destination: `/teams/${userTeams[0].id}/dashboard`,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       teams: userTeams,
