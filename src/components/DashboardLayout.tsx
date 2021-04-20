@@ -39,7 +39,7 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             {currentTeam?.name}
           </strong>
-          {userTeams.length !== 1 && (
+          {userTeams.length > 1 && (
             <Link
               href={{
                 pathname: '/teams',
