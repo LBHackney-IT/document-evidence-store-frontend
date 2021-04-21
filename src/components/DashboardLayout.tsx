@@ -6,9 +6,19 @@ import { UserContext } from '../contexts/UserContext';
 import Header from './Header';
 import { TeamHelper } from '../services/team-helper';
 import Link from 'next/link';
+import ResidentLayout from './ResidentLayout';
 
-const Layout: FunctionComponent<Props> = (props) => {
+const Layout: FunctionComponent<Props> = (props, { children }) => {
   const { user } = useContext(UserContext);
+
+  if (!user)
+    return (
+      <ResidentLayout
+        feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}
+      >
+        {children}
+      </ResidentLayout>
+    );
 
   const currentTeam = TeamHelper.getTeamFromId(
     TeamHelper.getTeamsJson(),
@@ -29,7 +39,7 @@ const Layout: FunctionComponent<Props> = (props) => {
         Skip to main content
       </a>
 
-      <Header userName={user?.name} />
+      <Header userName={user.name} />
 
       <div className="lbh-container">
         <nav className={styles.switcher} aria-label="Switch teams">
