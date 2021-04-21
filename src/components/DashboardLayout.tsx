@@ -3,15 +3,12 @@ import NavLink from './NavLink';
 import styles from '../styles/DashboardLayout.module.scss';
 import skipLinkStyles from 'src/styles/SkipLink.module.scss';
 import { UserContext } from '../contexts/UserContext';
-import ResidentLayout from './ResidentLayout';
 import Header from './Header';
 import { TeamHelper } from '../services/team-helper';
 import Link from 'next/link';
 
-const Layout: FunctionComponent<Props> = (props, { children }) => {
+const Layout: FunctionComponent<Props> = (props) => {
   const { user } = useContext(UserContext);
-
-  if (!user) return <ResidentLayout>{children}</ResidentLayout>;
 
   const currentTeam = TeamHelper.getTeamFromId(
     TeamHelper.getTeamsJson(),
@@ -32,7 +29,7 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
         Skip to main content
       </a>
 
-      <Header userName={user.name} />
+      <Header userName={user?.name} />
 
       <div className="lbh-container">
         <nav className={styles.switcher} aria-label="Switch teams">

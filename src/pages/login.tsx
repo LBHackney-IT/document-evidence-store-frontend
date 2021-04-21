@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import Layout from '../components/ResidentLayout';
 
-type LoginProps = { appUrl: string };
+type LoginProps = { appUrl: string; feedbackUrl: string };
 
-const Home: NextPage<LoginProps> = ({ appUrl }) => {
+const Home: NextPage<LoginProps> = ({ appUrl, feedbackUrl }) => {
   const router = useRouter();
   const loginUrl = useMemo(() => {
     let { redirect } = router.query as { redirect?: string };
@@ -15,7 +15,7 @@ const Home: NextPage<LoginProps> = ({ appUrl }) => {
   }, [router, appUrl]);
 
   return (
-    <Layout>
+    <Layout feedbackUrl={feedbackUrl}>
       <h1 className="lbh-heading-h1">Staff sign in</h1>
 
       <Link href={loginUrl}>
@@ -49,8 +49,9 @@ const Home: NextPage<LoginProps> = ({ appUrl }) => {
 export const getServerSideProps: GetServerSideProps<LoginProps> = async () => {
   const appUrl = process.env.APP_URL;
   if (!appUrl) throw new Error('Missing APP_URL');
+  const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
-  return { props: { appUrl } };
+  return { props: { appUrl, feedbackUrl } };
 };
 
 export default Home;

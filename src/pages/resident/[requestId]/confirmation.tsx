@@ -10,14 +10,16 @@ import { Team } from 'src/domain/team';
 type ConfirmationProps = {
   residentReferenceId: string;
   team: Team;
+  feedbackUrl: string;
 };
 
 const Confirmation: NextPage<ConfirmationProps> = ({
   residentReferenceId,
   team,
+  feedbackUrl,
 }) => {
   return (
-    <Layout>
+    <Layout feedbackUrl={feedbackUrl}>
       <Head>
         <title>Confirmation</title>
       </Head>
@@ -39,10 +41,7 @@ const Confirmation: NextPage<ConfirmationProps> = ({
             be in touch about the next steps.
           </p>
           <p className="lbh-body">
-            <a
-              href={`${process.env.FEEDBACK_FORM_RESIDENT_URL}`}
-              className="govuk-link lbh-link"
-            >
+            <a href={`${feedbackUrl}`} className="govuk-link lbh-link">
               What did you think of this service?
             </a>{' '}
             (takes 30 seconds)
@@ -65,8 +64,9 @@ export const getServerSideProps = withAuth(async (ctx) => {
 
   const teamName = evidenceRequest.serviceRequestedBy;
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
+  const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
-  return { props: { residentReferenceId, team } };
+  return { props: { residentReferenceId, team, feedbackUrl } };
 });
 
 export default Confirmation;

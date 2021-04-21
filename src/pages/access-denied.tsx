@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import ResidentLayout from 'src/components/ResidentLayout';
+import Layout from 'src/components/ResidentLayout';
 
 const AccessDeniedPage: FunctionComponent = () => {
   return (
-    <ResidentLayout>
+    <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
       <h1> Access denied </h1>
-    </ResidentLayout>
+    </Layout>
   );
 };
 
