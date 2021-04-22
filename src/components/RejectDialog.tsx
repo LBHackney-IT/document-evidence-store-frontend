@@ -29,6 +29,8 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
         onSubmit={props.onReject}
         validationSchema={schema}
         initialValues={initialValues}
+        validateOnBlur={false}
+        validateOnChange={true}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
