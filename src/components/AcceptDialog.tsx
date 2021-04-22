@@ -39,6 +39,8 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         initialValues={initialValues}
         validationSchema={schema}
         onSubmit={props.onAccept}
+        validateOnBlur={false}
+        validateOnChange={true}
       >
         {({ errors, touched, isSubmitting }) => (
           <Form>
@@ -90,7 +92,9 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
 
             <div className={styles.actions}>
               <button
-                onClick={props.onDismiss}
+                onClick={() => {
+                  props.onDismiss;
+                }}
                 className="govuk-button lbh-button"
                 type="submit"
                 disabled={isSubmitting}
