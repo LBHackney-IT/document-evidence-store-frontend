@@ -108,13 +108,13 @@ custom:
     production: arn:aws:acm:us-east-1:153306643385:certificate/71728a39-cd3e-4570-a440-e87f84ef9a0d
   securityGroups:
     staging:
-      - sg-0166cbf56b7e77af0
+      - sg-099dcf9e7ab2ad118
     production:
       - sg-04b71cc889c5790e7
   subnets:
     staging:
-      - subnet-06d3de1bd9181b0d7
-      - subnet-0ed7d7713d1127656
+      - subnet-0aa5f484db1aa801c
+      - subnet-012870b02db9a3bf8
     production:
       - subnet-0b7b8fea07efabf34
       - subnet-01d3657f97a243261
