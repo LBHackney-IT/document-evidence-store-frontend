@@ -211,7 +211,10 @@ export class EvidenceApiGateway {
       const { data } = await this.client.get<ResidentResponse>(
         `/api/v1/residents/${residentId}`,
         {
-          headers: { Authorization: tokens?.residents?.GET, UserEmail: 'test' },
+          headers: {
+            Authorization: tokens?.residents?.GET,
+            UserEmail: userEmail,
+          },
           params: {
             residentId: residentId,
           },
@@ -227,10 +230,15 @@ export class EvidenceApiGateway {
   async request(
     pathSegments: string[],
     method: Method,
+    headers: unknown,
     body?: unknown,
     params?: unknown
   ): Promise<{ data?: string; status: number }> {
     const token = this.getToken(pathSegments, method);
+    const headerDictionary: TokenDictionary = JSON.parse(
+      JSON.stringify(headers)
+    );
+    const userEmail = headerDictionary['useremail'];
 
     try {
       const { status, data } = await this.client.request({
@@ -240,6 +248,7 @@ export class EvidenceApiGateway {
         params: params,
         headers: {
           Authorization: token,
+          UserEmail: userEmail,
         },
         validateStatus() {
           return true;

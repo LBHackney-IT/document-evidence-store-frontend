@@ -13,10 +13,12 @@ import {
 import { RequestAuthorizer } from '../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../services/team-helper';
 import { Team } from '../../../../../domain/team';
+import { User } from '../../../../../domain/user';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
   team: Team;
+  user: User;
 };
 
 const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
@@ -30,9 +32,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     const gateway = new InternalApiGateway();
     const payload: EvidenceRequestRequest = {
       ...values,
-      userRequestedBy: user?.email,
+      userRequestedBy: user.email,
     };
-    await gateway.createEvidenceRequest(payload);
+    await gateway.createEvidenceRequest(user.email, payload);
     setComplete(true);
   }, []);
 
@@ -80,7 +82,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
 
     const gateway = new EvidenceApiGateway();
     const documentTypes = await gateway.getDocumentTypes(user.email, team.name);
-    return { props: { documentTypes, team } };
+    return { props: { documentTypes, team, user } };
   }
 );
 

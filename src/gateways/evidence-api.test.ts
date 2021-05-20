@@ -54,7 +54,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL, // this is lowercase here because All HTTP header keys are converted to lowercase in both directions
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -63,6 +65,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -91,7 +94,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -100,6 +105,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -108,6 +114,9 @@ describe('Evidence api gateway', () => {
   describe('POST request to /evidence_requests', () => {
     const path = ['evidence_requests'];
     const method = 'POST';
+    const headers = {
+      useremail: Constants.DUMMY_EMAIL,
+    };
     const body = {
       data: 'bar',
     };
@@ -126,7 +135,7 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method, body);
+      const response = await gateway.request(path, method, headers, body);
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -134,6 +143,7 @@ describe('Evidence api gateway', () => {
         data: body,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
         validateStatus,
       });
@@ -158,7 +168,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('does not throw an error', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
     });
 
@@ -172,7 +184,9 @@ describe('Evidence api gateway', () => {
       });
 
       it('returns status code 500', async () => {
-        const response = await gateway.request(path, method);
+        const response = await gateway.request(path, method, {
+          useremail: Constants.DUMMY_EMAIL,
+        });
         expect(response).toEqual(expectedResponse);
       });
     });
@@ -199,7 +213,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -208,6 +224,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });

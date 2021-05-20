@@ -12,6 +12,7 @@ import {
 } from './internal-api';
 import { Resident } from '../domain/resident';
 import { EvidenceRequest } from '../domain/evidence-request';
+import { Constants } from '../helpers/Constants';
 
 jest.mock('../boundary/response-mapper');
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
@@ -46,20 +47,26 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.updateDocumentSubmission(documentSubmissionId, {
-          state: DocumentState.UPLOADED,
-        });
+        await gateway.updateDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          documentSubmissionId,
+          {
+            state: DocumentState.UPLOADED,
+          }
+        );
 
-        expect(
-          client.patch
-        ).toHaveBeenCalledWith(
+        expect(client.patch).toHaveBeenCalledWith(
           `/api/evidence/document_submissions/${documentSubmissionId}`,
-          { state: 'UPLOADED' }
+          {
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
+            params: { state: 'UPLOADED' },
+          }
         );
       });
 
       it('returns the updated model', async () => {
         const result = await gateway.updateDocumentSubmission(
+          Constants.DUMMY_EMAIL,
           documentSubmissionId,
           {
             state: DocumentState.UPLOADED,
@@ -74,9 +81,13 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.patch.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.updateDocumentSubmission(documentSubmissionId, {
-            state: DocumentState.UPLOADED,
-          });
+          gateway.updateDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            documentSubmissionId,
+            {
+              state: DocumentState.UPLOADED,
+            }
+          );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -102,18 +113,22 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.createDocumentSubmission(evidenceRequestId, documentType);
+        await gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          evidenceRequestId,
+          documentType
+        );
 
-        expect(
-          client.post
-        ).toHaveBeenCalledWith(
+        expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-          { documentType }
+          { documentType },
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
       });
 
       it('returns the updated model', async () => {
         const result = await gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
           evidenceRequestId,
           documentType
         );
@@ -126,7 +141,11 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.createDocumentSubmission(evidenceRequestId, documentType);
+          gateway.createDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            evidenceRequestId,
+            documentType
+          );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -159,16 +178,22 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.createEvidenceRequest(baseRequest);
+        await gateway.createEvidenceRequest(Constants.DUMMY_EMAIL, baseRequest);
 
         expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/evidence_requests`,
-          baseRequest
+          baseRequest,
+          {
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
+          }
         );
       });
 
       it('returns the updated model', async () => {
-        const result = await gateway.createEvidenceRequest(baseRequest);
+        const result = await gateway.createEvidenceRequest(
+          Constants.DUMMY_EMAIL,
+          baseRequest
+        );
 
         expect(result).toBe(expectedResult);
       });
@@ -177,7 +202,8 @@ describe('Internal API Gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
-        const functionCall = () => gateway.createEvidenceRequest(baseRequest);
+        const functionCall = () =>
+          gateway.createEvidenceRequest(Constants.DUMMY_EMAIL, baseRequest);
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -202,7 +228,7 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.searchResidents({
+        await gateway.searchResidents(Constants.DUMMY_EMAIL, {
           serviceRequestedBy: searchQuery,
           searchQuery: searchQuery,
         });
@@ -214,12 +240,13 @@ describe('Internal API Gateway', () => {
               serviceRequestedBy: searchQuery,
               searchQuery: searchQuery,
             },
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
           }
         );
       });
 
       it('returns the updated model', async () => {
-        const result = await gateway.searchResidents({
+        const result = await gateway.searchResidents(Constants.DUMMY_EMAIL, {
           serviceRequestedBy: searchQuery,
           searchQuery: searchQuery,
         });
@@ -232,7 +259,7 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.searchResidents({
+          gateway.searchResidents(Constants.DUMMY_EMAIL, {
             serviceRequestedBy: searchQuery,
             searchQuery: searchQuery,
           });

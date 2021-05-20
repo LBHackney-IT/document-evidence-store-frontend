@@ -6,6 +6,7 @@ import { S3Gateway } from '../gateways/s3-gateway';
 import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
+import { Constants } from '../helpers/Constants';
 
 export type FormValues = {
   [documentTypeId: string]: File[];
@@ -80,6 +81,7 @@ export class UploadFormModel {
     for (const [documentTypeId, files] of Object.entries(formValues)) {
       for (const file of files) {
         const documentSubmission = await this.gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
           evidenceRequestId,
           documentTypeId
         );
@@ -98,8 +100,12 @@ export class UploadFormModel {
   }
 
   private async updateDocumentState(documentSubmissionId: string) {
-    await this.gateway.updateDocumentSubmission(documentSubmissionId, {
-      state: DocumentState.UPLOADED,
-    });
+    await this.gateway.updateDocumentSubmission(
+      Constants.DUMMY_EMAIL,
+      documentSubmissionId,
+      {
+        state: DocumentState.UPLOADED,
+      }
+    );
   }
 }
