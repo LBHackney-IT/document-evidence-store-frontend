@@ -7,6 +7,7 @@ import { EvidenceApiGateway } from '../../../gateways/evidence-api';
 import { TeamHelper } from '../../../services/team-helper';
 import { Team } from '../../../domain/team';
 import { NextPage } from 'next';
+import { Constants } from '../../../helpers/Constants';
 
 type IndexProps = {
   requestId: string;
@@ -48,6 +49,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   };
   const evidenceApiGateway = new EvidenceApiGateway();
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
+    Constants.DUMMY_EMAIL,
     requestId
   );
 

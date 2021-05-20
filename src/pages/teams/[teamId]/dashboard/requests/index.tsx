@@ -47,7 +47,7 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-    if (!userAuthorizedToViewTeam || team === undefined) {
+    if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
       return {
         redirect: {
           destination: '/teams',
@@ -58,6 +58,7 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
 
     const gateway = new EvidenceApiGateway();
     const evidenceRequests = await gateway.getEvidenceRequests(
+      user.email,
       team.name,
       EvidenceRequestState.PENDING
     );

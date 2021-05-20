@@ -151,7 +151,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-  if (!userAuthorizedToViewTeam || team === undefined) {
+  if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
         destination: '/teams',
@@ -162,10 +162,11 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const gateway = new EvidenceApiGateway();
   const documentSubmissions = await gateway.getDocumentSubmissionsForResident(
+    user.email,
     team.name,
     residentId
   );
-  const resident = await gateway.getResident(residentId);
+  const resident = await gateway.getResident(user.email, residentId);
   return {
     props: { documentSubmissions, resident, teamId },
   };

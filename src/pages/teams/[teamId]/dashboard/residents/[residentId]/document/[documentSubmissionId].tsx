@@ -263,7 +263,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-  if (!userAuthorizedToViewTeam || team === undefined) {
+  if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
         destination: '/teams',
@@ -272,12 +272,14 @@ export const getServerSideProps = withAuth(async (ctx) => {
     };
   }
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
+    user.email,
     documentSubmissionId
   );
   const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
+    user.email,
     team.name
   );
-  const resident = await evidenceApiGateway.getResident(residentId);
+  const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
   let downloadUrl = '';
   if (documentSubmission && documentSubmission.document) {

@@ -50,6 +50,7 @@ export class EvidenceApiGateway {
   }
 
   async getEvidenceRequests(
+    userEmail: string,
     teamName: string,
     state?: EvidenceRequestState | null
   ): Promise<EvidenceRequest[]> {
@@ -57,7 +58,10 @@ export class EvidenceApiGateway {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
         '/api/v1/evidence_requests',
         {
-          headers: { Authorization: tokens?.evidence_requests?.GET },
+          headers: {
+            Authorization: tokens?.evidence_requests?.GET,
+            UserEmail: userEmail,
+          },
           params: { serviceRequestedBy: teamName, state: state },
         }
       );
@@ -69,12 +73,18 @@ export class EvidenceApiGateway {
     }
   }
 
-  async getDocumentTypes(teamName: string): Promise<DocumentType[]> {
+  async getDocumentTypes(
+    userEmail: string,
+    teamName: string
+  ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
         `/api/v1/document_types/${teamName}`,
         {
-          headers: { Authorization: tokens?.document_types?.GET },
+          headers: {
+            Authorization: tokens?.document_types?.GET,
+            UserEmail: userEmail,
+          },
         }
       );
       return data.map(ResponseMapper.mapDocumentType);
@@ -85,13 +95,17 @@ export class EvidenceApiGateway {
   }
 
   async getStaffSelectedDocumentTypes(
+    userEmail: string,
     teamName: string
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
         `/api/v1/document_types/staff_selected/${teamName}`,
         {
-          headers: { Authorization: tokens?.document_types?.GET },
+          headers: {
+            Authorization: tokens?.document_types?.GET,
+            UserEmail: userEmail,
+          },
         }
       );
       return data.map(ResponseMapper.mapDocumentType);
@@ -101,11 +115,19 @@ export class EvidenceApiGateway {
     }
   }
 
-  async getEvidenceRequest(id: string): Promise<EvidenceRequest> {
+  async getEvidenceRequest(
+    userEmail: string,
+    id: string
+  ): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse>(
         `/api/v1/evidence_requests/${id}`,
-        { headers: { Authorization: tokens?.evidence_requests?.GET } }
+        {
+          headers: {
+            Authorization: tokens?.evidence_requests?.GET,
+            UserEmail: userEmail,
+          },
+        }
       );
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
@@ -115,6 +137,7 @@ export class EvidenceApiGateway {
   }
 
   async updateDocumentSubmission(
+    userEmail: string,
     documentSubmissionId: string,
     params: Partial<IDocumentSubmission>
   ): Promise<DocumentSubmission> {
@@ -122,7 +145,12 @@ export class EvidenceApiGateway {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
         `/api/v1/document_submissions/${documentSubmissionId}`,
         params,
-        { headers: { Authorization: tokens?.document_submissions?.PATCH } }
+        {
+          headers: {
+            Authorization: tokens?.document_submissions?.PATCH,
+            UserEmail: userEmail,
+          },
+        }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -131,11 +159,19 @@ export class EvidenceApiGateway {
     }
   }
 
-  async getDocumentSubmission(id: string): Promise<DocumentSubmission> {
+  async getDocumentSubmission(
+    userEmail: string,
+    id: string
+  ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponse>(
         `/api/v1/document_submissions/${id}`,
-        { headers: { Authorization: tokens?.document_submissions?.GET } }
+        {
+          headers: {
+            Authorization: tokens?.document_submissions?.GET,
+            UserEmail: userEmail,
+          },
+        }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -145,6 +181,7 @@ export class EvidenceApiGateway {
   }
 
   async getDocumentSubmissionsForResident(
+    userEmail: string,
     serviceRequestedBy: string,
     residentId: string
   ): Promise<DocumentSubmission[]> {
@@ -152,7 +189,10 @@ export class EvidenceApiGateway {
       const { data } = await this.client.get<DocumentSubmissionResponse[]>(
         '/api/v1/document_submissions',
         {
-          headers: { Authorization: tokens?.document_submissions?.GET },
+          headers: {
+            Authorization: tokens?.document_submissions?.GET,
+            UserEmail: userEmail,
+          },
           params: {
             serviceRequestedBy: serviceRequestedBy,
             residentId: residentId,
@@ -166,12 +206,12 @@ export class EvidenceApiGateway {
     }
   }
 
-  async getResident(residentId: string): Promise<Resident> {
+  async getResident(userEmail: string, residentId: string): Promise<Resident> {
     try {
       const { data } = await this.client.get<ResidentResponse>(
         `/api/v1/residents/${residentId}`,
         {
-          headers: { Authorization: tokens?.residents?.GET },
+          headers: { Authorization: tokens?.residents?.GET, UserEmail: 'test' },
           params: {
             residentId: residentId,
           },

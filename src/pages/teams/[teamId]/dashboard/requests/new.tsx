@@ -69,7 +69,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-    if (!userAuthorizedToViewTeam || team === undefined) {
+    if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
       return {
         redirect: {
           destination: '/teams',
@@ -79,7 +79,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     }
 
     const gateway = new EvidenceApiGateway();
-    const documentTypes = await gateway.getDocumentTypes(team.name);
+    const documentTypes = await gateway.getDocumentTypes(user.email, team.name);
     return { props: { documentTypes, team } };
   }
 );

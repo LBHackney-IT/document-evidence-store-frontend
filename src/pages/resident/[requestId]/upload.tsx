@@ -6,6 +6,7 @@ import { DocumentType } from '../../../domain/document-type';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import Layout from '../../../components/ResidentLayout';
 import UploaderForm from '../../../components/UploaderForm';
+import { Constants } from '../../../helpers/Constants';
 
 type UploadProps = {
   requestId: string;
@@ -57,7 +58,10 @@ export const getServerSideProps: GetServerSideProps<
   if (!requestId) return { notFound: true };
 
   const gateway = new EvidenceApiGateway();
-  const evidenceRequest = await gateway.getEvidenceRequest(requestId);
+  const evidenceRequest = await gateway.getEvidenceRequest(
+    Constants.DUMMY_EMAIL,
+    requestId
+  );
   const evidenceRequestId = evidenceRequest.id;
   const documentTypes = evidenceRequest.documentTypes;
   const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
