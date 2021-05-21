@@ -11,6 +11,10 @@ const Home: NextPage<LoginProps> = ({ appUrl, feedbackUrl }) => {
   const loginUrl = useMemo(() => {
     let { redirect } = router.query as { redirect?: string };
     if (!redirect || redirect == '/') redirect = '/teams';
+    console.log(
+      'redirecting to: ' +
+        `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`
+    );
     return `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`;
   }, [router, appUrl]);
 
@@ -48,6 +52,7 @@ const Home: NextPage<LoginProps> = ({ appUrl, feedbackUrl }) => {
 
 export const getServerSideProps: GetServerSideProps<LoginProps> = async () => {
   const appUrl = process.env.APP_URL;
+  console.log('login.tsx appUrl: ', appUrl);
   if (!appUrl) throw new Error('Missing APP_URL');
   const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
