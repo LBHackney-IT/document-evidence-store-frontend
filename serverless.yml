@@ -16,7 +16,7 @@ package:
 
 functions:
   document-evidence-frontend:
-    name: ${self:service}-${self:provider.stage}
+    name: ${self:service}
     handler: src/lambda.handler
     package:
       include:
@@ -108,7 +108,7 @@ custom:
     production: arn:aws:acm:us-east-1:153306643385:certificate/71728a39-cd3e-4570-a440-e87f84ef9a0d
   securityGroups:
     staging:
-      - sg-099dcf9e7ab2ad118
+      - sg-012b551e32735b814
     production:
       - sg-04b71cc889c5790e7
   subnets:
