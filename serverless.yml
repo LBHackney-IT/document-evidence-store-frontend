@@ -105,16 +105,16 @@ custom:
   alias: ${ssm:/evidence-api/${self:provider.stage}/client-url}
   certificate-arn:
     staging: arn:aws:acm:us-east-1:549011513230:certificate/d49e84b5-5ed2-4d35-87f3-7d10f848ee6b
-    production: arn:aws:acm:us-east-1:153306643385:certificate/71728a39-cd3e-4570-a440-e87f84ef9a0d
+    production: arn:aws:acm:us-east-1:658402009206:certificate/06d017f3-c883-49aa-8af8-e4398fa03286
   securityGroups:
     staging:
       - sg-012b551e32735b814
     production:
-      - sg-04b71cc889c5790e7
+      - sg-0cd04f47325eca077
   subnets:
     staging:
       - subnet-0aa5f484db1aa801c
       - subnet-012870b02db9a3bf8
     production:
-      - subnet-0b7b8fea07efabf34
-      - subnet-01d3657f97a243261
+      - subnet-0a00b445652b2d8e8
+      - subnet-0c31b6c3961a84548
