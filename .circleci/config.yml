@@ -76,11 +76,11 @@ jobs:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
 
-  # assume-role-production:
-  #   executor: python
-  #   steps:
-  #     - assume-role-and-persist-workspace:
-  #         aws-account: $AWS_ACCOUNT_PRODUCTION
+  assume-role-production:
+    executor: python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_PRODUCTION
 
   deploy-staging:
     executor: node
@@ -92,15 +92,15 @@ jobs:
       - deploy-lambda:
           stage: staging
 
-  # deploy-production:
-  #   executor: node
+  deploy-production:
+    executor: node
 
-  #   steps:
-  #     - *attach_workspace
-  #     - checkout
+    steps:
+      - *attach_workspace
+      - checkout
 
-  #     - deploy-lambda:
-  #         stage: production
+      - deploy-lambda:
+          stage: production
 
 workflows:
   version: 2
@@ -139,16 +139,16 @@ workflows:
           requires:
             - assume-role-staging
 
-      # - permit-deploy-production:
-      #     type: approval
-      #     requires:
-      #       - deploy-staging
+      - permit-deploy-production:
+          type: approval
+          requires:
+            - deploy-staging
 
-      # - assume-role-production:
-      #     context: api-assume-role-production-context
-      #     requires:
-      #       - permit-deploy-production
+      - assume-role-production:
+          context: api-assume-role-document-evidence-store-production-context
+          requires:
+            - permit-deploy-production
 
-      # - deploy-production:
-      #     requires:
-      #       - assume-role-production
+      - deploy-production:
+          requires:
+            - assume-role-production
