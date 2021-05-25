@@ -125,9 +125,7 @@ export class InternalApiGateway {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
         `/api/evidence/document_submissions/${documentSubmissionId}`,
-        {
-          params: params,
-        },
+        params,
         {
           headers: {
             UserEmail: userEmail,
