@@ -29,7 +29,6 @@ functions:
         - node_modules/**
     events:
       - http: ANY /
-      - http: ANY /{proxy+}
     vpc:
       securityGroupIds: ${self:custom.securityGroups.${self:provider.stage}}
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
