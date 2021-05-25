@@ -28,9 +28,6 @@ functions:
         - build/_next/**
         - node_modules/**
     events:
-      - http:
-          path: api/{proxy+}
-          method: ANY
       - http: ANY /
       - http: ANY /{proxy+}
     vpc:
