@@ -95,13 +95,11 @@ describe('Can view and manage evidence', () => {
 
       cy.get('button').contains('Yes, accept').click();
 
-      cy.get('@updateDocumentState')
-        .its('request.body.params')
-        .should('deep.equal', {
-          state: 'APPROVED',
-          staffSelectedDocumentTypeId: 'passport-scan',
-          validUntil: '30-4-2022',
-        });
+      cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
+        state: 'APPROVED',
+        staffSelectedDocumentTypeId: 'passport-scan',
+        validUntil: '30-4-2022',
+      });
     });
 
     cy.get('[role=dialog]').should('not.exist');
@@ -121,12 +119,10 @@ describe('Can view and manage evidence', () => {
       cy.get('textarea').type('some rejection reason');
       cy.get('button').contains('Request new file').click();
     });
-    cy.get('@updateDocumentState')
-      .its('request.body.params')
-      .should('deep.equal', {
-        state: 'REJECTED',
-        rejectionReason: 'some rejection reason',
-      });
+    cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
+      state: 'REJECTED',
+      rejectionReason: 'some rejection reason',
+    });
   });
 
   it('can view approved documents', () => {
