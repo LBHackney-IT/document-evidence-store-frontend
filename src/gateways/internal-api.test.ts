@@ -57,10 +57,8 @@ describe('Internal API Gateway', () => {
 
         expect(client.patch).toHaveBeenCalledWith(
           `/api/evidence/document_submissions/${documentSubmissionId}`,
-          {
-            headers: { UserEmail: Constants.DUMMY_EMAIL },
-            params: { state: 'UPLOADED' },
-          }
+          { params: { state: 'UPLOADED' } },
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
       });
 

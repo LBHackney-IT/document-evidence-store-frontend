@@ -3,6 +3,7 @@ import * as S3Gateway from '../gateways/s3-gateway';
 import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
 import documentSubmissionFixture from '../../cypress/fixtures/document_submissions/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
+import { Constants } from '../helpers/Constants';
 
 const { uploadMock } = S3Gateway as typeof MockS3Gateway;
 const evidenceRequestId = '123';
@@ -58,16 +59,19 @@ describe('UploadFormModel', () => {
 
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         1,
+        Constants.DUMMY_EMAIL,
         evidenceRequestId,
         documentTypes[0].id
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         2,
+        Constants.DUMMY_EMAIL,
         evidenceRequestId,
         documentTypes[1].id
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         2,
+        Constants.DUMMY_EMAIL,
         evidenceRequestId,
         documentTypes[1].id
       );
@@ -98,16 +102,19 @@ describe('UploadFormModel', () => {
 
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         1,
+        Constants.DUMMY_EMAIL,
         documentSubmission.id,
         { state: 'UPLOADED' }
       );
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         2,
+        Constants.DUMMY_EMAIL,
         documentSubmission.id,
         { state: 'UPLOADED' }
       );
       expect(mockUpdateState).toHaveBeenNthCalledWith(
         3,
+        Constants.DUMMY_EMAIL,
         documentSubmission.id,
         { state: 'UPLOADED' }
       );
