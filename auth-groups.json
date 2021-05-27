@@ -5,10 +5,13 @@
   "staging": {
     "Development Team": "development-team-staging",
     "Hackney Staff": "HackneyAll",
-    "Security Testing": "Security_Testing"
+    "Security Testing": "Security_Testing",
+    "Elections Team": "elections-team",
+    "Repairs Contact Centre Team": "repairs-contact-centre-team"
   },
   "production": {
     "Development Team": "development-team-production",
-    "Security Testing": "Security_Testing"
+    "Elections Team": "elections-team",
+    "Repairs Contact Centre Team": "repairs-contact-centre-team"
   }
 }
