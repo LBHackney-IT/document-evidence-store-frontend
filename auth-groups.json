@@ -8,7 +8,6 @@
     "Security Testing": "Security_Testing"
   },
   "production": {
-    "Development Team": "development-team-production",
-    "Security Testing": "Security_Testing"
+    "Development Team": "development-team-production"
   }
 }
