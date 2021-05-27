@@ -25,6 +25,7 @@ const endpoint: NextApiHandler = async (req, res) => {
     const { status, data } = await evidenceApiGateway.request(
       path,
       req.method as Method,
+      req.headers,
       req.body,
       req.query
     );

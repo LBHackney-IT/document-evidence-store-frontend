@@ -23,6 +23,7 @@ import styles from 'src/styles/Document.module.scss';
 import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../../services/team-helper';
 import { DocumentType } from '../../../../../../../domain/document-type';
+import { User } from '../../../../../../../domain/user';
 
 const gateway = new InternalApiGateway();
 
@@ -34,6 +35,7 @@ type DocumentDetailPageQuery = {
 
 type DocumentDetailPageProps = {
   teamId: string;
+  user: User;
   resident: Resident;
   documentSubmission: DocumentSubmission;
   staffSelectedDocumentTypes: DocumentType[];
@@ -42,6 +44,7 @@ type DocumentDetailPageProps = {
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   teamId,
+  user,
   resident,
   documentSubmission: _documentSubmission,
   staffSelectedDocumentTypes,
@@ -63,6 +66,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       try {
         const payload = buildAcceptDocumentSubmissionRequest(values);
         const updated = await gateway.updateDocumentSubmission(
+          user.email,
           documentSubmissionId,
           payload
         );
@@ -101,6 +105,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     async (values: DocumentSubmissionForm) => {
       try {
         const updated = await gateway.updateDocumentSubmission(
+          user.email,
           documentSubmissionId,
           {
             state: values.state,
@@ -263,7 +268,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-  if (!userAuthorizedToViewTeam || team === undefined) {
+  if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
         destination: '/teams',
@@ -272,12 +277,14 @@ export const getServerSideProps = withAuth(async (ctx) => {
     };
   }
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
+    user.email,
     documentSubmissionId
   );
   const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
+    user.email,
     team.name
   );
-  const resident = await evidenceApiGateway.getResident(residentId);
+  const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
   let downloadUrl = '';
   if (documentSubmission && documentSubmission.document) {
@@ -289,6 +296,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   return {
     props: {
       teamId,
+      user,
       resident,
       documentSubmission,
       staffSelectedDocumentTypes,

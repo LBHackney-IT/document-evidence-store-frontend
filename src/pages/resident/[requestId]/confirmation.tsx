@@ -6,6 +6,7 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth } from 'src/helpers/authed-server-side-props';
 import { TeamHelper } from '../../../services/team-helper';
 import { Team } from 'src/domain/team';
+import { Constants } from '../../../helpers/Constants';
 
 type ConfirmationProps = {
   residentReferenceId: string;
@@ -58,6 +59,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   };
   const evidenceApiGateway = new EvidenceApiGateway();
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
+    Constants.DUMMY_EMAIL,
     requestId
   );
   const residentReferenceId = evidenceRequest.resident.referenceId;

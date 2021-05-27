@@ -74,12 +74,18 @@ export class InternalApiGateway {
   }
 
   async createEvidenceRequest(
+    userEmail: string,
     payload: EvidenceRequestRequest
   ): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.post<EvidenceRequestResponse>(
         '/api/evidence/evidence_requests',
-        payload
+        payload,
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
       );
 
       return ResponseMapper.mapEvidenceRequest(data);
@@ -90,13 +96,19 @@ export class InternalApiGateway {
   }
 
   async createDocumentSubmission(
+    userEmail: string,
     evidenceRequestId: string,
     documentType: string
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-        { documentType }
+        { documentType },
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -106,13 +118,19 @@ export class InternalApiGateway {
   }
 
   async updateDocumentSubmission(
+    userEmail: string,
     documentSubmissionId: string,
     params: DocumentSubmissionRequest
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
         `/api/evidence/document_submissions/${documentSubmissionId}`,
-        params
+        params,
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -121,12 +139,18 @@ export class InternalApiGateway {
     }
   }
 
-  async searchResidents(params: ResidentRequest): Promise<Resident[]> {
+  async searchResidents(
+    userEmail: string,
+    params: ResidentRequest
+  ): Promise<Resident[]> {
     try {
       const { data } = await this.client.get<ResidentResponse[]>(
         `/api/evidence/residents/search`,
         {
           params: params,
+          headers: {
+            UserEmail: userEmail,
+          },
         }
       );
       return ResponseMapper.mapResidentResponseList(data);

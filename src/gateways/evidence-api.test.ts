@@ -11,6 +11,7 @@ import DocumentSubmissionsFixture from '../../cypress/fixtures/document_submissi
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';
+import { Constants } from '../helpers/Constants';
 
 jest.mock('../boundary/response-mapper');
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
@@ -53,7 +54,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL, // this is lowercase here because All HTTP header keys are converted to lowercase in both directions
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -62,6 +65,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -90,7 +94,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -99,6 +105,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -107,6 +114,9 @@ describe('Evidence api gateway', () => {
   describe('POST request to /evidence_requests', () => {
     const path = ['evidence_requests'];
     const method = 'POST';
+    const headers = {
+      useremail: Constants.DUMMY_EMAIL,
+    };
     const body = {
       data: 'bar',
     };
@@ -125,7 +135,7 @@ describe('Evidence api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method, body);
+      const response = await gateway.request(path, method, headers, body);
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -133,6 +143,7 @@ describe('Evidence api gateway', () => {
         data: body,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
         validateStatus,
       });
@@ -157,7 +168,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('does not throw an error', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
     });
 
@@ -171,7 +184,9 @@ describe('Evidence api gateway', () => {
       });
 
       it('returns status code 500', async () => {
-        const response = await gateway.request(path, method);
+        const response = await gateway.request(path, method, {
+          useremail: Constants.DUMMY_EMAIL,
+        });
         expect(response).toEqual(expectedResponse);
       });
     });
@@ -198,7 +213,9 @@ describe('Evidence api gateway', () => {
     });
 
     it('returns the correct response', async () => {
-      const response = await gateway.request(path, method);
+      const response = await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+      });
       expect(response).toEqual(expectedResponse);
       expect(client.request).toHaveBeenCalledWith({
         method,
@@ -207,6 +224,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+          UserEmail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -234,6 +252,7 @@ describe('Evidence api gateway', () => {
 
       it('calls axios correctly', async () => {
         await gateway.getEvidenceRequests(
+          Constants.DUMMY_EMAIL,
           'Housing benefit',
           EvidenceRequestState.PENDING
         );
@@ -243,6 +262,7 @@ describe('Evidence api gateway', () => {
             headers: {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
             },
             params: {
               serviceRequestedBy: 'Housing benefit',
@@ -253,7 +273,10 @@ describe('Evidence api gateway', () => {
       });
 
       it('maps the response', async () => {
-        await gateway.getEvidenceRequests('Housing benefit');
+        await gateway.getEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          'Housing benefit'
+        );
 
         for (let i = 0; i < expectedData.length; i++) {
           expect(
@@ -263,7 +286,10 @@ describe('Evidence api gateway', () => {
       });
 
       it('returns mapped EvidenceTypes', async () => {
-        const result = await gateway.getEvidenceRequests('Housing benefit');
+        const result = await gateway.getEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          'Housing benefit'
+        );
         expect(result).toEqual(mappedData);
       });
     });
@@ -272,7 +298,7 @@ describe('Evidence api gateway', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
-          gateway.getEvidenceRequests('Housing benefit');
+          gateway.getEvidenceRequests(Constants.DUMMY_EMAIL, 'Housing benefit');
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -295,27 +321,31 @@ describe('Evidence api gateway', () => {
       });
 
       it('calls axios correctly', async () => {
-        await gateway.getEvidenceRequest(id);
+        await gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(client.get).toHaveBeenLastCalledWith(
           `/api/v1/evidence_requests/${id}`,
           {
             headers: {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
             },
           }
         );
       });
 
       it('maps the response', async () => {
-        await gateway.getEvidenceRequest(id);
+        await gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(mockedResponseMapper.mapEvidenceRequest).toHaveBeenCalledWith(
           expectedData
         );
       });
 
       it('returns mapped EvidenceTypes', async () => {
-        const result = await gateway.getEvidenceRequest(id);
+        const result = await gateway.getEvidenceRequest(
+          Constants.DUMMY_EMAIL,
+          id
+        );
         expect(result).toEqual(mappedData);
       });
     });
@@ -323,7 +353,8 @@ describe('Evidence api gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Network error'));
-        const functionCall = () => gateway.getEvidenceRequest(id);
+        const functionCall = () =>
+          gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -348,9 +379,13 @@ describe('Evidence api gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.updateDocumentSubmission(documentSubmissionId, {
-          state: DocumentState.UPLOADED,
-        });
+        await gateway.updateDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          documentSubmissionId,
+          {
+            state: DocumentState.UPLOADED,
+          }
+        );
 
         expect(client.patch).toHaveBeenCalledWith(
           `/api/v1/document_submissions/${documentSubmissionId}`,
@@ -359,6 +394,7 @@ describe('Evidence api gateway', () => {
             headers: {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
+              UserEmail: Constants.DUMMY_EMAIL,
             },
           }
         );
@@ -366,6 +402,7 @@ describe('Evidence api gateway', () => {
 
       it('returns the updated model', async () => {
         const result = await gateway.updateDocumentSubmission(
+          Constants.DUMMY_EMAIL,
           documentSubmissionId,
           {
             state: DocumentState.UPLOADED,
@@ -380,9 +417,13 @@ describe('Evidence api gateway', () => {
       it('returns internal server error', async () => {
         client.patch.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.updateDocumentSubmission(documentSubmissionId, {
-            state: DocumentState.UPLOADED,
-          });
+          gateway.updateDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            documentSubmissionId,
+            {
+              state: DocumentState.UPLOADED,
+            }
+          );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -405,27 +446,31 @@ describe('Evidence api gateway', () => {
       });
 
       it('calls axios correctly', async () => {
-        await gateway.getDocumentSubmission(id);
+        await gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
         expect(client.get).toHaveBeenLastCalledWith(
           `/api/v1/document_submissions/${id}`,
           {
             headers: {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
             },
           }
         );
       });
 
       it('maps the response', async () => {
-        await gateway.getDocumentSubmission(id);
+        await gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
         expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
           expectedData
         );
       });
 
       it('returns mapped EvidenceTypes', async () => {
-        const result = await gateway.getDocumentSubmission(id);
+        const result = await gateway.getDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          id
+        );
         expect(result).toEqual(mappedData);
       });
     });
@@ -433,7 +478,8 @@ describe('Evidence api gateway', () => {
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
         client.get.mockRejectedValue(new Error('Network error'));
-        const functionCall = () => gateway.getDocumentSubmission(id);
+        const functionCall = () =>
+          gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
@@ -462,6 +508,7 @@ describe('Evidence api gateway', () => {
 
       it('calls axios correctly', async () => {
         await gateway.getDocumentSubmissionsForResident(
+          Constants.DUMMY_EMAIL,
           serviceRequestedBy,
           residentId
         );
@@ -471,6 +518,7 @@ describe('Evidence api gateway', () => {
             headers: {
               Authorization:
                 process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
             },
             params: {
               serviceRequestedBy: serviceRequestedBy,
@@ -482,6 +530,7 @@ describe('Evidence api gateway', () => {
 
       it('maps the response', async () => {
         await gateway.getDocumentSubmissionsForResident(
+          Constants.DUMMY_EMAIL,
           serviceRequestedBy,
           residentId
         );
@@ -495,6 +544,7 @@ describe('Evidence api gateway', () => {
 
       it('returns mapped EvidenceTypes', async () => {
         const result = await gateway.getDocumentSubmissionsForResident(
+          Constants.DUMMY_EMAIL,
           serviceRequestedBy,
           residentId
         );
@@ -507,6 +557,7 @@ describe('Evidence api gateway', () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
           gateway.getDocumentSubmissionsForResident(
+            Constants.DUMMY_EMAIL,
             serviceRequestedBy,
             residentId
           );

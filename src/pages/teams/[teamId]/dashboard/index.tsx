@@ -15,15 +15,18 @@ import TableSkeleton from '../../../../components/TableSkeleton';
 import { RequestAuthorizer } from '../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../services/team-helper';
 import { Team } from '../../../../domain/team';
+import { User } from '../../../../domain/user';
 
 type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
   team: Team;
+  user: User;
 };
 
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
   team,
+  user,
 }) => {
   // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
   const [results, setResults] = useState<Resident[]>();
@@ -35,7 +38,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       setFormSearchQuery(searchQuery);
       setLoading(true);
       const gateway = new InternalApiGateway();
-      const data = await gateway.searchResidents({
+      const data = await gateway.searchResidents(user.email, {
         serviceRequestedBy: team.name,
         searchQuery: searchQuery,
       });
@@ -95,7 +98,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-    if (!userAuthorizedToViewTeam || team === undefined) {
+    if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
       return {
         redirect: {
           destination: '/teams',
@@ -105,9 +108,12 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     }
 
     const gateway = new EvidenceApiGateway();
-    const evidenceRequests = await gateway.getEvidenceRequests(team.name);
+    const evidenceRequests = await gateway.getEvidenceRequests(
+      user.email,
+      team.name
+    );
     return {
-      props: { evidenceRequests, team },
+      props: { evidenceRequests, team, user },
     };
   }
 );
