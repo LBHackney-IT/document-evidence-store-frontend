@@ -16,6 +16,7 @@ import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { Resident } from 'src/domain/resident';
+import https from 'https';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -39,7 +40,12 @@ type EvidenceApiGatewayDependencies = {
 };
 
 const defaultDependencies: EvidenceApiGatewayDependencies = {
-  client: Axios.create({ baseURL: process.env.EVIDENCE_API_BASE_URL }),
+  client: Axios.create({
+    baseURL: process.env.EVIDENCE_API_BASE_URL,
+    httpsAgent: new https.Agent({
+      cert: process.env.PALO_ALTOS_SSL_CERTIFICATE,
+    }),
+  }),
 };
 
 export class EvidenceApiGateway {
