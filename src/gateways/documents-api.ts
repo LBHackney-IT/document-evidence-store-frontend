@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance } from 'axios';
 import { TokenDictionary } from '../../types/api';
 import { InternalServerError } from './internal-api';
+import https from 'https';
 
 const tokens: TokenDictionary = {
   claims: {
@@ -14,7 +15,12 @@ type DocumentsApiGatewayDependencies = {
 };
 
 const defaultDependencies: DocumentsApiGatewayDependencies = {
-  client: Axios.create({ baseURL: process.env.DOCUMENTS_API_BASE_URL }),
+  client: Axios.create({
+    baseURL: process.env.DOCUMENTS_API_BASE_URL,
+    httpsAgent: new https.Agent({
+      cert: process.env.PALO_ALTOS_SSL_CERTIFICATE,
+    }),
+  }),
 };
 
 export class DocumentsApiGateway {
