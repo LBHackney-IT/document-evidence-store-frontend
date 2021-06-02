@@ -8,7 +8,6 @@ import {
   ResidentResponse,
 } from 'types/api';
 import { ResponseMapper } from '../boundary/response-mapper';
-import https from 'https';
 
 export class InternalServerError extends Error {
   constructor(message: string) {
@@ -69,13 +68,7 @@ export class InternalApiGateway {
   private client: AxiosInstance;
 
   constructor(
-    { client }: InternalApiDependencies = {
-      client: Axios.create({
-        httpsAgent: new https.Agent({
-          cert: process.env.PALO_ALTOS_SSL_CERTIFICATE,
-        }),
-      }),
-    }
+    { client }: InternalApiDependencies = { client: Axios.create() }
   ) {
     this.client = client;
   }

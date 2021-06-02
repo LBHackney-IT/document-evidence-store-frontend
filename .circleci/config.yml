@@ -53,6 +53,8 @@ commands:
 jobs:
   test:
     executor: node
+    environment:
+      NODE_ENV: ci
 
     steps:
       - *attach_workspace
