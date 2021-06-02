@@ -62,5 +62,31 @@
     ],
     "landingMessage": "This is the Development Housing Team landing message",
     "slaMessage": "This is the Development Housing Team SLA message"
+  },
+  {
+    "name": "Repairs Contact Centre",
+    "googleGroup": "repairs-contact-centre-team",
+    "id": "5",
+    "reasons": [
+      {
+        "name": "Raising a repair job",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Repairs Contact Centre",
+    "slaMessage": "Thank you. Your documents have been uploaded."
+  },
+  {
+    "name": "Electoral Services",
+    "googleGroup": "elections-team",
+    "id": "6",
+    "reasons": [
+      {
+        "name": "Registration to Vote",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Electoral Services, Hackney Council",
+    "slaMessage": "Thank you. Your documents have been uploaded."
   }
 ]
