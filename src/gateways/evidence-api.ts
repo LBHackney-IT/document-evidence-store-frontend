@@ -17,6 +17,7 @@ import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { Resident } from 'src/domain/resident';
 import https from 'https';
+import * as fs from 'fs';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -35,24 +36,22 @@ const tokens: TokenDictionary = {
   },
 };
 
-type EvidenceApiGatewayDependencies = {
-  client: AxiosInstance;
-};
-
-const defaultDependencies: EvidenceApiGatewayDependencies = {
-  client: Axios.create({
-    baseURL: process.env.EVIDENCE_API_BASE_URL,
-    httpsAgent: new https.Agent({
-      cert: process.env.PALO_ALTOS_SSL_CERTIFICATE,
-    }),
-  }),
-};
-
 export class EvidenceApiGateway {
   private client: AxiosInstance;
 
-  constructor({ client } = defaultDependencies) {
-    this.client = client;
+  constructor() {
+    if (process.env.NODE_ENV != 'development') {
+      this.client = Axios.create({
+        baseURL: process.env.EVIDENCE_API_BASE_URL,
+        httpsAgent: new https.Agent({
+          cert: fs.readFileSync('/opt/palo-alto-ssl-certificate.crt'),
+        }),
+      });
+    } else {
+      this.client = Axios.create({
+        baseURL: process.env.EVIDENCE_API_BASE_URL,
+      });
+    }
   }
 
   async getEvidenceRequests(
