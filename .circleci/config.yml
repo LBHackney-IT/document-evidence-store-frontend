@@ -53,6 +53,8 @@ commands:
 jobs:
   test:
     executor: node
+    environment:
+      NODE_ENV: ci
 
     steps:
       - *attach_workspace
@@ -121,8 +123,6 @@ workflows:
             - cypress/install
           executor: cypress/base-12
           attach-workspace: true
-          environment:
-            NODE_ENV: ci
           start: npm run start:ci
           wait-on: 'http-get://127.0.0.1:3000/api/ping'
           store_artifacts: true
