@@ -17,7 +17,6 @@ import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { Resident } from 'src/domain/resident';
 import https from 'https';
-import * as fs from 'fs';
 
 const tokens: TokenDictionary = {
   document_types: {
@@ -51,13 +50,11 @@ export class EvidenceApiGateway {
 
   constructor({ client } = defaultDependencies) {
     const app_env = process.env.APP_ENV;
-    console.log('app_env', app_env);
-    if (app_env == 'staging') {
-      console.log('adding palo-alto-ssl-certificate.crt');
+    if (app_env === 'staging' || app_env === 'production') {
       this.client = Axios.create({
         baseURL: process.env.EVIDENCE_API_BASE_URL,
         httpsAgent: new https.Agent({
-          ca: fs.readFileSync('/opt/palo-alto-ssl-certificate.crt'),
+          ca: process.env.PALO_ALTOS_SSL_CERTIFICATE,
         }),
       });
     } else {
