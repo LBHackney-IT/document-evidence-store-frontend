@@ -47,7 +47,7 @@ export interface RequestAuthorizerDependencies {
 const defaultDependencies = {
   secret: process.env.HACKNEY_JWT_SECRET as string,
   cookieName: process.env.HACKNEY_COOKIE_NAME as string,
-  authGroups: authGroupsJson[process.env.NODE_ENV as EnvironmentKey],
+  authGroups: authGroupsJson[process.env.APP_ENV as EnvironmentKey],
   authWhitelist: AUTH_WHITELIST,
   verifyToken: process.env.SKIP_VERIFY_TOKEN !== 'true',
 };
