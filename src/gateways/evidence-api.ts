@@ -36,11 +36,22 @@ const tokens: TokenDictionary = {
   },
 };
 
+type EvidenceApiGatewayDependencies = {
+  client: AxiosInstance;
+};
+
+const defaultDependencies: EvidenceApiGatewayDependencies = {
+  client: Axios.create({
+    baseURL: process.env.EVIDENCE_API_BASE_URL,
+  }),
+};
+
 export class EvidenceApiGateway {
   private client: AxiosInstance;
 
-  constructor() {
-    if (process.env.NODE_ENV != 'development') {
+  constructor({ client } = defaultDependencies) {
+    const node_env: string = process.env.NODE_ENV;
+    if (node_env === 'production' || node_env === 'staging') {
       this.client = Axios.create({
         baseURL: process.env.EVIDENCE_API_BASE_URL,
         httpsAgent: new https.Agent({
@@ -48,9 +59,7 @@ export class EvidenceApiGateway {
         }),
       });
     } else {
-      this.client = Axios.create({
-        baseURL: process.env.EVIDENCE_API_BASE_URL,
-      });
+      this.client = client;
     }
   }
 
