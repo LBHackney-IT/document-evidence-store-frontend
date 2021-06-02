@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 module.exports = {
   distDir: 'build/_next',
   target: 'server',
@@ -9,6 +11,13 @@ module.exports = {
         fs: 'empty',
       };
     }
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.PALO_ALTOS_SSL_CERTIFICATE': fs.readFileSync(
+          '/opt/palo-alto-ssl-certificate.crt'
+        ),
+      })
+    );
 
     return config;
   },
