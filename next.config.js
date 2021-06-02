@@ -1,4 +1,4 @@
-import fs from 'fs';
+const fs = require('fs');
 
 module.exports = {
   distDir: 'build/_next',
@@ -11,13 +11,18 @@ module.exports = {
         fs: 'empty',
       };
     }
-    config.plugins.push(
-      new webpack.DefinePlugin({
-        'process.env.PALO_ALTOS_SSL_CERTIFICATE': fs.readFileSync(
-          '/opt/palo-alto-ssl-certificate.crt'
-        ),
-      })
-    );
+    // Configures environment variable for Palo Altos SSL certificate
+    // This should only be set when running the app in staging or production
+    let app_env = process.env.APP_ENV;
+    if (app_env === 'staging' || app_env === 'production') {
+      config.plugins.push(
+        new webpack.DefinePlugin({
+          'process.env.PALO_ALTOS_SSL_CERTIFICATE': fs.readFileSync(
+            '/opt/palo-alto-ssl-certificate.crt'
+          ),
+        })
+      );
+    }
 
     return config;
   },

@@ -50,7 +50,7 @@ export class EvidenceApiGateway {
 
   constructor({ client } = defaultDependencies) {
     const app_env = process.env.APP_ENV;
-    if (app_env == 'staging' || app_env == 'production') {
+    if (app_env === 'staging' || app_env === 'production') {
       this.client = Axios.create({
         baseURL: process.env.EVIDENCE_API_BASE_URL,
         httpsAgent: new https.Agent({
