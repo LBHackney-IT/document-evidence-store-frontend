@@ -51,7 +51,8 @@ export class EvidenceApiGateway {
 
   constructor({ client } = defaultDependencies) {
     const node_env: string = process.env.NODE_ENV;
-    if (node_env === 'staging') {
+    console.log('node env', node_env);
+    if (node_env == 'staging') {
       console.log('adding palo-alto-ssl-certificate.crt');
       this.client = Axios.create({
         baseURL: process.env.EVIDENCE_API_BASE_URL,
