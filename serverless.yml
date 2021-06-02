@@ -3,6 +3,8 @@ service: document-evidence-frontend
 provider:
   name: aws
   runtime: nodejs12.x
+  layers:
+    - arn:aws:lambda:eu-west-2:549011513230:layer:PaloAltosSslCertificate:1
   region: eu-west-2
   stage: ${opt:stage}
   apiGateway:
@@ -30,8 +32,6 @@ functions:
         - public/**
         - build/_next/**
         - node_modules/**
-    layers:
-      - arn:aws:lambda:eu-west-2:549011513230:layer:PaloAltosSslCertificate:1
     events:
       - http: ANY /
       - http: ANY /{proxy+}
