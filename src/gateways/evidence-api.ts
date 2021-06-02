@@ -51,6 +51,7 @@ export class EvidenceApiGateway {
 
   constructor({ client } = defaultDependencies) {
     const node_env: string = process.env.NODE_ENV;
+    console.log('node_env', node_env);
     if (node_env === 'production' || node_env === 'staging') {
       this.client = Axios.create({
         baseURL: process.env.EVIDENCE_API_BASE_URL,
