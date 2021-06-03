@@ -28,7 +28,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     residentId: string;
   };
   const toReviewDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'UPLOADED'
+    (ds) => ds.state == 'UPLOADED' && ds.document
   );
   // const pendingDocumentSubmissions = documentSubmissions.filter(
   //   (ds) => ds.state == 'PENDING'
