@@ -6,12 +6,12 @@
     "Development Team": "development-team-staging",
     "Hackney Staff": "HackneyAll",
     "Security Testing": "Security_Testing",
-    "Elections Team": "elections-team",
-    "Repairs Contact Centre Team": "repairs-contact-centre-team"
+    "Electoral Services": "elections-team",
+    "Repairs Contact Centre": "repairs-contact-centre-team"
   },
   "production": {
     "Development Team": "development-team-production",
-    "Elections Team": "elections-team",
-    "Repairs Contact Centre Team": "repairs-contact-centre-team"
+    "Electoral Services": "elections-team",
+    "Repairs Contact Centre": "repairs-contact-centre-team"
   }
 }
