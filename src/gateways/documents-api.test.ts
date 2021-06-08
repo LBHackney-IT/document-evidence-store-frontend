@@ -11,9 +11,9 @@ describe('Documents api gateway', () => {
     client: (client as unknown) as AxiosInstance,
   });
 
-  describe('POST request to /claims/download_links', () => {
+  describe('GET request to /documents', () => {
     const documentId = '456';
-    const expectedData = 'response to POST';
+    const expectedData = 'response to GET';
     const expectedStatus = 200;
     const expectedResponse = { data: expectedData, status: expectedStatus };
 
@@ -30,6 +30,7 @@ describe('Documents api gateway', () => {
           headers: {
             Authorization: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
           },
+          responseType: 'arraybuffer',
         }
       );
     });
