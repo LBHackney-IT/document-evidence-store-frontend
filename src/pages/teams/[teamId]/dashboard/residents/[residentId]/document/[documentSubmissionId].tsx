@@ -286,13 +286,14 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
-  let downloadUrl = '';
+  const downloadUrl = 'test';
+  let document;
   if (documentSubmission && documentSubmission.document) {
-    downloadUrl = await documentsApiGateway.generateDownloadUrl(
-      documentSubmission.claimId,
+    document = await documentsApiGateway.getDocument(
       documentSubmission.document.id
     );
   }
+  console.log(document?.name);
   return {
     props: {
       teamId,

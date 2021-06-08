@@ -3,9 +3,8 @@ import { TokenDictionary } from '../../types/api';
 import { InternalServerError } from './internal-api';
 
 const tokens: TokenDictionary = {
-  claims: {
-    GET: process.env.DOCUMENTS_API_GET_CLAIMS_TOKEN,
-    POST: process.env.DOCUMENTS_API_POST_CLAIMS_TOKEN,
+  documents: {
+    GET: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
   },
 };
 
@@ -24,15 +23,11 @@ export class DocumentsApiGateway {
     this.client = client;
   }
 
-  async generateDownloadUrl(
-    claimId: string,
-    documentId: string
-  ): Promise<string> {
+  async getDocument(documentId: string): Promise<File> {
     try {
-      const { data } = await this.client.post<string>(
-        `/api/v1/claims/${claimId}/download_links`,
-        { documentId },
-        { headers: { Authorization: tokens?.claims?.POST } }
+      const { data } = await this.client.get<File>(
+        `/api/v1/documents/${documentId}`,
+        { headers: { Authorization: tokens?.documents?.GET } }
       );
       return data;
     } catch (err) {

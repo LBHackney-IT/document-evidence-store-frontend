@@ -3,7 +3,7 @@ import { DocumentsApiGateway } from './documents-api';
 import { InternalServerError } from './internal-api';
 
 const client = {
-  post: jest.fn(),
+  get: jest.fn(),
 };
 
 describe('Documents api gateway', () => {
@@ -12,25 +12,23 @@ describe('Documents api gateway', () => {
   });
 
   describe('POST request to /claims/download_links', () => {
-    const claimId = '123';
     const documentId = '456';
     const expectedData = 'response to POST';
     const expectedStatus = 200;
     const expectedResponse = { data: expectedData, status: expectedStatus };
 
     beforeEach(() => {
-      client.post.mockResolvedValue({ data: expectedResponse });
+      client.get.mockResolvedValue({ data: expectedResponse });
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.generateDownloadUrl(claimId, documentId);
+      const response = await gateway.getDocument(documentId);
       expect(response).toEqual(expectedResponse);
-      expect(client.post).toHaveBeenCalledWith(
-        `/api/v1/claims/${claimId}/download_links`,
-        { documentId },
+      expect(client.get).toHaveBeenCalledWith(
+        `/api/v1/documents/${documentId}`,
         {
           headers: {
-            Authorization: process.env.DOCUMENTS_API_POST_CLAIMS_TOKEN,
+            Authorization: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
           },
         }
       );
@@ -38,9 +36,8 @@ describe('Documents api gateway', () => {
 
     describe('when there is an error', () => {
       it('returns internal server error', async () => {
-        client.post.mockRejectedValue(new Error('Network error'));
-        const functionCall = () =>
-          gateway.generateDownloadUrl(claimId, documentId);
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () => gateway.getDocument(documentId);
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );

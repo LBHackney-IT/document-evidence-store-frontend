@@ -51,8 +51,7 @@ functions:
       EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH: ${ssm:/evidence-api/${self:provider.stage}/patch/document_submissions/token}
       EVIDENCE_API_TOKEN_RESIDENTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/residents/token}
       DOCUMENTS_API_BASE_URL: ${ssm:/documents-api/${self:provider.stage}/base-url}
-      DOCUMENTS_API_GET_CLAIMS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/get/claims/token}
-      DOCUMENTS_API_POST_CLAIMS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/post/claims/token}
+      DOCUMENTS_API_GET_DOCUMENTS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/get/documents/token}
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
 resources:
   Resources:
