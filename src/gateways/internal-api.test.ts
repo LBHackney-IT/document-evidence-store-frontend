@@ -160,7 +160,7 @@ describe('Internal API Gateway', () => {
         email: 'frodo@bagend.com',
         phoneNumber: '0123',
       },
-      serviceRequestedBy: 'Example Service',
+      team: 'Example Service',
       reason: 'example-reason',
     };
     const apiResponse = {} as EvidenceRequest;
@@ -227,7 +227,7 @@ describe('Internal API Gateway', () => {
 
       it('makes the api request', async () => {
         await gateway.searchResidents(Constants.DUMMY_EMAIL, {
-          serviceRequestedBy: searchQuery,
+          team: searchQuery,
           searchQuery: searchQuery,
         });
 
@@ -235,7 +235,7 @@ describe('Internal API Gateway', () => {
           `/api/evidence/residents/search`,
           {
             params: {
-              serviceRequestedBy: searchQuery,
+              team: searchQuery,
               searchQuery: searchQuery,
             },
             headers: { UserEmail: Constants.DUMMY_EMAIL },
@@ -245,7 +245,7 @@ describe('Internal API Gateway', () => {
 
       it('returns the updated model', async () => {
         const result = await gateway.searchResidents(Constants.DUMMY_EMAIL, {
-          serviceRequestedBy: searchQuery,
+          team: searchQuery,
           searchQuery: searchQuery,
         });
 
@@ -258,7 +258,7 @@ describe('Internal API Gateway', () => {
         client.get.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
           gateway.searchResidents(Constants.DUMMY_EMAIL, {
-            serviceRequestedBy: searchQuery,
+            team: searchQuery,
             searchQuery: searchQuery,
           });
         await expect(functionCall).rejects.toEqual(

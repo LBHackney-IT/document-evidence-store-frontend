@@ -8,7 +8,7 @@ export interface IEvidenceRequest {
   resident: Resident;
   deliveryMethods: DeliveryMethod[];
   documentTypes: DocumentType[];
-  serviceRequestedBy: string;
+  team: string;
   reason: string;
 }
 
@@ -23,7 +23,7 @@ export class EvidenceRequest implements IEvidenceRequest {
   resident: Resident;
   deliveryMethods: DeliveryMethod[];
   documentTypes: DocumentType[];
-  serviceRequestedBy: string;
+  team: string;
   reason: string;
 
   constructor(params: IEvidenceRequest) {
@@ -32,7 +32,7 @@ export class EvidenceRequest implements IEvidenceRequest {
     this.resident = params.resident;
     this.deliveryMethods = params.deliveryMethods;
     this.documentTypes = params.documentTypes;
-    this.serviceRequestedBy = params.serviceRequestedBy;
+    this.team = params.team;
     this.reason = params.reason;
   }
 }

@@ -53,7 +53,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
     requestId
   );
 
-  const teamName = evidenceRequest.serviceRequestedBy;
+  const teamName = evidenceRequest.team;
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
 
   return { props: { requestId, team } };

@@ -32,7 +32,7 @@ const schema = Yup.object().shape({
     },
     [['email', 'phoneNumber']]
   ),
-  serviceRequestedBy: Yup.string(),
+  team: Yup.string(),
   reason: Yup.string(),
   deliveryMethods: Yup.array(),
   documentTypes: Yup.array().min(1, 'Please choose a document type'),
@@ -52,7 +52,7 @@ const NewRequestForm = ({
       email: '',
       phoneNumber: '',
     },
-    serviceRequestedBy: team.name,
+    team: team.name,
     reason: team.reasons[0].name,
     documentTypes: [],
     emailCheckbox: '',

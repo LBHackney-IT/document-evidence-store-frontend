@@ -25,10 +25,10 @@ describe('ResponseMapper', () => {
     });
 
     it('maps basic attributes', () => {
-      const { id, serviceRequestedBy, reason } = responseJson;
+      const { id, team, reason } = responseJson;
       expect(result).toMatchObject({
         id,
-        serviceRequestedBy,
+        team,
         reason,
       });
       expect(result).toBeInstanceOf(EvidenceRequest);

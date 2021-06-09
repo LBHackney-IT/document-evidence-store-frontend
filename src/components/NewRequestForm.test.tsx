@@ -39,7 +39,7 @@ const values = {
     name: 'Example name',
     phoneNumber: '07777777777',
   },
-  serviceRequestedBy: 'Example Service',
+  team: 'Example Service',
   reason: 'example-reason',
   emailCheckbox: ['example@email.com'],
   phoneNumberCheckbox: ['07777777777'],

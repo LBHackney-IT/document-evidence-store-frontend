@@ -17,7 +17,7 @@
         "description": "A valid passport open at the photo page"
       }
     ],
-    "serviceRequestedBy": "Development Housing Team",
+    "team": "Development Housing Team",
     "reason": "staging-reason"
   },
   {
@@ -38,7 +38,7 @@
         "description": "A valid UK full or provisional UK driving license"
       }
     ],
-    "serviceRequestedBy": "Development Housing Team",
+    "team": "Development Housing Team",
     "reason": "staging-reason"
   },
   {
@@ -59,7 +59,7 @@
         "description": "A valid passport open at the photo page"
       }
     ],
-    "serviceRequestedBy": "Development Housing Team",
+    "team": "Development Housing Team",
     "reason": "staging-reason"
   }
 ]

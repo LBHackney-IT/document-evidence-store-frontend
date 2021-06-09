@@ -64,7 +64,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const residentReferenceId = evidenceRequest.resident.referenceId;
 
-  const teamName = evidenceRequest.serviceRequestedBy;
+  const teamName = evidenceRequest.team;
   const team = TeamHelper.getTeamByName(TeamHelper.getTeamsJson(), teamName);
   const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
