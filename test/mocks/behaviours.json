@@ -15,7 +15,7 @@
       "get-residents",
       "get-document-submissions-with-resident",
       "get-resident",
-      "generate-download-url"
+      "get-document"
     ]
   }
 ]

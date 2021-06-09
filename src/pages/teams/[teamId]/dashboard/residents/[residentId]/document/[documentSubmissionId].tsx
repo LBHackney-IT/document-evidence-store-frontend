@@ -209,8 +209,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
           <h2 className="lbh-heading-h3">Preview</h2>
           <figure className={styles.preview}>
             <img
-              src={`data:image/jpeg;base64,${documentAsBase64}`}
-              alt="Image preview"
+              src={`data:${document.fileType};base64,${documentAsBase64}`}
+              alt="Document preview"
             />
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
@@ -303,6 +303,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
     const document = await documentsApiGateway.getDocument(
       documentSubmission.document.id
     );
+    // taken from here https://stackoverflow.com/a/44058739
     documentAsBase64 = Buffer.from(document).toString('base64');
   }
   return {
