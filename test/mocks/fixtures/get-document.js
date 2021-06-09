@@ -1,6 +1,6 @@
 const getDocument = {
   id: 'get-document',
-  url: '/api/v1/documents/:id',
+  url: '/api/v1/claims/:id/download',
   method: 'GET',
   response: {
     status: 200,

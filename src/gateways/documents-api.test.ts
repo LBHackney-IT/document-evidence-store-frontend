@@ -25,10 +25,10 @@ describe('Documents api gateway', () => {
       const response = await gateway.getDocument(documentId);
       expect(response).toEqual(expectedResponse);
       expect(client.get).toHaveBeenCalledWith(
-        `/api/v1/documents/${documentId}`,
+        `/api/v1/claims/${documentId}/download`,
         {
           headers: {
-            Authorization: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
+            Authorization: process.env.DOCUMENTS_API_GET_CLAIMS_TOKEN,
           },
           responseType: 'arraybuffer',
         }
