@@ -265,7 +265,7 @@ describe('Evidence api gateway', () => {
               UserEmail: Constants.DUMMY_EMAIL,
             },
             params: {
-              serviceRequestedBy: 'Housing benefit',
+              team: 'Housing benefit',
               state: EvidenceRequestState.PENDING,
             },
           }
@@ -489,7 +489,7 @@ describe('Evidence api gateway', () => {
 
   describe('getDocumentSubmissionsByResidentId', () => {
     const residentId = 'id';
-    const serviceRequestedBy = 'service';
+    const team = 'service';
     describe('returns the correct response', () => {
       const expectedData = DocumentSubmissionsFixture;
       const mappedData = expectedData.map((ds) =>
@@ -509,7 +509,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
-          serviceRequestedBy,
+          team,
           residentId
         );
         expect(client.get).toHaveBeenLastCalledWith(
@@ -521,7 +521,7 @@ describe('Evidence api gateway', () => {
               UserEmail: Constants.DUMMY_EMAIL,
             },
             params: {
-              serviceRequestedBy: serviceRequestedBy,
+              team: team,
               residentId: residentId,
             },
           }
@@ -531,7 +531,7 @@ describe('Evidence api gateway', () => {
       it('maps the response', async () => {
         await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
-          serviceRequestedBy,
+          team,
           residentId
         );
 
@@ -545,7 +545,7 @@ describe('Evidence api gateway', () => {
       it('returns mapped EvidenceTypes', async () => {
         const result = await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
-          serviceRequestedBy,
+          team,
           residentId
         );
         expect(result).toEqual(mappedData);
@@ -558,7 +558,7 @@ describe('Evidence api gateway', () => {
         const functionCall = () =>
           gateway.getDocumentSubmissionsForResident(
             Constants.DUMMY_EMAIL,
-            serviceRequestedBy,
+            team,
             residentId
           );
         expect(functionCall).rejects.toEqual(

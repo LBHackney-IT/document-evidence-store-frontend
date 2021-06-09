@@ -35,7 +35,7 @@ describe('Confirm Request Dialog', () => {
         email: 'frodo@bagend.com',
         phoneNumber: '0123',
       },
-      serviceRequestedBy: 'Example Service',
+      team: 'Example Service',
       reason: 'example-reason',
     };
 

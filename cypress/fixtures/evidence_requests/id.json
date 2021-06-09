@@ -21,6 +21,6 @@
       "description": "A photo of the issue that need to be repaired"
     }
   ],
-  "serviceRequestedBy": "Development Housing Team",
+  "team": "Development Housing Team",
   "reason": "staging-reason"
 }

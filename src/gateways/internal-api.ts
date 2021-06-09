@@ -16,13 +16,11 @@ export class InternalServerError extends Error {
   }
 }
 
-// It was recently that Service Area and Service were renamed to Team and Reason
-// We have decided to keep serviceRequestedBy as it is for now, then later rename it to teamRequestedBy
 export interface EvidenceRequestRequest {
   deliveryMethods: string[];
   documentTypes: string[];
   resident: Omit<IResident, 'id' | 'referenceId'>;
-  serviceRequestedBy: string;
+  team: string;
   reason: string;
   userRequestedBy?: string;
 }
@@ -33,7 +31,7 @@ export interface EvidenceRequestForm {
     email: string;
     phoneNumber: string;
   };
-  serviceRequestedBy: string;
+  team: string;
   reason: string;
   documentTypes: [];
   emailCheckbox: [];
@@ -55,7 +53,7 @@ export interface DocumentSubmissionForm {
 }
 
 export interface ResidentRequest {
-  serviceRequestedBy: string;
+  team: string;
   searchQuery: string;
 }
 

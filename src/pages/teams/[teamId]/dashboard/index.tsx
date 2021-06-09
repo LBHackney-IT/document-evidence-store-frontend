@@ -39,7 +39,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       setLoading(true);
       const gateway = new InternalApiGateway();
       const data = await gateway.searchResidents(user.email, {
-        serviceRequestedBy: team.name,
+        team: team.name,
         searchQuery: searchQuery,
       });
       setLoading(false);

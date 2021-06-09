@@ -38,7 +38,7 @@ const getDocumentSubmissionPdf = {
 const getDocumentSubmissionWithResident = {
   id: 'get-document-submissions-with-resident',
   url:
-    '/api/v1/document_submissions?serviceRequestedBy=Development+Housing+Team&residentId=:residentId',
+    '/api/v1/document_submissions?team=Development+Housing+Team&residentId=:residentId',
   method: 'GET',
   response: {
     status: 200,
