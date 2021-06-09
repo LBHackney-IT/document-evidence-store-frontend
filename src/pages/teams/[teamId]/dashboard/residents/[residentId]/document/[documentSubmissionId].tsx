@@ -24,7 +24,6 @@ import { RequestAuthorizer } from '../../../../../../../services/request-authori
 import { TeamHelper } from '../../../../../../../services/team-helper';
 import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
-import { Document } from '../../../../../../../domain/document';
 
 const gateway = new InternalApiGateway();
 
@@ -42,10 +41,6 @@ type DocumentDetailPageProps = {
   staffSelectedDocumentTypes: DocumentType[];
   documentAsBase64: string;
 };
-
-function isImage(document: Document) {
-  return document.extension === 'jpeg' || document.extension === 'png';
-}
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   teamId,
@@ -204,24 +199,20 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </button>
       )}
 
-      {isImage(document) ? (
-        <>
-          <h2 className="lbh-heading-h3">Preview</h2>
-          <figure className={styles.preview}>
-            <img
-              src={`data:${document.fileType};base64,${documentAsBase64}`}
-              alt="Document preview"
-            />
-            <figcaption className="lbh-body-s">
-              <strong>{document.extension?.toUpperCase()}</strong>{' '}
-              {humanFileSize(document.fileSizeInBytes)}{' '}
-              {/*<a href={`${downloadUrl}`} target="blank" className="lbh-link">*/}
-              {/*  Open in new tab*/}
-              {/*</a>*/}
-            </figcaption>
-          </figure>
-        </>
-      ) : (
+      <h2 className="lbh-heading-h3">Preview</h2>
+      <figure className={styles.preview}>
+        {document.extension === 'jpeg' || document.extension === 'png' ? (
+          <img
+            src={`data:${document.fileType};base64,${documentAsBase64}`}
+            alt="Document preview"
+          />
+        ) : (
+          <iframe
+            src={`data:${document.fileType};base64,${documentAsBase64}`}
+            height="1000px"
+            width="800px"
+          />
+        )}
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
@@ -229,7 +220,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
           {/*  Open in new tab*/}
           {/*</a>*/}
         </figcaption>
-      )}
+      </figure>
 
       {/* https://hackney.atlassian.net/browse/DES-63 */}
       {/* <h2 className="lbh-heading-h3">History</h2> */}
@@ -295,11 +286,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
   let documentAsBase64;
-  if (
-    documentSubmission &&
-    documentSubmission.document &&
-    isImage(documentSubmission.document)
-  ) {
+  if (documentSubmission && documentSubmission.document) {
     const document = await documentsApiGateway.getDocument(
       documentSubmission.document.id
     );
