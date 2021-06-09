@@ -31,7 +31,7 @@ export class DocumentsApiGateway {
       const { data } = await this.client.get<ArrayBuffer>(
         `/api/v1/claims/${documentId}/download`,
         {
-          headers: { Authorization: tokens?.documents?.GET },
+          headers: { Authorization: tokens?.claims?.GET },
           responseType: 'arraybuffer',
         }
       );
