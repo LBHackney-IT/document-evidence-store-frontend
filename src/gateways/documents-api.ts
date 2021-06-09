@@ -35,6 +35,7 @@ export class DocumentsApiGateway {
           responseType: 'arraybuffer',
         }
       );
+      console.log('getDocument', data);
       return data;
     } catch (err) {
       console.error(err);
