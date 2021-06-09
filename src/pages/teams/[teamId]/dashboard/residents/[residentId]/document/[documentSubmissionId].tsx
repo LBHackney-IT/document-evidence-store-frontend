@@ -24,6 +24,7 @@ import { RequestAuthorizer } from '../../../../../../../services/request-authori
 import { TeamHelper } from '../../../../../../../services/team-helper';
 import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
+import { Document } from '../../../../../../../domain/document';
 
 const gateway = new InternalApiGateway();
 
@@ -39,8 +40,12 @@ type DocumentDetailPageProps = {
   resident: Resident;
   documentSubmission: DocumentSubmission;
   staffSelectedDocumentTypes: DocumentType[];
-  downloadUrl: string;
+  documentAsBase64: string;
 };
+
+function isImage(document: Document) {
+  return document.extension === 'jpeg' || document.extension === 'png';
+}
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   teamId,
@@ -48,7 +53,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   resident,
   documentSubmission: _documentSubmission,
   staffSelectedDocumentTypes,
-  downloadUrl,
+  documentAsBase64,
 }) => {
   const router = useRouter();
   const {
@@ -199,17 +204,20 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </button>
       )}
 
-      {document.extension === 'jpeg' || document.extension === 'png' ? (
+      {isImage(document) ? (
         <>
           <h2 className="lbh-heading-h3">Preview</h2>
           <figure className={styles.preview}>
-            <img src={downloadUrl} alt="example" />
+            <img
+              src={`data:${document.fileType};base64,${documentAsBase64}`}
+              alt="Document preview"
+            />
             <figcaption className="lbh-body-s">
               <strong>{document.extension?.toUpperCase()}</strong>{' '}
               {humanFileSize(document.fileSizeInBytes)}{' '}
-              <a href={`${downloadUrl}`} target="blank" className="lbh-link">
-                Open in new tab
-              </a>
+              {/*<a href={`${downloadUrl}`} target="blank" className="lbh-link">*/}
+              {/*  Open in new tab*/}
+              {/*</a>*/}
             </figcaption>
           </figure>
         </>
@@ -217,9 +225,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
-          <a href={`${downloadUrl}`} target="blank" className="lbh-link">
-            Open in new tab
-          </a>
+          {/*<a href={`${downloadUrl}`} target="blank" className="lbh-link">*/}
+          {/*  Open in new tab*/}
+          {/*</a>*/}
         </figcaption>
       )}
 
@@ -286,12 +294,17 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
-  let downloadUrl = '';
-  if (documentSubmission && documentSubmission.document) {
-    downloadUrl = await documentsApiGateway.generateDownloadUrl(
-      documentSubmission.claimId,
+  let documentAsBase64;
+  if (
+    documentSubmission &&
+    documentSubmission.document &&
+    isImage(documentSubmission.document)
+  ) {
+    const document = await documentsApiGateway.getDocument(
       documentSubmission.document.id
     );
+    // taken from here https://stackoverflow.com/a/44058739
+    documentAsBase64 = Buffer.from(document).toString('base64');
   }
   return {
     props: {
@@ -300,7 +313,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
       resident,
       documentSubmission,
       staffSelectedDocumentTypes,
-      downloadUrl,
+      documentAsBase64,
     },
   };
 });
