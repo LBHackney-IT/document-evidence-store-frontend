@@ -1,4 +1,17 @@
 module.exports = {
+  async headers() {
+    return [
+      {
+        source: '/:slug*',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+        ],
+      },
+    ];
+  },
   distDir: 'build/_next',
   target: 'server',
   webpack: (config, { webpack, isServer }) => {
