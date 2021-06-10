@@ -204,11 +204,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         {document.extension === 'jpeg' || document.extension === 'png' ? (
           <img src={`${documentAsBase64}`} alt="Document preview" />
         ) : (
-          <iframe
-            src={`data:${document.fileType};base64,${documentAsBase64}`}
-            height="1000px"
-            width="800px"
-          />
+          <iframe src={`${documentAsBase64}`} height="1000px" width="800px" />
         )}
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
