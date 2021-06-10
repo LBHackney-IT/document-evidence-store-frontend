@@ -3,9 +3,6 @@ import { TokenDictionary } from '../../types/api';
 import { InternalServerError } from './internal-api';
 
 const tokens: TokenDictionary = {
-  claims: {
-    GET: process.env.DOCUMENTS_API_GET_CLAIMS_TOKEN,
-  },
   documents: {
     GET: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
   },
@@ -29,9 +26,9 @@ export class DocumentsApiGateway {
   async getDocument(documentId: string): Promise<string> {
     try {
       const { data } = await this.client.get<string>(
-        `/api/v1/claims/${documentId}/download`,
+        `/api/v1/documents/${documentId}`,
         {
-          headers: { Authorization: tokens?.claims?.GET },
+          headers: { Authorization: tokens?.documents?.GET },
         }
       );
       console.log('getDocument', data);
