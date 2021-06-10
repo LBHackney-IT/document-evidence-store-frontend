@@ -76,6 +76,11 @@ describe('Can view and manage evidence', () => {
     // cy.get('h2').should('contain', 'History');
   });
 
+  it('shows an iframe containing the file preview', () => {
+    cy.get('.toReview a').eq(3).contains('Proof of ID').click();
+    cy.get('iframe');
+  });
+
   it('can approve the document', () => {
     cy.get('a').contains('Proof of ID').click();
     cy.contains('h1', 'Namey McNameProof of ID');
