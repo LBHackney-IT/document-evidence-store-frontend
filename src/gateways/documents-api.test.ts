@@ -30,7 +30,6 @@ describe('Documents api gateway', () => {
           headers: {
             Authorization: process.env.DOCUMENTS_API_GET_CLAIMS_TOKEN,
           },
-          responseType: 'arraybuffer',
         }
       );
     });
