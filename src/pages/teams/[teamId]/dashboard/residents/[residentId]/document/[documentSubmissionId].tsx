@@ -202,10 +202,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       <h2 className="lbh-heading-h3">Preview</h2>
       <figure className={styles.preview}>
         {document.extension === 'jpeg' || document.extension === 'png' ? (
-          <img
-            src={`data:${document.fileType};base64,${documentAsBase64}`}
-            alt="Document preview"
-          />
+          <img src={`${documentAsBase64}`} alt="Document preview" />
         ) : (
           <iframe
             src={`data:${document.fileType};base64,${documentAsBase64}`}
@@ -285,13 +282,11 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
-  let documentAsBase64;
+  let documentAsBase64 = '';
   if (documentSubmission && documentSubmission.document) {
-    const document = await documentsApiGateway.getDocument(
+    documentAsBase64 = await documentsApiGateway.getDocument(
       documentSubmission.document.id
     );
-    // taken from here https://stackoverflow.com/a/44058739
-    documentAsBase64 = Buffer.from(document).toString('base64');
   }
   return {
     props: {

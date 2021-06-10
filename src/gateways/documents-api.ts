@@ -26,13 +26,12 @@ export class DocumentsApiGateway {
     this.client = client;
   }
 
-  async getDocument(documentId: string): Promise<ArrayBuffer> {
+  async getDocument(documentId: string): Promise<string> {
     try {
-      const { data } = await this.client.get<ArrayBuffer>(
+      const { data } = await this.client.get<string>(
         `/api/v1/claims/${documentId}/download`,
         {
           headers: { Authorization: tokens?.claims?.GET },
-          responseType: 'arraybuffer',
         }
       );
       console.log('getDocument', data);
