@@ -42,7 +42,7 @@ First, clone the repo
 
 ```bash
 npm i
-npm run dev # boots the Next.js server and the mocks server
+npm run dev-mock # boots the Next.js server and the mocks server
 ```
 
 It'll be on [http://localhost:3000](http://localhost:3000).
