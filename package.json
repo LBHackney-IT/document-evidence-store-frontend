@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently -k \"npm:mock\" \"next dev\"",
+    "dev": "next dev",
+    "dev-mock": "concurrently -k \"npm:mock\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "start:ci": "concurrently -k \"npm:start\" \"npm:mock\"",
