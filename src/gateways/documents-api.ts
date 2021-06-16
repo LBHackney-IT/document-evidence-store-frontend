@@ -31,7 +31,6 @@ export class DocumentsApiGateway {
           headers: { Authorization: tokens?.documents?.GET },
         }
       );
-      console.log('getDocument', data);
       return data;
     } catch (err) {
       console.error(err);
