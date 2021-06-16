@@ -42,7 +42,7 @@ describe('Can upload a document', () => {
         'contain',
         'You’ll need to photograph your documents'
       );
-      cy.get('p').should('contain', `${teams[1].landingMessage}`);
+      cy.get('p').should('contain', `${teams[0].landingMessage}`);
       cy.get('a').contains('Continue').click();
 
       // Attach a file
@@ -65,7 +65,7 @@ describe('Can upload a document', () => {
         'contain',
         `Your reference number: ${residentReferenceId}`
       );
-      cy.get('p').should('contain', `${teams[1].slaMessage}`);
+      cy.get('p').should('contain', `${teams[0].slaMessage}`);
     });
 
     it('shows guidance and lets you upload multiple files for each document type', () => {
@@ -74,7 +74,7 @@ describe('Can upload a document', () => {
         'contain',
         'You’ll need to photograph your documents'
       );
-      cy.get('p').should('contain', `${teams[1].landingMessage}`);
+      cy.get('p').should('contain', `${teams[0].landingMessage}`);
       cy.get('a').contains('Continue').click();
 
       // Attach a file
@@ -101,7 +101,7 @@ describe('Can upload a document', () => {
         'contain',
         `Your reference number: ${residentReferenceId}`
       );
-      cy.get('p').should('contain', `${teams[1].slaMessage}`);
+      cy.get('p').should('contain', `${teams[0].slaMessage}`);
     });
   });
 
