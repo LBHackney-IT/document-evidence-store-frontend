@@ -1,22 +1,5 @@
 [
   {
-    "name": "Housing Team",
-    "googleGroup": "HackneyAll",
-    "id": "1",
-    "reasons": [
-      {
-        "name": "Housing Reason 1",
-        "id": "123"
-      },
-      {
-        "name": "Housing Reason 2",
-        "id": "456"
-      }
-    ],
-    "landingMessage": "This is the Housing team landing message",
-    "slaMessage": "This is the Housing team SLA message"
-  },
-  {
     "name": "Development Housing Team",
     "googleGroup": "development-team-staging",
     "id": "2",
