@@ -128,3 +128,7 @@ At the time of writing we have two Gateways which are for specific use cases:
 - **`evidence-api.ts`**
   - This acts as a means of sending server side requests to the EvidenceAPI.
   - As discussed in [Architectural Decision Record 2](/docs/adr/0002-switch-from-client-side-api-requests-to-server-side.md) we use `getServerSideProps`
+
+# License
+
+[MIT](./LICENSE)
