@@ -45,6 +45,7 @@ const NewRequestForm = ({
 }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
+  const [errorMessage, setErrorMessage] = useState<string>();
 
   const initialValues = {
     resident: {
@@ -69,9 +70,10 @@ const NewRequestForm = ({
       } catch (err) {
         setRequest(undefined);
         setSubmitError(true);
+        setErrorMessage(err);
       }
     },
-    [setRequest, request, onSubmit, setSubmitError]
+    [setRequest, request, onSubmit, setSubmitError, setErrorMessage]
   );
 
   const buildEvidenceRequestRequest = (values: EvidenceRequestForm) => {
@@ -104,7 +106,7 @@ const NewRequestForm = ({
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
-              There was an error. Please try again later.
+              {errorMessage}
             </span>
           )}
 

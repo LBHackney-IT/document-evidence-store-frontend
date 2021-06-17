@@ -88,7 +88,9 @@ export class InternalApiGateway {
 
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
-      console.error(err);
+      if (err.response) {
+        throw err.response.data;
+      }
       throw new InternalServerError('Internal server error');
     }
   }
