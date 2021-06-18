@@ -249,6 +249,7 @@ export class EvidenceApiGateway {
         headers: {
           Authorization: token,
           UserEmail: userEmail,
+          'Content-Type': 'multipart/form-data',
         },
         validateStatus() {
           return true;

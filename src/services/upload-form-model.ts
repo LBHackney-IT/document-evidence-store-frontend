@@ -60,10 +60,10 @@ export class UploadFormModel {
 
     const uploadFilesAndUpdateDocumentStateRequests = fileDocumentSubmissions.map(
       async (fileDocumentSubmission) => {
-        await this.uploadFile(
-          fileDocumentSubmission.file,
-          fileDocumentSubmission.documentSubmission
-        );
+        // await this.uploadFile(
+        //   fileDocumentSubmission.file,
+        //   fileDocumentSubmission.documentSubmission
+        // );
         await this.updateDocumentState(
           fileDocumentSubmission.documentSubmission.id
         );
@@ -80,10 +80,21 @@ export class UploadFormModel {
     const fileDocumentSubmissions: FileDocumentSubmission[] = [];
     for (const [documentTypeId, files] of Object.entries(formValues)) {
       for (const file of files) {
+        //const DocumentSubmissionRequest = new DocumentSubmissionRequest(documentTypeId, file);
+        console.log('documentTypeId', documentTypeId);
+        const formData = new FormData();
+        //const fileType = await FileType.fromBlob(file);
+        //formData.append('Content-Type', fileType?.mime ?? file.type);
+        formData.append('image', file);
+        //console.log('formData', formData);
         const documentSubmission = await this.gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
-          documentTypeId
+          // {
+          //   //documentType: documentTypeId,
+          //   document: formData,
+          // }
+          formData
         );
         fileDocumentSubmissions.push(
           new FileDocumentSubmission(file, documentSubmission)

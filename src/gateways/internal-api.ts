@@ -39,13 +39,18 @@ export interface EvidenceRequestForm {
 }
 
 export interface DocumentSubmissionRequest {
+  //documentType: string;
+  document: FormData;
+}
+
+export interface DocumentSubmissionUpdateRequest {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
   validUntil?: string;
 }
 
-export interface DocumentSubmissionForm {
+export interface DocumentSubmissionUpdateForm {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
@@ -96,15 +101,16 @@ export class InternalApiGateway {
   async createDocumentSubmission(
     userEmail: string,
     evidenceRequestId: string,
-    documentType: string
+    document: FormData
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
-        `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-        { documentType },
+        `http://localhost:3000/api/evidence/evidence_requests/161b095b-194a-4fe1-bde2-eafdafb82e13/document_submissions`,
+        document,
         {
           headers: {
             UserEmail: userEmail,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
@@ -118,7 +124,7 @@ export class InternalApiGateway {
   async updateDocumentSubmission(
     userEmail: string,
     documentSubmissionId: string,
-    params: DocumentSubmissionRequest
+    params: DocumentSubmissionUpdateRequest
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
