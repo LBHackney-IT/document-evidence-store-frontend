@@ -5,7 +5,7 @@ import Field from './Field';
 import * as Yup from 'yup';
 import styles from '../styles/Dialog.module.scss';
 import { DocumentState } from '../domain/document-submission';
-import { DocumentSubmissionForm } from '../gateways/internal-api';
+import { DocumentSubmissionUpdateForm } from '../gateways/internal-api';
 
 const schema = Yup.object().shape({
   rejectionReason: Yup.string()
@@ -66,7 +66,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
 
 interface Props {
   open: boolean;
-  onReject: (values: DocumentSubmissionForm) => Promise<void>;
+  onReject: (values: DocumentSubmissionUpdateForm) => Promise<void>;
   onDismiss(): void;
 }
 

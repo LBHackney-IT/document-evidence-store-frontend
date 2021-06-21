@@ -38,14 +38,14 @@ export interface EvidenceRequestForm {
   phoneNumberCheckbox: [];
 }
 
-export interface DocumentSubmissionRequest {
+export interface DocumentSubmissionUpdateRequest {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
   validUntil?: string;
 }
 
-export interface DocumentSubmissionForm {
+export interface DocumentSubmissionUpdateForm {
   state: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
@@ -121,7 +121,7 @@ export class InternalApiGateway {
   async updateDocumentSubmission(
     userEmail: string,
     documentSubmissionId: string,
-    params: DocumentSubmissionRequest
+    params: DocumentSubmissionUpdateRequest
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(

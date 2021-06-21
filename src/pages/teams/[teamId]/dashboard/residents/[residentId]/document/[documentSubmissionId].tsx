@@ -14,7 +14,7 @@ import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import {
-  DocumentSubmissionForm,
+  DocumentSubmissionUpdateForm,
   InternalApiGateway,
 } from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
@@ -62,7 +62,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const [isClicked, setIsClicked] = useState(false);
 
   const handleAccept = useCallback(
-    async (values: DocumentSubmissionForm) => {
+    async (values: DocumentSubmissionUpdateForm) => {
       try {
         const payload = buildAcceptDocumentSubmissionRequest(values);
         const updated = await gateway.updateDocumentSubmission(
@@ -85,7 +85,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const buildAcceptDocumentSubmissionRequest = (
-    values: DocumentSubmissionForm
+    values: DocumentSubmissionUpdateForm
   ) => {
     if (values.validUntilDates && values.validUntilDates.length > 0) {
       return {
@@ -102,7 +102,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   };
 
   const handleReject = useCallback(
-    async (values: DocumentSubmissionForm) => {
+    async (values: DocumentSubmissionUpdateForm) => {
       try {
         const updated = await gateway.updateDocumentSubmission(
           user.email,
