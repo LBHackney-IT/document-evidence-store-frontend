@@ -24,23 +24,6 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
         {/* {props.purpose && <> with {props.purpose}</>} */}
       </p>
     </div>
-
-    {props.toReview && (
-      <div className={`lbh-body-s ${styles.actions}`}>
-        <Link
-          href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}?action=accept`}
-          scroll={false}
-        >
-          <a className="lbh-link">Accept</a>
-        </Link>
-        <Link
-          href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}?action=reject`}
-          scroll={false}
-        >
-          <a className={`lbh-link ${styles.redLink}`}>Request new file</a>
-        </Link>
-      </div>
-    )}
   </li>
 );
 
