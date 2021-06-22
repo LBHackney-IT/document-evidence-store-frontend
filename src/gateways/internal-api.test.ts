@@ -96,6 +96,8 @@ describe('Internal API Gateway', () => {
   describe('createDocumentSubmission', () => {
     const evidenceRequestId = 'evidence request id';
     const documentType = 'passport-scan';
+    const formData = new FormData();
+    formData.append('documentType', documentType);
     const apiResponse = {} as DocumentSubmission;
     const expectedResult = {} as DocumentSubmission;
 
@@ -114,12 +116,14 @@ describe('Internal API Gateway', () => {
         await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
-          documentType
+          formData
         );
 
-        expect(client.post).toHaveBeenCalledWith(
+        expect(
+          client.post
+        ).toHaveBeenCalledWith(
           `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-          { documentType },
+          formData,
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
       });
@@ -128,7 +132,7 @@ describe('Internal API Gateway', () => {
         const result = await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
-          documentType
+          formData
         );
 
         expect(result).toBe(expectedResult);
@@ -142,7 +146,7 @@ describe('Internal API Gateway', () => {
           gateway.createDocumentSubmission(
             Constants.DUMMY_EMAIL,
             evidenceRequestId,
-            documentType
+            formData
           );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')

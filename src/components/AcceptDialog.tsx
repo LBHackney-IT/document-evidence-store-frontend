@@ -5,7 +5,7 @@ import Radio from './Radio';
 import { Form, Formik } from 'formik';
 import { DocumentType } from '../domain/document-type';
 import * as Yup from 'yup';
-import { DocumentSubmissionForm } from '../gateways/internal-api';
+import { DocumentSubmissionUpdateForm } from '../gateways/internal-api';
 import { DocumentState } from '../domain/document-submission';
 import DateFields from './DateFields';
 
@@ -119,7 +119,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
 interface Props {
   open: boolean;
   staffSelectedDocumentTypes: Array<DocumentType>;
-  onAccept: (values: DocumentSubmissionForm) => Promise<void>;
+  onAccept: (values: DocumentSubmissionUpdateForm) => Promise<void>;
   onDismiss(): void;
 }
 

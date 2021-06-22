@@ -7,19 +7,6 @@ describe('Can upload a document', () => {
   const residentReferenceId = evidenceRequestsFixture.resident.referenceId;
 
   beforeEach(() => {
-    cy.intercept(
-      'PATCH',
-      /\/api\/evidence\/document_submissions\/.+/,
-      (req) => {
-        const response = dsFixture;
-
-        req.responseTimeout = 5000;
-        req.reply((res) => {
-          res.send(200, response);
-        });
-      }
-    ).as('patch-document-state');
-
     cy.visit(`http://localhost:3000/resident/${requestId}`);
     cy.injectAxe();
   });
@@ -30,10 +17,15 @@ describe('Can upload a document', () => {
 
   context('when upload is successful', () => {
     beforeEach(() => {
-      cy.intercept('POST', dsFixture.uploadPolicy.url, {
-        statusCode: 201,
-        delayMs: 2500,
-      }).as('s3Upload');
+      cy.intercept('POST', /\/api\/evidence\/evidence_requests\/.+/, (req) => {
+        const response = dsFixture;
+
+        req.responseTimeout = 5000;
+        req.reply((res) => {
+          res.delay(2500);
+          res.send(200, response);
+        });
+      }).as('post-document-state');
     });
 
     it('shows guidance and lets you upload a file', () => {
@@ -54,10 +46,7 @@ describe('Can upload a document', () => {
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
-      cy.wait('@s3Upload');
-      cy.wait('@s3Upload');
-      cy.wait('@patch-document-state');
-      cy.wait('@patch-document-state');
+      cy.wait('@post-document-state');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
@@ -86,14 +75,10 @@ describe('Can upload a document', () => {
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
-      cy.wait('@s3Upload');
-      cy.wait('@s3Upload');
-      cy.wait('@s3Upload');
-      cy.wait('@s3Upload');
-      cy.wait('@patch-document-state');
-      cy.wait('@patch-document-state');
-      cy.wait('@patch-document-state');
-      cy.wait('@patch-document-state');
+      cy.wait('@post-document-state');
+      cy.wait('@post-document-state');
+      cy.wait('@post-document-state');
+      cy.wait('@post-document-state');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
@@ -107,9 +92,14 @@ describe('Can upload a document', () => {
 
   context('when upload is unsuccessful', () => {
     beforeEach(() => {
-      cy.intercept('POST', dsFixture.uploadPolicy.url, {
-        forceNetworkError: true,
-      }).as('s3Upload');
+      cy.intercept('POST', /\/api\/evidence\/evidence_requests\/.+/, (req) => {
+        const response = dsFixture;
+
+        req.responseTimeout = 5000;
+        req.reply((res) => {
+          res.send(500, response);
+        });
+      }).as('post-document-state');
     });
 
     it('shows an error message', () => {

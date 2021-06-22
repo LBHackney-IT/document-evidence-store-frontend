@@ -8,18 +8,12 @@ export enum DocumentState {
   REJECTED = 'REJECTED',
 }
 
-export interface UploadPolicy {
-  url: string;
-  fields: { [key: string]: string };
-}
-
 export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
   staffSelectedDocumentType?: DocumentType;
   document?: Document;
@@ -31,7 +25,6 @@ export class DocumentSubmission implements IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   state: DocumentState;
-  uploadPolicy?: UploadPolicy;
   documentType: DocumentType;
   staffSelectedDocumentType?: DocumentType;
   document?: Document;
@@ -42,7 +35,6 @@ export class DocumentSubmission implements IDocumentSubmission {
     this.claimId = params.claimId;
     this.rejectionReason = params.rejectionReason;
     this.state = params.state;
-    this.uploadPolicy = params.uploadPolicy;
     this.documentType = params.documentType;
     this.staffSelectedDocumentType = params.staffSelectedDocumentType;
     this.document = params.document;

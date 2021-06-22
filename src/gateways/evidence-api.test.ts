@@ -65,7 +65,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
-          UserEmail: Constants.DUMMY_EMAIL,
+          useremail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -105,7 +105,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
-          UserEmail: Constants.DUMMY_EMAIL,
+          useremail: Constants.DUMMY_EMAIL,
         },
       });
     });
@@ -143,7 +143,7 @@ describe('Evidence api gateway', () => {
         data: body,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
-          UserEmail: Constants.DUMMY_EMAIL,
+          useremail: Constants.DUMMY_EMAIL,
         },
         validateStatus,
       });
@@ -224,7 +224,7 @@ describe('Evidence api gateway', () => {
         validateStatus,
         headers: {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
-          UserEmail: Constants.DUMMY_EMAIL,
+          useremail: Constants.DUMMY_EMAIL,
         },
       });
     });
