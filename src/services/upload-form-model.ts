@@ -1,8 +1,3 @@
-import {
-  DocumentState,
-  DocumentSubmission,
-} from '../domain/document-submission';
-import { S3Gateway } from '../gateways/s3-gateway';
 import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
@@ -12,18 +7,7 @@ export type FormValues = {
   [documentTypeId: string]: File[];
 };
 
-class FileDocumentSubmission {
-  file: File;
-  documentSubmission: DocumentSubmission;
-
-  constructor(file: File, documentSubmission: DocumentSubmission) {
-    this.file = file;
-    this.documentSubmission = documentSubmission;
-  }
-}
-
 export class UploadFormModel {
-  private s3 = new S3Gateway();
   private gateway = new InternalApiGateway();
   constructor(private documentTypes: DocumentType[]) {}
 
@@ -53,59 +37,21 @@ export class UploadFormModel {
     formValues: FormValues,
     evidenceRequestId: string
   ): Promise<void> {
-    const fileDocumentSubmissions = await this.createDocumentSubmissionForEachFile(
-      formValues,
-      evidenceRequestId
-    );
-
-    const uploadFilesAndUpdateDocumentStateRequests = fileDocumentSubmissions.map(
-      async (fileDocumentSubmission) => {
-        await this.uploadFile(
-          fileDocumentSubmission.file,
-          fileDocumentSubmission.documentSubmission
-        );
-        await this.updateDocumentState(
-          fileDocumentSubmission.documentSubmission.id
-        );
+    const createDocumentSubmissionForEachFile = Object.entries(formValues).map(
+      async ([documentTypeId, files]) => {
+        for (const file of files) {
+          const formData = new FormData();
+          formData.append('documentType', documentTypeId);
+          formData.append('document', file);
+          await this.gateway.createDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            evidenceRequestId,
+            formData
+          );
+        }
       }
     );
 
-    await Promise.all(uploadFilesAndUpdateDocumentStateRequests);
-  }
-
-  private async createDocumentSubmissionForEachFile(
-    formValues: FormValues,
-    evidenceRequestId: string
-  ): Promise<FileDocumentSubmission[]> {
-    const fileDocumentSubmissions: FileDocumentSubmission[] = [];
-    for (const [documentTypeId, files] of Object.entries(formValues)) {
-      for (const file of files) {
-        const documentSubmission = await this.gateway.createDocumentSubmission(
-          Constants.DUMMY_EMAIL,
-          evidenceRequestId,
-          documentTypeId
-        );
-        fileDocumentSubmissions.push(
-          new FileDocumentSubmission(file, documentSubmission)
-        );
-      }
-    }
-    return fileDocumentSubmissions;
-  }
-
-  private async uploadFile(file: File, documentSubmission: DocumentSubmission) {
-    if (!documentSubmission || !documentSubmission.uploadPolicy) return;
-
-    await this.s3.upload(file, documentSubmission.uploadPolicy);
-  }
-
-  private async updateDocumentState(documentSubmissionId: string) {
-    await this.gateway.updateDocumentSubmission(
-      Constants.DUMMY_EMAIL,
-      documentSubmissionId,
-      {
-        state: DocumentState.UPLOADED,
-      }
-    );
+    await Promise.all(createDocumentSubmissionForEachFile);
   }
 }

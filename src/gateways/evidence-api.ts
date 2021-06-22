@@ -235,10 +235,10 @@ export class EvidenceApiGateway {
     params?: unknown
   ): Promise<{ data?: string; status: number }> {
     const token = this.getToken(pathSegments, method);
+    // Send on any headers which were included in the internal-api request
     const headerDictionary: TokenDictionary = JSON.parse(
       JSON.stringify(headers)
     );
-    const userEmail = headerDictionary['useremail'];
 
     try {
       const { status, data } = await this.client.request({
@@ -247,8 +247,8 @@ export class EvidenceApiGateway {
         data: body,
         params: params,
         headers: {
+          ...headerDictionary,
           Authorization: token,
-          UserEmail: userEmail,
         },
         validateStatus() {
           return true;

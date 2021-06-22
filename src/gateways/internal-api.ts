@@ -99,12 +99,12 @@ export class InternalApiGateway {
   async createDocumentSubmission(
     userEmail: string,
     evidenceRequestId: string,
-    documentType: string
+    formData: FormData
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-        { documentType },
+        formData,
         {
           headers: {
             UserEmail: userEmail,

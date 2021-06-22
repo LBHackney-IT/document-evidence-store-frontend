@@ -1,11 +1,8 @@
 import { FormValues, UploadFormModel } from './upload-form-model';
-import * as S3Gateway from '../gateways/s3-gateway';
-import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
 import documentSubmissionFixture from '../../cypress/fixtures/document_submissions/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 import { Constants } from '../helpers/Constants';
 
-const { uploadMock } = S3Gateway as typeof MockS3Gateway;
 const evidenceRequestId = '123';
 const documentSubmission = documentSubmissionFixture.map((ds) =>
   ResponseMapper.mapDocumentSubmission(ds)
@@ -14,13 +11,9 @@ const documentTypes = documentSubmissionFixture.map(
   (ds) => ResponseMapper.mapDocumentSubmission(ds).documentType
 );
 
-jest.mock('../gateways/s3-gateway');
-
-const mockUpdateState = jest.fn();
 const mockCreateDocumentSubmission = jest.fn(() => documentSubmission);
 jest.mock('../gateways/internal-api', () => ({
   InternalApiGateway: jest.fn(() => ({
-    updateDocumentSubmission: mockUpdateState,
     createDocumentSubmission: mockCreateDocumentSubmission,
   })),
 }));
@@ -56,67 +49,35 @@ describe('UploadFormModel', () => {
 
     it('creates document submission for each file', async () => {
       await model.handleSubmit(values, evidenceRequestId);
+      const firstFormData = new FormData();
+      firstFormData.append('documentType', documentTypes[0].id);
+      firstFormData.append('document', fileList1[0]);
+
+      const secondFormData = new FormData();
+      secondFormData.append('documentType', documentTypes[1].id);
+      secondFormData.append('document', fileList2[0]);
+
+      const thirdFormData = new FormData();
+      thirdFormData.append('documentType', documentTypes[1].id);
+      thirdFormData.append('document', fileList2[1]);
 
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         1,
         Constants.DUMMY_EMAIL,
         evidenceRequestId,
-        documentTypes[0].id
+        firstFormData
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         2,
         Constants.DUMMY_EMAIL,
         evidenceRequestId,
-        documentTypes[1].id
+        secondFormData
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
-        2,
-        Constants.DUMMY_EMAIL,
-        evidenceRequestId,
-        documentTypes[1].id
-      );
-    });
-
-    it('calls s3 for each submission', async () => {
-      await model.handleSubmit(values, evidenceRequestId);
-
-      expect(uploadMock).toHaveBeenNthCalledWith(
-        1,
-        fileList1[0],
-        documentSubmission.uploadPolicy
-      );
-      expect(uploadMock).toHaveBeenNthCalledWith(
-        2,
-        fileList2[0],
-        documentSubmission.uploadPolicy
-      );
-      expect(uploadMock).toHaveBeenNthCalledWith(
-        3,
-        fileList2[1],
-        documentSubmission.uploadPolicy
-      );
-    });
-
-    it('updates the state of each submission', async () => {
-      await model.handleSubmit(values, evidenceRequestId);
-
-      expect(mockUpdateState).toHaveBeenNthCalledWith(
-        1,
-        Constants.DUMMY_EMAIL,
-        documentSubmission.id,
-        { state: 'UPLOADED' }
-      );
-      expect(mockUpdateState).toHaveBeenNthCalledWith(
-        2,
-        Constants.DUMMY_EMAIL,
-        documentSubmission.id,
-        { state: 'UPLOADED' }
-      );
-      expect(mockUpdateState).toHaveBeenNthCalledWith(
         3,
         Constants.DUMMY_EMAIL,
-        documentSubmission.id,
-        { state: 'UPLOADED' }
+        evidenceRequestId,
+        thirdFormData
       );
     });
   });
