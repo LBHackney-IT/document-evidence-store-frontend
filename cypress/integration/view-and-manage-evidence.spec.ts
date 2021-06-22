@@ -61,7 +61,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(3).contains('Proof of ID').click();
+    cy.get('.toReview a').eq(1).contains('Proof of ID').click();
 
     cy.contains('h1', 'Namey McNameProof of ID');
 
@@ -77,7 +77,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('shows an iframe containing the file preview', () => {
-    cy.get('.toReview a').eq(3).contains('Proof of ID').click();
+    cy.get('.toReview a').eq(1).contains('Proof of ID').click();
     cy.get('iframe');
   });
 
