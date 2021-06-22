@@ -30,7 +30,6 @@ const gateway = new InternalApiGateway();
 type DocumentDetailPageQuery = {
   residentId: string;
   documentSubmissionId: string;
-  action?: string;
 };
 
 type DocumentDetailPageProps = {
@@ -54,7 +53,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const {
     residentId,
     documentSubmissionId,
-    action,
   } = router.query as DocumentDetailPageQuery;
   const [documentSubmission, setDocumentSubmission] = useState(
     _documentSubmission
@@ -127,6 +125,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const [submitError, setSubmitError] = useState(false);
+  const [acceptDialogIsOpen, setAcceptDialogIsOpen] = useState(false);
+  const [rejectDialogIsOpen, setRejectDialogIsOpen] = useState(false);
 
   const { document } = documentSubmission;
   if (!document) return null;
@@ -143,6 +143,22 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       console.error('Failed to copy: ', err);
     }
   }
+
+  const handleOpenAcceptDialog = () => {
+    setAcceptDialogIsOpen(true);
+  };
+
+  const handleCloseAcceptDialog = () => {
+    setAcceptDialogIsOpen(false);
+  };
+
+  const handleOpenRejectDialog = () => {
+    setRejectDialogIsOpen(true);
+  };
+
+  const handleCloseRejectDialog = () => {
+    setRejectDialogIsOpen(false);
+  };
 
   function setButtonClicked() {
     setIsClicked(true);
@@ -172,20 +188,18 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       {documentSubmission.state === DocumentState.UPLOADED && (
         <div className={styles.actions}>
-          <Link
-            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=accept`}
-            scroll={false}
+          <button
+            className="govuk-button lbh-button"
+            onClick={handleOpenAcceptDialog}
           >
-            <button className="govuk-button lbh-button">Accept</button>
-          </Link>
-          <Link
-            href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmission.id}?action=reject`}
-            scroll={false}
+            Accept
+          </button>
+          <button
+            className="govuk-button govuk-secondary lbh-button lbh-button--secondary"
+            onClick={handleOpenRejectDialog}
           >
-            <button className="govuk-button govuk-secondary lbh-button lbh-button--secondary">
-              Request new file
-            </button>
-          </Link>
+            Request new file
+          </button>
         </div>
       )}
 
@@ -219,25 +233,19 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       {/* <h2 className="lbh-heading-h3">History</h2> */}
       {/* <History /> */}
 
-      <AcceptDialog
-        open={action === 'accept'}
-        staffSelectedDocumentTypes={staffSelectedDocumentTypes}
-        onAccept={handleAccept}
-        onDismiss={() =>
-          router.push(
-            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmissionId}`
-          )
-        }
-      />
+      {acceptDialogIsOpen && (
+        <AcceptDialog
+          open={acceptDialogIsOpen}
+          staffSelectedDocumentTypes={staffSelectedDocumentTypes}
+          onAccept={handleAccept}
+          onDismiss={handleCloseAcceptDialog}
+        />
+      )}
 
       <RejectDialog
-        open={action === 'reject'}
+        open={rejectDialogIsOpen}
         onReject={handleReject}
-        onDismiss={() =>
-          router.push(
-            `/teams/${teamId}/dashboard/residents/${residentId}/document/${documentSubmissionId}`
-          )
-        }
+        onDismiss={handleCloseRejectDialog}
       />
     </Layout>
   );
