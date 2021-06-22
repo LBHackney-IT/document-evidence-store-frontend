@@ -125,8 +125,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const [submitError, setSubmitError] = useState(false);
-  const [acceptDialogIsOpen, setAcceptDialogIsOpen] = useState(false);
-  const [rejectDialogIsOpen, setRejectDialogIsOpen] = useState(false);
+  const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
   const { document } = documentSubmission;
   if (!document) return null;
@@ -145,19 +145,19 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   }
 
   const handleOpenAcceptDialog = () => {
-    setAcceptDialogIsOpen(true);
+    setAcceptDialogOpen(true);
   };
 
   const handleCloseAcceptDialog = () => {
-    setAcceptDialogIsOpen(false);
+    setAcceptDialogOpen(false);
   };
 
   const handleOpenRejectDialog = () => {
-    setRejectDialogIsOpen(true);
+    setRejectDialogOpen(true);
   };
 
   const handleCloseRejectDialog = () => {
-    setRejectDialogIsOpen(false);
+    setRejectDialogOpen(false);
   };
 
   function setButtonClicked() {
@@ -233,9 +233,9 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       {/* <h2 className="lbh-heading-h3">History</h2> */}
       {/* <History /> */}
 
-      {acceptDialogIsOpen && (
+      {acceptDialogOpen && (
         <AcceptDialog
-          open={acceptDialogIsOpen}
+          open={acceptDialogOpen}
           staffSelectedDocumentTypes={staffSelectedDocumentTypes}
           onAccept={handleAccept}
           onDismiss={handleCloseAcceptDialog}
@@ -243,7 +243,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       )}
 
       <RejectDialog
-        open={rejectDialogIsOpen}
+        open={rejectDialogOpen}
         onReject={handleReject}
         onDismiss={handleCloseRejectDialog}
       />
