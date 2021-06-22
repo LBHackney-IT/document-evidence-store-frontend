@@ -90,13 +90,12 @@ describe('ResponseMapper', () => {
     });
 
     it('maps the basic attributes', () => {
-      const { claimId, rejectionReason, id, uploadPolicy } = responseJson;
+      const { claimId, rejectionReason, id } = responseJson;
 
       expect(result).toMatchObject({
         claimId,
         rejectionReason,
         id,
-        uploadPolicy,
       });
     });
 
