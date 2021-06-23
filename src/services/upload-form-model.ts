@@ -32,6 +32,24 @@ export class UploadFormModel {
       {}
     );
   }
+  imageToBase64 = (file: File): Promise<string> =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (): void => {
+        if (reader.result) {
+          resolve(reader.result.toString());
+        } else {
+          reject(new Error('No result from reading file as data URL'));
+        }
+      };
+
+      reader.onerror = (error): void => {
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
 
   async handleSubmit(
     formValues: FormValues,
@@ -40,13 +58,14 @@ export class UploadFormModel {
     const createDocumentSubmissionForEachFile = Object.entries(formValues).map(
       async ([documentTypeId, files]) => {
         for (const file of files) {
-          const formData = new FormData();
-          formData.append('documentType', documentTypeId);
-          formData.append('document', file);
+          const fileInBase64 = await this.imageToBase64(file);
           await this.gateway.createDocumentSubmission(
             Constants.DUMMY_EMAIL,
             evidenceRequestId,
-            formData
+            {
+              base64Document: fileInBase64,
+              documentType: documentTypeId,
+            }
           );
         }
       }

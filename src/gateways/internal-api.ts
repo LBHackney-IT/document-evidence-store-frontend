@@ -38,6 +38,11 @@ export interface EvidenceRequestForm {
   phoneNumberCheckbox: [];
 }
 
+export interface DocumentSubmissionRequest {
+  base64Document: string;
+  documentType: string;
+}
+
 export interface DocumentSubmissionUpdateRequest {
   state: string;
   rejectionReason?: string;
@@ -99,12 +104,12 @@ export class InternalApiGateway {
   async createDocumentSubmission(
     userEmail: string,
     evidenceRequestId: string,
-    formData: FormData
+    params: DocumentSubmissionRequest
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-        formData,
+        params,
         {
           headers: {
             UserEmail: userEmail,
