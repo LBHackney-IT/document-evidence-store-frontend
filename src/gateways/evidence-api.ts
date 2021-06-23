@@ -34,6 +34,8 @@ const tokens: TokenDictionary = {
   },
 };
 
+const headersToSendToEvidenceApi = ['useremail', 'content-type'];
+
 type EvidenceApiGatewayDependencies = {
   client: AxiosInstance;
 };
@@ -234,11 +236,17 @@ export class EvidenceApiGateway {
     body?: unknown,
     params?: unknown
   ): Promise<{ data?: string; status: number }> {
-    const token = this.getToken(pathSegments, method);
-    // Send on any headers which were included in the internal-api request
     const headerDictionary: TokenDictionary = JSON.parse(
       JSON.stringify(headers)
     );
+    const requestHeaders = Object.keys(headerDictionary)
+      .filter((key) => headersToSendToEvidenceApi.includes(key))
+      .reduce((obj, key) => {
+        return {
+          ...obj,
+          [key]: headerDictionary[key],
+        };
+      }, {});
 
     try {
       const { status, data } = await this.client.request({
@@ -247,8 +255,8 @@ export class EvidenceApiGateway {
         data: body,
         params: params,
         headers: {
-          ...headerDictionary,
-          Authorization: token,
+          ...requestHeaders,
+          Authorization: this.getToken(pathSegments, method),
         },
         validateStatus() {
           return true;

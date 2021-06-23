@@ -228,6 +228,27 @@ describe('Evidence api gateway', () => {
         },
       });
     });
+
+    it('sends required headers only', async () => {
+      // content-length is not present in EvidenceApiGateway.headersToSendToEvidenceApi
+      // so it is filtered out before sending the request onto EvidenceApi
+      await gateway.request(path, method, {
+        useremail: Constants.DUMMY_EMAIL,
+        'content-type': 'application/json',
+        'content-length': 915,
+      });
+      expect(client.request).toHaveBeenCalledWith({
+        method,
+        url: `/api/v1/${path.join('/')}`,
+        data: undefined,
+        validateStatus,
+        headers: {
+          Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+          useremail: Constants.DUMMY_EMAIL,
+          'content-type': 'application/json',
+        },
+      });
+    });
   });
 
   describe('getEvidenceRequests', () => {
