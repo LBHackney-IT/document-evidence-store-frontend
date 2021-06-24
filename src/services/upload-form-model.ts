@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 import { Constants } from '../helpers/Constants';
-import { documentToBase64 } from '../services/document-uploader';
+import { documentToBase64 } from './document-to-base-64';
 
 export type FormValues = {
   [documentTypeId: string]: File[];
