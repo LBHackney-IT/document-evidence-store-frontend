@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 import { Constants } from '../helpers/Constants';
+import { documentToBase64 } from './document-to-base-64';
 
 export type FormValues = {
   [documentTypeId: string]: File[];
@@ -32,24 +33,6 @@ export class UploadFormModel {
       {}
     );
   }
-  imageToBase64 = (file: File): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = (): void => {
-        if (reader.result) {
-          resolve(reader.result.toString());
-        } else {
-          reject(new Error('No result from reading file as data URL'));
-        }
-      };
-
-      reader.onerror = (error): void => {
-        reject(error);
-      };
-
-      reader.readAsDataURL(file);
-    });
 
   async handleSubmit(
     formValues: FormValues,
@@ -58,7 +41,7 @@ export class UploadFormModel {
     const createDocumentSubmissionForEachFile = Object.entries(formValues).map(
       async ([documentTypeId, files]) => {
         for (const file of files) {
-          const fileInBase64 = await this.imageToBase64(file);
+          const fileInBase64 = await documentToBase64(file);
           await this.gateway.createDocumentSubmission(
             Constants.DUMMY_EMAIL,
             evidenceRequestId,

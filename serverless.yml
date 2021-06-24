@@ -7,9 +7,6 @@ provider:
   stage: ${opt:stage}
   apiGateway:
     shouldStartNameWithService: true
-    binaryMediaTypes:
-      - 'image/*'
-      - 'application/pdf'
   timeout: 30
   tracing:
     apiGateway: true

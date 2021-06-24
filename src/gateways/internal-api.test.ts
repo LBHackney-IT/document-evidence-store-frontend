@@ -1,5 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { DocumentSubmissionResponse, ResidentResponse } from 'types/api';
+import { DocumentSubmissionRequest } from '../gateways/internal-api';
 import { ResponseMapper } from '../boundary/response-mapper';
 import {
   DocumentState,
@@ -93,67 +94,68 @@ describe('Internal API Gateway', () => {
     });
   });
 
-  // describe('createDocumentSubmission', () => {
-  //   const evidenceRequestId = 'evidence request id';
-  //   const documentType = 'passport-scan';
-  //   const formData = new FormData();
-  //   formData.append('documentType', documentType);
-  //   const apiResponse = {} as DocumentSubmission;
-  //   const expectedResult = {} as DocumentSubmission;
-  //
-  //   describe('when successful', () => {
-  //     beforeEach(() => {
-  //       client.post.mockResolvedValue({
-  //         data: apiResponse,
-  //       });
-  //
-  //       mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-  //         expectedResult
-  //       );
-  //     });
-  //
-  //     it('makes the api request', async () => {
-  //       await gateway.createDocumentSubmission(
-  //         Constants.DUMMY_EMAIL,
-  //         evidenceRequestId,
-  //         formData
-  //       );
-  //
-  //       expect(
-  //         client.post
-  //       ).toHaveBeenCalledWith(
-  //         `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
-  //         formData,
-  //         { headers: { UserEmail: Constants.DUMMY_EMAIL } }
-  //       );
-  //     });
-  //
-  //     it('returns the updated model', async () => {
-  //       const result = await gateway.createDocumentSubmission(
-  //         Constants.DUMMY_EMAIL,
-  //         evidenceRequestId,
-  //         formData
-  //       );
-  //
-  //       expect(result).toBe(expectedResult);
-  //     });
-  //   });
-  //
-  //   describe('when there is an error', () => {
-  //     it('returns internal server error', async () => {
-  //       client.post.mockRejectedValue(new Error('Internal server error'));
-  //       const functionCall = () =>
-  //         gateway.createDocumentSubmission(
-  //           Constants.DUMMY_EMAIL,
-  //           evidenceRequestId,
-  //           formData
-  //         );
-  //       await expect(functionCall).rejects.toEqual(
-  //         new InternalServerError('Internal server error')
-  //       );
-  //     });
-  //   });
-  // });
+  describe('createDocumentSubmission', () => {
+    const evidenceRequestId = 'evidence request id';
+    const documentType = 'passport-scan';
+    const formData = new FormData();
+    const request = {} as DocumentSubmissionRequest;
+    formData.append('documentType', documentType);
+    const apiResponse = {} as DocumentSubmission;
+    const expectedResult = {} as DocumentSubmission;
+
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.post.mockResolvedValue({
+          data: apiResponse,
+        });
+
+        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
+          expectedResult
+        );
+      });
+
+      it('makes the api request', async () => {
+        await gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          evidenceRequestId,
+          request
+        );
+
+        expect(
+          client.post
+        ).toHaveBeenCalledWith(
+          `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
+          request,
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+        );
+      });
+
+      it('returns the updated model', async () => {
+        const result = await gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          evidenceRequestId,
+          request
+        );
+
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.post.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () =>
+          gateway.createDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            evidenceRequestId,
+            request
+          );
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
 
   describe('createEvidenceRequest', () => {
     const baseRequest: EvidenceRequestRequest = {
