@@ -1,4 +1,4 @@
-import { documentToBase64 } from './document-uploader';
+import { documentToBase64 } from './document-to-base-64';
 
 describe('documentToBase64', async () => {
   it('when the file is converted', async () => {
