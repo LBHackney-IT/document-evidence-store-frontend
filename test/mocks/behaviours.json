@@ -16,7 +16,8 @@
       "get-residents",
       "get-document-submissions-with-resident",
       "get-resident",
-      "get-document"
+      "get-document",
+      "get-base64-document"
     ]
   }
 ]

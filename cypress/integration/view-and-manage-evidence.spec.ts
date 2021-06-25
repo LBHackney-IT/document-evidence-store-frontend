@@ -101,6 +101,7 @@ describe('Can view and manage evidence', () => {
 
       cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
         state: 'APPROVED',
+        userUpdatedBy: 'test@hackney.gov.uk',
         staffSelectedDocumentTypeId: 'passport-scan',
         validUntil: '30-4-2022',
       });
@@ -125,6 +126,7 @@ describe('Can view and manage evidence', () => {
     });
     cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
       state: 'REJECTED',
+      userUpdatedBy: 'test@hackney.gov.uk',
       rejectionReason: 'some rejection reason',
     });
   });

@@ -45,6 +45,7 @@ export interface DocumentSubmissionRequest {
 
 export interface DocumentSubmissionUpdateRequest {
   state: string;
+  userUpdatedBy: string;
   rejectionReason?: string;
   staffSelectedDocumentTypeId?: string;
   validUntil?: string;

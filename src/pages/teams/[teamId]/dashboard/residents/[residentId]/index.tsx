@@ -97,27 +97,27 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         </EvidenceList>
       </div>
 
-      {rejectedDocumentSubmissions &&
-        rejectedDocumentSubmissions.length > 0 &&
-        rejectedDocumentSubmissions.map((ds) => (
-          <div className="rejected">
-            <h2 className="lbh-heading-h3">Rejected</h2>
+      {rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (
+        <div className="rejected">
+          <h2 className="lbh-heading-h3">Rejected</h2>
 
-            <EvidenceList twoColumns>
+          <EvidenceList twoColumns>
+            {rejectedDocumentSubmissions.map((ds) => (
               <EvidenceTile
                 teamId={teamId}
                 residentId={residentId}
                 key={ds.id}
                 id={ds.id}
-                title={String(ds.staffSelectedDocumentType?.title)}
+                title={String(ds.documentType.title)}
                 createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
               />
-            </EvidenceList>
-          </div>
-        ))}
+            ))}
+          </EvidenceList>
+        </div>
+      )}
     </Layout>
   );
 };

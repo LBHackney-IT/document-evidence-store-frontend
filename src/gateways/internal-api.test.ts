@@ -53,12 +53,13 @@ describe('Internal API Gateway', () => {
           documentSubmissionId,
           {
             state: DocumentState.UPLOADED,
+            userUpdatedBy: 'test@hackney.gov.uk',
           }
         );
 
         expect(client.patch).toHaveBeenCalledWith(
           `/api/evidence/document_submissions/${documentSubmissionId}`,
-          { state: 'UPLOADED' },
+          { state: 'UPLOADED', userUpdatedBy: 'test@hackney.gov.uk' },
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
       });
@@ -69,6 +70,7 @@ describe('Internal API Gateway', () => {
           documentSubmissionId,
           {
             state: DocumentState.UPLOADED,
+            userUpdatedBy: 'test@hackney.gov.uk',
           }
         );
 
@@ -85,6 +87,7 @@ describe('Internal API Gateway', () => {
             documentSubmissionId,
             {
               state: DocumentState.UPLOADED,
+              userUpdatedBy: 'test@hackney.gov.uk',
             }
           );
         await expect(functionCall).rejects.toEqual(
@@ -96,10 +99,7 @@ describe('Internal API Gateway', () => {
 
   describe('createDocumentSubmission', () => {
     const evidenceRequestId = 'evidence request id';
-    const documentType = 'passport-scan';
-    const formData = new FormData();
     const request = {} as DocumentSubmissionRequest;
-    formData.append('documentType', documentType);
     const apiResponse = {} as DocumentSubmission;
     const expectedResult = {} as DocumentSubmission;
 

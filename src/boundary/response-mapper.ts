@@ -51,13 +51,13 @@ export class ResponseMapper {
     const rejectedAt = attrs.rejectedAt
       ? DateTime.fromISO(attrs.rejectedAt, { zone: 'utc' })
       : null;
-    const userRejectedBy = attrs.userRejectedBy ? attrs.userRejectedBy : null;
+    const userUpdatedBy = attrs.userUpdatedBy ? attrs.userUpdatedBy : null;
     return new DocumentSubmission({
       ...attrs,
       createdAt,
       state,
       rejectedAt,
-      userRejectedBy,
+      userUpdatedBy,
       documentType,
       staffSelectedDocumentType,
       document,

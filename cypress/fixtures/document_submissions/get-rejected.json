@@ -9,7 +9,7 @@
   "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
   "rejectionReason": "some rejection reason",
   "rejectedAt": "2021-01-14T10:23:42.958Z",
-  "userRejectedBy": "test.user@hackney.gov.uk",
+  "userUpdatedBy": "test@hackney.gov.uk",
   "state": "REJECTED",
   "document": {
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",

@@ -9,7 +9,7 @@ const History = (props: Props): JSX.Element => {
         {props.documentSubmission.rejectedAt && (
           <tr className="govuk-table__row">
             <td className="govuk-table__cell">
-              {props.documentSubmission.userRejectedBy}
+              {props.documentSubmission.userUpdatedBy}
             </td>
             <td className="govuk-table__cell">
               Requested a new file with reason:
