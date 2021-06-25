@@ -1,11 +1,6 @@
 import { AxiosInstance, AxiosResponse } from 'axios';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import {
-  DocumentState,
-  DocumentSubmission,
-} from 'src/domain/document-submission';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
-import { DocumentSubmissionResponse } from 'types/api';
 import DocumentSubmissionFixture from '../../cypress/fixtures/document_submissions/get-png.json';
 import DocumentSubmissionsFixture from '../../cypress/fixtures/document_submissions/get-many.json';
 import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
@@ -377,75 +372,6 @@ describe('Evidence api gateway', () => {
         const functionCall = () =>
           gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
-        );
-      });
-    });
-  });
-
-  describe('updateDocumentSubmission', () => {
-    const documentSubmissionId = 'document submission id';
-    const apiResponse = {} as DocumentSubmissionResponse;
-    const expectedResult = {} as DocumentSubmission;
-
-    describe('when successful', () => {
-      beforeEach(() => {
-        client.patch.mockResolvedValue({
-          data: apiResponse,
-        });
-
-        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-          expectedResult
-        );
-      });
-
-      it('makes the api request', async () => {
-        await gateway.updateDocumentSubmission(
-          Constants.DUMMY_EMAIL,
-          documentSubmissionId,
-          {
-            state: DocumentState.UPLOADED,
-          }
-        );
-
-        expect(client.patch).toHaveBeenCalledWith(
-          `/api/v1/document_submissions/${documentSubmissionId}`,
-          { state: 'UPLOADED' },
-          {
-            headers: {
-              Authorization:
-                process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
-              UserEmail: Constants.DUMMY_EMAIL,
-            },
-          }
-        );
-      });
-
-      it('returns the updated model', async () => {
-        const result = await gateway.updateDocumentSubmission(
-          Constants.DUMMY_EMAIL,
-          documentSubmissionId,
-          {
-            state: DocumentState.UPLOADED,
-          }
-        );
-
-        expect(result).toBe(expectedResult);
-      });
-    });
-
-    describe('when there is an error', () => {
-      it('returns internal server error', async () => {
-        client.patch.mockRejectedValue(new Error('Internal server error'));
-        const functionCall = () =>
-          gateway.updateDocumentSubmission(
-            Constants.DUMMY_EMAIL,
-            documentSubmissionId,
-            {
-              state: DocumentState.UPLOADED,
-            }
-          );
-        await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
       });

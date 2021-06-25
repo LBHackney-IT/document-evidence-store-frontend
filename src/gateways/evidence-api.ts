@@ -8,10 +8,7 @@ import {
 import { InternalServerError } from './internal-api';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import {
-  DocumentSubmission,
-  IDocumentSubmission,
-} from 'src/domain/document-submission';
+import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
@@ -132,29 +129,6 @@ export class EvidenceApiGateway {
         }
       );
       return ResponseMapper.mapEvidenceRequest(data);
-    } catch (err) {
-      console.error(err);
-      throw new InternalServerError('Internal server error');
-    }
-  }
-
-  async updateDocumentSubmission(
-    userEmail: string,
-    documentSubmissionId: string,
-    params: Partial<IDocumentSubmission>
-  ): Promise<DocumentSubmission> {
-    try {
-      const { data } = await this.client.patch<DocumentSubmissionResponse>(
-        `/api/v1/document_submissions/${documentSubmissionId}`,
-        params,
-        {
-          headers: {
-            Authorization: tokens?.document_submissions?.PATCH,
-            UserEmail: userEmail,
-          },
-        }
-      );
-      return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
