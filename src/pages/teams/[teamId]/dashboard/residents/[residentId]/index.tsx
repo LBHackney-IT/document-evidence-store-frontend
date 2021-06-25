@@ -35,7 +35,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const rejectedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'REJECTED'
   );
-  console.log('rejectedDocumentSubmissions', rejectedDocumentSubmissions);
 
   return (
     <Layout teamId={teamId}>
