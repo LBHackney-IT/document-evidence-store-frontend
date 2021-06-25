@@ -36,9 +36,10 @@ describe('Can view and manage evidence', () => {
     cy.get('.toReview a').eq(0).contains('Proof of ID');
 
     cy.get('h2').should('contain', 'To review');
-    // cy.get('h2').should('contain', 'Pending requests');
     cy.get('h2').should('contain', 'Reviewed');
     cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
+    cy.get('h2').should('contain', 'Rejected');
+    cy.get('.rejected a').eq(0).should('contain', 'Proof of ID');
   });
 
   it('lets you see an image document detail page with actions and information', () => {
@@ -68,17 +69,15 @@ describe('Can view and manage evidence', () => {
     cy.get('button').should('contain', 'Accept');
     cy.get('button').should('contain', 'Request new file');
 
+    cy.get('h2').should('contain', 'Preview');
+    cy.get('iframe');
+
     cy.contains('PDF');
     cy.contains('54.0 KB');
     // cy.get('a').should('contain', 'Open in new tab').and('have.attr', 'href');
 
     // TODO: uncomment when History is implemented
     // cy.get('h2').should('contain', 'History');
-  });
-
-  it('shows an iframe containing the file preview', () => {
-    cy.get('.toReview a').eq(1).contains('Proof of ID').click();
-    cy.get('iframe');
   });
 
   it('can approve the document', () => {
@@ -133,6 +132,12 @@ describe('Can view and manage evidence', () => {
   it('can view approved documents', () => {
     cy.get('.reviewed a').contains('Proof of ID').click();
     cy.get('button').contains('Copy page URL');
+  });
+
+  it('can view rejected documents', () => {
+    cy.get('.rejected a').contains('Proof of ID').click();
+    cy.get('h2').should('contain', 'History');
+    cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
 });
 

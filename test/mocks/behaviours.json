@@ -11,6 +11,7 @@
       "get-document-submission-png",
       "get-document-submission-pdf",
       "get-approved-document-submission-png",
+      "get-rejected-document-submission-png",
       "update-document-submission",
       "get-residents",
       "get-document-submissions-with-resident",

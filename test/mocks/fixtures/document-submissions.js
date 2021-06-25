@@ -1,6 +1,7 @@
 const documentSubmissionPng = require('../../../cypress/fixtures/document_submissions/get-png.json');
 const documentSubmissionPdf = require('../../../cypress/fixtures/document_submissions/get-pdf.json');
 const approvedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-approved.json');
+const rejectedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-rejected.json');
 const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
 
 // There may be a neater way of doing this with MocksServer variants but I couldn't get it to work.
@@ -22,6 +23,16 @@ const getApprovedDocumentSubmissionPng = {
   response: {
     status: 200,
     body: approvedDocumentSubmission,
+  },
+};
+
+const getRejectedDocumentSubmissionPng = {
+  id: 'get-rejected-document-submission-png',
+  url: '/api/v1/document_submissions/c82120d2-0a5c-4f40-bdcd-5a18d8773447',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: rejectedDocumentSubmission,
   },
 };
 
@@ -63,4 +74,5 @@ module.exports = {
   getDocumentSubmissionPdf,
   getDocumentSubmissionWithResident,
   getApprovedDocumentSubmissionPng,
+  getRejectedDocumentSubmissionPng,
 };

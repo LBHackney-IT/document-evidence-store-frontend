@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
+import History from 'src/components/History';
 import Layout from 'src/components/DashboardLayout';
 import RejectDialog from 'src/components/RejectDialog';
 import {
@@ -229,9 +230,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </figcaption>
       </figure>
 
-      {/* https://hackney.atlassian.net/browse/DES-63 */}
-      {/* <h2 className="lbh-heading-h3">History</h2> */}
-      {/* <History /> */}
+      {documentSubmission.rejectedAt && (
+        <div>
+          <h2 className="lbh-heading-h3">History</h2>
+          <History documentSubmission={documentSubmission} />
+        </div>
+      )}
 
       {acceptDialogOpen && (
         <AcceptDialog
