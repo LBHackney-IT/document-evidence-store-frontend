@@ -10,6 +10,14 @@ const evidenceApiGateway = new EvidenceApiGateway();
 
 const authorizer = new RequestAuthorizer();
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '500mb',
+    },
+  },
+};
+
 const endpoint: NextApiHandler = async (req, res) => {
   const path = req.query.path as string[];
   const authorizeCommand: RequestAuthorizerCommand = {
