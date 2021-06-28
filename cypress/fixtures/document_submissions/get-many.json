@@ -57,5 +57,25 @@
       "fileSize": 25300,
       "fileType": "image/png"
     }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
+    },
+    "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+    "rejectionReason": "some rejection reason",
+    "rejectedAt": "2021-01-14T10:23:42.958Z",
+    "userUpdatedBy": "test@hackney.gov.uk",
+    "state": "REJECTED",
+    "document": {
+      "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 25300,
+      "fileType": "image/png"
+    }
   }
 ]

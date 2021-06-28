@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
+import History from 'src/components/History';
 import Layout from 'src/components/DashboardLayout';
 import RejectDialog from 'src/components/RejectDialog';
 import {
@@ -62,7 +63,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const handleAccept = useCallback(
     async (values: DocumentSubmissionUpdateForm) => {
       try {
-        const payload = buildAcceptDocumentSubmissionRequest(values);
+        const payload = buildAcceptDocumentSubmissionRequest(
+          values,
+          user.email
+        );
         const updated = await gateway.updateDocumentSubmission(
           user.email,
           documentSubmissionId,
@@ -83,17 +87,20 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
 
   const buildAcceptDocumentSubmissionRequest = (
-    values: DocumentSubmissionUpdateForm
+    values: DocumentSubmissionUpdateForm,
+    userUpdatedBy: string
   ) => {
     if (values.validUntilDates && values.validUntilDates.length > 0) {
       return {
         state: values.state,
+        userUpdatedBy: userUpdatedBy,
         staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
         validUntil: values.validUntilDates.join('-'),
       };
     } else {
       return {
         state: values.state,
+        userUpdatedBy: userUpdatedBy,
         staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
       };
     }
@@ -107,6 +114,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
           documentSubmissionId,
           {
             state: values.state,
+            userUpdatedBy: user.email,
             rejectionReason: values.rejectionReason,
           }
         );
@@ -229,9 +237,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </figcaption>
       </figure>
 
-      {/* https://hackney.atlassian.net/browse/DES-63 */}
-      {/* <h2 className="lbh-heading-h3">History</h2> */}
-      {/* <History /> */}
+      {documentSubmission.rejectedAt && (
+        <div>
+          <h2 className="lbh-heading-h3">History</h2>
+          <History documentSubmission={documentSubmission} />
+        </div>
+      )}
 
       {acceptDialogOpen && (
         <AcceptDialog

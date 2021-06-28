@@ -28,10 +28,14 @@ export interface DocumentSubmissionResponse
     | 'documentType'
     | 'staffSelectedDocumentType'
     | 'document'
+    | 'rejectedAt'
+    | 'userUpdatedBy'
   > {
   createdAt: string;
   state: string;
   documentType: IDocumentType;
+  rejectedAt?: string;
+  userUpdatedBy?: string;
   staffSelectedDocumentType?: IDocumentType;
   document?: DocumentResponse;
 }
