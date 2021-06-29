@@ -32,6 +32,7 @@ export interface DocumentSubmissionResponse
     | 'userUpdatedBy'
   > {
   createdAt: string;
+  validUntil: DateTime;
   state: string;
   documentType: IDocumentType;
   rejectedAt?: string;

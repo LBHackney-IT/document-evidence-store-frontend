@@ -8,6 +8,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "validUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": "string",
     "state": "UPLOADED",
     "uploadPolicy": {
@@ -35,6 +36,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
     "createdAt": "2021-01-14T10:24:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "validUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": null,
     "state": "UPLOADED",
     "uploadPolicy": {
