@@ -71,14 +71,13 @@ const updateDocumentSubmission = {
 
 const getDocumentSubmissionExpiredClaim = {
   id: 'get-document-submissions-with-expired-claim',
-  url:
-    '/api/v1/document_submissions/c82120d2-0a5c-4f40-bdcd-5a18d877344v',
+  url: '/api/v1/document_submissions/c82120d2-0a5c-4f40-bdcd-5a18d877344v',
   method: 'GET',
   response: {
     status: 200,
     body: documentSubmissionExpiredClaim,
   },
-}
+};
 
 module.exports = {
   updateDocumentSubmission,
@@ -87,5 +86,5 @@ module.exports = {
   getDocumentSubmissionWithResident,
   getApprovedDocumentSubmissionPng,
   getRejectedDocumentSubmissionPng,
-  getDocumentSubmissionExpiredClaim
+  getDocumentSubmissionExpiredClaim,
 };

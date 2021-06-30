@@ -183,10 +183,11 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       </Head>
 
       {documentSubmission.validUntil < DateTime.local() && (
-        <PageWarning 
-          title="This document is no longer valid" 
+        <PageWarning
+          title="This document is no longer valid"
           content="If you need to use this document to prove eligibility, request a new
-                  version from the resident."/>
+                  version from the resident."
+        />
       )}
 
       <h1 className="lbh-heading-h2">
