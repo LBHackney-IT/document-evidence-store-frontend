@@ -3,6 +3,7 @@ const documentSubmissionPdf = require('../../../cypress/fixtures/document_submis
 const approvedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-approved.json');
 const rejectedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-rejected.json');
 const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
+const documentSubmissionExpiredClaim = require('../../../cypress/fixtures/document_submissions/get-expired.json');
 
 // There may be a neater way of doing this with MocksServer variants but I couldn't get it to work.
 // Instead I have created two behaviours.
@@ -68,6 +69,17 @@ const updateDocumentSubmission = {
   },
 };
 
+const getDocumentSubmissionExpiredClaim = {
+  id: 'get-document-submissions-with-expired-claim',
+  url:
+    '/api/v1/document_submissions/c82120d2-0a5c-4f40-bdcd-5a18d877344v',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: documentSubmissionExpiredClaim,
+  },
+}
+
 module.exports = {
   updateDocumentSubmission,
   getDocumentSubmissionPng,
@@ -75,4 +87,5 @@ module.exports = {
   getDocumentSubmissionWithResident,
   getApprovedDocumentSubmissionPng,
   getRejectedDocumentSubmissionPng,
+  getDocumentSubmissionExpiredClaim
 };

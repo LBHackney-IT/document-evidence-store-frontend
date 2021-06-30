@@ -1,17 +1,21 @@
 import { FunctionComponent } from 'react';
 
-const PageWarning: FunctionComponent = () => {
+const PageWarning: FunctionComponent<Props> = (props) => {
   return (
     <section className="lbh-page-announcement lbh-page-announcement--warning">
       <h3 className="lbh-page-announcement__title">
-        This document is no longer valid
+        {props.title}
       </h3>
       <div className="lbh-page-announcement__content">
-        If you need to use this document to prove eligibility, request a new
-        version from the resident.
+        {props.content}
       </div>
     </section>
   );
 };
+
+export interface Props {
+  title: string;
+  content: string;
+}
 
 export default PageWarning;

@@ -141,6 +141,11 @@ describe('Can view and manage evidence', () => {
     cy.get('h2').should('contain', 'History');
     cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
+
+  it('can view page warning for document with expired claim', () => {
+    cy.get('.reviewed a').eq(1).contains('Proof of ID').click();
+    cy.get('section').contains('This document is no longer valid');
+  });
 });
 
 export {};

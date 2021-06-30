@@ -40,7 +40,7 @@ export class ResponseMapper {
     attrs: DocumentSubmissionResponse
   ): DocumentSubmission {
     const createdAt = DateTime.fromISO(attrs.createdAt, { zone: 'utc' });
-    const validUntil = DateTime.fromISO(attrs.validUntil, { zone: 'utc' });
+    const validUntil = DateTime.fromISO(attrs.claimValidUntil, { zone: 'utc' });
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
     const staffSelectedDocumentType = attrs.staffSelectedDocumentType

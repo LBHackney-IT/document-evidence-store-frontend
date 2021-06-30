@@ -182,9 +182,12 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </title>
       </Head>
 
-      {documentSubmission.validUntil < DateTime.local() ? (
-        <PageWarning />
-      ) : null}
+      {documentSubmission.validUntil < DateTime.local() && (
+        <PageWarning 
+          title="This document is no longer valid" 
+          content="If you need to use this document to prove eligibility, request a new
+                  version from the resident."/>
+      )}
 
       <h1 className="lbh-heading-h2">
         <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
@@ -243,7 +246,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </figcaption>
       </figure>
 
-      {/* {documentSubmission.rejectedAt && ( */}
       <div>
         <h2 className="lbh-heading-h3">History</h2>
         <History documentSubmission={documentSubmission} />

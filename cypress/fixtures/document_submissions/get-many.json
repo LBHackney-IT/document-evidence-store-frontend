@@ -8,7 +8,7 @@
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "validUntil": "2121-01-29T16:28:11.326Z",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": "string",
     "state": "UPLOADED",
     "document": {
@@ -27,7 +27,7 @@
     "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
-    "validUntil": "2121-01-29T16:28:11.326Z",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": "string",
     "state": "UPLOADED",
     "document": {
@@ -51,7 +51,7 @@
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
-    "validUntil": "2121-01-29T16:28:11.326Z",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": "string",
     "state": "APPROVED",
     "document": {
@@ -70,13 +70,37 @@
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
-    "validUntil": "2121-01-29T16:28:11.326Z",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
     "rejectionReason": "some rejection reason",
     "rejectedAt": "2021-01-14T10:23:42.958Z",
     "userUpdatedBy": "test@hackney.gov.uk",
     "state": "REJECTED",
     "document": {
       "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 25300,
+      "fileType": "image/png"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
+    },
+    "staffSelectedDocumentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "Any valid proof of id"
+    },
+    "id": "c82120d2-0a5c-4f40-bdcd-5a18d877344v",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+    "claimValidUntil": "2000-01-29T16:28:11.326Z",
+    "rejectionReason": "string",
+    "state": "APPROVED",
+    "document": {
+      "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
       "createdAt": "2021-01-29T16:28:11.326Z",
       "fileSize": 25300,
       "fileType": "image/png"
