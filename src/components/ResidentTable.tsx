@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
+import { sortEvidenceRequestsDescending } from 'src/helpers/sorters';
 
 export const ResidentTable: FunctionComponent<Props> = ({
   residents,
@@ -8,17 +9,15 @@ export const ResidentTable: FunctionComponent<Props> = ({
 }) => {
   const rows = useMemo(
     () =>
-      residents
-        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-        .map((row) => {
-          return {
-            id: row.resident.id + row.createdAt,
-            residentId: row.resident.id,
-            residentName: row.resident.name,
-            document: row.documentTypes.map((dt) => dt.title).join(', '),
-            uploaded: `${row.createdAt.toRelative()}`,
-          };
-        }),
+      sortEvidenceRequestsDescending(residents).map((row) => {
+        return {
+          id: row.resident.id + row.createdAt,
+          residentId: row.resident.id,
+          residentName: row.resident.name,
+          document: row.documentTypes.map((dt) => dt.title).join(', '),
+          uploaded: `${row.createdAt.toRelative()}`,
+        };
+      }),
     [residents]
   );
 
