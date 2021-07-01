@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
-import { sortEvidenceRequestsDescending } from '../helpers';
-// import Link from 'next/link';
+import { sortEvidenceRequestsDescending } from '../helpers/sorters';
 
 export const EvidenceRequestTable: FunctionComponent<Props> = ({
   requests,
