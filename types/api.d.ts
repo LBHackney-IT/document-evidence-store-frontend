@@ -24,6 +24,7 @@ export interface DocumentSubmissionResponse
   extends Omit<
     IDocumentSubmission,
     | 'createdAt'
+    | 'claimValidUntil'
     | 'state'
     | 'documentType'
     | 'staffSelectedDocumentType'
@@ -32,6 +33,7 @@ export interface DocumentSubmissionResponse
     | 'userUpdatedBy'
   > {
   createdAt: string;
+  claimValidUntil: string;
   state: string;
   documentType: IDocumentType;
   rejectedAt?: string;

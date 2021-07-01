@@ -4,10 +4,15 @@
     "title": "Proof of ID",
     "description": "A valid document that can be used to prove identity"
   },
-  "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+  "staffSelectedDocumentType": {
+    "id": "proof-of-id",
+    "title": "Proof of ID",
+    "description": "Any valid proof of id"
+  },
+  "id": "c82120d2-0a5c-4f40-bdcd-5a18d877344v",
   "createdAt": "2021-01-14T10:23:42.958Z",
   "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
-  "claimValidUntil": "2121-01-29T16:28:11.326Z",
+  "claimValidUntil": "2000-01-29T16:28:11.326Z",
   "rejectionReason": "string",
   "state": "APPROVED",
   "document": {

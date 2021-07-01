@@ -25,6 +25,8 @@ import { RequestAuthorizer } from '../../../../../../../services/request-authori
 import { TeamHelper } from '../../../../../../../services/team-helper';
 import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
+import PageWarning from 'src/components/PageWarning';
+import { DateTime } from 'luxon';
 
 const gateway = new InternalApiGateway();
 
@@ -180,6 +182,14 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </title>
       </Head>
 
+      {documentSubmission.claimValidUntil < DateTime.local() && (
+        <PageWarning
+          title="This document is no longer valid"
+          content="If you need to use this document to prove eligibility, request a new
+                  version from the resident."
+        />
+      )}
+
       <h1 className="lbh-heading-h2">
         <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
           <a className="lbh-link">{resident.name}</a>
@@ -237,12 +247,11 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </figcaption>
       </figure>
 
-      {documentSubmission.rejectedAt && (
-        <div>
-          <h2 className="lbh-heading-h3">History</h2>
-          <History documentSubmission={documentSubmission} />
-        </div>
-      )}
+      <div>
+        <h2 className="lbh-heading-h3">History</h2>
+        <History documentSubmission={documentSubmission} />
+      </div>
+      {/* )} */}
 
       {acceptDialogOpen && (
         <AcceptDialog
