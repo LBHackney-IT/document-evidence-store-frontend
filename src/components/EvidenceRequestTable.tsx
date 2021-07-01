@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
-// import Link from 'next/link';
+import { sortEvidenceRequestsDescending } from '../helpers/sorters';
 
 export const EvidenceRequestTable: FunctionComponent<Props> = ({
   requests,
 }) => {
   const rows = useMemo(
     () =>
-      requests.map((row) => {
+      sortEvidenceRequestsDescending(requests).map((row) => {
         return {
           id: row.id,
           resident: row.resident.name,

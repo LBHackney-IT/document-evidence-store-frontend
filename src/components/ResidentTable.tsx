@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React, { FunctionComponent, useMemo } from 'react';
 import { EvidenceRequest } from '../domain/evidence-request';
+import { sortEvidenceRequestsDescending } from 'src/helpers/sorters';
 
 export const ResidentTable: FunctionComponent<Props> = ({
   residents,
@@ -8,7 +9,7 @@ export const ResidentTable: FunctionComponent<Props> = ({
 }) => {
   const rows = useMemo(
     () =>
-      residents.map((row) => {
+      sortEvidenceRequestsDescending(residents).map((row) => {
         return {
           id: row.resident.id + row.createdAt,
           residentId: row.resident.id,
