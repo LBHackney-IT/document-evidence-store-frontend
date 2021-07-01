@@ -24,7 +24,7 @@ export interface DocumentSubmissionResponse
   extends Omit<
     IDocumentSubmission,
     | 'createdAt'
-    | 'validUntil'
+    | 'claimValidUntil'
     | 'state'
     | 'documentType'
     | 'staffSelectedDocumentType'

@@ -11,7 +11,7 @@ export enum DocumentState {
 export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
-  validUntil: DateTime;
+  claimValidUntil: DateTime;
   claimId: string;
   rejectionReason: string | null;
   rejectedAt: DateTime | null;
@@ -25,7 +25,7 @@ export interface IDocumentSubmission {
 export class DocumentSubmission implements IDocumentSubmission {
   id: string;
   createdAt: DateTime;
-  validUntil: DateTime;
+  claimValidUntil: DateTime;
   claimId: string;
   rejectionReason: string | null;
   rejectedAt: DateTime | null;
@@ -38,7 +38,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   constructor(params: IDocumentSubmission) {
     this.id = params.id;
     this.createdAt = params.createdAt;
-    this.validUntil = params.validUntil;
+    this.claimValidUntil = params.claimValidUntil;
     this.claimId = params.claimId;
     this.rejectionReason = params.rejectionReason;
     this.rejectedAt = params.rejectedAt;

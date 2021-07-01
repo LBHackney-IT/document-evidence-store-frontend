@@ -182,7 +182,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </title>
       </Head>
 
-      {documentSubmission.validUntil < DateTime.local() && (
+      {documentSubmission.claimValidUntil < DateTime.local() && (
         <PageWarning
           title="This document is no longer valid"
           content="If you need to use this document to prove eligibility, request a new

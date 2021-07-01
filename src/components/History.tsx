@@ -10,7 +10,9 @@ const History = (props: Props): JSX.Element => {
           <td className="govuk-table__cell"></td>
           <td className="govuk-table__cell">Valid until</td>
           <td className="govuk-table__cell">
-            {props.documentSubmission.validUntil.toLocal().toFormat('d LLLL y')}
+            {props.documentSubmission.claimValidUntil
+              .toLocal()
+              .toFormat('d LLLL y')}
           </td>
         </tr>
         {props.documentSubmission.rejectedAt && (
