@@ -7,14 +7,16 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
 }) => {
   const rows = useMemo(
     () =>
-      requests.map((row) => {
-        return {
-          id: row.id,
-          resident: row.resident.name,
-          document: row.documentTypes[0].title,
-          made: `${row.createdAt.toRelative()}`,
-        };
-      }),
+      requests
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .map((row) => {
+          return {
+            id: row.id,
+            resident: row.resident.name,
+            document: row.documentTypes[0].title,
+            made: `${row.createdAt.toRelative()}`,
+          };
+        }),
     [requests]
   );
 

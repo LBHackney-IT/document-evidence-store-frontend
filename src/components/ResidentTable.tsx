@@ -8,15 +8,17 @@ export const ResidentTable: FunctionComponent<Props> = ({
 }) => {
   const rows = useMemo(
     () =>
-      residents.map((row) => {
-        return {
-          id: row.resident.id + row.createdAt,
-          residentId: row.resident.id,
-          residentName: row.resident.name,
-          document: row.documentTypes.map((dt) => dt.title).join(', '),
-          uploaded: `${row.createdAt.toRelative()}`,
-        };
-      }),
+      residents
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .map((row) => {
+          return {
+            id: row.resident.id + row.createdAt,
+            residentId: row.resident.id,
+            residentName: row.resident.name,
+            document: row.documentTypes.map((dt) => dt.title).join(', '),
+            uploaded: `${row.createdAt.toRelative()}`,
+          };
+        }),
     [residents]
   );
 
