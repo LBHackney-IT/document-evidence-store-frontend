@@ -28,6 +28,7 @@ const initialValues = {
 const AcceptDialog: FunctionComponent<Props> = (props) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>();
+
   const handleAccept = useCallback(
     async (values: DocumentSubmissionUpdateForm) => {
       try {
