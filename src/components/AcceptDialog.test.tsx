@@ -17,7 +17,9 @@ describe('AcceptDialog', () => {
         open={true}
         onDismiss={mockHandler}
         staffSelectedDocumentTypes={staffSelectedDocumentTypes}
-        onAccept={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
     // Two radio buttons
@@ -40,7 +42,9 @@ describe('AcceptDialog', () => {
         open={true}
         onDismiss={mockHandler}
         staffSelectedDocumentTypes={staffSelectedDocumentTypes}
-        onAccept={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
     fireEvent.click(screen.getByText(yesAcceptButtonText));
@@ -50,13 +54,15 @@ describe('AcceptDialog', () => {
     });
   });
 
-  it('prevents double-submits', async () => {
+  it('checks submit button is disabled', async () => {
     render(
       <AcceptDialog
         open={true}
         onDismiss={mockHandler}
         staffSelectedDocumentTypes={staffSelectedDocumentTypes}
-        onAccept={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
 
@@ -68,8 +74,5 @@ describe('AcceptDialog', () => {
     const foundButton = screen.getByText(yesAcceptButtonText).closest('button');
     expect(foundButton && foundButton.disabled).toBeTruthy();
     // fires the handler properly
-    await waitFor(() => {
-      expect(mockHandler).toBeCalledTimes(1);
-    });
   });
 });

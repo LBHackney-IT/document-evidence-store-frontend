@@ -1,13 +1,17 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import Dialog from './Dialog';
 import styles from '../styles/Dialog.module.scss';
 import Radio from './Radio';
 import { Form, Formik } from 'formik';
 import { DocumentType } from '../domain/document-type';
 import * as Yup from 'yup';
-import { DocumentSubmissionUpdateForm } from '../gateways/internal-api';
+import {
+  DocumentSubmissionUpdateForm,
+  InternalApiGateway,
+} from '../gateways/internal-api';
 import { DocumentState } from '../domain/document-submission';
 import DateFields from './DateFields';
+import router from 'next/router';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
@@ -22,6 +26,50 @@ const initialValues = {
 };
 
 const AcceptDialog: FunctionComponent<Props> = (props) => {
+  const [submitError, setSubmitError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const handleAccept = useCallback(
+    async (values: DocumentSubmissionUpdateForm) => {
+      try {
+        const gateway = new InternalApiGateway();
+        const payload = buildAcceptDocumentSubmissionRequest(
+          values,
+          props.email
+        );
+        await gateway.updateDocumentSubmission(
+          props.email,
+          props.documentSubmissionId,
+          payload
+        );
+        router.push(props.redirect, undefined, { shallow: true });
+      } catch (err) {
+        console.error(err);
+        setSubmitError(true);
+        setErrorMessage(err);
+      }
+    },
+    [setErrorMessage, setSubmitError]
+  );
+
+  const buildAcceptDocumentSubmissionRequest = (
+    values: DocumentSubmissionUpdateForm,
+    userUpdatedBy: string
+  ) => {
+    if (values.validUntilDates && values.validUntilDates.length > 0) {
+      return {
+        state: values.state,
+        userUpdatedBy: userUpdatedBy,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+        validUntil: values.validUntilDates.join('-'),
+      };
+    } else {
+      return {
+        state: values.state,
+        userUpdatedBy: userUpdatedBy,
+        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
+      };
+    }
+  };
   return (
     <Dialog
       open={props.open}
@@ -38,7 +86,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
       <Formik
         initialValues={initialValues}
         validationSchema={schema}
-        onSubmit={props.onAccept}
+        onSubmit={handleAccept}
         validateOnBlur={false}
         validateOnChange={true}
       >
@@ -86,6 +134,11 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 <legend className="govuk-fieldset__legend">
                   When does this document expire?
                 </legend>
+                {submitError && (
+                  <span className="govuk-error-message lbh-error-message">
+                    {errorMessage}
+                  </span>
+                )}
                 <DateFields name="validUntilDates" />
               </fieldset>
             </div>
@@ -119,8 +172,10 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
 interface Props {
   open: boolean;
   staffSelectedDocumentTypes: Array<DocumentType>;
-  onAccept: (values: DocumentSubmissionUpdateForm) => Promise<void>;
   onDismiss(): void;
+  email: string;
+  documentSubmissionId: string;
+  redirect: string;
 }
 
 export default AcceptDialog;
