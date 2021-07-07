@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import History from 'src/components/History';
 import Layout from 'src/components/DashboardLayout';
@@ -14,10 +14,6 @@ import {
 import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
-import {
-  DocumentSubmissionUpdateForm,
-  InternalApiGateway,
-} from 'src/gateways/internal-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
@@ -27,8 +23,6 @@ import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
 import PageWarning from 'src/components/PageWarning';
 import { DateTime } from 'luxon';
-
-const gateway = new InternalApiGateway();
 
 type DocumentDetailPageQuery = {
   residentId: string;
@@ -57,38 +51,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     residentId,
     documentSubmissionId,
   } = router.query as DocumentDetailPageQuery;
-  const [documentSubmission, setDocumentSubmission] = useState(
-    _documentSubmission
-  );
+  const documentSubmission = _documentSubmission;
   const [isClicked, setIsClicked] = useState(false);
-
-  const handleReject = useCallback(
-    async (values: DocumentSubmissionUpdateForm) => {
-      try {
-        const updated = await gateway.updateDocumentSubmission(
-          user.email,
-          documentSubmissionId,
-          {
-            state: values.state,
-            userUpdatedBy: user.email,
-            rejectionReason: values.rejectionReason,
-          }
-        );
-        setDocumentSubmission(updated);
-        router.push(
-          `/teams/${teamId}/dashboard/residents/${residentId}`,
-          undefined,
-          { shallow: true }
-        );
-      } catch (err) {
-        console.error(err);
-        setSubmitError(true);
-      }
-    },
-    [documentSubmission]
-  );
-
-  const [submitError, setSubmitError] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
 
@@ -152,12 +116,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         {documentTypeTitle}
       </h1>
 
-      {submitError && (
-        <span className="govuk-error-message lbh-error-message">
-          There was an error. Please try again later.
-        </span>
-      )}
-
       {documentSubmission.state === DocumentState.UPLOADED && (
         <div className={styles.actions}>
           <button
@@ -205,7 +163,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <h2 className="lbh-heading-h3">History</h2>
         <History documentSubmission={documentSubmission} />
       </div>
-      {/* )} */}
 
       {acceptDialogOpen && (
         <AcceptDialog
@@ -220,8 +177,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       <RejectDialog
         open={rejectDialogOpen}
-        onReject={handleReject}
         onDismiss={handleCloseRejectDialog}
+        email={user.email}
+        documentSubmissionId={documentSubmissionId}
+        redirect={`/teams/${teamId}/dashboard/residents/${residentId}`}
       />
     </Layout>
   );
