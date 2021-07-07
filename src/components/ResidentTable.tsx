@@ -40,12 +40,12 @@ export const ResidentTable: FunctionComponent<Props> = ({
           >
             Uploaded
           </th>
-          <th
+          {/* <th
             scope="col"
             className="govuk-table__header govuk-table__header--numeric"
           >
             <span className="govuk-visually-hidden">Action</span>
-          </th>
+          </th> */}
         </tr>
       </thead>
 

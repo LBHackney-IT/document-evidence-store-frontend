@@ -62,52 +62,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   );
   const [isClicked, setIsClicked] = useState(false);
 
-  const handleAccept = useCallback(
-    async (values: DocumentSubmissionUpdateForm) => {
-      try {
-        const payload = buildAcceptDocumentSubmissionRequest(
-          values,
-          user.email
-        );
-        const updated = await gateway.updateDocumentSubmission(
-          user.email,
-          documentSubmissionId,
-          payload
-        );
-        setDocumentSubmission(updated);
-        router.push(
-          `/teams/${teamId}/dashboard/residents/${residentId}`,
-          undefined,
-          { shallow: true }
-        );
-      } catch (err) {
-        console.error(err);
-        setSubmitError(true);
-      }
-    },
-    [documentSubmission]
-  );
-
-  const buildAcceptDocumentSubmissionRequest = (
-    values: DocumentSubmissionUpdateForm,
-    userUpdatedBy: string
-  ) => {
-    if (values.validUntilDates && values.validUntilDates.length > 0) {
-      return {
-        state: values.state,
-        userUpdatedBy: userUpdatedBy,
-        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
-        validUntil: values.validUntilDates.join('-'),
-      };
-    } else {
-      return {
-        state: values.state,
-        userUpdatedBy: userUpdatedBy,
-        staffSelectedDocumentTypeId: values.staffSelectedDocumentTypeId,
-      };
-    }
-  };
-
   const handleReject = useCallback(
     async (values: DocumentSubmissionUpdateForm) => {
       try {
@@ -257,8 +211,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         <AcceptDialog
           open={acceptDialogOpen}
           staffSelectedDocumentTypes={staffSelectedDocumentTypes}
-          onAccept={handleAccept}
           onDismiss={handleCloseAcceptDialog}
+          email={user.email}
+          documentSubmissionId={documentSubmissionId}
+          redirect={`/teams/${teamId}/dashboard/residents/${residentId}`}
         />
       )}
 
