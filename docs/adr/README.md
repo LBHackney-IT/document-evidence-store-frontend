@@ -1,5 +1,7 @@
 # Architecture Decision Records
 
+We have linked to these records from the [Hackney ADR repository](https://github.com/LBHackney-IT/lbh-adrs/tree/master/DES). Records found in [Platform ADRs](https://github.com/LBHackney-IT/lbh-adrs/tree/master/Platform) should take precedence.
+
 - [1. Record architecture decisions](0001-record-architecture-decisions.md)
 - [2. Switch from client side API requests to server side](0002-switch-from-client-side-api-requests-to-server-side.md)
 - [3. Use superjson for serialising complex objects](0003-use-superjson-for-serialising-complex-objects.md)
