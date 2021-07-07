@@ -1,11 +1,15 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 import Dialog from './Dialog';
 import { Formik, Form } from 'formik';
 import Field from './Field';
 import * as Yup from 'yup';
 import styles from '../styles/Dialog.module.scss';
 import { DocumentState } from '../domain/document-submission';
-import { DocumentSubmissionUpdateForm } from '../gateways/internal-api';
+import {
+  DocumentSubmissionUpdateForm,
+  InternalApiGateway,
+} from '../gateways/internal-api';
+import router from 'next/router';
 
 const schema = Yup.object().shape({
   rejectionReason: Yup.string()
@@ -19,6 +23,26 @@ const initialValues = {
 };
 
 const RejectDialog: FunctionComponent<Props> = (props) => {
+  const handleReject = useCallback(
+    async (values: DocumentSubmissionUpdateForm) => {
+      try {
+        const gateway = new InternalApiGateway();
+        await gateway.updateDocumentSubmission(
+          props.email,
+          props.documentSubmissionId,
+          {
+            state: values.state,
+            userUpdatedBy: props.email,
+            rejectionReason: values.rejectionReason,
+          }
+        );
+        router.push(props.redirect, undefined, { shallow: true });
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    []
+  );
   return (
     <Dialog
       open={props.open}
@@ -26,7 +50,7 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
       title="Request a new file"
     >
       <Formik
-        onSubmit={props.onReject}
+        onSubmit={handleReject}
         validationSchema={schema}
         initialValues={initialValues}
         validateOnBlur={false}
@@ -66,8 +90,10 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
 
 interface Props {
   open: boolean;
-  onReject: (values: DocumentSubmissionUpdateForm) => Promise<void>;
   onDismiss(): void;
+  email: string;
+  documentSubmissionId: string;
+  redirect: string;
 }
 
 export default RejectDialog;
