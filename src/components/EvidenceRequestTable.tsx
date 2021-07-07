@@ -13,6 +13,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
           resident: row.resident.name,
           document: row.documentTypes[0].title,
           made: `${row.createdAt.toRelative()}`,
+          userRequestedBy: row.userRequestedBy,
         };
       }),
     [requests]
@@ -37,6 +38,9 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
           >
             Requested
           </th>
+          <th scope="col" className="govuk-table__header">
+            Requested By
+          </th>
           {/* <th
             scope="col"
             className="govuk-table__header govuk-table__header--numeric"
@@ -56,6 +60,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.made}
             </td>
+            <td className="govuk-table__cell">{row.userRequestedBy}</td>
             {/* <td className="govuk-table__cell govuk-table__cell--numeric">
               <Link href="#">
                 <a className="lbh-link">Remind</a>

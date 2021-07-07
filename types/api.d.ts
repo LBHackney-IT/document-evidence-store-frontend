@@ -13,11 +13,12 @@ export type TokenDictionary = {
 export interface EvidenceRequestResponse
   extends Omit<
     IEvidenceRequest,
-    'createdAt' | 'deliveryMethods' | 'documentTypes'
+    'createdAt' | 'deliveryMethods' | 'documentTypes' | 'userRequestedBy'
   > {
   createdAt: string;
   deliveryMethods: string[];
   documentTypes: IDocumentType[];
+  userRequestedBy: string;
 }
 
 export interface DocumentSubmissionResponse
