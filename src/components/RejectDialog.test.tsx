@@ -10,7 +10,9 @@ describe('RejectDialog', () => {
       <RejectDialog
         onDismiss={mockHandler}
         open={true}
-        onReject={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
     expect(screen.getByLabelText('Reason for rejection'));
@@ -23,7 +25,9 @@ describe('RejectDialog', () => {
       <RejectDialog
         onDismiss={mockHandler}
         open={true}
-        onReject={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
     fireEvent.click(screen.getByText('Request new file'));
@@ -38,7 +42,9 @@ describe('RejectDialog', () => {
       <RejectDialog
         onDismiss={mockHandler}
         open={true}
-        onReject={mockHandler}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
       />
     );
 
@@ -49,24 +55,5 @@ describe('RejectDialog', () => {
 
     const foundButton = screen.getByText('Request new file').closest('button');
     expect(foundButton && foundButton.disabled).toBeTruthy();
-  });
-
-  it('fires the handler properly', async () => {
-    render(
-      <RejectDialog
-        onDismiss={mockHandler}
-        open={true}
-        onReject={mockHandler}
-      />
-    );
-
-    fireEvent.change(screen.getByLabelText('Reason for rejection'), {
-      target: { value: 'Example reason' },
-    });
-    fireEvent.click(screen.getByText('Request new file'));
-
-    await waitFor(() => {
-      expect(mockHandler).toBeCalledTimes(1);
-    });
   });
 });
