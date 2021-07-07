@@ -16,6 +16,7 @@ export const ResidentTable: FunctionComponent<Props> = ({
           residentName: row.resident.name,
           document: row.documentTypes.map((dt) => dt.title).join(', '),
           uploaded: `${row.createdAt.toRelative()}`,
+          userRequestedBy: row.userRequestedBy,
         };
       }),
     [residents]
@@ -39,6 +40,9 @@ export const ResidentTable: FunctionComponent<Props> = ({
             className="govuk-table__header govuk-table__header--numeric"
           >
             Uploaded
+          </th>
+          <th scope="col" className="govuk-table__header">
+            Requested By
           </th>
           {/* <th
             scope="col"
@@ -65,6 +69,7 @@ export const ResidentTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.uploaded}
             </td>
+            <td className="govuk-table__cell">{row.userRequestedBy}</td>
           </tr>
         ))}
       </tbody>

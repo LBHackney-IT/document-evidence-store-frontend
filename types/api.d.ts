@@ -18,6 +18,7 @@ export interface EvidenceRequestResponse
   createdAt: string;
   deliveryMethods: string[];
   documentTypes: IDocumentType[];
+  userRequestedBy: string;
 }
 
 export interface DocumentSubmissionResponse

@@ -24,7 +24,8 @@ describe('View evidence requests', () => {
     cy.get('tbody tr:first')
       .should('contain', 'Namey McName')
       .and('contain', 'Passport')
-      .and('contain', 'ago');
+      .and('contain', 'ago')
+      .and('contain', 'test@hackney.gov.uk');
   });
 });
 
