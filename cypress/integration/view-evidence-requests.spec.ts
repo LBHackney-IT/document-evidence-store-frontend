@@ -25,7 +25,7 @@ describe('View evidence requests', () => {
       .should('contain', 'Namey McName')
       .and('contain', 'Passport')
       .and('contain', 'ago')
-      .and('contain', 'test@email');
+      .and('contain', 'test@hackney.gov.uk');
   });
 });
 

@@ -69,9 +69,7 @@ export const ResidentTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell govuk-table__cell--numeric">
               {row.uploaded}
             </td>
-            <th scope="col" className="govuk-table__cell govuk-table__cell">
-              {row.userRequestedBy}
-            </th>
+            <td className="govuk-table__cell">{row.userRequestedBy}</td>
           </tr>
         ))}
       </tbody>
