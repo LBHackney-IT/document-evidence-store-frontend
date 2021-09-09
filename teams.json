@@ -71,5 +71,18 @@
     ],
     "landingMessage": "Electoral Services, Hackney Council",
     "slaMessage": "Thank you. Your documents have been uploaded."
+  },
+  {
+    "name": "Housing Register",
+    "googleGroup": "saml-aws-housing-register-developers",
+    "id": "7",
+    "reasons": [
+      {
+        "name": "Assessment",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Housing Register",
+    "slaMessage": "Thank you. Your documents have been uploaded."
   }
 ]
