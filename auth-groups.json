@@ -7,7 +7,8 @@
     "Hackney Staff": "HackneyAll",
     "Security Testing": "Security_Testing",
     "Electoral Services": "elections-team",
-    "Repairs Contact Centre": "repairs-contact-centre-team"
+    "Repairs Contact Centre": "repairs-contact-centre-team",
+    "Housing Register": "saml-aws-housing-register-developers"
   },
   "production": {
     "Development Team": "development-team-production",
