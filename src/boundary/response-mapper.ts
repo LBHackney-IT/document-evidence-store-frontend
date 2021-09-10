@@ -43,6 +43,9 @@ export class ResponseMapper {
     const claimValidUntil = DateTime.fromISO(attrs.claimValidUntil, {
       zone: 'utc',
     });
+    const retentionExpiresAt = DateTime.fromISO(attrs.retentionExpiresAt, {
+      zone: 'utc',
+    });
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
     const documentType = new DocumentType(attrs.documentType);
     const staffSelectedDocumentType = attrs.staffSelectedDocumentType
@@ -59,6 +62,7 @@ export class ResponseMapper {
       ...attrs,
       createdAt,
       claimValidUntil,
+      retentionExpiresAt,
       state,
       rejectedAt,
       userUpdatedBy,

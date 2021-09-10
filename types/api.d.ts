@@ -35,6 +35,7 @@ export interface DocumentSubmissionResponse
   > {
   createdAt: string;
   claimValidUntil: string;
+  retentionExpiresAt: string;
   state: string;
   documentType: IDocumentType;
   rejectedAt?: string;

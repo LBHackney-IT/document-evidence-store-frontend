@@ -1,6 +1,7 @@
 import React from 'react';
 import { DocumentSubmission } from '../domain/document-submission';
 import { formatDate } from '../helpers/formatters';
+import { formatDateWithoutTime } from '../helpers/formatters';
 
 const History = (props: Props): JSX.Element => {
   return (
@@ -10,9 +11,14 @@ const History = (props: Props): JSX.Element => {
           <td className="govuk-table__cell"></td>
           <td className="govuk-table__cell">Valid until</td>
           <td className="govuk-table__cell">
-            {props.documentSubmission.claimValidUntil
-              .toLocal()
-              .toFormat('d LLLL y')}
+            {formatDateWithoutTime(props.documentSubmission.claimValidUntil)}
+          </td>
+        </tr>
+        <tr className="govuk-table__row">
+          <td className="govuk-table__cell"></td>
+          <td className="govuk-table__cell">Retention expires</td>
+          <td className="govuk-table__cell">
+            {formatDateWithoutTime(props.documentSubmission.retentionExpiresAt)}
           </td>
         </tr>
         {props.documentSubmission.rejectedAt && (

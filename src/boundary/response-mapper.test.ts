@@ -113,6 +113,20 @@ describe('ResponseMapper', () => {
       expect(result.createdAt.zoneName).toEqual('UTC');
     });
 
+    // 2021-04-14T10:23:42.958Z
+    it('maps the retention expiration date', () => {
+      expect(result.retentionExpiresAt).toBeInstanceOf(DateTime);
+      expect(result.retentionExpiresAt).toMatchObject({
+        year: 2021,
+        month: 4,
+        day: 14,
+        hour: 10,
+        minute: 23,
+        second: 42,
+      });
+      expect(result.retentionExpiresAt.zoneName).toEqual('UTC');
+    });
+
     it('maps the document state', () => {
       expect(result.state).toEqual(DocumentState.UPLOADED);
     });

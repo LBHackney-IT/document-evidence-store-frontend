@@ -9,6 +9,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
     "rejectionReason": "string",
     "state": "UPLOADED",
     "document": {
@@ -28,6 +29,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
     "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
     "rejectionReason": "string",
     "state": "UPLOADED",
     "document": {
@@ -52,6 +54,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
     "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
     "rejectionReason": "string",
     "state": "APPROVED",
     "document": {
@@ -71,6 +74,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
     "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
     "rejectionReason": "some rejection reason",
     "rejectedAt": "2021-01-14T10:23:42.958Z",
     "userUpdatedBy": "test@hackney.gov.uk",
@@ -97,6 +101,7 @@
     "createdAt": "2021-01-14T10:23:42.958Z",
     "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
     "claimValidUntil": "2000-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
     "rejectionReason": "string",
     "state": "APPROVED",
     "document": {
