@@ -59,7 +59,9 @@ describe('Can view and manage evidence', () => {
 
     cy.get('h2').should('contain', 'History');
     cy.get('table')
-      .should('contain', 'Retention expires')
+      .should('contain', 'Valid until')
+      .and('contain', '29 January 2121')
+      .and('contain', 'Retention expires')
       .and('contain', '14 April 2021');
   });
 
