@@ -52,7 +52,9 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   return (
     <Layout teamId={team.id}>
       <Head>
-        <title>Browse residents</title>
+        <title>
+          Browse residents | Document Evidence Service | Hackney Council
+        </title>
       </Head>
       <h1 className="lbh-heading-h2">Browse residents</h1>
       <ResidentSearchForm handleSearch={handleSearch} />

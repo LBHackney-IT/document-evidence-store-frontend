@@ -22,7 +22,9 @@ const Confirmation: NextPage<ConfirmationProps> = ({
   return (
     <Layout feedbackUrl={feedbackUrl}>
       <Head>
-        <title>Confirmation</title>
+        <title>
+          Confirmation | Document Evidence Service | Hackney Council
+        </title>
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">

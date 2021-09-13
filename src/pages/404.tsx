@@ -5,7 +5,9 @@ import React, { ReactNode } from 'react';
 const PageNotFound = (): ReactNode => (
   <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
     <Head>
-      <title>Page not found</title>
+      <title>
+        Page not found | Document Evidence Service | Hackney Council
+      </title>
     </Head>
     <div className="govuk-grid-row">
       <div className="govuk-grid-column-two-thirds">

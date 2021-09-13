@@ -96,7 +96,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     <Layout teamId={teamId}>
       <Head>
         <title>
-          {documentTypeTitle} | {resident.name}
+          {documentTypeTitle} | {resident.name} | Document Evidence Service |
+          Hackney Council
         </title>
       </Head>
 

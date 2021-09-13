@@ -39,7 +39,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   return (
     <Layout teamId={teamId}>
       <Head>
-        <title>{resident.name}</title>
+        <title>
+          {resident.name} | Document Evidence Service | Hackney Council
+        </title>
       </Head>
       <h1 className="lbh-heading-h2">{resident.name}</h1>
       <p className="lbh-body">{resident.phoneNumber}</p>
