@@ -27,7 +27,7 @@ const Field = (props: Props): JSX.Element => (
         as="textarea"
         rows="3"
         data-testid="textarea"
-        aria-describedby={props.hint ? `${props.name}-hint` : false}
+        aria-describedby={props.hint ? `${props.name}-hint` : null}
         className={`govuk-textarea  lbh-textarea ${
           props.error ? 'govuk-input--error' : null
         }`}
@@ -36,7 +36,7 @@ const Field = (props: Props): JSX.Element => (
       <FormikField
         name={props.name}
         id={props.name}
-        aria-describedby={props.hint ? `${props.name}-hint` : false}
+        aria-describedby={props.hint ? `${props.name}-hint` : null}
         className={`govuk-input  lbh-input ${
           props.error ? 'govuk-input--error' : null
         }`}
