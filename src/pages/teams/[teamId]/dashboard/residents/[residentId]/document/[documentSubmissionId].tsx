@@ -147,7 +147,10 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       <h2 className="lbh-heading-h3">Preview</h2>
       <figure className={styles.preview}>
         {document.extension === 'jpeg' || document.extension === 'png' ? (
-          <img src={`${documentAsBase64}`} alt="Document preview" />
+          <img
+            src={`${documentAsBase64}`}
+            alt={documentSubmission.documentType.title}
+          />
         ) : (
           <iframe src={`${documentAsBase64}`} height="1000px" width="800px" />
         )}
