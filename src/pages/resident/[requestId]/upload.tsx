@@ -29,7 +29,9 @@ const Upload: NextPage<UploadProps> = ({
   return (
     <Layout feedbackUrl={feedbackUrl}>
       <Head>
-        <title>Upload your documents</title>
+        <title>
+          Upload your documents | Document Evidence Service | Hackney Council
+        </title>
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">

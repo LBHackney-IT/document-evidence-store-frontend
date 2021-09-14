@@ -41,7 +41,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   return (
     <Layout teamId={team.id}>
       <Head>
-        <title>Make a new request</title>
+        <title>
+          Make a new request | Document Evidence Service | Hackney Council
+        </title>
       </Head>
       <h1 className="lbh-heading-h2">Make a new request</h1>
       {complete ? (

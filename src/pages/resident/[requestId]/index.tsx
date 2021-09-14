@@ -18,7 +18,10 @@ const Index: NextPage<IndexProps> = ({ requestId, team }) => {
   return (
     <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
       <Head>
-        <title>You’ll need to photograph your documents</title>
+        <title>
+          You’ll need to photograph your documents | Document Evidence Service |
+          Hackney Council
+        </title>
       </Head>
       <InterruptionCard>
         <h1 className="lbh-heading-h1">

@@ -15,7 +15,9 @@ const Teams: NextPage<WithUser<TeamsProps>> = ({ teams }) => {
   return (
     <TeamsLayout>
       <Head>
-        <title>Choose a team</title>
+        <title>
+          Choose a team | Document Evidence Service | Hackney Council
+        </title>
       </Head>
 
       <h1 className="lbh-heading-h1">Choose a team</h1>

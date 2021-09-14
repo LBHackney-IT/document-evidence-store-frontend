@@ -1,5 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next';
 import Link from 'next/link';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import Layout from '../components/ResidentLayout';
@@ -11,15 +12,14 @@ const Home: NextPage<LoginProps> = ({ appUrl, feedbackUrl }) => {
   const loginUrl = useMemo(() => {
     let { redirect } = router.query as { redirect?: string };
     if (!redirect || redirect == '/') redirect = '/teams';
-    console.log(
-      'redirecting to: ' +
-        `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`
-    );
     return `https://auth.hackney.gov.uk/auth?redirect_uri=${appUrl}${redirect}`;
   }, [router, appUrl]);
 
   return (
     <Layout feedbackUrl={feedbackUrl}>
+      <Head>
+        <title>Login | Document Evidence Service | Hackney Council</title>
+      </Head>
       <h1 className="lbh-heading-h1">Staff sign in</h1>
 
       <Link href={loginUrl}>
@@ -52,7 +52,6 @@ const Home: NextPage<LoginProps> = ({ appUrl, feedbackUrl }) => {
 
 export const getServerSideProps: GetServerSideProps<LoginProps> = async () => {
   const appUrl = process.env.APP_URL;
-  console.log('login.tsx appUrl: ', appUrl);
   if (!appUrl) throw new Error('Missing APP_URL');
   const feedbackUrl = process.env.FEEDBACK_FORM_RESIDENT_URL as string;
 
