@@ -23,6 +23,7 @@ export interface EvidenceRequestRequest {
   team: string;
   reason: string;
   userRequestedBy?: string;
+  notificationEmail?: string;
 }
 
 export interface EvidenceRequestForm {
