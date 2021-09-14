@@ -15,8 +15,6 @@ import { Team } from '../domain/team';
 
 const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
-// Taken from https://stackoverflow.com/a/53210158
-const phoneRegExp = /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const schema = Yup.object().shape({
   resident: Yup.object().shape(
@@ -32,7 +30,7 @@ const schema = Yup.object().shape({
         is: (email) => !email,
         then: Yup.string()
           .required(emailOrPhoneNumberMessage)
-          .matches(phoneRegExp, 'Please provide a valid phone number'),
+          .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
       }),
     },
     [['email', 'phoneNumber']]
