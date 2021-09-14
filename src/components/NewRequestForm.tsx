@@ -13,6 +13,9 @@ import ConfirmRequestDialog from './ConfirmRequestDialog';
 import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
 
+const emailOrPhoneNumberMessage =
+  'Please provide either an email or a phone number';
+
 const schema = Yup.object().shape({
   resident: Yup.object().shape(
     {
@@ -20,14 +23,14 @@ const schema = Yup.object().shape({
       email: Yup.string().when(['phoneNumber'], {
         is: (phoneNumber) => !phoneNumber,
         then: Yup.string()
-          .required('Please provide either an email or a phone number')
-          .email('Please give a valid email address'),
+          .required(emailOrPhoneNumberMessage)
+          .email('Please provide a valid email address'),
       }),
       phoneNumber: Yup.string().when(['email'], {
         is: (email) => !email,
-        then: Yup.string().required(
-          'Please provide either an email or a phone number'
-        ),
+        then: Yup.string()
+          .required(emailOrPhoneNumberMessage)
+          .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
       }),
     },
     [['email', 'phoneNumber']]
