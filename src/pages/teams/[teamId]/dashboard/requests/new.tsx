@@ -33,6 +33,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     const payload: EvidenceRequestRequest = {
       ...values,
       userRequestedBy: user.email,
+      notificationEmail: user.email,
     };
     await gateway.createEvidenceRequest(user.email, payload);
     setComplete(true);
