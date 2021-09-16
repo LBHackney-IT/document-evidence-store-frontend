@@ -79,9 +79,6 @@ describe('Can view and manage evidence', () => {
     cy.contains('PDF');
     cy.contains('54.0 KB');
     // cy.get('a').should('contain', 'Open in new tab').and('have.attr', 'href');
-
-    // TODO: uncomment when History is implemented
-    // cy.get('h2').should('contain', 'History');
   });
 
   it('can approve the document', () => {
@@ -138,6 +135,10 @@ describe('Can view and manage evidence', () => {
   it('can view approved documents', () => {
     cy.get('.reviewed a').contains('Proof of ID').click();
     cy.get('button').contains('Copy page URL');
+    cy.get('h2').should('contain', 'History');
+    cy.get('table').should('contain', 'Namey McName');
+    cy.get('table').should('contain', 'Accepted this file as Passport');
+    cy.get('table').should('contain', '15 January 2021');
   });
 
   it('can view rejected documents', () => {

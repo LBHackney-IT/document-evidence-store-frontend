@@ -39,6 +39,7 @@ export interface DocumentSubmissionResponse
   state: string;
   documentType: IDocumentType;
   rejectedAt?: string;
+  acceptedAt?: string;
   userUpdatedBy?: string;
   staffSelectedDocumentType?: IDocumentType;
   document?: DocumentResponse;
