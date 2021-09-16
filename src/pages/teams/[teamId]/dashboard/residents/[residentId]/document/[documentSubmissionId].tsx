@@ -165,7 +165,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       <div>
         <h2 className="lbh-heading-h3">History</h2>
-        <History documentSubmission={documentSubmission} />
+        <History documentSubmission={documentSubmission} resident={resident} />
       </div>
 
       {acceptDialogOpen && (

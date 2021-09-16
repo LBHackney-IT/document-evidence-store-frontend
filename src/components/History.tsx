@@ -1,5 +1,6 @@
 import React from 'react';
 import { DocumentSubmission } from '../domain/document-submission';
+import { Resident } from '../domain/resident';
 import { formatDate } from '../helpers/formatters';
 import { formatDateWithoutTime } from '../helpers/formatters';
 
@@ -38,6 +39,26 @@ const History = (props: Props): JSX.Element => {
             </td>
           </tr>
         )}
+        {props.documentSubmission.acceptedAt && (
+          <tr className="govuk-table__row">
+            <td className="govuk-table__cell">
+              {props.documentSubmission.userUpdatedBy}
+            </td>
+            <td className="govuk-table__cell">{`Accepted this file as ${props.documentSubmission.staffSelectedDocumentType?.title}`}</td>
+            <td className="govuk-table__cell">
+              {formatDate(props.documentSubmission.acceptedAt)}
+            </td>
+          </tr>
+        )}
+        {props.documentSubmission.createdAt && (
+          <tr className="govuk-table__row">
+            <td className="govuk-table__cell">{props.resident.name}</td>
+            <td className="govuk-table__cell">Uploaded this file</td>
+            <td className="govuk-table__cell">
+              {formatDate(props.documentSubmission.createdAt)}
+            </td>
+          </tr>
+        )}
       </tbody>
     </table>
   );
@@ -45,6 +66,7 @@ const History = (props: Props): JSX.Element => {
 
 export interface Props {
   documentSubmission: DocumentSubmission;
+  resident: Resident;
 }
 
 export default History;

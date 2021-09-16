@@ -16,6 +16,7 @@ export interface IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   rejectedAt: DateTime | null;
+  acceptedAt: DateTime | null;
   userUpdatedBy: string | null;
   state: DocumentState;
   documentType: DocumentType;
@@ -31,6 +32,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   claimId: string;
   rejectionReason: string | null;
   rejectedAt: DateTime | null;
+  acceptedAt: DateTime | null;
   userUpdatedBy: string | null;
   state: DocumentState;
   documentType: DocumentType;
@@ -45,6 +47,7 @@ export class DocumentSubmission implements IDocumentSubmission {
     this.claimId = params.claimId;
     this.rejectionReason = params.rejectionReason;
     this.rejectedAt = params.rejectedAt;
+    this.acceptedAt = params.acceptedAt;
     this.userUpdatedBy = params.userUpdatedBy;
     this.state = params.state;
     this.documentType = params.documentType;
