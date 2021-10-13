@@ -47,6 +47,23 @@
     "slaMessage": "This is the Development Housing Team SLA message"
   },
   {
+    "name": "Document Products Team",
+    "googleGroup": "Document-Products-Team-All-Team-Access-Group",
+    "id": "123",
+    "reasons": [
+      {
+        "name": "Document Products Team Reason 1",
+        "id": "222"
+      },
+      {
+        "name": "Document Products Team Reason 2",
+        "id": "333"
+      }
+    ],
+    "landingMessage": "This is the Document Products Team landing message and can be changed in the DES config file",
+    "slaMessage": "This is the Document Products Team SLA message and can be changed in the DES config file"
+  },
+  {
     "name": "Repairs Contact Centre",
     "googleGroup": "repairs-contact-centre-team",
     "id": "5",

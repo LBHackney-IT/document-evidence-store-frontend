@@ -5,7 +5,8 @@
   "staging": {
     "Development Team": "development-team-staging",
     "Security Testing": "Security_Testing",
-    "Housing Register": "housing-register-officers"
+    "Housing Register": "housing-register-officers",
+    "Document Products Team": "Document-Products-Team-All-Team-Access-Group"
   },
   "production": {
     "Development Team": "development-team-production",
