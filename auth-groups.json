@@ -5,13 +5,13 @@
   "staging": {
     "Development Team": "development-team-staging",
     "Security Testing": "Security_Testing",
-    "Housing Register": "housing-register-officers",
+    "Housing Register": "Housing Register",
     "Document Products Team": "Document-Products-Team-All-Team-Access-Group"
   },
   "production": {
     "Development Team": "development-team-production",
     "Electoral Services": "elections-team",
     "Repairs Contact Centre": "repairs-contact-centre-team",
-    "Housing Register": "housing-register-officers"
+    "Housing Register": "Housing Register"
   }
 }
