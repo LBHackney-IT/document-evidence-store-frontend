@@ -21,11 +21,7 @@ module.exports = {
   webpack: (config, { webpack, isServer }) => {
     config.plugins.push(new webpack.IgnorePlugin(/.*\.test\.ts$/));
     // Fixes npm packages that depend on `fs` module
-    if (!isServer) {
-      config.node = {
-        fs: 'empty',
-      };
-    }
+    if (!isServer) config.resolve.fallback.fs = false;
 
     return config;
   },
