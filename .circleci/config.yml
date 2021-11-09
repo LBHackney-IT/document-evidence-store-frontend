@@ -81,7 +81,7 @@ jobs:
 
       - run:
           name: Run application in background
-          command: npm start
+          command: NODE_ENV=staging npm start
           background: true
 
       - run:
