@@ -72,6 +72,39 @@ jobs:
           name: Run unit tests
           command: npm run test:unit -- --maxWorkers=2
 
+  owasp-zap-baseline-scan:
+    machine:
+      image: ubuntu-2004:202104-01
+    steps:
+      - checkout
+      - *attach_workspace
+
+      - run:
+          name: Run application in background
+          command: npm start
+          background: true
+
+      - run:
+          name: Pull owasp zap docker image
+          command: docker pull owasp/zap2docker-stable:2.10.0
+
+      - run:
+          name: ZAP baseline test of application
+          # It will exit with codes of:
+          # 0: Success
+          # 1: At least 1 FAIL
+          # 2: At least one WARN and no FAILs
+          # 3: Any other failure
+          # Link to above:https://github.com/zaproxy/zaproxy/blob/main/docker/zap-baseline.py#L31-L35
+          command: |
+            (
+              docker run -t owasp/zap2docker-stable:2.10.0 zap-baseline.py \
+              -j \
+              -u https://raw.githubusercontent.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BRANCH}/zap-baseline.conf \
+              -t http://$(ip -f inet -o addr show docker0 | awk '{print $4}' | cut -d '/' -f 1):3000 || \
+              if [[ $? == 0 || $? == 2 ]]; then exit 0; else exit 1; fi;
+            )
+
   assume-role-staging:
     executor: python
     steps:
