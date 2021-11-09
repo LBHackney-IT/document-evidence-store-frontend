@@ -160,6 +160,11 @@ workflows:
           wait-on: 'http-get://127.0.0.1:3000/api/ping'
           store_artifacts: true
 
+      - owasp-zap-baseline-scan:
+          requires:
+            - test
+            - cypress/run
+
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
