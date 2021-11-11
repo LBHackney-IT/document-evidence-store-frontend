@@ -1,5 +1,18 @@
 [
   {
+    "name": "Staging Demo Team",
+    "googleGroup": "Document Evidence Service - Testing and Development (Staging)",
+    "id": "1",
+    "reasons": [
+      {
+        "name": "Demo reason",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Demo landing message",
+    "slaMessage": "Demo SLA message"
+  },
+  {
     "name": "Development Housing Team",
     "googleGroup": "development-team-staging",
     "id": "2",

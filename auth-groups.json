@@ -6,7 +6,8 @@
     "Development Team": "development-team-staging",
     "Security Testing": "Security_Testing",
     "Housing Register": "Housing Register",
-    "Document Products Team": "Document-Products-Team-All-Team-Access-Group"
+    "Document Products Team": "Document-Products-Team-All-Team-Access-Group",
+    "Staging Demo Team": "Document Evidence Service - Testing and Development (Staging)"
   },
   "production": {
     "Development Team": "development-team-production",
