@@ -1,5 +1,18 @@
 [
   {
+    "name": "Staging Demo Team",
+    "googleGroup": "Document Evidence Service - Testing and Development (Staging)",
+    "id": "1",
+    "reasons": [
+      {
+        "name": "Request a permit",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "You can use this link to upload the requested evidence we need to process your application. Please make sure all images are clear.",
+    "slaMessage": "Thank you for submitting your evidence. We will be in touch within 5 days to progress your request."
+  },
+  {
     "name": "Development Housing Team",
     "googleGroup": "development-team-staging",
     "id": "2",
