@@ -5,12 +5,12 @@
     "id": "1",
     "reasons": [
       {
-        "name": "Demo reason",
+        "name": "Request a permit",
         "id": "1"
       }
     ],
-    "landingMessage": "Demo landing message",
-    "slaMessage": "Demo SLA message"
+    "landingMessage": "You can use this link to upload the requested evidence we need to process your application. Please make sure all images are clear.",
+    "slaMessage": "Thank you for submitting your evidence. We will be in touch within 5 days to progress your request."
   },
   {
     "name": "Development Housing Team",
