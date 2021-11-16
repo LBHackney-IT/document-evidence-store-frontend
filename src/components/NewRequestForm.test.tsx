@@ -33,7 +33,10 @@ const mockHandler = jest.fn(() => promise);
 
 const values = {
   deliveryMethods: ['EMAIL', 'SMS'],
-  documentTypes: ['proof-of-id'],
+  documentTypes: [
+    'proof-of-id',
+    // , 'repairs-photo'
+  ],
   resident: {
     email: 'example@email.com',
     name: 'Example name',
@@ -58,6 +61,7 @@ const fillInForm = () => {
   fireEvent.click(screen.getByLabelText('Send request by SMS'));
   fireEvent.click(screen.getByLabelText('Send request by email'));
   fireEvent.click(screen.getByText(documentTypes[0].title));
+  // fireEvent.click(screen.getByText(documentTypes[1].title));
 };
 
 describe('NewRequestFormForm', () => {

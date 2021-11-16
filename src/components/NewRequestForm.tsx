@@ -175,13 +175,13 @@ const NewRequestForm = ({
                   {errors.documentTypes}
                 </span>
               )}
-              <div className="govuk-radios lbh-radios">
+              <div className="govuk-checkbox lbh-checkbox">
                 {documentTypes.map((type) => (
-                  <Radio
-                    label={type.title}
+                  <Checkbox
                     key={type.id}
+                    label={type.title}
                     value={type.id}
-                    name="documentTypes[0]"
+                    name="documentTypes"
                   />
                 ))}
               </div>
