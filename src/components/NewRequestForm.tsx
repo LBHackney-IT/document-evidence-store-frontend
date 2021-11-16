@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Field from './Field';
 import Checkbox from './Checkbox';
-import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
@@ -73,7 +72,10 @@ const NewRequestForm = ({
       } catch (err) {
         setRequest(undefined);
         setSubmitError(true);
-        setErrorMessage(err);
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        }
+        setErrorMessage('An issue has occurred');
       }
     },
     [setRequest, request, onSubmit, setSubmitError, setErrorMessage]
