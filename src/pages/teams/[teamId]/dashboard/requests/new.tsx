@@ -1,15 +1,11 @@
 import { NextPage } from 'next';
 import Head from 'next/head';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import NewRequestForm from '../../../../../components/NewRequestForm';
 import { DocumentType } from '../../../../../domain/document-type';
-import {
-  EvidenceRequestRequest,
-  InternalApiGateway,
-} from '../../../../../gateways/internal-api';
 import { RequestAuthorizer } from '../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../services/team-helper';
 import { Team } from '../../../../../domain/team';
@@ -24,20 +20,25 @@ type RequestsNewPageProps = {
 const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
   team,
-  user,
 }) => {
   const [complete, setComplete] = useState(false);
 
-  const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
-    const gateway = new InternalApiGateway();
-    const payload: EvidenceRequestRequest = {
-      ...values,
-      userRequestedBy: user.email,
-      notificationEmail: user.email,
-    };
-    await gateway.createEvidenceRequest(user.email, payload);
-    setComplete(true);
-  }, []);
+  // const handleSubmit = useCallback(async (values: EvidenceRequestRequest) => {
+  //   const gateway = new InternalApiGateway();
+  //   const payload: EvidenceRequestRequest = {
+  //     ...values,
+  //     userRequestedBy: user.email,
+  //     notificationEmail: user.email,
+  //   };
+  //   await gateway.createEvidenceRequest(user.email, payload);
+  //   setComplete(true);
+  // }, []);
+  
+  const handleContinue = () => {
+    sethandleContinue(true);
+  };
+  
+   const [acceptContinue, sethandleContinue] =useState(false);
 
   return (
     <Layout teamId={team.id}>
@@ -53,12 +54,23 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
         <NewRequestForm
           documentTypes={documentTypes}
           team={team}
-          onSubmit={handleSubmit}
+          // onContinue={handleContinue}
+          // onSubmit={handleSubmit}
+          redirect={`/teams/${team}/dashboard/requests/documentType`}
         />
       )}
     </Layout>
   );
 };
+
+// {
+//   AcceptContinue && (
+//     <DocumentTypeForm
+//     redirect={`/teams/${teamId}/dashboard/residents/${residentId}`}
+//   />
+//   )
+
+// }
 
 export const getServerSideProps = withAuth<RequestsNewPageProps>(
   async (ctx) => {

@@ -35,7 +35,7 @@ const values = {
   deliveryMethods: ['EMAIL', 'SMS'],
   documentTypes: [
     'proof-of-id',
-    // , 'repairs-photo'
+    'repairs-photo'
   ],
   resident: {
     email: 'example@email.com',
@@ -61,7 +61,7 @@ const fillInForm = () => {
   fireEvent.click(screen.getByLabelText('Send request by SMS'));
   fireEvent.click(screen.getByLabelText('Send request by email'));
   fireEvent.click(screen.getByText(documentTypes[0].title));
-  // fireEvent.click(screen.getByText(documentTypes[1].title));
+  fireEvent.click(screen.getByText(documentTypes[1].title));
 };
 
 describe('NewRequestFormForm', () => {

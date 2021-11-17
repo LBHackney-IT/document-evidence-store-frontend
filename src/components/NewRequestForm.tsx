@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, Component } from 'react';
 import Field from './Field';
 import Checkbox from './Checkbox';
 import { Formik, Form } from 'formik';
@@ -11,6 +11,9 @@ import {
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
+import DocumentsRequestForm from './DocumentTypeForm';
+import router from 'next/router';
+
 
 const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -37,13 +40,13 @@ const schema = Yup.object().shape({
   team: Yup.string(),
   reason: Yup.string(),
   deliveryMethods: Yup.array(),
-  documentTypes: Yup.array().min(1, 'Please choose a document type'),
+  // documentTypes: Yup.array().min(1, 'Please choose a document type'),
 });
 
 const NewRequestForm = ({
   documentTypes,
   team,
-  onSubmit,
+  redirect
 }: Props): JSX.Element => {
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
@@ -62,13 +65,10 @@ const NewRequestForm = ({
     phoneNumberCheckbox: '',
   };
 
-  const submitHandler = useCallback(
+  const continueHandler = useCallback(
     async (values) => {
-      const payload = buildEvidenceRequestRequest(values);
-      if (!request) return setRequest(payload);
       try {
-        await onSubmit(payload);
-        setRequest(undefined);
+        router.push(redirect, undefined, { shallow: true });
       } catch (err) {
         setRequest(undefined);
         setSubmitError(true);
@@ -78,8 +78,27 @@ const NewRequestForm = ({
         setErrorMessage('An issue has occurred');
       }
     },
-    [setRequest, request, onSubmit, setSubmitError, setErrorMessage]
+    [setErrorMessage, setSubmitError]
   );
+
+  // const submitHandler = useCallback(
+  //   async (values) => {
+  //     const payload = buildEvidenceRequestRequest(values);
+  //     if (!request) return setRequest(payload);
+  //     try {
+  //       await onSubmit(payload);
+  //       setRequest(undefined);
+  //     } catch (err) {
+  //       setRequest(undefined);
+  //       setSubmitError(true);
+  //       if (err instanceof Error) {
+  //         setErrorMessage(err.message);
+  //       }
+  //       setErrorMessage('An issue has occurred');
+  //     }
+  //   },
+  //   [setRequest, request, onSubmit, setSubmitError, setErrorMessage]
+  // );
 
   const buildEvidenceRequestRequest = (values: EvidenceRequestForm) => {
     const deliveryMethods: string[] = [];
@@ -105,7 +124,9 @@ const NewRequestForm = ({
     <Formik
       initialValues={initialValues}
       validationSchema={schema}
-      onSubmit={submitHandler}
+      // onSubmit={submitHandler}
+      onSubmit = {continueHandler}
+      //  onContinue={continueHandler}
     >
       {({ values, errors, touched, isSubmitting, submitForm }) => (
         <Form>
@@ -159,7 +180,7 @@ const NewRequestForm = ({
               />
             </div>
           </div>
-
+ 
           <div
             className={`govuk-form-group lbh-form-group ${
               touched.documentTypes &&
@@ -177,17 +198,18 @@ const NewRequestForm = ({
                   {errors.documentTypes}
                 </span>
               )}
+              </fieldset> 
               <div className="govuk-checkbox lbh-checkbox">
                 {documentTypes.map((type) => (
                   <Checkbox
                     key={type.id}
                     label={type.title}
-                    value={type.id}
-                    name="documentTypes"
+                    value={type.id }
+                    name={type.title + "documentTypes"}
                   />
                 ))}
               </div>
-            </fieldset>
+            
           </div>
 
           <button
@@ -195,15 +217,17 @@ const NewRequestForm = ({
             type="submit"
             disabled={isSubmitting}
           >
-            Send request
+            Continue
           </button>
+          
+          
+        
 
-          <ConfirmRequestDialog
-            documentTypes={documentTypes}
-            request={request}
-            onAccept={submitForm}
-            onDismiss={() => setRequest(undefined)}
-          />
+        {/* <DocumentsRequestForm
+          documentTypes={documentTypes}
+          team={team}
+          onSubmit={handleSubmit}
+        /> */}
         </Form>
       )}
     </Formik>
@@ -213,7 +237,11 @@ const NewRequestForm = ({
 interface Props {
   documentTypes: Array<DocumentType>;
   team: Team;
-  onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
+  // onContinue(): void;
+  // onContinue():void
+  // onSubmit:(values: EvidenceRequestRequest) => Promise<void>;
+  redirect: string;
+  // onSubmit: (values: EvidenceRequestRequest) => Promise<void>;
 }
 
 export default NewRequestForm;
