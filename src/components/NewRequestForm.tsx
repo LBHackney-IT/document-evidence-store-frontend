@@ -1,7 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import Field from './Field';
 import Checkbox from './Checkbox';
-import Radio from './Radio';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { DocumentType } from '../domain/document-type';
@@ -175,13 +174,13 @@ const NewRequestForm = ({
                   {errors.documentTypes}
                 </span>
               )}
-              <div className="govuk-radios lbh-radios">
+              <div className="govuk-checkboxes lbh-checkboxes">
                 {documentTypes.map((type) => (
-                  <Radio
+                  <Checkbox
                     label={type.title}
+                    name="documentTypes"
                     key={type.id}
                     value={type.id}
-                    name="documentTypes[0]"
                   />
                 ))}
               </div>
