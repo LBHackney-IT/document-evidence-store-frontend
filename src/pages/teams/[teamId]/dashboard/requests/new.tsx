@@ -46,7 +46,6 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
           Make a new request | Document Evidence Service | Hackney Council
         </title>
       </Head>
-      <h1 className="lbh-heading-h2">Make a new request</h1>
       {complete ? (
         <p className="lbh-body">Thanks!</p>
       ) : (

@@ -57,7 +57,8 @@ const fillInForm = () => {
   });
   fireEvent.click(screen.getByLabelText('Send request by SMS'));
   fireEvent.click(screen.getByLabelText('Send request by email'));
-  fireEvent.click(screen.getByText(documentTypes[0].title));
+  fireEvent.click(screen.getByText('Continue'));
+  //fireEvent.click(screen.getByLabelText(documentTypes[0].title));
 };
 
 describe('NewRequestFormForm', () => {
@@ -75,6 +76,8 @@ describe('NewRequestFormForm', () => {
 
     expect(screen.getByLabelText('Send request by SMS')).toBeDisabled();
     expect(screen.getByLabelText('Send request by email')).toBeDisabled();
+
+    fireEvent.click(screen.getByText('Continue'));
 
     expect(screen.getByText('Proof of ID')).toBeVisible();
     expect(screen.getByText('Repairs photo')).toBeVisible();
@@ -114,6 +117,7 @@ describe('NewRequestFormForm', () => {
 
     fillInForm();
 
+    fireEvent.click(screen.getByText('Continue'));
     fireEvent.click(screen.getByText('Send request'));
 
     await waitFor(() => {

@@ -48,6 +48,7 @@ const NewRequestForm = ({
   const [submitError, setSubmitError] = useState(false);
   const [request, setRequest] = useState<EvidenceRequestRequest>();
   const [errorMessage, setErrorMessage] = useState<string>();
+  const [complete, setComplete] = useState(false);
 
   const initialValues = {
     resident: {
@@ -73,6 +74,7 @@ const NewRequestForm = ({
         setRequest(undefined);
         setSubmitError(true);
         setErrorMessage(err);
+        setComplete(true);
       }
     },
     [setRequest, request, onSubmit, setSubmitError, setErrorMessage]
@@ -100,100 +102,128 @@ const NewRequestForm = ({
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialValues} //[teamId]/dashboard/requests/create/step/[id]
       validationSchema={schema}
       onSubmit={submitHandler}
     >
       {({ values, errors, touched, isSubmitting, submitForm }) => (
         <Form>
-          {submitError && (
-            <span className="govuk-error-message lbh-error-message">
-              {errorMessage}
-            </span>
-          )}
+          <div className={complete ? 'govuk-visually-hidden' : ''}>
+            <h1 className="lbh-heading-h2">Make a new request</h1>
+            {submitError && (
+              <span className="govuk-error-message lbh-error-message">
+                {errorMessage}
+              </span>
+            )}
 
-          <Field
-            label="Name"
-            name="resident.name"
-            error={touched.resident?.name ? errors.resident?.name : null}
-          />
-          <Field
-            label="Email"
-            name="resident.email"
-            error={touched.resident?.email ? errors.resident?.email : null}
-          />
-          <Field
-            label="Mobile phone number"
-            name="resident.phoneNumber"
-            error={
-              touched.resident?.phoneNumber
-                ? errors.resident?.phoneNumber
-                : null
-            }
-          />
-
-          <div className="govuk-form-group lbh-form-group">
-            <SelectOption
-              label="What is this request for?"
-              name="reason"
-              values={team.reasons.map((reason) => reason.name)}
+            <Field
+              label="Name"
+              name="resident.name"
+              error={touched.resident?.name ? errors.resident?.name : null}
             />
-          </div>
+            <Field
+              label="Email"
+              name="resident.email"
+              error={touched.resident?.email ? errors.resident?.email : null}
+            />
+            <Field
+              label="Mobile phone number"
+              name="resident.phoneNumber"
+              error={
+                touched.resident?.phoneNumber
+                  ? errors.resident?.phoneNumber
+                  : null
+              }
+            />
 
-          <div className="govuk-form-group lbh-form-group">
-            <div className="govuk-checkboxes lbh-checkboxes">
-              <Checkbox
-                label="Send request by email"
-                name="emailCheckbox"
-                value={values.resident?.email}
-                disabled={values.resident?.email ? false : true}
-              />
-              <Checkbox
-                label="Send request by SMS"
-                name="phoneNumberCheckbox"
-                value={values.resident?.phoneNumber}
-                disabled={values.resident?.phoneNumber ? false : true}
+            <div className="govuk-form-group lbh-form-group">
+              <SelectOption
+                label="What is this request for?"
+                name="reason"
+                values={team.reasons.map((reason) => reason.name)}
               />
             </div>
-          </div>
 
-          <div
-            className={`govuk-form-group lbh-form-group ${
-              touched.documentTypes &&
-              errors.documentTypes &&
-              'govuk-form-group--error'
-            }`}
-          >
-            <fieldset className="govuk-fieldset">
-              <legend className="govuk-fieldset__legend">
-                What document do you want to request?
-              </legend>
-              {touched.documentTypes && errors.documentTypes && (
-                <span className="govuk-error-message lbh-error-message">
-                  <span className="govuk-visually-hidden">Error:</span>{' '}
-                  {errors.documentTypes}
-                </span>
-              )}
+            <div className="govuk-form-group lbh-form-group">
               <div className="govuk-checkboxes lbh-checkboxes">
-                {documentTypes.map((type) => (
-                  <Checkbox
-                    label={type.title}
-                    name="documentTypes"
-                    key={type.id}
-                    value={type.id}
-                  />
-                ))}
+                <Checkbox
+                  label="Send request by email"
+                  name="emailCheckbox"
+                  id="emailCheckbox"
+                  value={values.resident?.email}
+                  disabled={values.resident?.email ? false : true}
+                />
+                <Checkbox
+                  label="Send request by SMS"
+                  name="phoneNumberCheckbox"
+                  id="phoneNumberCheckbox"
+                  value={values.resident?.phoneNumber}
+                  disabled={values.resident?.phoneNumber ? false : true}
+                />
+                {console.log(
+                  `Resident name error: ${errors.resident?.name?.toString()}`
+                )}
+                {console.log(
+                  `Resident email error: ${errors.resident?.email?.toString()}`
+                )}
+                {console.log(
+                  `Document types error: ${errors.documentTypes?.toString()}`
+                )}
               </div>
-            </fieldset>
+            </div>
+
+            <button
+              className="govuk-button lbh-button"
+              type="submit"
+              onClick={() => {
+                touched.resident && !errors.resident && setComplete(true);
+              }}
+              disabled={isSubmitting}
+            >
+              Continue
+            </button>
           </div>
 
-          <button
-            className="govuk-button lbh-button"
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Send request
-          </button>
+          {complete && (
+            <div
+              className={`govuk-form-group lbh-form-group ${
+                touched.documentTypes &&
+                errors.documentTypes &&
+                'govuk-form-group--error'
+              }`}
+            >
+              <fieldset className="govuk-fieldset">
+                <legend className="govuk-fieldset__legend">
+                  What document do you want to request?
+                </legend>
+                {touched.documentTypes && errors.documentTypes && (
+                  <span className="govuk-error-message lbh-error-message">
+                    <span className="govuk-visually-hidden">Error:</span>{' '}
+                    {errors.documentTypes}
+                  </span>
+                )}
+                <div className="govuk-checkboxes lbh-checkboxes">
+                  {documentTypes.map((type) => (
+                    <Checkbox
+                      label={type.title}
+                      name="documentTypes"
+                      id={type.id}
+                      key={type.id}
+                      value={type.id}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+
+              <button
+                className="govuk-button lbh-button"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                Send request
+              </button>
+            </div>
+          )}
 
           <ConfirmRequestDialog
             documentTypes={documentTypes}
