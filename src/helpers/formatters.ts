@@ -23,3 +23,7 @@ export const formatDate = (dateTime: DateTime): string => {
 export const formatDateWithoutTime = (dateTime: DateTime): string => {
   return dateTime.toLocal().toFormat('d LLLL y');
 };
+
+export const formatRelativeCalendarDate = (dateTime: DateTime): string => {
+  return '' + dateTime.toRelativeCalendar();
+};
