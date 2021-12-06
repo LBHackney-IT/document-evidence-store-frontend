@@ -36,7 +36,7 @@ describe('all pages under teams check for google group membership', () => {
       it('redirects to the teams landing page', () => {
         cy.login();
 
-        cy.visit(`http://localhost:3000/teams/1/dashboard/requests/new`);
+        cy.visit(`http://localhost:3000/teams/1/dashboard/requests/new/1`);
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
