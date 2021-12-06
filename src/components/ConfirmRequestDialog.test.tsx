@@ -1,35 +1,26 @@
 import React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import DocumentTypesFixture from '../../cypress/fixtures/document_types/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 import { EvidenceRequestRequest } from '../gateways/internal-api';
+import { Form, Formik } from 'formik';
 
 const onAccept = jest.fn();
 const onDismiss = jest.fn();
-const DocumentTypes = DocumentTypesFixture.map(ResponseMapper.mapDocumentType);
+const documentTypes = DocumentTypesFixture.map(ResponseMapper.mapDocumentType);
 
 describe('Confirm Request Dialog', () => {
-  describe('when there is no request', () => {
-    beforeEach(() => {
-      render(
-        <ConfirmRequestDialog
-          onDismiss={onDismiss}
-          onAccept={onAccept}
-          documentTypes={DocumentTypes}
-        />
-      );
-    });
-
-    it('is closed', () => {
-      expect(screen.queryByRole('dialog')).toBeNull();
-    });
-  });
-
   describe('when there is a request', () => {
-    const baseRequest: EvidenceRequestRequest = {
+    const request: EvidenceRequestRequest = {
       documentTypes: ['passport'],
-      deliveryMethods: [],
+      deliveryMethods: ['EMAIL', 'SMS'],
       resident: {
         name: 'Frodo',
         email: 'frodo@bagend.com',
@@ -41,12 +32,16 @@ describe('Confirm Request Dialog', () => {
 
     beforeEach(() => {
       render(
-        <ConfirmRequestDialog
-          request={baseRequest}
-          onDismiss={onDismiss}
-          onAccept={onAccept}
-          documentTypes={DocumentTypes}
-        />
+        <Formik initialValues={request} onSubmit={onAccept}>
+          <Form>
+            <ConfirmRequestDialog
+              onDismiss={onDismiss}
+              onAccept={onAccept}
+              documentTypes={documentTypes}
+              deliveryMethods={request.deliveryMethods}
+            />
+          </Form>
+        </Formik>
       );
     });
 
@@ -56,107 +51,33 @@ describe('Confirm Request Dialog', () => {
 
     it('has the correct text', () => {
       expect(
-        screen.getByText("You're about to make a request to:")
+        screen.getByText('Are you sure you want to send this request?')
       ).toBeVisible();
-
-      Object.values(baseRequest.resident).forEach((text) =>
+      expect(screen.getByText('for the following evidence:')).toBeVisible();
+      expect(screen.getByText('Yes, send this request')).toBeVisible();
+      Object.values(request.resident).forEach((text) =>
         expect(screen.getByText(text)).toBeVisible()
       );
-
-      expect.assertions(4);
+      expect.assertions(6);
     });
 
     it('calls the accept callback', async () => {
       const promise = Promise.resolve();
 
-      onAccept.mockReturnValue(promise);
-      fireEvent.click(screen.getByText('Yes, send this request'));
+      await waitFor(() => {
+        fireEvent.click(screen.getByText('Yes, send this request'));
+      });
 
-      expect(onAccept).toHaveBeenCalled();
-
-      const foundButton = screen
-        .getByText('Yes, send this request')
-        .closest('button');
-      expect(foundButton?.disabled).toBeTruthy();
-
+      // https://egghead.io/lessons/jest-fix-the-not-wrapped-in-act-warning
       await act(() => promise);
 
-      expect(foundButton?.disabled).toBeFalsy();
+      expect(onAccept).toHaveBeenCalled;
     });
 
     it('calls the dismiss callback', () => {
       fireEvent.click(screen.getByText('No, cancel'));
 
       expect(onDismiss).toHaveBeenCalled();
-    });
-
-    describe('with one delivery method', () => {
-      beforeEach(() => {
-        const request = { ...baseRequest, deliveryMethods: ['SMS'] };
-        render(
-          <ConfirmRequestDialog
-            request={request}
-            onDismiss={onDismiss}
-            onAccept={onAccept}
-            documentTypes={DocumentTypes}
-          />
-        );
-      });
-
-      it('has the correct text', () => {
-        expect(
-          screen.getByText("You're about to send a request by SMS to:")
-        ).toBeVisible();
-      });
-    });
-
-    describe('with both delivery methods', () => {
-      beforeEach(() => {
-        const request = { ...baseRequest, deliveryMethods: ['SMS', 'EMAIL'] };
-        render(
-          <ConfirmRequestDialog
-            request={request}
-            onDismiss={onDismiss}
-            onAccept={onAccept}
-            documentTypes={DocumentTypes}
-          />
-        );
-      });
-
-      it('has the correct text', () => {
-        expect(
-          screen.getByText(
-            "You're about to send a request by SMS and email to:"
-          )
-        ).toBeVisible();
-      });
-    });
-
-    describe('when the submit callback fails', () => {
-      let promise: Promise<void>;
-      beforeEach(() => {
-        promise = Promise.reject('oh noes');
-        onAccept.mockReturnValue(promise);
-      });
-
-      it('enables the button', async () => {
-        fireEvent.click(screen.getByText('Yes, send this request'));
-
-        expect(onAccept).toHaveBeenCalled();
-
-        const foundButton = screen
-          .getByText('Yes, send this request')
-          .closest('button');
-        expect(foundButton?.disabled).toBeTruthy();
-
-        try {
-          await act(() => promise);
-        } catch (err) {
-          // expected to fail
-        }
-
-        expect(foundButton?.disabled).toBeFalsy();
-      });
     });
   });
 });

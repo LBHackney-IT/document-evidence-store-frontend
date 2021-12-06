@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import Dialog from './Dialog';
 import styles from '../styles/Dialog.module.scss';
-import { EvidenceRequestRequest } from 'src/gateways/internal-api';
+import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
+import { useFormikContext } from 'formik';
 
 const humanisedMethods: Record<string, string> = {
   EMAIL: 'email',
@@ -20,33 +21,34 @@ const formatSentence = (deliveryMethods: string[]) => {
 const ConfirmRequestDialog: FunctionComponent<Props> = ({
   onDismiss,
   onAccept,
-  request,
+  deliveryMethods,
   documentTypes,
 }) => {
   const [loading, setLoading] = useState(false);
-  if (!request) return null;
+  const { values } = useFormikContext<EvidenceRequestForm>();
+  if (!values) return null;
   return (
     <Dialog
-      open={request !== undefined}
+      open={values !== undefined}
       onDismiss={onDismiss}
       title="Are you sure you want to send this request?"
     >
       <p className="lbh-body">
-        Reason: <strong>{request.reason}</strong>
+        Reason: <strong>{values.reason}</strong>
       </p>
-      <p className="lbh-body">{formatSentence(request.deliveryMethods)}</p>
+      <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
 
       <ul className="lbh-list">
         <li>
-          <strong>{request.resident.name}</strong>
+          <strong>{values.resident.name}</strong>
         </li>
-        <li>{request.resident.email}</li>
-        <li>{request.resident.phoneNumber}</li>
+        <li>{values.resident.email}</li>
+        <li>{values.resident.phoneNumber}</li>
       </ul>
 
       <p className="lbh-body">for the following evidence:</p>
       <ul className="lbh-list lbh-list--bullet">
-        {request.documentTypes.map((id) => (
+        {values.documentTypes.map((id) => (
           <li key={id}>
             {documentTypes.find((dt) => dt.id == id)?.title.toLowerCase()}
           </li>
@@ -60,7 +62,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
           onClick={async () => {
             setLoading(true);
             try {
-              await onAccept();
+              await onAccept(values);
             } catch (err) {
               console.error(err);
             }
@@ -82,9 +84,9 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
 };
 
 interface Props {
-  request?: EvidenceRequestRequest;
+  deliveryMethods: string[];
   documentTypes: DocumentType[];
-  onAccept(): Promise<void>;
+  onAccept: (values: EvidenceRequestForm) => Promise<void>;
   onDismiss(): void;
 }
 
