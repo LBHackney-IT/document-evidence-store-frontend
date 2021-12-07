@@ -35,7 +35,7 @@ describe('Can view and manage evidence', () => {
     cy.get('h1').should('contain', 'Namey McName');
     cy.get('.toReview a').eq(0).contains('Proof of ID');
 
-    cy.get('h2').should('contain', 'To review');
+    cy.get('h2').should('contain', 'Pending review');
     cy.get('h2').should('contain', 'Reviewed');
     cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
     cy.get('h2').should('contain', 'Rejected');

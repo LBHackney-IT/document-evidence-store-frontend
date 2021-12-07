@@ -5,12 +5,6 @@ import { humanFileSize } from '../helpers/formatters';
 
 export const EvidenceTile: FunctionComponent<Props> = (props) => (
   <li className={styles.item}>
-    <div className={styles.preview}>
-      <strong>{props.format}</strong>
-      <span className={styles.filesize}>
-        {humanFileSize(props.fileSizeInBytes)}
-      </span>
-    </div>
     <div>
       <h3 className={`${styles.title} lbh-heading-h3`}>
         <Link
@@ -18,6 +12,14 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => (
         >
           <a className="lbh-link">{props.title}</a>
         </Link>
+        <p
+          className={`lbh-body-s ${styles.title}`}
+          style={{ display: 'inline', marginLeft: '8px' }}
+        >
+          {`(${props.format?.toUpperCase()} ${humanFileSize(
+            props.fileSizeInBytes
+          )})`}
+        </p>
       </h3>
       <p className={`lbh-body-s ${styles.meta}`}>
         {props.createdAt}

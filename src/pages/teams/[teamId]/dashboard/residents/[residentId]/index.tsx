@@ -9,7 +9,8 @@ import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import { formatDate } from '../../../../../../helpers/formatters';
+import { formatRelativeCalendarDate } from '../../../../../../helpers/formatters';
+import SVGSymbol from 'src/components/SVGSymbol';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
@@ -47,8 +48,18 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <p className="lbh-body">{resident.phoneNumber}</p>
       <p className="lbh-body">{resident.email}</p>
 
-      <div className="toReview">
-        <h2 className="lbh-heading-h3">To review</h2>
+      <div
+        className="toReview govuk-form-group--error"
+        style={{
+          borderLeftColor: '#F0D232',
+          backgroundColor: '#FFFBF4',
+          paddingTop: '1.5em',
+        }}
+      >
+        <h2 className="lbh-heading-h3">
+          <SVGSymbol status="toReview" />
+          Pending review
+        </h2>
 
         <EvidenceList>
           {toReviewDocumentSubmissions &&
@@ -60,7 +71,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
+                createdAt={formatRelativeCalendarDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
@@ -73,8 +84,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         </EvidenceList>
       </div>
 
-      <div className="reviewed">
-        <h2 className="lbh-heading-h3">Reviewed</h2>
+      <div className="reviewed evidence-list">
+        <h2 className="lbh-heading-h3">
+          <SVGSymbol status="reviewed" />
+          Reviewed
+        </h2>
 
         <EvidenceList twoColumns>
           {reviewedDocumentSubmissions &&
@@ -86,7 +100,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.staffSelectedDocumentType?.title)}
-                createdAt={formatDate(ds.createdAt)}
+                createdAt={formatRelativeCalendarDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
@@ -99,8 +113,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       </div>
 
       {rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (
-        <div className="rejected">
-          <h2 className="lbh-heading-h3">Rejected</h2>
+        <div className="rejected evidence-list">
+          <h2 className="lbh-heading-h3">
+            <SVGSymbol status="rejected" />
+            Rejected
+          </h2>
 
           <EvidenceList twoColumns>
             {rejectedDocumentSubmissions.map((ds) => (
@@ -110,7 +127,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
+                createdAt={formatRelativeCalendarDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"

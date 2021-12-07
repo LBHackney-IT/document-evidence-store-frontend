@@ -19,8 +19,7 @@ describe('EvidenceTile', () => {
     );
     expect(screen.getByText('Foo'));
     expect(screen.getByText('1 day ago'));
-    expect(screen.getByText('1.0 KB'));
-    expect(screen.getByText('PDF'));
+    expect(screen.getByText('(PDF 1.0 KB)'));
   });
 
   it('renders without actions if document has already been reviewed', async () => {
