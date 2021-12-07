@@ -57,7 +57,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         }}
       >
         <h2 className="lbh-heading-h3">
-          <SVGSymbol status={'toReview'} />
+          <SVGSymbol status="toReview" />
           Pending review
         </h2>
 
@@ -86,7 +86,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
       <div className="reviewed evidence-list">
         <h2 className="lbh-heading-h3">
-          <SVGSymbol status={'reviewed'} />
+          <SVGSymbol status="reviewed" />
           Reviewed
         </h2>
 
@@ -115,7 +115,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       {rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (
         <div className="rejected evidence-list">
           <h2 className="lbh-heading-h3">
-            <SVGSymbol status={'rejected'} />
+            <SVGSymbol status="rejected" />
             Rejected
           </h2>
 
