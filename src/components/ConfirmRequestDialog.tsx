@@ -66,7 +66,6 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
             } catch (err) {
               console.error(err);
             }
-            setLoading(false);
           }}
         >
           Yes, send this request
