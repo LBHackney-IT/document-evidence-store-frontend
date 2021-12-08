@@ -54,7 +54,7 @@ describe('Confirm Request Dialog', () => {
         screen.getByText('Are you sure you want to send this request?')
       ).toBeVisible();
       expect(screen.getByText('for the following evidence:')).toBeVisible();
-      expect(screen.getByText('Yes, send this request')).toBeVisible();
+      expect(screen.getByText('Confirm')).toBeVisible();
       Object.values(request.resident).forEach((text) =>
         expect(screen.getByText(text)).toBeVisible()
       );
@@ -65,7 +65,7 @@ describe('Confirm Request Dialog', () => {
       const promise = Promise.resolve();
 
       await waitFor(() => {
-        fireEvent.click(screen.getByText('Yes, send this request'));
+        fireEvent.click(screen.getByText('Confirm'));
       });
 
       // https://egghead.io/lessons/jest-fix-the-not-wrapped-in-act-warning

@@ -40,9 +40,9 @@ describe('Create evidence requests', () => {
       cy.get('li').contains('Frodo Baggins');
       cy.get('li').contains('frodo@bagend.com');
       cy.get('li').contains('+447123456780');
-      cy.get('li').contains('proof of id');
+      cy.get('li').contains('Proof of ID');
 
-      cy.get('button').contains('Yes, send this request').click();
+      cy.get('button').contains('Confirm').click();
     });
 
     cy.wait('@postEvidenceRequests');

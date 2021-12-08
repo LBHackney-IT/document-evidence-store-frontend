@@ -34,7 +34,9 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       title="Are you sure you want to send this request?"
     >
       <p className="lbh-body">
-        Reason: <strong>{values.reason}</strong>
+        What is this request for:
+        <br />
+        <strong>{values.reason}</strong>
       </p>
       <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
 
@@ -46,13 +48,13 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         <li>{values.resident.phoneNumber}</li>
       </ul>
 
-      <p className="lbh-body">for the following evidence:</p>
+      <p className="lbh-body">For the following evidences:</p>
       <ul className="lbh-list lbh-list--bullet">
-        {values.documentTypes.map((id) => (
-          <li key={id}>
-            {documentTypes.find((dt) => dt.id == id)?.title.toLowerCase()}
-          </li>
-        ))}
+        <strong>
+          {values.documentTypes.map((id) => (
+            <li key={id}>{documentTypes.find((dt) => dt.id == id)?.title}</li>
+          ))}
+        </strong>
       </ul>
 
       <div className={styles.actions}>
@@ -68,7 +70,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
             }
           }}
         >
-          Yes, send this request
+          Confirm
         </button>
         <button
           onClick={onDismiss}
