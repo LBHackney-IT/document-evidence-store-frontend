@@ -119,6 +119,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       setComplete(true);
     } catch (err) {
       setSubmitError(true);
+    } finally {
       setComplete(true);
     }
   };
