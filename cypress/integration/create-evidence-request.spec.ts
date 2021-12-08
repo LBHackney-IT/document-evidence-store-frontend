@@ -18,7 +18,7 @@ describe('Create evidence requests', () => {
     cy.get('nav').contains('Requests').click();
     cy.get('h1').should('contain', 'Pending requests');
 
-    cy.get('a').contains('New request').click();
+    cy.get('a').contains('Make new request').click();
 
     cy.get('h1').should('contain', 'Make a new request');
 
