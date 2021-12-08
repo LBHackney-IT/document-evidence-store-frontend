@@ -46,7 +46,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>(['']);
   const [previousStepNumber, setPreviousStepNumber] = useState(0);
 
-  let currentStep: number = Array.isArray(query.step)
+  const currentStep: number = Array.isArray(query.step)
     ? parseInt(query.step[0])
     : parseInt(query.step || '');
 
