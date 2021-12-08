@@ -104,9 +104,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   const submitHandler = async (values: EvidenceRequestForm) => {
     const payload = buildEvidenceRequestRequest(values);
     if (currentStep < steps.length) {
-      currentStep += 1;
-      setPreviousStepNumber(currentStep - 1);
-      push(`/teams/${team.id}/dashboard/requests/new/${currentStep}`);
+      setPreviousStepNumber(currentStep);
+      push(`/teams/${team.id}/dashboard/requests/new/${currentStep + 1}`);
       return;
     }
     try {
