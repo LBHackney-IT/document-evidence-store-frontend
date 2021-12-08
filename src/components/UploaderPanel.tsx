@@ -29,7 +29,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
       name={props.name}
       id={props.name}
       data-testid="fileInput"
-      accept="image/*,application/pdf"
+      accept="image/*,application/pdf,video/*"
       onChange={(e) => {
         if (e.currentTarget.files !== null) {
           props.setFieldValue(props.name, Array.from(e.currentTarget.files));
