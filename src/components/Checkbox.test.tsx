@@ -10,7 +10,7 @@ test('is properly named, labelled and responds to clicks', async () => {
       onSubmit={() => console.log('submitted')}
     >
       <Form>
-        <Checkbox label="Example label" name="exampleName" />
+        <Checkbox label="Example label" name="exampleName" id="exampleName" />
       </Form>
     </Formik>
   );

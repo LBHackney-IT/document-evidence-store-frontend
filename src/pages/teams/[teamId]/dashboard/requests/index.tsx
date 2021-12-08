@@ -27,7 +27,8 @@ const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">Pending requests</h1>
-      <Link href={`/teams/${teamId}/dashboard/requests/new`}>
+
+      <Link href={`/teams/${teamId}/dashboard/requests/new/1`}>
         <a className="govuk-button lbh-button">New request</a>
       </Link>
       <EvidenceRequestTable requests={evidenceRequests} />

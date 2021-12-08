@@ -30,9 +30,10 @@ describe('Create evidence requests', () => {
       .type('+447123456780');
 
     cy.get('label').contains('Send request by SMS').click();
-    cy.get('label').contains('Proof of ID').click();
 
-    cy.get('button').contains('Send request').click();
+    cy.get('button').contains('Continue').click();
+    cy.get('label').contains('Proof of ID').click();
+    cy.get('button').contains('Continue').click();
 
     cy.get('[role=dialog]').within(() => {
       cy.contains("You're about to send a request by SMS");
