@@ -53,7 +53,7 @@ describe('Confirm Request Dialog', () => {
       expect(
         screen.getByText('Are you sure you want to send this request?')
       ).toBeVisible();
-      expect(screen.getByText('for the following evidence:')).toBeVisible();
+      expect(screen.getByText('For the following evidences:')).toBeVisible();
       expect(screen.getByText('Confirm')).toBeVisible();
       Object.values(request.resident).forEach((text) =>
         expect(screen.getByText(text)).toBeVisible()
