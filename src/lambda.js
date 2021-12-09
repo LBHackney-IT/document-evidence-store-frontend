@@ -1,9 +1,11 @@
 const server = require('restana')();
+const express = require('express');
 const app = require('next')({ dev: false });
 const files = require('serve-static');
 const path = require('path');
 const nextRequestHandler = app.getRequestHandler();
 
+server.use(express.json({ limit: '500mb' }));
 server.use(files(path.join(__dirname, 'build')));
 server.use(files(path.join(__dirname, 'public')));
 
