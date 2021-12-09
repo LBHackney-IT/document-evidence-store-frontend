@@ -232,8 +232,6 @@ export class EvidenceApiGateway {
           ...requestHeaders,
           Authorization: this.getToken(pathSegments, method),
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
         validateStatus() {
           return true;
         },

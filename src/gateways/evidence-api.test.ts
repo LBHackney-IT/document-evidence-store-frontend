@@ -62,8 +62,6 @@ describe('Evidence api gateway', () => {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
           useremail: Constants.DUMMY_EMAIL,
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
       });
     });
   });
@@ -104,8 +102,6 @@ describe('Evidence api gateway', () => {
           Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
           useremail: Constants.DUMMY_EMAIL,
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
       });
     });
   });
@@ -144,8 +140,6 @@ describe('Evidence api gateway', () => {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
           useremail: Constants.DUMMY_EMAIL,
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
         validateStatus,
       });
     });
@@ -227,8 +221,6 @@ describe('Evidence api gateway', () => {
           Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
           useremail: Constants.DUMMY_EMAIL,
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
       });
     });
 
@@ -250,8 +242,6 @@ describe('Evidence api gateway', () => {
           useremail: Constants.DUMMY_EMAIL,
           'content-type': 'application/json',
         },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
       });
     });
   });

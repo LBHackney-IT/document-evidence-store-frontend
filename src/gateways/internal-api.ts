@@ -116,8 +116,6 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-          maxContentLength: Infinity,
-          maxBodyLength: Infinity,
         }
       );
       return ResponseMapper.mapDocumentSubmission(data);

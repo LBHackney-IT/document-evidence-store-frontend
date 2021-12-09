@@ -114,7 +114,7 @@ describe('Internal API Gateway', () => {
         );
       });
 
-      xit('makes the api request', async () => {
+      it('makes the api request', async () => {
         await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
@@ -130,7 +130,7 @@ describe('Internal API Gateway', () => {
         );
       });
 
-      xit('returns the updated model', async () => {
+      it('returns the updated model', async () => {
         const result = await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
