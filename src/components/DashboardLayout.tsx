@@ -7,6 +7,7 @@ import Header from './Header';
 import { TeamHelper } from '../services/team-helper';
 import Link from 'next/link';
 import ResidentLayout from './ResidentLayout';
+import PhaseBanner from './PhaseBanner';
 
 const Layout: FunctionComponent<Props> = (props, { children }) => {
   const { user } = useContext(UserContext);
@@ -42,6 +43,9 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
       <Header userName={user.name} />
 
       <div className="lbh-container">
+        <PhaseBanner
+          feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+        />
         <nav className={styles.switcher} aria-label="Switch teams">
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             {currentTeam?.name}
