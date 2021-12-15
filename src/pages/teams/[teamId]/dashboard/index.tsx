@@ -50,7 +50,10 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   }, []);
 
   return (
-    <Layout teamId={team.id}>
+    <Layout
+      teamId={team.id}
+      feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+    >
       <Head>
         <title>
           Browse residents | Document Evidence Service | Hackney Council
