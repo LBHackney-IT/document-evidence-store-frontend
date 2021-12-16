@@ -40,7 +40,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   return (
     <Layout
       teamId={teamId}
-      feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
     >
       <Head>
         <title>

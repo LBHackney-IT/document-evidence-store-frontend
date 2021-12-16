@@ -14,7 +14,7 @@ const PhaseBanner: FunctionComponent<Props> = (props) => (
       </strong>
       <span className="govuk-phase-banner__text lbh-body-xs">
         This is a new website.{' '}
-        <a href={`${props.feedbackUrl}`} className="lbh-link">
+        <a href={`${props.feedbackUrl}`} target="_blank" className="lbh-link">
           Your feedback
         </a>{' '}
         will help us improve it.

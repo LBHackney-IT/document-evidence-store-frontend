@@ -53,7 +53,7 @@ functions:
       DOCUMENTS_API_BASE_URL: ${ssm:/documents-api/${self:provider.stage}/base-url}
       DOCUMENTS_API_GET_DOCUMENTS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/get/documents/token}
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
-      FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
+      NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
 resources:
   Resources:
     CloudFrontDistribution:
