@@ -36,6 +36,7 @@ type DocumentDetailPageProps = {
   documentSubmission: DocumentSubmission;
   staffSelectedDocumentTypes: DocumentType[];
   documentAsBase64: string;
+  feedbackUrl: string;
 };
 
 const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
@@ -45,6 +46,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   documentSubmission: _documentSubmission,
   staffSelectedDocumentTypes,
   documentAsBase64,
+  feedbackUrl,
 }) => {
   const router = useRouter();
   const {
@@ -93,10 +95,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   }
 
   return (
-    <Layout
-      teamId={teamId}
-      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
-    >
+    <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
           {documentTypeTitle} | {resident.name} | Document Evidence Service |
@@ -202,6 +201,8 @@ export const getServerSideProps = withAuth(async (ctx) => {
     documentSubmissionId: string;
   };
 
+  const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
+
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
@@ -242,6 +243,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
       documentSubmission,
       staffSelectedDocumentTypes,
       documentAsBase64,
+      feedbackUrl,
     },
   };
 });

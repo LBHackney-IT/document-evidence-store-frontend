@@ -27,6 +27,7 @@ type RequestsNewPageProps = {
   documentTypes: DocumentType[];
   team: Team;
   user: User;
+  feedbackUrl: string;
 };
 
 const schema = [
@@ -39,6 +40,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   documentTypes,
   team,
   user,
+  feedbackUrl,
 }) => {
   const { push, query, replace } = useRouter();
   const [complete, setComplete] = useState(false);
@@ -146,10 +148,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   };
 
   return (
-    <Layout
-      teamId={team.id}
-      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
-    >
+    <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
           Make a new request | Document Evidence Service | Hackney Council
@@ -193,6 +192,8 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
       teamId: string;
     };
 
+    const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
+
     const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
       TeamHelper.getTeamsJson(),
@@ -212,7 +213,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
 
     const gateway = new EvidenceApiGateway();
     const documentTypes = await gateway.getDocumentTypes(user.email, team.name);
-    return { props: { documentTypes, team, user } };
+    return { props: { documentTypes, team, user, feedbackUrl } };
   }
 );
 

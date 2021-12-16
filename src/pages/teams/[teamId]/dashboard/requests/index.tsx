@@ -13,17 +13,16 @@ import { TeamHelper } from '../../../../../services/team-helper';
 type RequestsIndexPageProps = {
   evidenceRequests: EvidenceRequest[];
   teamId: string;
+  feedbackUrl: string;
 };
 
 const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
   evidenceRequests,
   teamId,
+  feedbackUrl,
 }) => {
   return (
-    <Layout
-      teamId={teamId}
-      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
-    >
+    <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
           Pending requests | Document Evidence Service | Hackney Council
@@ -44,6 +43,8 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
     const { teamId } = ctx.query as {
       teamId: string;
     };
+
+    const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
     const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
@@ -69,7 +70,7 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
       EvidenceRequestState.PENDING
     );
     return {
-      props: { evidenceRequests, teamId },
+      props: { evidenceRequests, teamId, feedbackUrl },
     };
   }
 );

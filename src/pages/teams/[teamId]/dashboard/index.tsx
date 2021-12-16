@@ -21,12 +21,14 @@ type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
   team: Team;
   user: User;
+  feedbackUrl: string;
 };
 
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   evidenceRequests,
   team,
   user,
+  feedbackUrl,
 }) => {
   // see here https://www.carlrippon.com/typed-usestate-with-typescript/ to explain useState<Resident[]>()
   const [results, setResults] = useState<Resident[]>();
@@ -50,10 +52,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   }, []);
 
   return (
-    <Layout
-      teamId={team.id}
-      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
-    >
+    <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
           Browse residents | Document Evidence Service | Hackney Council
@@ -95,6 +94,8 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
       teamId: string;
     };
 
+    const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
+
     const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
       TeamHelper.getTeamsJson(),
@@ -118,7 +119,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
       team.name
     );
     return {
-      props: { evidenceRequests, team, user },
+      props: { evidenceRequests, team, user, feedbackUrl },
     };
   }
 );
