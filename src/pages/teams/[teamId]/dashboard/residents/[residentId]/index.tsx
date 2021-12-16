@@ -16,12 +16,14 @@ type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
   resident: Resident;
   teamId: string;
+  feedbackUrl: string;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   documentSubmissions,
   resident,
   teamId,
+  feedbackUrl,
 }) => {
   const router = useRouter();
   const { residentId } = router.query as {
@@ -38,10 +40,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   );
 
   return (
-    <Layout
-      teamId={teamId}
-      feedbackUrl={process.env.NEXT_PUBLIC_FEEDBACK_FORM_STAFF_URL as string}
-    >
+    <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
           {resident.name} | Document Evidence Service | Hackney Council
@@ -149,6 +148,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     residentId: string;
   };
 
+  const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
+
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
@@ -174,7 +175,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
   const resident = await gateway.getResident(user.email, residentId);
   return {
-    props: { documentSubmissions, resident, teamId },
+    props: { documentSubmissions, resident, teamId, feedbackUrl },
   };
 });
 
