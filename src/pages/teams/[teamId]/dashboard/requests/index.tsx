@@ -20,7 +20,10 @@ const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
   teamId,
 }) => {
   return (
-    <Layout teamId={teamId}>
+    <Layout
+      teamId={teamId}
+      feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+    >
       <Head>
         <title>
           Pending requests | Document Evidence Service | Hackney Council

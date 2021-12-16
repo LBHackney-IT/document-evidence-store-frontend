@@ -146,7 +146,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   };
 
   return (
-    <Layout teamId={team.id}>
+    <Layout
+      teamId={team.id}
+      feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+    >
       <Head>
         <title>
           Make a new request | Document Evidence Service | Hackney Council

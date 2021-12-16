@@ -38,7 +38,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   );
 
   return (
-    <Layout teamId={teamId}>
+    <Layout
+      teamId={teamId}
+      feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
+    >
       <Head>
         <title>
           {resident.name} | Document Evidence Service | Hackney Council

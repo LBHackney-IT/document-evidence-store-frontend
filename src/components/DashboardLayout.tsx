@@ -43,9 +43,7 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
       <Header userName={user.name} />
 
       <div className="lbh-container">
-        <PhaseBanner
-          feedbackUrl={process.env.FEEDBACK_FORM_STAFF_URL as string}
-        />
+        <PhaseBanner feedbackUrl={props.feedbackUrl} />
         <nav className={styles.switcher} aria-label="Switch teams">
           <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
             {currentTeam?.name}
@@ -93,6 +91,7 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
 
 interface Props {
   teamId: string;
+  feedbackUrl: string;
 }
 
 export default Layout;
