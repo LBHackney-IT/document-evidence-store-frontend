@@ -16,9 +16,8 @@ describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
   const appProps = { Component: pageComponent, pageProps } as AppProps;
 
-  it('renders the component with the right props', () => {
+  xit('renders the component with the right props', () => {
     render(<App {...appProps} />);
-    //   expect(pageComponent).toHaveBeenCalledWith(pageProps, {});
-    // temporarily commenting out the test to check if ga works correctly
+    expect(pageComponent).toHaveBeenCalledWith(pageProps, {});
   });
 });
