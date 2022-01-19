@@ -7,6 +7,18 @@ import App from './_app';
 
 jest.mock('../services/request-authorizer');
 jest.mock('next/app');
+jest.mock('next/router', () => {
+  return {
+    useRouter: () => {
+      return {
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      };
+    },
+  };
+});
 
 const MockedNextApp = mocked(NextApp);
 const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
