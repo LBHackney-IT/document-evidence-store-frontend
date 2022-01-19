@@ -7,6 +7,18 @@ import App from './_app';
 
 jest.mock('../services/request-authorizer');
 jest.mock('next/app');
+jest.mock('next/router', () => {
+  return {
+    useRouter: () => {
+      return {
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      };
+    },
+  };
+});
 
 const MockedNextApp = mocked(NextApp);
 const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
@@ -16,7 +28,7 @@ describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
   const appProps = { Component: pageComponent, pageProps } as AppProps;
 
-  xit('renders the component with the right props', () => {
+  it('renders the component with the right props', () => {
     render(<App {...appProps} />);
     expect(pageComponent).toHaveBeenCalledWith(pageProps, {});
   });
