@@ -11,10 +11,11 @@ registerDomainModels();
 const CustomApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
   const router = useRouter();
 
+  const handleRouteChange = (url: URL) => {
+    gtag.pageview(url);
+  };
+
   useEffect(() => {
-    const handleRouteChange = (url: URL) => {
-      gtag.pageview(url);
-    };
     router.events.on('routeChangeComplete', handleRouteChange);
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
