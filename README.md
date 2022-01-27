@@ -54,7 +54,7 @@ Install the packages and start the frontend by running:
 ```bash
 npm i
 npm run build
-npm run dev # or npm run dev-mock to boot Next.js server and mock server
+npm run dev
 ```
 
 It'll be on [http://localhost:3000](http://localhost:3000). Follow the instructions below to change the DNS hosts file and log in successfully.
@@ -77,12 +77,28 @@ If you have the right [environment config](#-configuration), login should now wo
 
 ## 🧪 Testing it
 
-It uses Jest, `react-testing-library` and cypress for tests. Run them with:
+The application uses Jest, `react-testing-library` and Cypress for tests.
 
-```
+### Unit
+
+You can run the unit tests by running:
+
+```sh
 npm run test:unit
-npm run test:e2e:dev # requires server to be running
 ```
+
+### Integration
+
+In order to run the integration tests, you need to:
+
+1. Navigate to the `.env` file and comment out (by adding a `#`) the DOCUMENTS_API_BASE_URL and uncomment the one specified in that file.
+2. Make sure that evidence-api is not running.
+3. In the terminal, run `npm run dev-mock`
+4. Open up a new terminal and run `npm run test:e2e:dev` (or `npm run test:e2e:ci` to run in terminal and not UI)
+
+A new Cypress UI will open. You will need to click on 'Run x integration tests'. The tests will take a little longer than the unit tests. Close the window when they're all finished.
+
+> Once you have finished testing, exit the `dev-mock` server and revert your changes to `.env`.
 
 ### Mock Server
 
