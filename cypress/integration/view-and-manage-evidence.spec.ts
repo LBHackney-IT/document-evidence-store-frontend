@@ -113,6 +113,17 @@ describe('Can view and manage evidence', () => {
     cy.contains('button', 'Request new file').should('not.exist');
   });
 
+  it('shows an error when the validity date is et in the past', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+      // const response = dsFixture;
+
+      req.responseTimeout = 5000;
+      req.reply((res) => {
+        res.send(400, 'The date cannot be in the past.');
+      });
+    });
+  });
+
   it('can reject the document', () => {
     cy.get('a').contains('Proof of ID').click();
     cy.contains('h1', 'Namey McNameProof of ID');
