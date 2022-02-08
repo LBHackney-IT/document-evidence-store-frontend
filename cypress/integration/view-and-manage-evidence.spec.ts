@@ -113,17 +113,6 @@ describe('Can view and manage evidence', () => {
     cy.contains('button', 'Request new file').should('not.exist');
   });
 
-  it('shows an error when the validity date is et in the past', () => {
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      // const response = dsFixture;
-
-      req.responseTimeout = 5000;
-      req.reply((res) => {
-        res.send(400, 'The date cannot be in the past.');
-      });
-    });
-  });
-
   it('can reject the document', () => {
     cy.get('a').contains('Proof of ID').click();
     cy.contains('h1', 'Namey McNameProof of ID');
@@ -161,6 +150,46 @@ describe('Can view and manage evidence', () => {
   it('can view page warning for document with expired claim', () => {
     cy.get('.reviewed a').eq(1).contains('Proof of ID').click();
     cy.get('section').contains('This document is no longer valid');
+  });
+});
+
+describe('Can view and manage evidence', () => {
+  beforeEach(() => {
+    cy.login();
+
+    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+      req.responseTimeout = 5000;
+      req.reply((res) => {
+        res.send(400, 'The date cannot be in the past.');
+      });
+    }).as('acceptInvalidDate');
+
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
+  });
+
+  it('shows an error when the validity date is in the past', () => {
+    //arrange user flow
+    cy.get('a').contains('Proof of ID').click();
+    cy.get('button').contains('Accept').click();
+
+    cy.get('[role=dialog]').within(() => {
+      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+
+      cy.get('label').contains('Day').next('input').type('01');
+      cy.get('label').contains('Month').next('input').type('01');
+      cy.get('label').contains('Year').next('input').type('1992');
+
+      //act
+      cy.get('button').contains('Yes, accept').click();
+
+      //assert
+      cy.get('span')
+        .contains('The date cannot be in the past.')
+        .should('contain', 'The date cannot be in the past.');
+    });
   });
 });
 
