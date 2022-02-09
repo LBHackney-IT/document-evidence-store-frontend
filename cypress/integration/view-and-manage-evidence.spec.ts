@@ -186,9 +186,7 @@ describe('Can view and manage evidence', () => {
       cy.get('button').contains('Yes, accept').click();
 
       //assert
-      cy.get('span')
-        .contains('The date cannot be in the past.')
-        .should('contain', 'The date cannot be in the past.');
+      cy.get('span').eq(0).should('contain', 'The date cannot be in the past.');
     });
   });
 });
