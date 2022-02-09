@@ -153,7 +153,7 @@ describe('Can view and manage evidence', () => {
   });
 });
 
-describe('Can view and manage evidence', () => {
+describe('When a user inputs a validity date that is in the past', () => {
   beforeEach(() => {
     cy.login();
 
@@ -170,8 +170,8 @@ describe('Can view and manage evidence', () => {
     cy.contains('h1', 'Namey McName');
   });
 
-  it('shows an error when the validity date is in the past', () => {
-    //arrange user flow
+  it('shows an error', () => {
+    //arrange
     cy.get('a').contains('Proof of ID').click();
     cy.get('button').contains('Accept').click();
 
