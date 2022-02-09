@@ -18,7 +18,6 @@ const AUTH_WHITELIST = [
   '/resident/*/confirmation',
   '/evidence_requests/*',
   '/evidence_requests/*/document_submissions',
-  '/document_submissions/*',
 ].map((str) => new RegExp(`^${str.replace('*', GLOB)}$`));
 
 export interface RequestAuthorizerCommand {

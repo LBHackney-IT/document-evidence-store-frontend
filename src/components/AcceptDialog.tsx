@@ -46,7 +46,11 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
       } catch (err) {
         console.error(err);
         setSubmitError(true);
-        setErrorMessage(err);
+        if (err.error) {
+          router.push(props.redirect, undefined, { shallow: true });
+        } else {
+          setErrorMessage(err);
+        }
       }
     },
     [setErrorMessage, setSubmitError]
