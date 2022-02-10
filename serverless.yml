@@ -106,8 +106,8 @@ custom:
         - amazonaws.com
   alias: ${ssm:/evidence-api/${self:provider.stage}/client-url}
   certificate-arn:
-    staging: arn:aws:acm:us-east-1:549011513230:certificate/d49e84b5-5ed2-4d35-87f3-7d10f848ee6b
-    production: arn:aws:acm:us-east-1:658402009206:certificate/06d017f3-c883-49aa-8af8-e4398fa03286
+    staging: arn:aws:acm:us-east-1:549011513230:certificate/0497c31a-63ad-41d7-bca6-7d0896a6100d
+    production: arn:aws:acm:us-east-1:658402009206:certificate/fb103d6e-a0cc-43f0-b8c5-e3b8e8b2f514
   securityGroups:
     staging:
       - sg-012b551e32735b814
