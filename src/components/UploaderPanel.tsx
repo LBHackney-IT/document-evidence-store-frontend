@@ -8,6 +8,30 @@ const classNameFromProps = (props: Props) => {
   return className;
 };
 
+const acceptedMimeTypes = (): string => {
+  const acceptedMimeTypes = [
+    'application/msword',
+    'application/octet-stream',
+    'application/pdf',
+    'application/vnd.apple.numbers',
+    'application/vnd.apple.pages',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'image/bmp',
+    'image/gif',
+    'image/heic',
+    'image/jpeg',
+    'image/png',
+    'text/plain',
+    //'video/3gpp',
+    //'video/mp4',
+    //'video/quicktime',
+  ];
+
+  return acceptedMimeTypes.join(',');
+};
+
 const UploaderPanel: FunctionComponent<Props> = (props) => (
   <div className={classNameFromProps(props)}>
     <label className="govuk-label lbh-label" htmlFor={props.name}>
@@ -29,7 +53,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => (
       name={props.name}
       id={props.name}
       data-testid="fileInput"
-      accept="image/*,application/pdf,video/*"
+      accept={acceptedMimeTypes()}
       onChange={(e) => {
         if (e.currentTarget.files !== null) {
           props.setFieldValue(props.name, Array.from(e.currentTarget.files));
