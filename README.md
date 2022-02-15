@@ -31,7 +31,7 @@ _🔐 This side of the application is authenticated_
 ### Resident Flow
 
 - **`/resident/:id`** - The start page of the resident upload flow for a specific evidence request
-  - **`/resident/:id/upload`** - Upload documents
+  - **`/resident/:id/upload`** - Upload documents (see [File Uploads](#file-uploads) for more information on accepted file types)
   - **`/resident/:id/confirmation`** - Upload confimation
 
 ## 💻 Setup
@@ -156,6 +156,37 @@ At the time of writing we have two Gateways which are for specific use cases:
 - **`evidence-api.ts`**
   - This acts as a means of sending server side requests to the EvidenceAPI.
   - As discussed in [Architectural Decision Record 2](/docs/adr/0002-switch-from-client-side-api-requests-to-server-side.md) we use `getServerSideProps`
+
+## File Uploads
+
+For security reasons, the MIME types that a resident can upload must be whitelisted on both client side and server side. This means that a resident cannot upload a file that does not meet the approved whitelist. For example, a resident cannot upload a file with an extension of `.svg` because the MIME type `image/svg+xml` has not been added to the whitelist. Please see the previous pen-test reports for more information. The following MIME types are blacklisted:
+
+- `image/svg+xml` (could contain scripts)
+- `application/octet-stream` (unknown binary-type files)
+
+### Adding a new accepted MIME type
+
+There are two places where a new MIME type needs to be whitelisted; the client (frontend) and the server (evidence-api). To update how the server accepts MIME types, please see the README on [Evidence API](https://github.com/LBHackney-IT/evidence-api). You need to update both sides, otherwise files sent from the client to server may be rejected (return a `400 Bad Request`)
+
+To update the accepted MIME types on the frontend, navigate to [UploaderPanel.tsx](src/components/UploaderPanel.tsx) and add the MIME types to the `acceptedMimeTypes` function. A list of authoritative MIME types can be found on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) and [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml).
+
+### Current accepted MIME types
+
+| MIME type                                                               | File extension |
+| ----------------------------------------------------------------------- | -------------- |
+| application/msword                                                      | .doc           |
+| application/pdf                                                         | .pdf           |
+| application/vnd.apple.numbers                                           | .numbers       |
+| application/vnd.apple.pages                                             | .pages         |
+| application/vnd.ms-excel                                                | .xls           |
+| application/vnd.openxmlformats-officedocument.spreadsheetml.sheet       | .xlsx          |
+| application/vnd.openxmlformats-officedocument.wordprocessingml.document | .docx          |
+| image/bmp                                                               | .bmp           |
+| image/gif                                                               | .gif           |
+| image/heic                                                              | .heic          |
+| image/jpeg                                                              | .jpeg or .jpg  |
+| image/png                                                               | .png           |
+| text/plain                                                              | .txt           |
 
 # License
 
