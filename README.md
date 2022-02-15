@@ -170,6 +170,8 @@ There are two places where a new MIME type needs to be whitelisted; the client (
 
 To update the accepted MIME types on the frontend, navigate to [UploaderPanel.tsx](src/components/UploaderPanel.tsx) and add the MIME types to the `acceptedMimeTypes` function. A list of authoritative MIME types can be found on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) and [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml).
 
+You will also need to update the relevant information for the user on the UI. Navigate to [FileFormatsDetails.tsx](src/components/FileFormatsDetails.tsx) and add/remove the file extensions listed in the correct element.
+
 ### Current accepted MIME types
 
 | MIME type                                                               | File extension |
