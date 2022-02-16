@@ -7,6 +7,7 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import Layout from '../../../components/ResidentLayout';
 import UploaderForm from '../../../components/UploaderForm';
 import { Constants } from '../../../helpers/Constants';
+import FileFormatDetails from 'src/components/FileFormatsDetails';
 
 type UploadProps = {
   requestId: string;
@@ -41,6 +42,7 @@ const Upload: NextPage<UploadProps> = ({
           <p className="lbh-body">
             Upload a photograph or scan for the following evidence.
           </p>
+          <FileFormatDetails />
           <UploaderForm
             evidenceRequestId={evidenceRequestId}
             documentTypes={documentTypes}

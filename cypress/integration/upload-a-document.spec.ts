@@ -39,6 +39,13 @@ describe('Can upload a document', () => {
 
       // Attach a file
       cy.get('h1').should('contain', 'Upload your documents');
+      cy.get('[data-testid=file-formats-details-title]')
+        .should('contain', 'Which file formats are accepted?')
+        .click();
+      cy.get('[data-testid=file-formats-details-text]').should(
+        'contain',
+        'We currently support the following formats:'
+      );
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')
       );
