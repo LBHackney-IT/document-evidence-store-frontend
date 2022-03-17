@@ -26,6 +26,11 @@ describe('Can upload a document', () => {
           res.send(200, response);
         });
       }).as('post-document-state');
+
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
+        statusCode: 201,
+        delayMs: 2500,
+      }).as('s3Upload');
     });
 
     it('shows guidance and lets you upload a file', () => {
@@ -54,6 +59,7 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       cy.wait('@post-document-state');
+      cy.wait('@s3Upload');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
@@ -83,9 +89,13 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       cy.wait('@post-document-state');
+      cy.wait('@s3Upload');
       cy.wait('@post-document-state');
+      cy.wait('@s3Upload');
       cy.wait('@post-document-state');
+      cy.wait('@s3Upload');
       cy.wait('@post-document-state');
+      cy.wait('@s3Upload');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
@@ -107,6 +117,10 @@ describe('Can upload a document', () => {
           res.send(500, response);
         });
       }).as('post-document-state');
+
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
+        forceNetworkError: true,
+      }).as('s3Upload');
     });
 
     it('shows an error message', () => {

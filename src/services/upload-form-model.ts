@@ -2,7 +2,8 @@ import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 import { Constants } from '../helpers/Constants';
-import { documentToBase64 } from './document-to-base-64';
+import { S3Gateway } from '../gateways/s3-gateway';
+import { DocumentSubmission } from 'src/domain/document-submission';
 
 export type FormValues = {
   [documentTypeId: string]: File[];
@@ -10,6 +11,7 @@ export type FormValues = {
 
 export class UploadFormModel {
   private gateway = new InternalApiGateway();
+  private s3Gateway = new S3Gateway();
   constructor(private documentTypes: DocumentType[]) {}
 
   get schema(): Yup.ObjectSchema {
@@ -38,22 +40,27 @@ export class UploadFormModel {
     formValues: FormValues,
     evidenceRequestId: string
   ): Promise<void> {
-    const createDocumentSubmissionForEachFile = Object.entries(formValues).map(
-      async ([documentTypeId, files]) => {
-        for (const file of files) {
-          const fileInBase64 = await documentToBase64(file);
-          await this.gateway.createDocumentSubmission(
-            Constants.DUMMY_EMAIL,
-            evidenceRequestId,
-            {
-              base64Document: fileInBase64,
-              documentType: documentTypeId,
-            }
-          );
-        }
+    const createDocumentSubmissionAndUploadForEachFile = Object.entries(
+      formValues
+    ).map(async ([documentTypeId, files]) => {
+      for (const file of files) {
+        const documentSubmission = await this.gateway.createDocumentSubmission(
+          Constants.DUMMY_EMAIL,
+          evidenceRequestId,
+          {
+            documentType: documentTypeId,
+          }
+        );
+        await this.uploadFile(file, documentSubmission);
       }
-    );
+    });
 
-    await Promise.all(createDocumentSubmissionForEachFile);
+    await Promise.all(createDocumentSubmissionAndUploadForEachFile);
+  }
+
+  private async uploadFile(file: File, documentSubmission: DocumentSubmission) {
+    if (!documentSubmission || !documentSubmission.uploadPolicy) return;
+
+    await this.s3Gateway.upload(file, documentSubmission.uploadPolicy);
   }
 }
