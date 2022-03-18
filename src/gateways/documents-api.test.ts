@@ -44,4 +44,28 @@ describe('Documents api gateway', () => {
       });
     });
   });
+
+  describe('GET request to /claims/{claimId}/download_links', () => {
+    const claimId = '123-abc-claimId';
+    const expectedData = 'www.downloadlinkfordocument.com';
+    const expectedStatus = 200;
+    const expectedResponse = { data: expectedData, status: expectedStatus };
+
+    beforeEach(() => {
+      client.get.mockResolvedValue({ data: expectedResponse });
+    });
+
+    it('the request returns the correct response', async () => {
+      const response = await gateway.getDocumentFromUrl(claimId);
+      expect(response).toEqual(expectedResponse);
+      expect(client.get).toHaveBeenCalledWith(
+        `/api/v1/claims/${claimId}/download_links`,
+        {
+          headers: {
+            Authorization: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
+          },
+        }
+      );
+    });
+  });
 });
