@@ -38,7 +38,7 @@ export class DocumentsApiGateway {
     }
   }
 
-  async getDocumentFromUrl(claimId: string): Promise<string> {
+  async getDocumentPreSignedUrl(claimId: string): Promise<string> {
     try {
       const { data } = await this.client.get<string>(
         `/api/v1/claims/${claimId}/download_links`,

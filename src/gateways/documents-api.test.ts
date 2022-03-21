@@ -56,7 +56,7 @@ describe('Documents api gateway', () => {
     });
 
     it('the request returns the correct response', async () => {
-      const response = await gateway.getDocumentFromUrl(claimId);
+      const response = await gateway.getDocumentPreSignedUrl(claimId);
       expect(response).toEqual(expectedResponse);
       expect(client.get).toHaveBeenCalledWith(
         `/api/v1/claims/${claimId}/download_links`,
