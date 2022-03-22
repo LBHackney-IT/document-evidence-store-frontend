@@ -35,7 +35,7 @@ type DocumentDetailPageProps = {
   resident: Resident;
   documentSubmission: DocumentSubmission;
   staffSelectedDocumentTypes: DocumentType[];
-  documentAsBase64: string;
+  downloadUrl: string;
   feedbackUrl: string;
 };
 
@@ -45,7 +45,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   resident,
   documentSubmission: _documentSubmission,
   staffSelectedDocumentTypes,
-  documentAsBase64,
+  downloadUrl,
   feedbackUrl,
 }) => {
   const router = useRouter();
@@ -150,11 +150,11 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       <figure className={styles.preview}>
         {document.extension === 'jpeg' || document.extension === 'png' ? (
           <img
-            src={`${documentAsBase64}`}
+            src={`${downloadUrl}`}
             alt={documentSubmission.documentType.title}
           />
         ) : (
-          <iframe src={`${documentAsBase64}`} height="1000px" width="800px" />
+          <iframe src={`${downloadUrl}`} height="1000px" width="800px" />
         )}
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
@@ -229,10 +229,10 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
-  let documentAsBase64 = '';
+  let downloadUrl = '';
   if (documentSubmission && documentSubmission.document) {
-    documentAsBase64 = await documentsApiGateway.getDocument(
-      documentSubmission.document.id
+    downloadUrl = await documentsApiGateway.getDocumentPreSignedUrl(
+      documentSubmission.claimId
     );
   }
   return {
@@ -242,7 +242,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
       resident,
       documentSubmission,
       staffSelectedDocumentTypes,
-      documentAsBase64,
+      downloadUrl,
       feedbackUrl,
     },
   };
