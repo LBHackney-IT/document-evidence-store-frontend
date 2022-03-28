@@ -40,7 +40,6 @@ export interface EvidenceRequestForm {
 }
 
 export interface DocumentSubmissionRequest {
-  base64Document: string;
   documentType: string;
 }
 
