@@ -31,21 +31,33 @@ _🔐 This side of the application is authenticated_
 ### Resident Flow
 
 - **`/resident/:id`** - The start page of the resident upload flow for a specific evidence request
-  - **`/resident/:id/upload`** - Upload documents
+  - **`/resident/:id/upload`** - Upload documents (see [File Uploads](#file-uploads) for more information on accepted file types)
   - **`/resident/:id/confirmation`** - Upload confimation
 
-## 💻 Running it locally
+## 💻 Setup
 
-You need `node` and `npm` installed.
+1. Install [Docker][docker-download].
+2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v14](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
+3. Clone this repository.
+4. Open it in your IDE.
 
-First, clone the repo
+## 💻 Development
+
+In order to run the frontend locally, you will first need access to the environment variables stored in 1Password. Please contact another developer on the Document Evidence Service Team to gain access.
+
+TO NOTE: To make local calls to an API, you will also need to clone the two API repos [documents-api](https://github.com/LBHackney-IT/documents-api) and [evidence-api](https://github.com/LBHackney-IT/evidence-api). Follow the instructions in their READMEs to get them running (along with their database).
+
+Once you have the environment variables and the APIs and database container running, navigate via the terminal to the root of document-evidence-store-frontend and run `touch .env`. This will create an `.env` file where you can store the environment variables (following the pattern example in `.env.sample`). This file should not be tracked by git, as it has been added to the `.gitignore`, so please do check that this is the case.
+
+Install the packages and start the frontend by running:
 
 ```bash
 npm i
-npm run dev-mock # boots the Next.js server and the mocks server
+npm run build
+npm run dev
 ```
 
-It'll be on [http://localhost:3000](http://localhost:3000).
+It'll be on [http://localhost:3000](http://localhost:3000). Follow the instructions below to change the DNS hosts file and log in successfully.
 
 ### Logging in
 
@@ -65,12 +77,28 @@ If you have the right [environment config](#-configuration), login should now wo
 
 ## 🧪 Testing it
 
-It uses Jest, `react-testing-library` and cypress for tests. Run them with:
+The application uses Jest, `react-testing-library` and Cypress for tests.
 
-```
+### Unit
+
+You can run the unit tests by running:
+
+```sh
 npm run test:unit
-npm run test:e2e:dev # requires server to be running
 ```
+
+### Integration
+
+In order to run the integration tests, you need to:
+
+1. Navigate to the `.env` file and comment out (by adding a `#`) the DOCUMENTS_API_BASE_URL and uncomment the one specified in that file.
+2. Make sure that evidence-api is not running.
+3. In the terminal, run `npm run dev-mock`
+4. Open up a new terminal and run `npm run test:e2e:dev` (or `npm run test:e2e:ci` to run in terminal and not UI)
+
+A new Cypress UI will open. You will need to click on 'Run x integration tests'. The tests will take a little longer than the unit tests. Close the window when they're all finished.
+
+> Once you have finished testing, exit the `dev-mock` server and revert your changes to `.env`.
 
 ### Mock Server
 
@@ -128,6 +156,39 @@ At the time of writing we have two Gateways which are for specific use cases:
 - **`evidence-api.ts`**
   - This acts as a means of sending server side requests to the EvidenceAPI.
   - As discussed in [Architectural Decision Record 2](/docs/adr/0002-switch-from-client-side-api-requests-to-server-side.md) we use `getServerSideProps`
+
+## File Uploads
+
+For security reasons, the MIME types that a resident can upload must be whitelisted on both client side and server side. This means that a resident cannot upload a file that does not meet the approved whitelist. For example, a resident cannot upload a file with an extension of `.svg` because the MIME type `image/svg+xml` has not been added to the whitelist. Please see the previous pen-test reports for more information. The following MIME types are blacklisted:
+
+- `image/svg+xml` (could contain scripts)
+- `application/octet-stream` (unknown binary-type files)
+
+### Adding a new accepted MIME type
+
+There are two places where a new MIME type needs to be whitelisted; the client (frontend) and the server (evidence-api). To update how the server accepts MIME types, please see the README on [Evidence API](https://github.com/LBHackney-IT/evidence-api). You need to update both sides, otherwise files sent from the client to server may be rejected (return a `400 Bad Request`)
+
+To update the accepted MIME types on the frontend, navigate to [UploaderPanel.tsx](src/components/UploaderPanel.tsx) and add the MIME types to the `acceptedMimeTypes` function. A list of authoritative MIME types can be found on [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types) and [IANA](https://www.iana.org/assignments/media-types/media-types.xhtml).
+
+You will also need to update the relevant information for the user on the UI. Navigate to [FileFormatsDetails.tsx](src/components/FileFormatsDetails.tsx) and add/remove the file extensions listed in the correct element.
+
+### Current accepted MIME types
+
+| MIME type                                                               | File extension |
+| ----------------------------------------------------------------------- | -------------- |
+| application/msword                                                      | .doc           |
+| application/pdf                                                         | .pdf           |
+| application/vnd.apple.numbers                                           | .numbers       |
+| application/vnd.apple.pages                                             | .pages         |
+| application/vnd.ms-excel                                                | .xls           |
+| application/vnd.openxmlformats-officedocument.spreadsheetml.sheet       | .xlsx          |
+| application/vnd.openxmlformats-officedocument.wordprocessingml.document | .docx          |
+| image/bmp                                                               | .bmp           |
+| image/gif                                                               | .gif           |
+| image/heic                                                              | .heic          |
+| image/jpeg                                                              | .jpeg or .jpg  |
+| image/png                                                               | .png           |
+| text/plain                                                              | .txt           |
 
 # License
 
