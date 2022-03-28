@@ -67,5 +67,17 @@ describe('Documents api gateway', () => {
         }
       );
     });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        expect.assertions(1);
+        try {
+          await gateway.getDocumentPreSignedUrl(claimId);
+        } catch (err) {
+          expect(err).toEqual(new InternalServerError('Internal server error'));
+        }
+      });
+    });
   });
 });

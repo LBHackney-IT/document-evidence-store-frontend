@@ -230,7 +230,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
   let downloadUrl = '';
-  if (documentSubmission && documentSubmission.document) {
+  if (documentSubmission && documentSubmission.claimId) {
     downloadUrl = await documentsApiGateway.getDocumentPreSignedUrl(
       documentSubmission.claimId
     );
