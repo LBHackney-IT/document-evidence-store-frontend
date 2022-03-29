@@ -37,4 +37,19 @@ export class DocumentsApiGateway {
       throw new InternalServerError('Internal server error');
     }
   }
+
+  async getDocumentPreSignedUrl(claimId: string): Promise<string> {
+    try {
+      const { data } = await this.client.get<string>(
+        `/api/v1/claims/${claimId}/download_links`,
+        {
+          headers: { Authorization: tokens?.documents?.GET },
+        }
+      );
+      return data;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
 }
