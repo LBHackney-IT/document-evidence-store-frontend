@@ -17,8 +17,6 @@
       "get-document-submissions-with-resident",
       "get-document-submissions-with-expired-claim",
       "get-resident",
-      "get-document",
-      "get-base64-document",
       "get-download-url"
     ]
   }
