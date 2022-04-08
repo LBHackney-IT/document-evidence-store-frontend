@@ -168,6 +168,7 @@ describe('Internal API Gateway', () => {
       },
       team: 'Example Service',
       reason: 'example-reason',
+      noteToResident: 'not all those who wander are lost',
     };
     const apiResponse = {} as EvidenceRequest;
     const expectedResult = {} as EvidenceRequest;

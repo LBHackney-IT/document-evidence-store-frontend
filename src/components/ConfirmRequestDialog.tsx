@@ -4,6 +4,7 @@ import styles from '../styles/Dialog.module.scss';
 import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
 import { useFormikContext } from 'formik';
+import SVGNoteToResident from './SVGNoteToResident';
 
 const humanisedMethods: Record<string, string> = {
   EMAIL: 'email',
@@ -56,6 +57,16 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
           ))}
         </strong>
       </ul>
+
+      {values.noteToResident.trim().length === 0 ? (
+        <></>
+      ) : (
+        <div className="govuk-inset-text lbh-inset-text">
+          <SVGNoteToResident />
+          <strong>Bespoke note to resident</strong>
+          <p>{values.noteToResident}</p>
+        </div>
+      )}
 
       <div className={styles.actions}>
         <button
