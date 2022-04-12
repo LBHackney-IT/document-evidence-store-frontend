@@ -18,6 +18,7 @@ export const TextAreaWithCharacterCount = ({
   value,
   name,
   id,
+  dataTestId,
 }: Props): JSX.Element => {
   const [characterCount, setCharacterCount] = useState(getLengthOfValue(value));
 
@@ -36,7 +37,7 @@ export const TextAreaWithCharacterCount = ({
         id={id}
         as="textarea"
         rows="3"
-        data-testid="textarea"
+        data-testid={dataTestId}
         aria-describedby="more-detail-info"
         className={
           exceedingValue >= 0
@@ -72,4 +73,5 @@ export interface Props {
   maxCharacterLength: number;
   name: string;
   id: string;
+  dataTestId: string;
 }

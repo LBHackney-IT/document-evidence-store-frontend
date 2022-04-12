@@ -26,6 +26,7 @@ const NewRequestFormStep3 = (): JSX.Element => {
         <TextAreaWithCharacterCount
           name="noteToResident"
           id="noteToResident"
+          dataTestId="textarea"
           maxCharacterLength={maxCharacterLength}
           value={values.noteToResident}
         />

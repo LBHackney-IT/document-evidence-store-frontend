@@ -35,6 +35,11 @@ describe('Create evidence requests', () => {
     cy.get('label').contains('Proof of ID').click();
     cy.get('button').contains('Continue').click();
 
+    cy.get('[data-testid="textarea"]').type(
+      'Not all those who wander are lost'
+    );
+    cy.get('button').contains('Continue').click();
+
     cy.get('[role=dialog]').within(() => {
       cy.contains("You're about to send a request by SMS");
       cy.get('li').contains('Frodo Baggins');
