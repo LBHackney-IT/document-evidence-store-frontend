@@ -189,6 +189,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
                   <button
                     className="govuk-button govuk-secondary lbh-button lbh-button--secondary"
                     data-module="govuk-button"
+                    onClick={() => (values.noteToResident = '')}
                   >
                     Skip and Continue
                   </button>
