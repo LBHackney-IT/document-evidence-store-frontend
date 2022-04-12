@@ -46,17 +46,26 @@ export const TextAreaWithCharacterCount = ({
       />
       {exceedingValue >= 0 ? (
         <span className="govuk-hint" aria-live="polite">
-          {`You have ${exceedingValue} characters remaining`}
+          {`You have ${exceedingValue} ${pluralize(
+            'character',
+            exceedingValue
+          )} remaining`}
         </span>
       ) : (
         <span className="govuk-error-message" aria-live="polite">
-          {`You have ${Math.abs(exceedingValue)} characters too many`}
+          {`You have ${Math.abs(exceedingValue)} ${pluralize(
+            'character',
+            exceedingValue
+          )} too many`}
         </span>
       )}
       <noscript>You can enter up to {maxCharacterLength} characters</noscript>
     </>
   );
 };
+
+const pluralize = (word: string, value: number): string =>
+  `${word}${Math.abs(value) !== 1 ? 's' : ''}`;
 
 export interface Props {
   value: string;
