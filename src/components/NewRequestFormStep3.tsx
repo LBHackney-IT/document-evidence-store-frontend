@@ -9,7 +9,6 @@ export const schemaNewRequestFormStep3 = Yup.object().shape({
 });
 
 const NewRequestFormStep3 = (): JSX.Element => {
-
   return (
     <>
       <h2 className="lbh-heading-h2">
@@ -25,6 +24,7 @@ const NewRequestFormStep3 = (): JSX.Element => {
           id="noteToResident"
           dataTestId="textarea"
           maxCharacterLength={maxCharacterLength}
+          rows={5}
         />
       </div>
     </>

@@ -1,6 +1,5 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { EvidenceRequestForm } from 'src/gateways/internal-api';
-import { Field as FormikField, useFormikContext } from 'formik';
+import { useField, FieldHookConfig } from 'formik';
 
 const getLengthOfValue = (
   initialValue: string | number | readonly string[] | undefined
@@ -16,13 +15,13 @@ const getLengthOfValue = (
 
 export const TextAreaWithCharacterCount = ({
   maxCharacterLength,
-  name,
-  id,
   dataTestId,
-}: Props): JSX.Element => {
-  const { values } = useFormikContext<any>();
+  rows,
+  ...props
+}: Props & FieldHookConfig<string>): JSX.Element => {
+  const [field, meta] = useField(props);
   const [characterCount, setCharacterCount] = useState(
-    getLengthOfValue(values[name])
+    getLengthOfValue(meta.value)
   );
 
   const exceedingValue = useMemo(() => maxCharacterLength - characterCount, [
@@ -30,24 +29,22 @@ export const TextAreaWithCharacterCount = ({
   ]);
 
   useEffect(() => {
-    setCharacterCount(String(values[name]).length);
-  }, [values[name]]);
+    setCharacterCount(String(meta.value).length);
+  }, [meta.value]);
 
   return (
     <>
-      <FormikField
-        name={name}
-        id={id}
-        as="textarea"
-        rows="3"
+      <textarea
+        {...field}
+        id={props.id}
         data-testid={dataTestId}
-        aria-describedby="more-detail-info"
+        rows={rows}
         className={
           exceedingValue >= 0
             ? 'govuk-textarea govuk-js-character-count lbh-character-count'
             : 'govuk-textarea govuk-js-character-count lbh-character-count govuk-textarea--error'
         }
-      />
+      ></textarea>
       {exceedingValue >= 0 ? (
         <span className="govuk-hint" aria-live="polite">
           {`You have ${exceedingValue} ${pluralize(
@@ -73,7 +70,6 @@ const pluralize = (word: string, value: number): string =>
 
 export interface Props {
   maxCharacterLength: number;
-  name: string;
-  id: string;
   dataTestId: string;
+  rows: number;
 }

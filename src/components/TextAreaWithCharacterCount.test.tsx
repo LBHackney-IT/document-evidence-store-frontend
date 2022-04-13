@@ -25,6 +25,7 @@ describe('TextAreaWithCharacterCount', () => {
             name="noteToResident"
             id="noteToResident"
             dataTestId="testid"
+            rows={5}
           />
         </Form>
       </Formik>
@@ -56,6 +57,7 @@ describe('TextAreaWithCharacterCount', () => {
             name="noteToResident"
             id="noteToResident"
             dataTestId="testid"
+            rows={5}
           />
         </Form>
       </Formik>
