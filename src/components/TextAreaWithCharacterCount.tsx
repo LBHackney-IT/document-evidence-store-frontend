@@ -1,5 +1,6 @@
 import React, { useMemo, useEffect, useState } from 'react';
-import { Field as FormikField } from 'formik';
+import { EvidenceRequestForm } from 'src/gateways/internal-api';
+import { Field as FormikField, useFormikContext } from 'formik';
 
 const getLengthOfValue = (
   initialValue: string | number | readonly string[] | undefined
@@ -15,20 +16,22 @@ const getLengthOfValue = (
 
 export const TextAreaWithCharacterCount = ({
   maxCharacterLength,
-  value,
   name,
   id,
   dataTestId,
 }: Props): JSX.Element => {
-  const [characterCount, setCharacterCount] = useState(getLengthOfValue(value));
+  const { values } = useFormikContext<any>();
+  const [characterCount, setCharacterCount] = useState(
+    getLengthOfValue(values[name])
+  );
 
   const exceedingValue = useMemo(() => maxCharacterLength - characterCount, [
     characterCount,
   ]);
 
   useEffect(() => {
-    setCharacterCount(String(value).length);
-  }, [value]);
+    setCharacterCount(String(values[name]).length);
+  }, [values[name]]);
 
   return (
     <>
@@ -69,7 +72,6 @@ const pluralize = (word: string, value: number): string =>
   `${word}${Math.abs(value) !== 1 ? 's' : ''}`;
 
 export interface Props {
-  value: string;
   maxCharacterLength: number;
   name: string;
   id: string;

@@ -1,6 +1,4 @@
 import React from 'react';
-import { useFormikContext } from 'formik';
-import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import { TextAreaWithCharacterCount } from './TextAreaWithCharacterCount';
 
@@ -11,7 +9,6 @@ export const schemaNewRequestFormStep3 = Yup.object().shape({
 });
 
 const NewRequestFormStep3 = (): JSX.Element => {
-  const { values } = useFormikContext<EvidenceRequestForm>();
 
   return (
     <>
@@ -28,7 +25,6 @@ const NewRequestFormStep3 = (): JSX.Element => {
           id="noteToResident"
           dataTestId="textarea"
           maxCharacterLength={maxCharacterLength}
-          value={values.noteToResident}
         />
       </div>
     </>
