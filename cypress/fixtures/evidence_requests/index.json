@@ -19,7 +19,8 @@
     ],
     "team": "Development Housing Team",
     "reason": "staging-reason",
-    "userRequestedBy": "test@hackney.gov.uk"
+    "userRequestedBy": "test@hackney.gov.uk",
+    "noteToResident": "Not all those who wander are lost"
   },
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
@@ -41,7 +42,8 @@
     ],
     "team": "Development Housing Team",
     "reason": "staging-reason",
-    "userRequestedBy": "test@hackney.gov.uk"
+    "userRequestedBy": "test@hackney.gov.uk",
+    "noteToResident": "Not all those who wander are lost"
   },
   {
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
@@ -63,6 +65,7 @@
     ],
     "team": "Development Housing Team",
     "reason": "staging-reason",
-    "userRequestedBy": "test@hackney.gov.uk"
+    "userRequestedBy": "test@hackney.gov.uk",
+    "noteToResident": "Not all those who wander are lost"
   }
 ]
