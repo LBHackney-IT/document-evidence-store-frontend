@@ -145,6 +145,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       deliveryMethods.push('SMS');
     }
     setDeliveryMethods(deliveryMethods);
+
+    values.noteToResident.trim();
+
     const payload: EvidenceRequestRequest = {
       ...values,
       deliveryMethods: deliveryMethods,
