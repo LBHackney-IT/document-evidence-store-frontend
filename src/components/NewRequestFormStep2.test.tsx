@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-  act,
-} from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import NewRequestFormStep2 from './NewRequestFormStep2';
 import { Formik, Form } from 'formik';
 import { schemaNewRequestFormStep2 } from './NewRequestFormStep2';
@@ -90,9 +84,12 @@ describe('NewRequestFormStep2', () => {
       fireEvent.click(screen.getByText('Continue'));
     });
 
-    // https://egghead.io/lessons/jest-fix-the-not-wrapped-in-act-warning
-    await act(() => promise);
-
-    expect(mockHandler).toHaveBeenCalled;
+    expect(mockHandler.mock.calls[0]).toEqual(
+      expect.arrayContaining([
+        {
+          documentTypes: ['proof-of-id', 'passport-scan'],
+        },
+      ])
+    );
   });
 });

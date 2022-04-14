@@ -58,9 +58,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         </strong>
       </ul>
 
-      {values.noteToResident.trim().length === 0 ? (
-        <></>
-      ) : (
+      {values.noteToResident.trim() && (
         <div className="govuk-inset-text lbh-inset-text">
           <SVGNoteToResident />
           <strong>Bespoke note to resident</strong>

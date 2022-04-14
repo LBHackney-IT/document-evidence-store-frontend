@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import NewRequestFormStep3 from './NewRequestFormStep3';
 import { Formik, Form } from 'formik';
 
@@ -59,9 +53,8 @@ describe('NewRequestFormStep3', () => {
       fireEvent.click(screen.getByText('Continue'));
     });
 
-    await act(() => promise);
-
-    expect(mockHandler).toHaveBeenCalled();
-    //expect(mockHandler).toHaveBeenCalledWith();
+    expect(mockHandler.mock.calls[0]).toEqual(
+      expect.arrayContaining([{ noteToResident: 'ipsum lorem' }])
+    );
   });
 });
