@@ -39,18 +39,22 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         <br />
         <strong>{values.reason}</strong>
       </p>
-      <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
 
-      <ul className="lbh-list">
+      <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
+      <ul className="lbh-list govuk-!-margin-top-2">
         <li>
           <strong>{values.resident.name}</strong>
         </li>
-        <li>{values.resident.email}</li>
-        <li>{values.resident.phoneNumber}</li>
+        <li>
+          <strong>{values.resident.email}</strong>
+        </li>
+        <li>
+          <strong>{values.resident.phoneNumber}</strong>
+        </li>
       </ul>
 
       <p className="lbh-body">For the following evidences:</p>
-      <ul className="lbh-list lbh-list--bullet">
+      <ul className="lbh-list lbh-list--bullet govuk-!-margin-top-2">
         <strong>
           {values.documentTypes.map((id) => (
             <li key={id}>{documentTypes.find((dt) => dt.id == id)?.title}</li>
