@@ -4,6 +4,8 @@ import styles from '../styles/Dialog.module.scss';
 import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
 import { useFormikContext } from 'formik';
+import SVGNoteToResident from './SVGNoteToResident';
+import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
 
 const humanisedMethods: Record<string, string> = {
   EMAIL: 'email',
@@ -38,24 +40,38 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         <br />
         <strong>{values.reason}</strong>
       </p>
-      <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
 
-      <ul className="lbh-list">
+      <p className="lbh-body">{formatSentence(deliveryMethods)}</p>
+      <ul className="lbh-list govuk-!-margin-top-2">
         <li>
           <strong>{values.resident.name}</strong>
         </li>
-        <li>{values.resident.email}</li>
-        <li>{values.resident.phoneNumber}</li>
+        <li>
+          <strong>{values.resident.email}</strong>
+        </li>
+        <li>
+          <strong>{values.resident.phoneNumber}</strong>
+        </li>
       </ul>
 
       <p className="lbh-body">For the following evidences:</p>
-      <ul className="lbh-list lbh-list--bullet">
+      <ul className="lbh-list lbh-list--bullet govuk-!-margin-top-2">
         <strong>
           {values.documentTypes.map((id) => (
             <li key={id}>{documentTypes.find((dt) => dt.id == id)?.title}</li>
           ))}
         </strong>
       </ul>
+
+      {sanitiseNoteToResident(values.noteToResident) && (
+        <div className="govuk-inset-text lbh-inset-text">
+          <SVGNoteToResident />
+          <strong>Bespoke note to resident</strong>
+          <p className="govuk-!-margin-top-2" style={{ fontStyle: 'italic' }}>
+            {sanitiseNoteToResident(values.noteToResident)}
+          </p>
+        </div>
+      )}
 
       <div className={styles.actions}>
         <button

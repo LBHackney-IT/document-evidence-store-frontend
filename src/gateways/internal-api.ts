@@ -24,6 +24,7 @@ export interface EvidenceRequestRequest {
   reason: string;
   userRequestedBy?: string;
   notificationEmail?: string;
+  noteToResident: string;
 }
 
 export interface EvidenceRequestForm {
@@ -37,6 +38,7 @@ export interface EvidenceRequestForm {
   documentTypes: [];
   emailCheckbox: [];
   phoneNumberCheckbox: [];
+  noteToResident: string;
 }
 
 export interface DocumentSubmissionRequest {

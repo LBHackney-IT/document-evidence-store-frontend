@@ -19,6 +19,7 @@ export interface EvidenceRequestResponse
   deliveryMethods: string[];
   documentTypes: IDocumentType[];
   userRequestedBy: string;
+  noteToResident: string;
 }
 
 export interface DocumentSubmissionResponse

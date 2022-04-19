@@ -6,6 +6,7 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import NewRequestFormStep1 from '../../../../../../components/NewRequestFormStep1';
 import NewRequestFormStep2 from '../../../../../../components/NewRequestFormStep2';
+import NewRequestFormStep3 from '../../../../../../components/NewRequestFormStep3';
 import ConfirmRequestDialog from '../../../../../../components/ConfirmRequestDialog';
 import { DocumentType } from '../../../../../../domain/document-type';
 import {
@@ -15,6 +16,7 @@ import {
 } from '../../../../../../gateways/internal-api';
 import { schemaNewRequestFormStep1 } from '../../../../../../components/NewRequestFormStep1';
 import { schemaNewRequestFormStep2 } from '../../../../../../components/NewRequestFormStep2';
+import { schemaNewRequestFormStep3 } from '../../../../../../components/NewRequestFormStep3';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { Team } from '../../../../../../domain/team';
@@ -22,6 +24,7 @@ import { User } from '../../../../../../domain/user';
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
@@ -33,6 +36,7 @@ type RequestsNewPageProps = {
 const schema = [
   schemaNewRequestFormStep1,
   schemaNewRequestFormStep2,
+  schemaNewRequestFormStep3,
   Yup.object().shape({}),
 ];
 
@@ -72,9 +76,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     documentTypes: [],
     emailCheckbox: [],
     phoneNumberCheckbox: [],
+    noteToResident: '',
   };
 
-  const steps = [1, 2, 3];
+  const steps = [1, 2, 3, 4];
 
   function renderStepContent(step: number) {
     switch (step) {
@@ -83,6 +88,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       case 2:
         return <NewRequestFormStep2 documentTypes={documentTypes} />;
       case 3:
+        return <NewRequestFormStep3 />;
+      case 4:
         return (
           <ConfirmRequestDialog
             documentTypes={documentTypes}
@@ -139,9 +146,11 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       deliveryMethods.push('SMS');
     }
     setDeliveryMethods(deliveryMethods);
+
     const payload: EvidenceRequestRequest = {
       ...values,
       deliveryMethods: deliveryMethods,
+      noteToResident: sanitiseNoteToResident(values.noteToResident),
     };
 
     return payload;
@@ -168,16 +177,38 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
           validationSchema={currentValidationSchema}
           onSubmit={submitHandler}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, values }) => (
             <Form>
               {renderStepContent(currentStep)}
-              <button
-                className="govuk-button lbh-button"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                {currentStep < steps.length ? 'Continue' : 'Send request'}
-              </button>
+              {currentStep === 3 ? (
+                <div>
+                  <button
+                    className="govuk-button lbh-button"
+                    style={{
+                      marginRight: '1.5em',
+                    }}
+                    type="submit"
+                    disabled={values.noteToResident ? isSubmitting : true}
+                  >
+                    Continue
+                  </button>
+                  <button
+                    className="govuk-button govuk-secondary lbh-button lbh-button--secondary"
+                    data-module="govuk-button"
+                    onClick={() => (values.noteToResident = '')}
+                  >
+                    Skip and Continue
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="govuk-button lbh-button"
+                  type="submit"
+                  disabled={isSubmitting}
+                >
+                  {currentStep < steps.length ? 'Continue' : 'Send request'}
+                </button>
+              )}
             </Form>
           )}
         </Formik>

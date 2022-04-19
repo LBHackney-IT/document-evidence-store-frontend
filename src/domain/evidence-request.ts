@@ -11,6 +11,7 @@ export interface IEvidenceRequest {
   team: string;
   reason: string;
   userRequestedBy: string;
+  noteToResident: string;
 }
 
 export enum DeliveryMethod {
@@ -27,6 +28,7 @@ export class EvidenceRequest implements IEvidenceRequest {
   team: string;
   reason: string;
   userRequestedBy: string;
+  noteToResident: string;
 
   constructor(params: IEvidenceRequest) {
     this.id = params.id;
@@ -37,5 +39,6 @@ export class EvidenceRequest implements IEvidenceRequest {
     this.team = params.team;
     this.reason = params.reason;
     this.userRequestedBy = params.userRequestedBy;
+    this.noteToResident = params.noteToResident;
   }
 }

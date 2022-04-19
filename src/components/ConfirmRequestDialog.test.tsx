@@ -28,6 +28,7 @@ describe('Confirm Request Dialog', () => {
       },
       team: 'Example Service',
       reason: 'example-reason',
+      noteToResident: 'you shall not pass!',
     };
 
     beforeEach(() => {
@@ -58,7 +59,8 @@ describe('Confirm Request Dialog', () => {
       Object.values(request.resident).forEach((text) =>
         expect(screen.getByText(text)).toBeVisible()
       );
-      expect.assertions(6);
+      expect(screen.getByText('you shall not pass!')).toBeVisible();
+      expect.assertions(7);
     });
 
     it('calls the accept callback', async () => {
