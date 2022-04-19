@@ -146,11 +146,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     }
     setDeliveryMethods(deliveryMethods);
 
-    values.noteToResident.trim();
-
     const payload: EvidenceRequestRequest = {
       ...values,
       deliveryMethods: deliveryMethods,
+      noteToResident: values.noteToResident.trim(),
     };
 
     return payload;
