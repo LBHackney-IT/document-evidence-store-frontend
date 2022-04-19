@@ -184,6 +184,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
                 <div>
                   <button
                     className="govuk-button lbh-button"
+                    style={{
+                      marginRight: '1.5em',
+                    }}
                     type="submit"
                     disabled={values.noteToResident ? isSubmitting : true}
                   >
