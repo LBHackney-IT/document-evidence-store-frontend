@@ -5,6 +5,7 @@ import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
 import { useFormikContext } from 'formik';
 import SVGNoteToResident from './SVGNoteToResident';
+import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
 
 const humanisedMethods: Record<string, string> = {
   EMAIL: 'email',
@@ -62,12 +63,12 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         </strong>
       </ul>
 
-      {values.noteToResident.trim() && (
+      {sanitiseNoteToResident(values.noteToResident) && (
         <div className="govuk-inset-text lbh-inset-text">
           <SVGNoteToResident />
           <strong>Bespoke note to resident</strong>
           <p className="govuk-!-margin-top-2" style={{ fontStyle: 'italic' }}>
-            {values.noteToResident}
+            {sanitiseNoteToResident(values.noteToResident)}
           </p>
         </div>
       )}

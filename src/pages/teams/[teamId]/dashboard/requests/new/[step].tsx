@@ -24,6 +24,7 @@ import { User } from '../../../../../../domain/user';
 import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
@@ -149,7 +150,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     const payload: EvidenceRequestRequest = {
       ...values,
       deliveryMethods: deliveryMethods,
-      noteToResident: values.noteToResident.trim(),
+      noteToResident: sanitiseNoteToResident(values.noteToResident),
     };
 
     return payload;
