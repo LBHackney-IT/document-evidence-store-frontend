@@ -62,7 +62,9 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         <div className="govuk-inset-text lbh-inset-text">
           <SVGNoteToResident />
           <strong>Bespoke note to resident</strong>
-          <p>{values.noteToResident}</p>
+          <p className="govuk-!-margin-top-2" style={{ fontStyle: 'italic' }}>
+            {values.noteToResident}
+          </p>
         </div>
       )}
 
