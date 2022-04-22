@@ -114,5 +114,18 @@
     ],
     "landingMessage": "Housing Register",
     "slaMessage": "Thank you. Your documents have been uploaded."
+  },
+  {
+    "name": "Leasehold and Right to Buy",
+    "googleGroup": "Leasehold and Right to Buy",
+    "id": "8",
+    "reasons": [
+      {
+        "name": "This is a holding reason",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "This is the Leasehold and Right to Buy's landing message",
+    "slaMessage": "This is the Leasehold and Right to Buy's SLA message."
   }
 ]
