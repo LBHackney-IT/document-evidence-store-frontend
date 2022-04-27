@@ -127,5 +127,18 @@
     ],
     "landingMessage": "This is the Leasehold and Right to Buy's landing message",
     "slaMessage": "This is the Leasehold and Right to Buy's SLA message."
+  },
+  {
+    "name": "Admission and Pupil Benefits",
+    "googleGroup": "education-evidence-production",
+    "id": "9",
+    "reasons": [
+      {
+        "name": "Requesting Document Evidence relating to school application",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Good Day, Thank you for submitting your application online. We require additional information. If you have any queries please contact us on  020  8820 7000 Option 3. You can telephone the service Monday to Friday, 9am to 5pm ",
+    "slaMessage": "Thank you for submitting additional information. This information will be reviewed and your application will be processed."
   }
 ]
