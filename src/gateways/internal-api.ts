@@ -66,6 +66,12 @@ export interface ResidentRequest {
   searchQuery: string;
 }
 
+// export interface FilterEvidenceRequest {
+//   team: string;
+//   userEmail: string;
+//   state?: EvidenceRequestState;
+// }
+
 type InternalApiDependencies = {
   client: AxiosInstance;
 };

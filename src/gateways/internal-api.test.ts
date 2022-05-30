@@ -14,6 +14,7 @@ import {
 import { Resident } from '../domain/resident';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { Constants } from '../helpers/Constants';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 
 jest.mock('../boundary/response-mapper');
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
@@ -268,6 +269,69 @@ describe('Internal API Gateway', () => {
             team: searchQuery,
             searchQuery: searchQuery,
           });
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('filterToReviewEvidenceRequests', () => {
+    const apiResponse = {} as EvidenceRequest[];
+    const expectedResult = {} as EvidenceRequest[];
+    const team = 'Development Team';
+
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: apiResponse,
+        });
+
+        mockedResponseMapper.mapEvidenceResponseList.mockReturnValue(
+          expectedResult
+        );
+      });
+
+      it('makes the api request', async () => {
+        await gateway.filterToReviewEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          team,
+          EvidenceRequestState.PENDING
+        );
+
+        expect(client.get).toHaveBeenCalledWith(
+          `/api/evidence/evidence_requests`,
+          {
+            params: {
+              team: team,
+              state: EvidenceRequestState.PENDING,
+            },
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
+          }
+        );
+      });
+
+      xit('returns the updated model', async () => {
+        const result = await gateway.filterToReviewEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          team,
+          EvidenceRequestState.PENDING
+        );
+
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    xdescribe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () => {
+          return gateway.filterToReviewEvidenceRequests(
+            Constants.DUMMY_EMAIL,
+            team,
+            EvidenceRequestState.PENDING
+          );
+        };
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
