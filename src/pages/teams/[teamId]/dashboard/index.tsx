@@ -6,7 +6,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import Layout from '../../../../components/DashboardLayout';
 import ResidentSearchForm from '../../../../components/ResidentSearchForm';
 import { ResidentTable } from '../../../../components/ResidentTable';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { InternalApiGateway } from '../../../../gateways/internal-api';
 import { Resident } from '../../../../domain/resident';
 import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
@@ -71,6 +71,12 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
     }
   };
 
+  useEffect(() => {
+    if (filterToReview) {
+      handleFilterToReview();
+    }
+  }, [filterToReview]);
+
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
@@ -99,7 +105,6 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
           className="govuk-checkboxes__input"
           onClick={() => {
             setFilterToReview(!filterToReview);
-            handleFilterToReview();
           }}
         />
         <label
