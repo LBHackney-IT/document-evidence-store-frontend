@@ -168,20 +168,12 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
       user.email,
       team.name
     );
-    // const filteredEvidenceRequests = await gateway.getEvidenceRequests(
-    //   user.email,
-    //   team.name,
-    //   EvidenceRequestState.FOR_REVIEW
-    // );
-    const filteredEvidenceRequests = '';
-    console.log('These are the filtered results', filteredEvidenceRequests);
     return {
       props: {
         evidenceRequests,
         team,
         user,
         feedbackUrl,
-        filteredEvidenceRequests,
       },
     };
   }
