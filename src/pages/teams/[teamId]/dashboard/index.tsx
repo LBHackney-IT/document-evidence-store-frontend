@@ -23,7 +23,6 @@ type BrowseResidentsProps = {
   team: Team;
   user: User;
   feedbackUrl: string;
-  filteredEvidenceRequests: EvidenceRequest[];
 };
 
 const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
