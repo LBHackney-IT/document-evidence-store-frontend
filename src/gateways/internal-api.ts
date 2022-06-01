@@ -66,12 +66,6 @@ export interface ResidentRequest {
   searchQuery: string;
 }
 
-// export interface FilterEvidenceRequest {
-//   team: string;
-//   userEmail: string;
-//   state?: EvidenceRequestState;
-// }
-
 type InternalApiDependencies = {
   client: AxiosInstance;
 };
@@ -188,13 +182,13 @@ export class InternalApiGateway {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
         '/api/evidence/evidence_requests',
         {
-          params: { userEmail, team, state },
+          params: { team, state },
           headers: {
             UserEmail: userEmail,
           },
         }
       );
-      return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
+      return data.map(ResponseMapper.mapEvidenceRequest);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
