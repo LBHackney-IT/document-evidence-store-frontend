@@ -2,6 +2,7 @@
   {
     "id": "standard",
     "fixtures": [
+      "get-evidence-requests-to-review",
       "get-evidence-requests",
       "get-evidence-request",
       "create-evidence-request",
