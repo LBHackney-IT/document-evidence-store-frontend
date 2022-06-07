@@ -80,12 +80,6 @@ export class ResponseMapper {
     return attrs.map((r) => this.mapResidentResponse(r));
   }
 
-  static mapEvidenceResponseList(
-    attrs: EvidenceRequestResponse[]
-  ): EvidenceRequest[] {
-    return attrs.map((r) => this.mapEvidenceRequest(r));
-  }
-
   static mapResidentResponse(attr: ResidentResponse): Resident {
     return new Resident({
       ...attr,

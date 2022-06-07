@@ -294,10 +294,8 @@ describe('Internal API Gateway', () => {
           data: apiResponse,
         });
 
-        apiResponse.map((_, i) =>
-          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce(
-            expected[i]
-          )
+        expected.forEach(
+          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce
         );
       });
 
