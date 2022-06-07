@@ -1,5 +1,9 @@
 import { AxiosInstance } from 'axios';
-import { DocumentSubmissionResponse, ResidentResponse } from 'types/api';
+import {
+  DocumentSubmissionResponse,
+  ResidentResponse,
+  EvidenceRequestResponse,
+} from 'types/api';
 import { DocumentSubmissionRequest } from '../gateways/internal-api';
 import { ResponseMapper } from '../boundary/response-mapper';
 import {
@@ -14,6 +18,9 @@ import {
 import { Resident } from '../domain/resident';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { Constants } from '../helpers/Constants';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
+import EvidenceRequestResponseFixture from '../../cypress/fixtures/evidence_requests/index.json';
+import { EvidenceRequestsFixture } from './fixtures/evidence-request';
 
 jest.mock('../boundary/response-mapper');
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
@@ -268,6 +275,75 @@ describe('Internal API Gateway', () => {
             team: searchQuery,
             searchQuery: searchQuery,
           });
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('filterToReviewEvidenceRequests', () => {
+    const apiResponse: EvidenceRequestResponse[] = EvidenceRequestResponseFixture;
+    const expected: EvidenceRequest[] = EvidenceRequestsFixture;
+    const team = 'Development Team';
+
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.get.mockClear();
+        client.get.mockResolvedValue({
+          data: apiResponse,
+        });
+
+        apiResponse.map((_, i) =>
+          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce(
+            expected[i]
+          )
+        );
+      });
+
+      it('makes the api request', async () => {
+        await gateway.filterToReviewEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          team,
+          EvidenceRequestState.FOR_REVIEW
+        );
+
+        expect(client.get).toHaveBeenCalledWith(
+          `/api/evidence/evidence_requests`,
+          {
+            params: {
+              team: team,
+              state: EvidenceRequestState.FOR_REVIEW,
+            },
+            headers: {
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('returns the updated model', async () => {
+        const result = await gateway.filterToReviewEvidenceRequests(
+          Constants.DUMMY_EMAIL,
+          team,
+          EvidenceRequestState.FOR_REVIEW
+        );
+
+        expect(result).toEqual(expected);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockClear();
+        client.get.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () => {
+          return gateway.filterToReviewEvidenceRequests(
+            Constants.DUMMY_EMAIL,
+            team,
+            EvidenceRequestState.FOR_REVIEW
+          );
+        };
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );

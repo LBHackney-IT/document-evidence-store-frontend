@@ -2,10 +2,6 @@ describe('Can search for a resident', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/evidence_requests', {
-      fixture: 'evidence_requests/index',
-    });
-
     cy.intercept('/api/evidence/residents/search', {
       fixture: 'residents/search',
     });

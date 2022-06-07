@@ -8,6 +8,7 @@ import {
   ResidentResponse,
 } from 'types/api';
 import { ResponseMapper } from '../boundary/response-mapper';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 
 export class InternalServerError extends Error {
   constructor(message: string) {
@@ -166,6 +167,28 @@ export class InternalApiGateway {
         }
       );
       return ResponseMapper.mapResidentResponseList(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async filterToReviewEvidenceRequests(
+    userEmail: string,
+    team: string,
+    state?: EvidenceRequestState
+  ): Promise<EvidenceRequest[]> {
+    try {
+      const { data } = await this.client.get<EvidenceRequestResponse[]>(
+        '/api/evidence/evidence_requests',
+        {
+          params: { team, state },
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
+      );
+      return data.map(ResponseMapper.mapEvidenceRequest);
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

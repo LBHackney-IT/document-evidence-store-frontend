@@ -6,7 +6,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import Layout from '../../../../components/DashboardLayout';
 import ResidentSearchForm from '../../../../components/ResidentSearchForm';
 import { ResidentTable } from '../../../../components/ResidentTable';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { InternalApiGateway } from '../../../../gateways/internal-api';
 import { Resident } from '../../../../domain/resident';
 import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
@@ -16,6 +16,7 @@ import { RequestAuthorizer } from '../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../services/team-helper';
 import { Team } from '../../../../domain/team';
 import { User } from '../../../../domain/user';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 
 type BrowseResidentsProps = {
   evidenceRequests: EvidenceRequest[];
@@ -34,6 +35,10 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [filterToReview, setFilterToReview] = useState(false);
+  const [resultFilterToReview, setResultFilterToReview] = useState<
+    EvidenceRequest[]
+  >();
 
   const handleSearch = useCallback(async (searchQuery: string) => {
     try {
@@ -50,6 +55,26 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
       console.log(err);
     }
   }, []);
+
+  const handleFilterToReview = async () => {
+    try {
+      const gateway = new InternalApiGateway();
+      const data = await gateway.filterToReviewEvidenceRequests(
+        user.email,
+        team.name,
+        EvidenceRequestState.FOR_REVIEW
+      );
+      setResultFilterToReview(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    if (filterToReview) {
+      handleFilterToReview();
+    }
+  }, [filterToReview]);
 
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
@@ -71,12 +96,36 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         />
       )}
       {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
+      <div className="govuk-checkboxes__item">
+        <input
+          type="checkbox"
+          name="filterReadyToReview"
+          id="filter-ready-to-review"
+          className="govuk-checkboxes__input"
+          onClick={() => {
+            setFilterToReview(!filterToReview);
+          }}
+        />
+        <label
+          htmlFor="filter-ready-to-review"
+          className="govuk-label govuk-checkboxes__label"
+          style={{ margin: '0' }}
+        >
+          Display only residents with documents pending review
+        </label>
+      </div>
       {/* <Tabs
         tabTitles={['To review (3)', 'All (3)']}
         children={[ */}
       <div key="1">
         {/* <Heading level={HeadingLevels.H3}>To review</Heading> */}
-        <ResidentTable residents={evidenceRequests} teamId={team.id} />
+        {!filterToReview ? (
+          <ResidentTable residents={evidenceRequests} teamId={team.id} />
+        ) : (
+          resultFilterToReview && (
+            <ResidentTable residents={resultFilterToReview} teamId={team.id} />
+          )
+        )}
       </div>
       {/* <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
@@ -119,7 +168,12 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
       team.name
     );
     return {
-      props: { evidenceRequests, team, user, feedbackUrl },
+      props: {
+        evidenceRequests,
+        team,
+        user,
+        feedbackUrl,
+      },
     };
   }
 );
