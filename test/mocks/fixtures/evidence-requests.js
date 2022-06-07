@@ -1,6 +1,5 @@
 const evidenceRequestsIndex = require('../../../cypress/fixtures/evidence_requests/index.json');
 const evidenceRequestsId = require('../../../cypress/fixtures/evidence_requests/id.json');
-const evidenceRequestsToReview = require('../../../cypress/fixtures/evidence_requests/get-to-review.json');
 const documentSubmission = require('../../../cypress/fixtures/document_submissions/create.json');
 const documentTypes = require('../../../cypress/fixtures/document_types/index.json');
 const { v4: uuidv4 } = require('uuid');
@@ -22,16 +21,6 @@ const getEvidenceRequests = {
   response: {
     status: 200,
     body: evidenceRequestsIndex,
-  },
-};
-
-const getEvidenceRequestsToReview = {
-  id: 'get-evidence-requests-to-review',
-  url: '/api/v1/evidence_requests?team=Development+Housing+Team&state=1',
-  method: 'GET',
-  response: {
-    status: 200,
-    body: evidenceRequestsToReview,
   },
 };
 
@@ -66,7 +55,6 @@ const createDocumentSubmission = {
 module.exports = {
   getEvidenceRequest,
   getEvidenceRequests,
-  getEvidenceRequestsToReview,
   createEvidenceRequest,
   createDocumentSubmission,
 };
