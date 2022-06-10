@@ -9,7 +9,7 @@ import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import { formatRelativeCalendarDate } from '../../../../../../helpers/formatters';
+import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
 
 type ResidentPageProps = {
@@ -73,7 +73,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.documentType.title)}
-                createdAt={formatRelativeCalendarDate(ds.createdAt)}
+                createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
@@ -102,7 +102,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.staffSelectedDocumentType?.title)}
-                createdAt={formatRelativeCalendarDate(ds.createdAt)}
+                createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
@@ -129,7 +129,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 key={ds.id}
                 id={ds.id}
                 title={String(ds.documentType.title)}
-                createdAt={formatRelativeCalendarDate(ds.createdAt)}
+                createdAt={formatDate(ds.createdAt)}
                 fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
                 format={ds.document ? ds.document.extension : 'unknown'}
                 // purpose="Example form"
