@@ -43,15 +43,15 @@ describe('Can view and manage evidence', () => {
   });
 
   it('shows the correct date format', () => {
-    cy.get('.toReview p').should(
+    cy.get('.toReview p.lbh-body-s').should(
       'contain',
       '10:23 14 January 2021 (last year)'
     );
-    cy.get('.reviewed p').should(
+    cy.get('.reviewed p.lbh-body-s').should(
       'contain',
       '10:23 25 December 2020 (2 years ago)'
     );
-    cy.get('.rejected p').should(
+    cy.get('.rejected p.lbh-body-s').should(
       'contain',
       '10:23 30 December 2020 (2 years ago)'
     );
