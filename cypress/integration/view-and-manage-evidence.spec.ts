@@ -43,14 +43,17 @@ describe('Can view and manage evidence', () => {
   });
 
   it('shows the correct date format', () => {
-    cy.get('.toReview').should('contain', '10:23 14 January 2021 (last year)');
+    cy.get('.toReview').should(
+      'contain',
+      '10:23 am 14 January 2021 (last year)'
+    );
     cy.get('.reviewed').should(
       'contain',
-      '10:23 25 December 2020 (2 years ago)'
+      '10:23 am 25 December 2020 (2 years ago)'
     );
     cy.get('.rejected').should(
       'contain',
-      '10:23 30 December 2020 (2 years ago)'
+      '10:23 am 30 December 2020 (2 years ago)'
     );
   });
 
