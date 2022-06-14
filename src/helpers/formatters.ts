@@ -13,7 +13,7 @@ export const humanFileSize = (bytes: number): string => {
 // For example: 14:15 5 Jun 2020 (2 days ago)
 export const formatDate = (dateTime: DateTime): string => {
   return (
-    dateTime.toLocal().toFormat('t d LLLL y') +
+    dateTime.setLocale('en-gb').toFormat('t d LLLL y') +
     ' (' +
     dateTime.toRelativeCalendar() +
     ')'
