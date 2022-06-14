@@ -42,6 +42,21 @@ describe('Can view and manage evidence', () => {
     cy.get('.rejected a').eq(0).should('contain', 'Proof of ID');
   });
 
+  it('shows the correct date format', () => {
+    cy.get('.toReview').should(
+      'contain',
+      '10:23 am 14 January 2021 (last year)'
+    );
+    cy.get('.reviewed').should(
+      'contain',
+      '10:23 am 25 December 2020 (2 years ago)'
+    );
+    cy.get('.rejected').should(
+      'contain',
+      '10:23 am 30 December 2020 (2 years ago)'
+    );
+  });
+
   it('lets you see an image document detail page with actions and information', () => {
     cy.get('.toReview a').eq(0).contains('Proof of ID').click();
 
