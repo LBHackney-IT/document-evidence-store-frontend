@@ -19,9 +19,11 @@ const evidenceRequest = ResponseMapper.mapEvidenceRequest(
 const evidenceRequestId = evidenceRequest.id;
 
 const mockCreateDocumentSubmission = jest.fn(() => documentSubmission);
+const mockSendUploadConfirmationNotificationToResident = jest.fn();
 jest.mock('../gateways/internal-api', () => ({
   InternalApiGateway: jest.fn(() => ({
     createDocumentSubmission: mockCreateDocumentSubmission,
+    sendUploadConfirmationNotificationToResident: mockSendUploadConfirmationNotificationToResident,
   })),
 }));
 
@@ -110,6 +112,13 @@ describe('UploadFormModel', () => {
         fileList2[1],
         documentSubmission.uploadPolicy
       );
+    });
+
+    it('sends a confirmation to the resident after upload is successful', async () => {
+      await model.handleSubmit(values, evidenceRequestId);
+      expect(
+        mockSendUploadConfirmationNotificationToResident
+      ).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -194,4 +194,24 @@ export class InternalApiGateway {
       throw new InternalServerError('Internal server error');
     }
   }
+
+  async sendUploadConfirmationNotificationToResident(
+    userEmail: string,
+    evidenceRequestId: string
+  ): Promise<void> {
+    try {
+      await this.client.post<void>(
+        `/api/evidence/evidence_requests/${evidenceRequestId}/confirmation`,
+        null,
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
 }

@@ -56,6 +56,10 @@ export class UploadFormModel {
     });
 
     await Promise.all(createDocumentSubmissionAndUploadForEachFile);
+    await this.gateway.sendUploadConfirmationNotificationToResident(
+      Constants.DUMMY_EMAIL,
+      evidenceRequestId
+    );
   }
 
   private async uploadFile(file: File, documentSubmission: DocumentSubmission) {
