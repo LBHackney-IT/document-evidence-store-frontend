@@ -17,6 +17,7 @@ const AUTH_WHITELIST = [
   '/resident/*/upload',
   '/resident/*/confirmation',
   '/evidence_requests/*',
+  '/evidence_requests/*/confirmation',
   '/evidence_requests/*/document_submissions',
 ].map((str) => new RegExp(`^${str.replace('*', GLOB)}$`));
 
