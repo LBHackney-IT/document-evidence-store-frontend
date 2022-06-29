@@ -47,6 +47,10 @@ describe('Can upload a document', () => {
       cy.get('[data-testid=file-formats-details-title]')
         .should('contain', 'Which file formats are accepted?')
         .click();
+      cy.get('[data-testid=select-multiple-files-guidance]').should(
+        'contain',
+        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
+      );
       cy.get('[data-testid=file-formats-details-text]').should(
         'contain',
         'We currently support the following formats:'
@@ -81,6 +85,13 @@ describe('Can upload a document', () => {
 
       // Attach a file
       cy.get('h1').should('contain', 'Upload your documents');
+      cy.get('[data-testid=file-formats-details-title]')
+        .should('contain', 'Which file formats are accepted?')
+        .click();
+      cy.get('[data-testid=select-multiple-files-guidance]').should(
+        'contain',
+        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
+      );
       cy.get('input[type=file]').each((input) => {
         cy.wrap(input).attachFile('example.png').attachFile('example.png');
       });
