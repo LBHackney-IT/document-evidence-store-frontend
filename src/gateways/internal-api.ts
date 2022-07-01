@@ -195,7 +195,7 @@ export class InternalApiGateway {
     }
   }
 
-  async sendUploadConfirmationNotificationToResident(
+  async sendUploadConfirmationNotificationToResidentAndStaff(
     userEmail: string,
     evidenceRequestId: string
   ): Promise<void> {
