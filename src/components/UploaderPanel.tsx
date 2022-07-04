@@ -68,6 +68,7 @@ const UploaderPanel: FunctionComponent<Props> = (props) => {
       <div>
         <button
           className="govuk-button govuk-button--warning"
+          data-testid="clear-selection-button"
           type="button"
           onClick={() => {
             props.setFieldValue(props.name, null);
