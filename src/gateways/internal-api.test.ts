@@ -349,7 +349,7 @@ describe('Internal API Gateway', () => {
     });
   });
 
-  describe('sendUploadConfirmationNotificationToResident', () => {
+  describe('sendUploadConfirmationNotificationToResidentAndStaff', () => {
     const evidenceRequestId = 'evidence request id';
 
     describe('when successful', () => {
@@ -360,7 +360,7 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.sendUploadConfirmationNotificationToResident(
+        await gateway.sendUploadConfirmationNotificationToResidentAndStaff(
           Constants.DUMMY_EMAIL,
           evidenceRequestId
         );
@@ -379,7 +379,7 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.sendUploadConfirmationNotificationToResident(
+          gateway.sendUploadConfirmationNotificationToResidentAndStaff(
             Constants.DUMMY_EMAIL,
             evidenceRequestId
           );
