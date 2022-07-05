@@ -118,6 +118,18 @@ describe('Can upload a document', () => {
     });
   });
 
+  it('clears the selected files for upload', () => {
+    cy.get('a').contains('Continue').click();
+    cy.get('input[type=file]').each((input) => {
+      cy.wrap(input).attachFile('example.png').attachFile('example.png');
+    });
+    cy.get('button').eq(0).contains('Clear selection').click();
+    cy.get('input[type=file]').eq(0).should('be.empty');
+    cy.get('input[type=file]')
+      .eq(1)
+      .should('have.value', `C:\\fakepath\\example.png`);
+  });
+
   context('when upload is unsuccessful', () => {
     beforeEach(() => {
       cy.intercept('POST', /\/api\/evidence\/evidence_requests\/.+/, (req) => {

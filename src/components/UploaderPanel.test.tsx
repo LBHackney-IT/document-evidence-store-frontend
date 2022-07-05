@@ -77,6 +77,27 @@ test('accepts multiple files', async () => {
   expect(mockHandler).toHaveBeenCalledTimes(1);
 });
 
+test('removes selected files', async () => {
+  const mockHandler = jest.fn();
+  const mockImage = new File(['example'], 'file.jpg', { type: 'image/jpeg' });
+
+  render(
+    <UploaderPanel
+      label="Example label"
+      name="exampleName"
+      setFieldValue={mockHandler}
+    />
+  );
+
+  Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
+    value: [mockImage],
+  });
+  fireEvent.change(screen.getByTestId('fileInput'));
+  expect(mockHandler).toHaveBeenCalledTimes(1);
+  fireEvent.click(screen.getByTestId('clear-selection-button'));
+  expect(mockHandler).toHaveBeenCalledTimes(2);
+});
+
 test('displays hints', async () => {
   render(
     <UploaderPanel
