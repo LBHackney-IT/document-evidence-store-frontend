@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 import { Constants } from '../helpers/Constants';
