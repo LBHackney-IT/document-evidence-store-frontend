@@ -45,10 +45,10 @@ const UploaderForm: FunctionComponent<Props> = ({
   return (
     <Formik
       initialValues={model.initialValues}
-      validationSchema={model.schema}
+      // validationSchema={model.schema}
       onSubmit={handleSubmit}
     >
-      {({ values, errors, touched, setFieldValue, isSubmitting }) => (
+      {({ values, errors, touched, setFieldValue, isSubmitting, dirty }) => (
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
@@ -71,7 +71,7 @@ const UploaderForm: FunctionComponent<Props> = ({
           <button
             className="govuk-button lbh-button"
             type="submit"
-            disabled={isSubmitting}
+            disabled={!dirty || isSubmitting}
           >
             Continue
           </button>
