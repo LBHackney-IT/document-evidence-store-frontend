@@ -63,6 +63,7 @@ describe('UploaderForm', () => {
     });
   });
 
+  // See DOC-964 for more details about this commented section.
   // it('validates at least one file is attached to each UploaderPanel', async () => {
   //   submitForm();
   //   await waitFor(() => {

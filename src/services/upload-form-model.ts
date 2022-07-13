@@ -13,6 +13,7 @@ export class UploadFormModel {
   private s3Gateway = new S3Gateway();
   constructor(private documentTypes: DocumentType[]) {}
 
+  // See DOC-964 for more details about this commented section.
   // get schema(): Yup.ObjectSchema {
   //   return Yup.object(
   //     this.documentTypes.reduce(
