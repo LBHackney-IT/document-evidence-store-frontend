@@ -63,12 +63,19 @@ describe('UploaderForm', () => {
     });
   });
 
-  it('validates at least one file is attached to each UploaderPanel', async () => {
-    submitForm();
-    await waitFor(() => {
-      // we have 2 DocumentTypes so there should be as many warning messages printed
-      expect(screen.getAllByText('Please select a file').length).toEqual(2);
-    });
+  // See DOC-964 for more details about this commented section.
+  // it('validates at least one file is attached to each UploaderPanel', async () => {
+  //   submitForm();
+  //   await waitFor(() => {
+  //     // we have 2 DocumentTypes so there should be as many warning messages printed
+  //     expect(screen.getAllByText('Please select a file').length).toEqual(2);
+  //   });
+  // });
+
+  it('tests the continue button is disabled when there is no file attached', async () => {
+    expect(
+      screen.getByText('Continue').closest('button')?.disabled
+    ).toBeTruthy();
   });
 
   it('calls submit handler on form model', async () => {

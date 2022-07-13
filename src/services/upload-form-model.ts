@@ -1,4 +1,3 @@
-import * as Yup from 'yup';
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
 import { Constants } from '../helpers/Constants';
@@ -14,17 +13,18 @@ export class UploadFormModel {
   private s3Gateway = new S3Gateway();
   constructor(private documentTypes: DocumentType[]) {}
 
-  get schema(): Yup.ObjectSchema {
-    return Yup.object(
-      this.documentTypes.reduce(
-        (others, key) => ({
-          ...others,
-          [key.id]: Yup.mixed().required('Please select a file'),
-        }),
-        {}
-      )
-    );
-  }
+  // See DOC-964 for more details about this commented section.
+  // get schema(): Yup.ObjectSchema {
+  //   return Yup.object(
+  //     this.documentTypes.reduce(
+  //       (others, key) => ({
+  //         ...others,
+  //         [key.id]: Yup.mixed().required('Please select a file'),
+  //       }),
+  //       {}
+  //     )
+  //   );
+  // }
 
   get initialValues(): FormValues {
     return this.documentTypes.reduce(
