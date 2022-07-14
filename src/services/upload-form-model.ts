@@ -43,15 +43,17 @@ export class UploadFormModel {
     const createDocumentSubmissionAndUploadForEachFile = Object.entries(
       formValues
     ).map(async ([documentTypeId, files]) => {
-      for (const file of files) {
-        const documentSubmission = await this.gateway.createDocumentSubmission(
-          Constants.DUMMY_EMAIL,
-          evidenceRequestId,
-          {
-            documentType: documentTypeId,
-          }
-        );
-        await this.uploadFile(file, documentSubmission);
+      if (files) {
+        for (const file of files) {
+          const documentSubmission = await this.gateway.createDocumentSubmission(
+            Constants.DUMMY_EMAIL,
+            evidenceRequestId,
+            {
+              documentType: documentTypeId,
+            }
+          );
+          await this.uploadFile(file, documentSubmission);
+        }
       }
     });
 
