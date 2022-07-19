@@ -8,6 +8,7 @@ import Layout from '../../../components/ResidentLayout';
 import UploaderForm from '../../../components/UploaderForm';
 import { Constants } from '../../../helpers/Constants';
 import FileFormatDetails from 'src/components/FileFormatsDetails';
+import PhotoInformation from 'src/components/PhotoInformation';
 
 type UploadProps = {
   requestId: string;
@@ -36,12 +37,20 @@ const Upload: NextPage<UploadProps> = ({
       </Head>
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
-          <h1 className="lbh-heading-h1">
-            Upload your {documentTypes?.length > 1 ? 'documents' : 'document'}
-          </h1>
+          <h1 className="lbh-heading-h1">Upload your documents</h1>
           <p className="lbh-body">
-            Upload a photograph or scan for the following evidence.
+            Before you start, make sure that all the files you need are stored
+            on this device.
           </p>
+          <p className="govuk-body govuk-!-font-weight-bold">
+            You can provide evidence by:
+          </p>
+          <ul className="lbh-list lbh-list--bullet govuk-!-margin-top-2">
+            <li>Photographing your documents</li>
+            <li>Scanning your documents</li>
+            <li>Uploading existing evidence</li>
+          </ul>
+          <PhotoInformation />
           <FileFormatDetails />
           <div
             className="govuk-inset-text"

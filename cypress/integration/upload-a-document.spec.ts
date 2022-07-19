@@ -33,28 +33,35 @@ describe('Can upload a document', () => {
       }).as('s3Upload');
     });
 
-    it('shows guidance and lets you upload a file', () => {
-      // View guidance
-      cy.get('h1').should(
-        'contain',
-        'You’ll need to photograph your documents'
-      );
+    it('shows landing message, check guidance and lets you upload a file', () => {
+      // View landing message
+      cy.get('h1').should('contain', 'Please have your documents ready');
       cy.get('p').should('contain', `${teams[1].landingMessage}`);
       cy.get('a').contains('Continue').click();
 
-      // Attach a file
+      // Check guidance
       cy.get('h1').should('contain', 'Upload your documents');
+
+      cy.get('[data-testid=photo-info-details-title]')
+        .should('contain', 'How to photograph your documents')
+        .click();
+      cy.get('[data-testid=photo-info-details-text]').should(
+        'contain',
+        'You can use your smartphone camera. First, make sure you’re in a well-lit place.'
+      );
       cy.get('[data-testid=file-formats-details-title]')
         .should('contain', 'Which file formats are accepted?')
         .click();
-      cy.get('[data-testid=select-multiple-files-guidance]').should(
-        'contain',
-        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
-      );
       cy.get('[data-testid=file-formats-details-text]').should(
         'contain',
         'We currently support the following formats:'
       );
+      cy.get('[data-testid=select-multiple-files-guidance]').should(
+        'contain',
+        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
+      );
+
+      //Attach a file
       cy.get('input[type=file]').each((input) =>
         cy.wrap(input).attachFile('example.png')
       );
@@ -74,24 +81,28 @@ describe('Can upload a document', () => {
       cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });
 
-    it('shows guidance and lets you upload multiple files for each document type', () => {
-      // View guidance
-      cy.get('h1').should(
-        'contain',
-        'You’ll need to photograph your documents'
-      );
+    it('shows landing message, view guidance and lets you upload multiple files for each document type', () => {
+      // View landing message
+      cy.get('h1').should('contain', 'Please have your documents ready');
       cy.get('p').should('contain', `${teams[1].landingMessage}`);
       cy.get('a').contains('Continue').click();
 
-      // Attach a file
+      // View guidance
       cy.get('h1').should('contain', 'Upload your documents');
-      cy.get('[data-testid=file-formats-details-title]')
-        .should('contain', 'Which file formats are accepted?')
-        .click();
+      cy.get('[data-testid=photo-info-details-title]').should(
+        'contain',
+        'How to photograph your documents'
+      );
+      cy.get('[data-testid=file-formats-details-title]').should(
+        'contain',
+        'Which file formats are accepted?'
+      );
       cy.get('[data-testid=select-multiple-files-guidance]').should(
         'contain',
         `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
       );
+
+      //Attach a file
       cy.get('input[type=file]').each((input) => {
         cy.wrap(input).attachFile('example.png').attachFile('example.png');
       });
