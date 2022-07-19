@@ -9,7 +9,8 @@
     "Document Products Team": "Document-Products-Team-All-Team-Access-Group",
     "Staging Demo Team": "Document Evidence Service - Test and Development",
     "Leasehold and Right to Buy": "Leasehold and Right to Buy",
-    "Admission and Pupil Benefits": "education-evidence-production"
+    "Admission and Pupil Benefits": "education-evidence-production",
+    "Housing Management": "DES Housing Management"
   },
   "production": {
     "Development Team": "development-team-production",

@@ -140,5 +140,22 @@
     ],
     "landingMessage": "Good Day, Thank you for submitting your application online. We require additional information. If you have any queries please contact us on  020  8820 7000 Option 3. You can telephone the service Monday to Friday, 9am to 5pm ",
     "slaMessage": "Thank you for submitting additional information. This information will be reviewed and your application will be processed."
+  },
+  {
+    "name": "Housing Management",
+    "googleGroup": "DES Housing Management",
+    "id": "10",
+    "reasons": [
+      {
+        "name": "Change of tenancy - Sole to Joint application",
+        "id": "1"
+      },
+      {
+        "name": "Change of name",
+        "id": "2"
+      }
+    ],
+    "landingMessage": "Please note, by providing the supporting documents, you are declaring that to the best of your knowledge and belief the information given is correct in every detail. You understand it is an offence to give false or misleading information or to hold back relevant information. You also understand that you will check this information and if any information is found to be false, you may be prosecuted and you may repossess my home. If you are prosecuted and found guilty, you understand that you could be ordered to pay a fine of up to £5000. It is your duty to make sure that your application form is honest. You hereby give your consent for Housing Services to carry out a credit reference check and obtain relevant information from the Council and other external agencies. If you have further questions, please contact us.",
+    "slaMessage": "Thank you very much, our Housing Officer will be in touch shortly once we have reviewed your supporting documents."
   }
 ]
