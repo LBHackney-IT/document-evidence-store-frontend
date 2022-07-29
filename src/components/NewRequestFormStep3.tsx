@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { TextAreaWithCharacterCount } from './TextAreaWithCharacterCount';
 
-const maxCharacterLength = 5000;
+const maxCharacterLength = 400;
 
 export const schemaNewRequestFormStep3 = Yup.object().shape({
   noteToResident: Yup.string().max(maxCharacterLength),
