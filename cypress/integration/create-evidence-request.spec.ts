@@ -32,7 +32,7 @@ describe('Create evidence requests', () => {
     cy.get('label').contains('Send request by SMS').click();
 
     cy.get('button').contains('Continue').click();
-    cy.get('label').contains('Proof of ID').click();
+    cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
     cy.get('button').contains('Continue').click();
 
     cy.get('[data-testid="textarea"]').type(
@@ -64,7 +64,7 @@ describe('Create evidence requests', () => {
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
 
       cy.get('button').contains('Continue').click();
-      cy.get('label').contains('Proof of ID').click();
+      cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
       cy.get('button').contains('Continue').click();
 
       cy.get('button').should('be.disabled');
@@ -77,7 +77,7 @@ describe('Create evidence requests', () => {
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
 
       cy.get('button').contains('Continue').click();
-      cy.get('label').contains('Proof of ID').click();
+      cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
       cy.get('button').contains('Continue').click();
 
       cy.get('button').contains('Skip and Continue').click();
@@ -99,7 +99,7 @@ describe('Create evidence requests', () => {
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
 
       cy.get('button').contains('Continue').click();
-      cy.get('label').contains('Proof of ID').click();
+      cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
       cy.get('button').contains('Continue').click();
 
       cy.get('[data-testid="textarea"]').type('      ');

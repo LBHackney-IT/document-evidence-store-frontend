@@ -11,7 +11,7 @@ const Field = (props: Props): JSX.Element => (
       disabled={props.disabled}
       className="govuk-checkboxes__input"
     />
-    <label htmlFor={props.id} className="govuk-label govuk-checkboxes__label">
+    <label htmlFor={props.id} className="govuk-label govuk-checkboxes__label" data-testid={props.id}>
       {props.label}
     </label>
   </div>
