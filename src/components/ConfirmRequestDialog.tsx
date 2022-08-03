@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import Dialog from './Dialog';
-import styles from '../styles/Dialog.module.scss';
+import dialogStyles from '../styles/Dialog.module.scss';
+import insetTextStyles from '../styles/InsetText.module.scss';
 import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import { DocumentType } from 'src/domain/document-type';
 import { useFormikContext } from 'formik';
@@ -64,16 +65,17 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
       </ul>
 
       {sanitiseNoteToResident(values.noteToResident) && (
-        <div className="govuk-inset-text lbh-inset-text">
+        <div
+          className={`govuk-inset-text lbh-inset-text
+           ${insetTextStyles.insetText}`}
+        >
           <SVGNoteToResident />
           <strong>Bespoke note to resident</strong>
-          <p className="govuk-!-margin-top-2" style={{ fontStyle: 'italic' }}>
-            {sanitiseNoteToResident(values.noteToResident)}
-          </p>
+          <p>{sanitiseNoteToResident(values.noteToResident)}</p>
         </div>
       )}
 
-      <div className={styles.actions}>
+      <div className={dialogStyles.actions}>
         <button
           className="govuk-button lbh-button"
           disabled={loading}
@@ -91,7 +93,7 @@ const ConfirmRequestDialog: FunctionComponent<Props> = ({
         <button
           onClick={onDismiss}
           type="button"
-          className={`${styles.cancelButton} lbh-body lbh-link`}
+          className={`${dialogStyles.cancelButton} lbh-body lbh-link`}
         >
           No, cancel
         </button>
