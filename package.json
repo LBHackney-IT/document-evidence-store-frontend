@@ -26,6 +26,7 @@
     "babel-plugin-superjson-next": "^0.2.1",
     "file-type": "^16.2.0",
     "formik": "^2.2.5",
+    "heic2any": "0.0.3",
     "jsonwebtoken": "^8.5.1",
     "lbh-frontend": "^3.5.3",
     "luxon": "^1.25.0",

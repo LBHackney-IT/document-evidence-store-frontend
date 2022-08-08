@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import History from 'src/components/History';
 import Layout from 'src/components/DashboardLayout';
@@ -23,6 +23,9 @@ import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
 import PageWarning from 'src/components/PageWarning';
 import { DateTime } from 'luxon';
+import heic2any from 'heic2any';
+
+
 
 type DocumentDetailPageQuery = {
   residentId: string;
@@ -57,6 +60,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const [isClicked, setIsClicked] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [heicImage, setHeicImage] = useState('');
 
   const { document } = documentSubmission;
   if (!document) return null;
@@ -93,6 +97,21 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   function setButtonClicked() {
     setIsClicked(true);
   }
+  useEffect(() => {
+    const heic2any = require('heic2any')
+    if (typeof window !== 'undefined') {
+   fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
+     .then((res) => res.blob())
+     .then((blob) => heic2any({
+       blob,
+     }))
+     .then((conversionResult) => {
+       setHeicImage(URL.createObjectURL(conversionResult));
+     })
+     .catch((e) => {
+       console.log(e);
+     });
+ }}, []);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -148,14 +167,34 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
       <h2 className="lbh-heading-h3">Preview</h2>
       <figure className={styles.preview}>
-        {document.extension === 'jpeg' || document.extension === 'png' ? (
+        {/* {document.extension === 'jpeg' || document.extension === 'png' ? (
           <img
             src={`${downloadUrl}`}
             alt={documentSubmission.documentType.title}
           />
         ) : (
           <iframe src={`${downloadUrl}`} height="1000px" width="800px" />
-        )}
+        )} */}
+        
+       
+
+          {/* // fetch('src/10mb-image.heic')
+          // .then((result) => {
+          //   new Blob([result],{type:'image/heic'})
+          // })
+          // .then((blob) => heic2any({ blob }))
+          // .then((conversionResult) => {
+          // <img src={conversionResult} />}).catch((e) => {console.log(e.message)}) */}
+         
+  
+       
+  
+
+      
+
+        
+
+        <img src={heicImage} />
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}
