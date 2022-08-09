@@ -17,7 +17,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
     if (typeof window !== 'undefined') {
       (async () => {
         const { default: heic2any } = await import('heic2any');
-        fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
+        fetch(downloadUrl)
           .then((res) => res.blob())
           .then((blob) =>
             heic2any({
@@ -39,10 +39,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
     <div>
       <figure className={styles.preview}>
         {document.extension === 'jpeg' || document.extension === 'png' ? (
-          <img
-            src={`${props.downloadUrl}`}
-            alt={props.documentSubmission.documentType.title}
-          />
+          <img src={downloadUrl} alt={documentSubmission.documentType.title} />
         ) : document.extension === 'heic' ? (
           <LoadingBox
             loading={loading}
@@ -51,7 +48,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             <img src={heicImage} alt={documentSubmission.documentType.title} />
           </LoadingBox>
         ) : (
-          <iframe src={`${downloadUrl}`} height="1000px" width="800px" />
+          <iframe src={downloadUrl} height="1000px" width="800px" />
         )}
 
         <figcaption className="lbh-body-s">
