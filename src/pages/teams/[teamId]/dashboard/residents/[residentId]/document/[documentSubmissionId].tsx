@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import AcceptDialog from 'src/components/AcceptDialog';
 import History from 'src/components/History';
 import Layout from 'src/components/DashboardLayout';
@@ -15,7 +15,6 @@ import { Resident } from 'src/domain/resident';
 import { DocumentsApiGateway } from 'src/gateways/documents-api';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
-import { humanFileSize } from 'src/helpers/formatters';
 import styles from 'src/styles/Document.module.scss';
 import { RequestAuthorizer } from '../../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../../services/team-helper';
@@ -23,7 +22,7 @@ import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
 import PageWarning from 'src/components/PageWarning';
 import { DateTime } from 'luxon';
-import LoadingBox from '@govuk-react/loading-box';
+import ImagePreview from '../../../../../../../components/ImagePreview';
 
 type DocumentDetailPageQuery = {
   residentId: string;
@@ -58,11 +57,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   const [isClicked, setIsClicked] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
-  const [heicImage, setHeicImage] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  const { document } = documentSubmission;
-  if (!document) return null;
 
   const documentTypeTitle = documentSubmission.staffSelectedDocumentType
     ? documentSubmission.staffSelectedDocumentType.title
@@ -96,28 +90,6 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   function setButtonClicked() {
     setIsClicked(true);
   }
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (async () => {
-        const { default: heic2any } = await import('heic2any');
-        fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
-          .then((res) => res.blob())
-          .then((blob) =>
-            heic2any({
-              blob,
-            })
-          )
-          .then((conversionResult) => {
-            setHeicImage(URL.createObjectURL(conversionResult));
-            setLoading(false);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })();
-    }
-  }, []);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -171,32 +143,13 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
         </button>
       )}
 
-      <h2 className="lbh-heading-h3">Preview</h2>
-      <figure className={styles.preview}>
-        {document.extension === 'jpeg' || document.extension === 'png' ? (
-          <img
-            src={`${downloadUrl}`}
-            alt={documentSubmission.documentType.title}
-          />
-        ) : document.extension === 'heic' ? (
-          <LoadingBox
-            loading={loading}
-            title={documentSubmission.documentType.title}
-          >
-            <img src={heicImage} alt={documentSubmission.documentType.title} />
-          </LoadingBox>
-        ) : (
-          <iframe src={`${downloadUrl}`} height="1000px" width="800px" />
-        )}
-
-        <figcaption className="lbh-body-s">
-          <strong>{document.extension?.toUpperCase()}</strong>{' '}
-          {humanFileSize(document.fileSizeInBytes)}{' '}
-          {/*<a href={`${downloadUrl}`} target="blank" className="lbh-link">*/}
-          {/*  Open in new tab*/}
-          {/*</a>*/}
-        </figcaption>
-      </figure>
+      <div>
+        <h2 className="lbh-heading-h3">Preview</h2>
+        <ImagePreview
+          documentSubmission={documentSubmission}
+          downloadUrl={downloadUrl}
+        />
+      </div>
 
       <div>
         <h2 className="lbh-heading-h3">History</h2>
