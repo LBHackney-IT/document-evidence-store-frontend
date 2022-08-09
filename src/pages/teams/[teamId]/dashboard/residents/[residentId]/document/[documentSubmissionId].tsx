@@ -23,7 +23,6 @@ import { DocumentType } from '../../../../../../../domain/document-type';
 import { User } from '../../../../../../../domain/user';
 import PageWarning from 'src/components/PageWarning';
 import { DateTime } from 'luxon';
-// import heic2any from 'heic2any';
 import LoadingBox from '@govuk-react/loading-box';
 
 type DocumentDetailPageQuery = {
@@ -97,23 +96,26 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   function setButtonClicked() {
     setIsClicked(true);
   }
+
   useEffect(() => {
-    // const heic2any = require('heic2any');
     if (typeof window !== 'undefined') {
-      fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
-        .then((res) => res.blob())
-        .then((blob) =>
-          heic2any({
-            blob,
+      (async () => {
+        const { default: heic2any } = await import('heic2any');
+        await fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
+          .then((res) => res.blob())
+          .then((blob) =>
+            heic2any({
+              blob,
+            })
+          )
+          .then((conversionResult) => {
+            setHeicImage(URL.createObjectURL(conversionResult));
+            setLoading(false);
           })
-        )
-        .then((conversionResult) => {
-          setHeicImage(URL.createObjectURL(conversionResult));
-          setLoading(false);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+          .catch((e) => {
+            console.log(e);
+          });
+      })();
     }
   }, []);
 
@@ -177,21 +179,15 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
             alt={documentSubmission.documentType.title}
           />
         ) : document.extension === 'heic' ? (
-          <LoadingBox loading={loading} title="heic file is converting">
-            <p> Image is being loaded</p>
-            <img src={heicImage} />
+          <LoadingBox
+            loading={loading}
+            title={documentSubmission.documentType.title}
+          >
+            <img src={heicImage} alt={documentSubmission.documentType.title} />
           </LoadingBox>
         ) : (
           <iframe src={`${downloadUrl}`} height="1000px" width="800px" />
         )}
-
-        {/* // fetch('src/10mb-image.heic')
-          // .then((result) => {
-          //   new Blob([result],{type:'image/heic'})
-          // })
-          // .then((blob) => heic2any({ blob }))
-          // .then((conversionResult) => {
-          // <img src={conversionResult} />}).catch((e) => {console.log(e.message)}) */}
 
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
