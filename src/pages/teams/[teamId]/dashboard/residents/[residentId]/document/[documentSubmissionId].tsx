@@ -101,7 +101,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
     if (typeof window !== 'undefined') {
       (async () => {
         const { default: heic2any } = await import('heic2any');
-        await fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
+        fetch('https://alexcorvi.github.io/heic2any/demo/1.heic')
           .then((res) => res.blob())
           .then((blob) =>
             heic2any({
