@@ -4,6 +4,7 @@ export interface IDocument {
   id: string;
   fileSizeInBytes: number;
   fileType: string;
+  extension: string | undefined;
 }
 
 export class Document implements IDocument {
