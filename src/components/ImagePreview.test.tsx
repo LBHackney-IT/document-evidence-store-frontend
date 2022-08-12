@@ -6,19 +6,21 @@ import { Document } from '../domain/document';
 import { mockPartial } from '../../test/helpers/mock-partial';
 import { DocumentType } from '../domain/document-type';
 
-test('it renders correctly', async () => {
+describe('ImagePreview', () => {
   const downloadUrl = 'www.download-link.com';
   const mockDocSub = mockPartial<DocumentSubmission>({
     documentType: mockPartial<DocumentType>({
       title: 'proof-of-id',
     }),
     document: mockPartial<Document>({
-      fileType: 'image/jpeg',
+      fileType: 'image/jpec',
       fileSizeInBytes: 500,
     }),
   });
 
-  render(
-    <ImagePreview documentSubmission={mockDocSub} downloadUrl={downloadUrl} />
-  );
+  test('it renders correctly', async () => {
+    render(
+      <ImagePreview documentSubmission={mockDocSub} downloadUrl={downloadUrl} />
+    );
+  });
 });
