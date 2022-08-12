@@ -28,7 +28,9 @@ const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
           Pending requests | Document Evidence Service | Hackney Council
         </title>
       </Head>
-      <h1 className="lbh-heading-h2">Pending requests</h1>
+      <h1 data-testid="pending-requests-h1" className="lbh-heading-h2">
+        Pending requests
+      </h1>
 
       <Link href={`/teams/${teamId}/dashboard/requests/new/1`}>
         <a className="govuk-button lbh-button">Make new request</a>

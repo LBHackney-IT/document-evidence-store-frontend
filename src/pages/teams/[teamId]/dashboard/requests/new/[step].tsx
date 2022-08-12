@@ -193,6 +193,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
                     Continue
                   </button>
                   <button
+                    data-testid={'skip-and-continue-button'}
                     className="govuk-button govuk-secondary lbh-button lbh-button--secondary"
                     data-module="govuk-button"
                     onClick={() => (values.noteToResident = '')}
