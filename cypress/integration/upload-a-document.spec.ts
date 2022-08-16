@@ -68,9 +68,13 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').click();
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
+      cy.get('svg').should('have.class', 'icon-loading');
 
       cy.wait('@post-document-state');
       cy.wait('@s3Upload');
+
+      //button remains disabled
+      cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");
@@ -109,6 +113,7 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').click();
 
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
+      cy.get('svg').should('have.class', 'icon-loading');
 
       cy.wait('@post-document-state');
       cy.wait('@s3Upload');
@@ -118,6 +123,9 @@ describe('Can upload a document', () => {
       cy.wait('@s3Upload');
       cy.wait('@post-document-state');
       cy.wait('@s3Upload');
+
+      //button remains disabled
+      cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       // View confirmation
       cy.get('h1').should('contain', "We've received your documents");

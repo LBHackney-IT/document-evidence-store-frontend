@@ -8,6 +8,7 @@ import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
 import UploaderPanel from './UploaderPanel';
 import { UploadFormModel } from '../services/upload-form-model';
 import { DocumentType } from '../domain/document-type';
+import { LoadingBox } from 'govuk-react';
 
 const getError = (
   id: string,
@@ -25,21 +26,25 @@ const UploaderForm: FunctionComponent<Props> = ({
   onSuccess,
 }) => {
   const [submitError, setSubmitError] = useState(false);
+  const [submission, setSubmission] = useState(false);
   const model = useMemo(() => new UploadFormModel(documentTypes), [
     documentTypes,
   ]);
 
   const handleSubmit = useCallback(
     async (values) => {
+      setSubmission(true);
       try {
         await model.handleSubmit(values, evidenceRequestId);
         onSuccess();
       } catch (err) {
         console.log(err);
         setSubmitError(true);
+      } finally {
+        setSubmission(false);
       }
     },
-    [model, setSubmitError]
+    [model, submitError]
   );
 
   return (
@@ -48,7 +53,7 @@ const UploaderForm: FunctionComponent<Props> = ({
       // validationSchema={model.schema}
       onSubmit={handleSubmit}
     >
-      {({ values, errors, touched, setFieldValue, isSubmitting, dirty }) => (
+      {({ values, errors, touched, setFieldValue, dirty }) => (
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
@@ -68,13 +73,15 @@ const UploaderForm: FunctionComponent<Props> = ({
             />
           ))}
 
-          <button
-            className="govuk-button lbh-button"
-            type="submit"
-            disabled={!dirty || isSubmitting}
-          >
-            Continue
-          </button>
+          <LoadingBox loading={submission}>
+            <button
+              className="govuk-button lbh-button"
+              type="submit"
+              disabled={!dirty || submission}
+            >
+              Continue
+            </button>
+          </LoadingBox>
         </Form>
       )}
     </Formik>

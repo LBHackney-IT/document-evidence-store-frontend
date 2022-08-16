@@ -80,7 +80,9 @@ describe('Create evidence requests', () => {
       cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
       cy.get('button').contains('Continue').click();
 
-      cy.get('button').contains('Skip and Continue').click();
+      cy.get('[data-testid="skip-and-continue-button"]')
+        .contains('Skip and Continue')
+        .click();
 
       cy.get('[role=dialog]').within(() => {
         cy.get('li').contains('Frodo Baggins');
