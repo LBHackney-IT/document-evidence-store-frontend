@@ -9,30 +9,44 @@ import * as Yup from 'yup';
 
 const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
+const atLeastOneDeliveryMethodMessage =
+  'Please provide at least one delivery method';
 
-export const schemaNewRequestFormStep1 = Yup.object().shape({
-  resident: Yup.object().shape(
-    {
-      name: Yup.string().required("Please enter the resident's name"),
-      email: Yup.string().when(['phoneNumber'], {
-        is: (phoneNumber) => !phoneNumber,
-        then: Yup.string()
-          .required(emailOrPhoneNumberMessage)
-          .email('Please provide a valid email address'),
-      }),
-      phoneNumber: Yup.string().when(['email'], {
-        is: (email) => !email,
-        then: Yup.string()
-          .required(emailOrPhoneNumberMessage)
-          .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
-      }),
-    },
-    [['email', 'phoneNumber']]
-  ),
-  team: Yup.string(),
-  reason: Yup.string(),
-  deliveryMethods: Yup.array(),
-});
+export const schemaNewRequestFormStep1 = Yup.object().shape(
+  {
+    resident: Yup.object().shape(
+      {
+        name: Yup.string().required("Please enter the resident's name"),
+        email: Yup.string().when(['phoneNumber'], {
+          is: (phoneNumber) => !phoneNumber,
+          then: Yup.string()
+            .required(emailOrPhoneNumberMessage)
+            .email('Please provide a valid email address'),
+        }),
+        phoneNumber: Yup.string().when(['email'], {
+          is: (email) => !email,
+          then: Yup.string()
+            .required(emailOrPhoneNumberMessage)
+            .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
+        }),
+      },
+      [['email', 'phoneNumber']]
+    ),
+    team: Yup.string(),
+    reason: Yup.string(),
+    emailCheckbox: Yup.array().when(['phoneNumberCheckbox'], {
+      is: (phoneNumberCheckbox) =>
+        phoneNumberCheckbox && !phoneNumberCheckbox[0],
+      then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
+    }),
+    phoneNumberCheckbox: Yup.array().when(['emailCheckbox'], {
+      is: (emailCheckbox) => emailCheckbox && !emailCheckbox[0],
+      then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
+    }),
+    deliveryMethods: Yup.array(),
+  },
+  [['emailCheckbox', 'phoneNumberCheckbox']]
+);
 
 const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {
   const { errors, values, touched } = useFormikContext<EvidenceRequestForm>();
@@ -75,6 +89,11 @@ const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {
             id="emailCheckbox"
             value={values.resident?.email}
             disabled={values.resident?.email ? false : true}
+            error={
+              touched.emailCheckbox && values.resident.email
+                ? errors.emailCheckbox
+                : null
+            }
           />
           <Checkbox
             label="Send request by SMS"
@@ -82,6 +101,11 @@ const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {
             id="phoneNumberCheckbox"
             value={values.resident?.phoneNumber}
             disabled={values.resident?.phoneNumber ? false : true}
+            error={
+              touched.phoneNumberCheckbox && values.resident?.phoneNumber
+                ? errors.phoneNumberCheckbox
+                : null
+            }
           />
         </div>
       </div>

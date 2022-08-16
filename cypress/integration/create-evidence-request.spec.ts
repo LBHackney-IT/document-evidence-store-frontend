@@ -56,12 +56,23 @@ describe('Create evidence requests', () => {
     cy.get('body').contains('Thanks!');
   });
 
+  it('shows an error when no delivery method was selected', () => {
+    cy.visit(`http://localhost:3000/teams/2/dashboard/requests/new/1`);
+
+    cy.get('label').contains('Name').next('input').type('Frodo Baggins');
+    cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
+
+    cy.get('button').contains('Continue').click();
+    cy.get('span').contains('Please provide at least one delivery method');
+  });
+
   describe('When a user has not entered in text for note to resident', () => {
     it('they cannot click continue', () => {
       cy.visit(`http://localhost:3000/teams/2/dashboard/requests/new/1`);
 
       cy.get('label').contains('Name').next('input').type('Frodo Baggins');
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
+      cy.get('[data-testid="emailCheckbox"]').click();
 
       cy.get('button').contains('Continue').click();
       cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
@@ -75,6 +86,7 @@ describe('Create evidence requests', () => {
 
       cy.get('label').contains('Name').next('input').type('Frodo Baggins');
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
+      cy.get('[data-testid="emailCheckbox"]').click();
 
       cy.get('button').contains('Continue').click();
       cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
@@ -99,6 +111,7 @@ describe('Create evidence requests', () => {
 
       cy.get('label').contains('Name').next('input').type('Frodo Baggins');
       cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
+      cy.get('[data-testid="emailCheckbox"]').click();
 
       cy.get('button').contains('Continue').click();
       cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
