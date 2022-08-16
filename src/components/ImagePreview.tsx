@@ -45,7 +45,11 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             loading={loading}
             title={documentSubmission.documentType.title}
           >
-            <img src={heicImage} alt={documentSubmission.documentType.title} />
+            <img
+              data-cy="heic-image"
+              src={heicImage}
+              alt={documentSubmission.documentType.title}
+            />
           </LoadingBox>
         ) : (
           <iframe src={downloadUrl} height="1000px" width="800px" />

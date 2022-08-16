@@ -1,5 +1,6 @@
 const documentSubmissionPng = require('../../../cypress/fixtures/document_submissions/get-png.json');
 const documentSubmissionPdf = require('../../../cypress/fixtures/document_submissions/get-pdf.json');
+const documentSubmissionHeic = require('../../../cypress/fixtures/document_submissions/get-heic.json');
 const approvedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-approved.json');
 const rejectedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-rejected.json');
 const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
@@ -47,6 +48,16 @@ const getDocumentSubmissionPdf = {
   },
 };
 
+const getDocumentSubmissionHeic = {
+  id: 'get-document-submission-heic',
+  url: '/api/v1/document_submissions/f4ced259-53b3-446a-b4c2-98cb160b1722',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: documentSubmissionHeic,
+  },
+};
+
 const getDocumentSubmissionWithResident = {
   id: 'get-document-submissions-with-resident',
   url:
@@ -83,6 +94,7 @@ module.exports = {
   updateDocumentSubmission,
   getDocumentSubmissionPng,
   getDocumentSubmissionPdf,
+  getDocumentSubmissionHeic,
   getDocumentSubmissionWithResident,
   getApprovedDocumentSubmissionPng,
   getRejectedDocumentSubmissionPng,

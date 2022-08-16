@@ -1,5 +1,5 @@
-import dsFixture from '../../cypress/fixtures/document_submissions/get-png.json';
-
+import dsFixture from '../../cypress/fixtures/document_submissions/get-pdf.json';
+import dsFixtureHeic from '../../cypress/fixtures/document_submissions/get-heic.json';
 describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
@@ -205,6 +205,53 @@ describe('When a user inputs a validity date that is in the past', () => {
         .eq(0)
         .should('contain', 'The date cannot be in the past.');
     });
+  });
+});
+
+describe('Can view and manage evidence with HEIC document', () => {
+  beforeEach(() => {
+    cy.login();
+
+    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+      const body = {
+        ...dsFixtureHeic,
+        id: 456,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+      console.log(body);
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentStateHeic');
+
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+    cy.injectAxe();
+
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
+  });
+
+  it('lets you see an heic document detail page with actions and information', () => {
+    cy.get('.toReview a').eq(2).contains('Proof of ID').click();
+
+    cy.contains('h1', 'Namey McNameProof of ID');
+
+    cy.get('button').should('contain', 'Accept');
+    cy.get('button').should('contain', 'Request new file');
+    cy.get('h2').should('contain', 'Preview');
+    cy.get('svg[class="icon-loading"]').should('be.visible');
+    cy.contains('HEIC');
+    cy.contains('9.8 KB');
+    cy.get('[data-cy="heic-image"]')
+      .should('have.attr', 'src')
+      .then((src) => expect(src).to.have.length(0));
+    cy.wait(5000);
+    cy.get('[data-cy="heic-image"]')
+      .should('have.attr', 'src')
+      .then((src) => expect(src).have.length.greaterThan(0));
+    cy.get('[data-cy="heic-image"]').should('have.attr', 'alt', 'Proof of ID');
+    cy.get('svg[class="icon-loading]').should('not.exist');
   });
 });
 
