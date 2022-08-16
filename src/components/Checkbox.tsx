@@ -18,6 +18,11 @@ const Field = (props: Props): JSX.Element => (
     >
       {props.label}
     </label>
+    {props.error && (
+      <span className="govuk-error-message lbh-error-message">
+        <span className="govuk-visually-hidden">Error:</span> {props.error}
+      </span>
+    )}
   </div>
 );
 
@@ -27,6 +32,7 @@ export interface Props {
   id: string;
   value?: string;
   disabled?: boolean;
+  error?: string | string[] | null;
 }
 
 export default Field;
