@@ -22,7 +22,7 @@
     "@reach/dialog": "^0.12.1",
     "@reach/tabs": "^0.12.1",
     "@types/gtag.js": "0.0.8",
-    "@types/styled-components": "^5.1.25",
+    "@types/styled-components": "^5.1.26",
     "axios": "^0.21.2",
     "babel-plugin-superjson-next": "^0.2.1",
     "file-type": "^16.2.0",
