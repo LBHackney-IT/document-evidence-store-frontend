@@ -173,7 +173,10 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                   </span>
                 )}
                 {touched.validUntilDates && (
-                  <span className="govuk-error-message lbh-error-message">
+                  <span
+                    data-testid="error-invalid-date"
+                    className="govuk-error-message lbh-error-message"
+                  >
                     {errors.validUntilDates}
                   </span>
                 )}

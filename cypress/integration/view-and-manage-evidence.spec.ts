@@ -24,6 +24,8 @@ describe('Can view and manage evidence', () => {
     cy.contains('h1', 'Namey McName');
   });
 
+  const dateInvalidErrorMessage = 'Please enter a valid date';
+
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
     cy.get('a').contains('Proof of ID').click();
@@ -120,6 +122,66 @@ describe('Can view and manage evidence', () => {
         userUpdatedBy: 'test@hackney.gov.uk',
         staffSelectedDocumentTypeId: 'passport-scan',
         validUntil: '30-4-2022',
+      });
+    });
+
+    cy.get('[role=dialog]').should('not.exist');
+    cy.contains('button', 'Accept').should('not.exist');
+    cy.contains('button', 'Request new file').should('not.exist');
+  });
+
+  it('can throw error when entering an incorrect date when approving document', () => {
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
+    cy.get('button').contains('Accept').click();
+
+    cy.get('[role=dialog]').within(() => {
+      cy.get('h2').should(
+        'contain',
+        'Are you sure you want to accept this file?'
+      );
+
+      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+
+      cy.get('label').contains('Day').next('input').type('1234');
+      cy.get('label').contains('Month').next('input').type('5678');
+      cy.get('label').contains('Year').next('input').type('9101');
+
+      cy.get('[data-testid="error-invalid-date"]').contains(
+        dateInvalidErrorMessage
+      );
+    });
+  });
+
+  it('can approve document if date entered then removed', () => {
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
+    cy.get('button').contains('Accept').click();
+
+    cy.get('[role=dialog]').within(() => {
+      cy.get('h2').should(
+        'contain',
+        'Are you sure you want to accept this file?'
+      );
+
+      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+
+      cy.get('label').contains('Day').next('input').type('1234');
+      cy.get('label').contains('Month').next('input').type('5678');
+      cy.get('label').contains('Year').next('input').type('9101');
+
+      cy.get('label').contains('Day').next('input').clear();
+      cy.get('label').contains('Month').next('input').clear();
+      cy.get('label').contains('Year').next('input').clear();
+
+      cy.get('[data-testid="error-invalid-date"]').should('not.contain.text');
+
+      cy.get('button').contains('Yes, accept').click();
+
+      cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
+        state: 'APPROVED',
+        userUpdatedBy: 'test@hackney.gov.uk',
+        staffSelectedDocumentTypeId: 'passport-scan',
       });
     });
 
