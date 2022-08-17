@@ -13,7 +13,7 @@ describe('ImagePreview', () => {
       title: 'proof-of-id',
     }),
     document: mockPartial<Document>({
-      fileType: 'image/jpec',
+      fileType: 'image/jpeg',
       fileSizeInBytes: 500,
     }),
   });

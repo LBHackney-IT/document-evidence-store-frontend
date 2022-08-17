@@ -1,4 +1,4 @@
-import dsFixture from '../../cypress/fixtures/document_submissions/get-pdf.json';
+import dsFixture from '../../cypress/fixtures/document_submissions/get-png.json';
 import dsFixtureHeic from '../../cypress/fixtures/document_submissions/get-heic.json';
 describe('Can view and manage evidence', () => {
   beforeEach(() => {
@@ -70,7 +70,6 @@ describe('Can view and manage evidence', () => {
 
     cy.get('figure').should('contain', 'PNG');
     cy.get('figure').should('contain', '24.7 KB');
-    // cy.get('a').should('contain', 'Open in new tab').and('have.attr', 'href');
 
     cy.get('h2').should('contain', 'History');
     cy.get('table')
@@ -219,11 +218,10 @@ describe('Can view and manage evidence with HEIC document', () => {
         state: req.body.state,
         staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
       };
-      console.log(body);
       req.reply((res) => {
         res.send(200, body);
       });
-    }).as('updateDocumentStateHeic');
+    });
 
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
@@ -241,8 +239,8 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('button').should('contain', 'Request new file');
     cy.get('h2').should('contain', 'Preview');
     cy.get('svg[class="icon-loading"]').should('be.visible');
-    cy.contains('HEIC');
-    cy.contains('9.8 KB');
+    cy.get('figure').should('contain', 'HEIC');
+    cy.get('figure').should('contain', '9.8 KB');
     cy.get('[data-cy="heic-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).to.have.length(0));
