@@ -54,6 +54,95 @@ describe('AcceptDialog', () => {
     });
   });
 
+  it('throws error when impossible date is entered', async () => {
+    render(
+      <AcceptDialog
+        open={true}
+        onDismiss={mockHandler}
+        staffSelectedDocumentTypes={staffSelectedDocumentTypes}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
+      />
+    );
+
+    fireEvent.click(screen.getByText('Proof of ID'));
+
+    fireEvent.change(screen.getByTestId('input-day'), {
+      target: { value: '31' },
+    });
+    fireEvent.change(screen.getByTestId('input-month'), {
+      target: { value: '2' },
+    });
+    fireEvent.change(screen.getByTestId('input-year'), {
+      target: { value: '2022' },
+    });
+
+    fireEvent.click(screen.getByText(yesAcceptButtonText));
+
+    await waitFor(() => {
+      expect(screen.getByText('Please enter a valid date'));
+    });
+  });
+
+  it('throws error when incomplete date is entered', async () => {
+    render(
+      <AcceptDialog
+        open={true}
+        onDismiss={mockHandler}
+        staffSelectedDocumentTypes={staffSelectedDocumentTypes}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
+      />
+    );
+
+    fireEvent.click(screen.getByText('Proof of ID'));
+
+    fireEvent.change(screen.getByTestId('input-day'), {
+      target: { value: '1' },
+    });
+    fireEvent.change(screen.getByTestId('input-year'), {
+      target: { value: '2023' },
+    });
+
+    fireEvent.click(screen.getByText(yesAcceptButtonText));
+
+    await waitFor(() => {
+      expect(screen.getByText('Please enter a valid date'));
+    });
+  });
+
+  it('validates that a possible date is entered', async () => {
+    render(
+      <AcceptDialog
+        open={true}
+        onDismiss={mockHandler}
+        staffSelectedDocumentTypes={staffSelectedDocumentTypes}
+        email="email@email"
+        documentSubmissionId="123"
+        redirect="foo"
+      />
+    );
+
+    fireEvent.click(screen.getByText('Proof of ID'));
+
+    fireEvent.change(screen.getByTestId('input-day'), {
+      target: { value: '12' },
+    });
+    fireEvent.change(screen.getByTestId('input-month'), {
+      target: { value: '12' },
+    });
+    fireEvent.change(screen.getByTestId('input-year'), {
+      target: { value: '2022' },
+    });
+
+    fireEvent.click(screen.getByText(yesAcceptButtonText));
+
+    const errorMessage = screen.queryByText('Please enter a valid date');
+    expect(errorMessage).not.toBeInTheDocument();
+  });
+
   it('checks submit button is disabled', async () => {
     render(
       <AcceptDialog
