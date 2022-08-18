@@ -40,7 +40,6 @@ const UploaderForm: FunctionComponent<Props> = ({
       } catch (err) {
         console.log(err);
         setSubmitError(true);
-      } finally {
         setSubmission(false);
       }
     },
