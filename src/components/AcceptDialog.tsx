@@ -12,12 +12,37 @@ import {
 import { DocumentState } from '../domain/document-submission';
 import DateFields from './DateFields';
 import router from 'next/router';
+import { DateTime } from 'luxon';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
     'Please choose a document type'
   ),
+  validUntilDates: Yup.array().test(
+    'is-date',
+    'Please enter a valid date',
+    (values) => isDate(values)
+  ),
 });
+
+const isDate = (
+  validUntilDates: string[] | null | undefined | unknown[]
+): boolean => {
+  if (
+    validUntilDates?.every(
+      (x: string | null | undefined | unknown) => x == undefined
+    )
+  )
+    return true;
+
+  const concatDates = validUntilDates?.join('-');
+  if (concatDates) {
+    const parseDate = DateTime.fromFormat(concatDates, 'd-L-yyyy');
+    return !parseDate?.invalidReason;
+  } else {
+    return true;
+  }
+};
 
 const initialValues = {
   state: DocumentState.APPROVED,
@@ -60,7 +85,10 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
     values: DocumentSubmissionUpdateForm,
     userUpdatedBy: string
   ) => {
-    if (values.validUntilDates && values.validUntilDates.length > 0) {
+    if (
+      values.validUntilDates &&
+      !values.validUntilDates.every((x: string) => x == '' || undefined)
+    ) {
       return {
         state: values.state,
         userUpdatedBy: userUpdatedBy,
@@ -142,6 +170,14 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 {submitError && (
                   <span className="govuk-error-message lbh-error-message">
                     {errorMessage}
+                  </span>
+                )}
+                {touched.validUntilDates && (
+                  <span
+                    data-testid="error-invalid-date"
+                    className="govuk-error-message lbh-error-message"
+                  >
+                    {errors.validUntilDates}
                   </span>
                 )}
                 <DateFields name="validUntilDates" />

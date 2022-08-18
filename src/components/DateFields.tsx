@@ -17,6 +17,7 @@ const DateFields = (props: Props): JSX.Element => (
         </label>
         <FormikField
           name={`${props.name}.[0]`}
+          data-testid="input-day"
           id="day"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -30,6 +31,7 @@ const DateFields = (props: Props): JSX.Element => (
         </label>
         <FormikField
           name={`${props.name}.[1]`}
+          data-testid="input-month"
           id="month"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
@@ -43,6 +45,7 @@ const DateFields = (props: Props): JSX.Element => (
         </label>
         <FormikField
           name={`${props.name}.[2]`}
+          data-testid="input-year"
           id="year"
           className="govuk-input govuk-date-input__input govuk-input--width-2"
           type="text"
