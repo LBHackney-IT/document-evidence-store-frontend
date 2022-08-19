@@ -45,6 +45,26 @@
       "title": "Proof of ID",
       "description": "A valid document that can be used to prove identity"
     },
+    "id": "f4ced259-53b3-446a-b4c2-98cb160b1722",
+    "createdAt": "2022-01-14T10:23:42.958Z",
+    "claimId": "g4ced259-53b3-446a-b4c2-98cb160b1722",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2022-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "f4ced259-53b3-446a-b4c2-98cb160b1722",
+      "createdAt": "2022-01-29T16:28:11.326Z",
+      "fileSize": 10000,
+      "fileType": "image/heic"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity"
+    },
     "staffSelectedDocumentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",

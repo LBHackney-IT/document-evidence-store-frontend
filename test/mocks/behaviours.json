@@ -10,6 +10,7 @@
       "create-document-submission",
       "get-document-submission-png",
       "get-document-submission-pdf",
+      "get-document-submission-heic",
       "get-approved-document-submission-png",
       "get-rejected-document-submission-png",
       "update-document-submission",
@@ -17,7 +18,8 @@
       "get-document-submissions-with-resident",
       "get-document-submissions-with-expired-claim",
       "get-resident",
-      "get-download-url"
+      "get-download-url",
+      "get-download-url-heic"
     ]
   }
 ]
