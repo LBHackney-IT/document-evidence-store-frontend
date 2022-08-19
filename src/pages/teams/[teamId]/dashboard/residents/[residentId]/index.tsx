@@ -38,6 +38,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const rejectedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'REJECTED'
   );
+  const mobileNumber = resident.phoneNumber;
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -47,8 +48,32 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">{resident.name}</h1>
-      <p className="lbh-body">{resident.phoneNumber}</p>
-      <p className="lbh-body">{resident.email}</p>
+      {/*<p className="lbh-body">{resident.phoneNumber}</p>*/}
+      {/*<p className="lbh-body">{resident.email}</p>*/}
+
+      <table className="govuk-table lbh-table">
+        <tbody className="govuk-table__body">
+          <tr className="govuk-table__row">
+            <td className="govuk-table__cell">Mobile Number</td>
+            {mobileNumber.length ? (
+              <td className="govuk-table__cell govuk-table__cell--numeric">
+                {mobileNumber}
+              </td>
+            ) : (
+              <td className="govuk-table__cell govuk-table__cell--numeric">
+                {' '}
+                not provided
+              </td>
+            )}
+          </tr>
+          <tr className="govuk-table__row">
+            <td className="govuk-table__cell">Email</td>
+            <td className="govuk-table__cell govuk-table__cell--numeric">
+              {resident.email}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div
         className="toReview govuk-form-group--error"
