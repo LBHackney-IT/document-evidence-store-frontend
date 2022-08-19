@@ -77,19 +77,12 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <td className="govuk-table__cell ">{resident.name}</td>
           </tr>
           <tr className="govuk-table__row">
+            <td className="govuk-table__cell">Mobile Number</td>
             {mobileNumber.length ? (
-              <td className="govuk-table__cell">Mobile Number</td>
+              <td className="govuk-table__cell">{mobileNumber}</td>
             ) : (
-              <td></td>
+              <td className="govuk-table__cell">-</td>
             )}
-            {/*// {mobileNumber.length ? (*/}
-            {/*  <td className="govuk-table__cell govuk-table__cell--numeric">*/}
-            {/*    {mobileNumber}*/}
-            {/*  </td>*/}
-            {/*) : (*/}
-            {/*  // <td className="govuk-table__cell govuk-table__cell--numeric">*/}
-            {/*  //   not provided*/}
-            {/*  // </td>*/}
           </tr>
           <tr className="govuk-table__row">
             <td className="govuk-table__cell">Email</td>
