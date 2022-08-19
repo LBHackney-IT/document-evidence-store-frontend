@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
 import { DocumentSubmission } from 'src/domain/document-submission';
@@ -11,6 +10,7 @@ import { RequestAuthorizer } from '../../../../../../services/request-authorizer
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
+import React from 'react';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
@@ -42,35 +42,58 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
-      <Head>
-        <title>
-          {resident.name} | Document Evidence Service | Hackney Council
-        </title>
-      </Head>
-      <h1 className="lbh-heading-h2">{resident.name}</h1>
+      {/*<Head>*/}
+      {/*  <title>*/}
+      {/*    {resident.name} | Document Evidence Service | Hackney Council*/}
+      {/*  </title>*/}
+      {/*</Head>*/}
+      {/*<h1 className="lbh-heading-h2">{resident.name}</h1>*/}
       {/*<p className="lbh-body">{resident.phoneNumber}</p>*/}
       {/*<p className="lbh-body">{resident.email}</p>*/}
+
+      <div className="govuk-breadcrumbs lbh-breadcrumbs">
+        <ol className="govuk-breadcrumbs__list lbh-heading-h2">
+          <li className="govuk-breadcrumbs__list-item">
+            <a
+              className="govuk-breadcrumbs__link lbh-heading-h2"
+              href={`/teams/${teamId}/dashboard`}
+            >
+              Search page
+            </a>
+          </li>
+          <li
+            className="govuk-breadcrumbs__list-item lbh-heading-h2"
+            aria-current="page"
+          >
+            <h1 className="lbh-heading-h2">{resident.name}</h1>
+          </li>
+        </ol>
+      </div>
 
       <table className="govuk-table lbh-table">
         <tbody className="govuk-table__body">
           <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Mobile Number</td>
+            <td className="govuk-table__cell">Name</td>
+            <td className="govuk-table__cell ">{resident.name}</td>
+          </tr>
+          <tr className="govuk-table__row">
             {mobileNumber.length ? (
-              <td className="govuk-table__cell govuk-table__cell--numeric">
-                {mobileNumber}
-              </td>
+              <td className="govuk-table__cell">Mobile Number</td>
             ) : (
-              <td className="govuk-table__cell govuk-table__cell--numeric">
-                {' '}
-                not provided
-              </td>
+              <td></td>
             )}
+            {/*// {mobileNumber.length ? (*/}
+            {/*  <td className="govuk-table__cell govuk-table__cell--numeric">*/}
+            {/*    {mobileNumber}*/}
+            {/*  </td>*/}
+            {/*) : (*/}
+            {/*  // <td className="govuk-table__cell govuk-table__cell--numeric">*/}
+            {/*  //   not provided*/}
+            {/*  // </td>*/}
           </tr>
           <tr className="govuk-table__row">
             <td className="govuk-table__cell">Email</td>
-            <td className="govuk-table__cell govuk-table__cell--numeric">
-              {resident.email}
-            </td>
+            <td className="govuk-table__cell">{resident.email}</td>
           </tr>
         </tbody>
       </table>
