@@ -11,6 +11,7 @@ import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
+import ResidentPageTable from '../../../../../../components/ResidentPageTable';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
@@ -38,7 +39,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const rejectedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'REJECTED'
   );
-  const mobileNumber = resident.phoneNumber;
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -69,27 +69,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           </li>
         </ol>
       </div>
-
-      <table className="govuk-table lbh-table">
-        <tbody className="govuk-table__body">
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Name</td>
-            <td className="govuk-table__cell ">{resident.name}</td>
-          </tr>
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Mobile Number</td>
-            {mobileNumber.length ? (
-              <td className="govuk-table__cell">{mobileNumber}</td>
-            ) : (
-              <td className="govuk-table__cell">-</td>
-            )}
-          </tr>
-          <tr className="govuk-table__row">
-            <td className="govuk-table__cell">Email</td>
-            <td className="govuk-table__cell">{resident.email}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ResidentPageTable resident={resident}></ResidentPageTable>
 
       <div
         className="toReview govuk-form-group--error"
