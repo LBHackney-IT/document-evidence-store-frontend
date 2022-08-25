@@ -286,6 +286,7 @@ describe('When a user inputs a validity date that is in the past', () => {
       cy.get('button').contains('Yes, accept').click();
 
       //assert
+      cy.wait('@acceptInvalidDate');
       cy.get('fieldset>span')
         .eq(0)
         .should('contain', 'The date cannot be in the past.');
