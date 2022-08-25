@@ -12,6 +12,8 @@ import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
 import ResidentPageTable from '../../../../../../components/ResidentPageTable';
+import Link from 'next/link';
+import Head from 'next/head';
 
 type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
@@ -42,34 +44,19 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
-      {/*<Head>*/}
-      {/*  <title>*/}
-      {/*    {resident.name} | Document Evidence Service | Hackney Council*/}
-      {/*  </title>*/}
-      {/*</Head>*/}
-      {/*<h1 className="lbh-heading-h2">{resident.name}</h1>*/}
-      {/*<p className="lbh-body">{resident.phoneNumber}</p>*/}
-      {/*<p className="lbh-body">{resident.email}</p>*/}
-
-      <div className="govuk-breadcrumbs lbh-breadcrumbs">
-        <ol className="govuk-breadcrumbs__list lbh-heading-h2">
-          <li className="govuk-breadcrumbs__list-item">
-            <a
-              className="govuk-breadcrumbs__link lbh-heading-h2"
-              href={`/teams/${teamId}/dashboard`}
-            >
-              Search page
-            </a>
-          </li>
-          <li
-            className="govuk-breadcrumbs__list-item lbh-heading-h2"
-            aria-current="page"
-          >
-            <h1 className="lbh-heading-h2">{resident.name}</h1>
-          </li>
-        </ol>
-      </div>
-      <ResidentPageTable resident={resident}></ResidentPageTable>
+      <Head>
+        <title>
+          {resident.name} | Document Evidence Service | Hackney Council
+        </title>
+      </Head>
+      <h2 className="lbh-heading-h2">
+        <Link href={`/teams/${teamId}/dashboard`}>
+          <a className="lbh-link">Search page</a>
+        </Link>
+        <img src="/divider.svg" alt="" className="lbu-divider" />
+        {resident.name}
+      </h2>
+      <ResidentPageTable resident={resident} />
 
       <div
         className="toReview govuk-form-group--error"
