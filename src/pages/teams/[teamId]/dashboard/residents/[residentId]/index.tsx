@@ -49,13 +49,15 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           {resident.name} | Document Evidence Service | Hackney Council
         </title>
       </Head>
-      <h2 className="lbh-heading-h2">
+      <h1 className="lbh-heading-h2">
         <Link href={`/teams/${teamId}/dashboard`}>
-          <a className="lbh-link">Search page</a>
+          <a data-cy="search-page" className="lbh-link">
+            Search page
+          </a>
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {resident.name}
-      </h2>
+      </h1>
       <ResidentPageTable resident={resident} />
 
       <div
