@@ -26,6 +26,30 @@ describe('Can view and manage evidence', () => {
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
+  it('checks if resident information is displayed correctly in a table', () => {
+    cy.get('tbody').within(() => {
+      cy.get('tr')
+        .eq(0)
+        .should('contain.text', 'Name')
+        .and('contain.text', 'Namey McName');
+      cy.get('tr')
+        .eq(1)
+        .should('contain.text', 'Mobile Number')
+        .and('contain.text', '+447123456780');
+      cy.get('tr')
+        .eq(2)
+        .should('contain.text', 'Email')
+        .and('contain.text', 'frodo@bagend.com');
+    });
+  });
+
+  it('has breadcrumbs on resident page', () => {
+    cy.get('[data-cy="search-page"]').should('contain.text', 'Search page');
+    cy.get('[data-cy="search-page"]').click();
+    cy.get('a').contains('Namey McName');
+    cy.get('h1').contains('Browse residents');
+  });
+
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
     cy.get('a').contains('Proof of ID').click();
