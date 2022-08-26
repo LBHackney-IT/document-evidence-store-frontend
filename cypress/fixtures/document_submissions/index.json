@@ -3,7 +3,8 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",

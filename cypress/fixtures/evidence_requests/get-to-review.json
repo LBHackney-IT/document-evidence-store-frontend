@@ -14,7 +14,8 @@
       {
         "id": "passport-scan",
         "title": "Passport",
-        "description": "A valid passport open at the photo page"
+        "description": "A valid passport open at the photo page",
+        "enabled": true
       }
     ],
     "team": "Development Housing Team",

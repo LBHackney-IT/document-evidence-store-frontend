@@ -3,7 +3,8 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
     "createdAt": "2021-01-14T10:23:42.958Z",
@@ -23,7 +24,8 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
     "createdAt": "2021-01-14T10:23:42.958Z",
@@ -43,7 +45,8 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "id": "f4ced259-53b3-446a-b4c2-98cb160b1722",
     "createdAt": "2022-01-14T10:23:42.958Z",
@@ -63,12 +66,14 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "staffSelectedDocumentType": {
-      "id": "proof-of-id",
-      "title": "Proof of ID",
-      "description": "Any valid proof of id"
+      "id": "passport-scan",
+      "title": "Passport",
+      "description": "A valid passport open at the photo page",
+      "enabled": true
     },
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
     "createdAt": "2020-12-25T10:23:42.958Z",
@@ -88,7 +93,8 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
     "createdAt": "2020-12-30T10:23:42.958Z",
@@ -110,12 +116,14 @@
     "documentType": {
       "id": "proof-of-id",
       "title": "Proof of ID",
-      "description": "A valid document that can be used to prove identity"
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
     },
     "staffSelectedDocumentType": {
-      "id": "proof-of-id",
-      "title": "Proof of ID",
-      "description": "Any valid proof of id"
+      "id": "passport-scan",
+      "title": "Passport",
+      "description": "A valid passport open at the photo page",
+      "enabled": true
     },
     "id": "c82120d2-0a5c-4f40-bdcd-5a18d877344v",
     "createdAt": "2020-12-25T10:23:42.958Z",
