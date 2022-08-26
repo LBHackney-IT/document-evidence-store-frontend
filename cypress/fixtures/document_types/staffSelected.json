@@ -2,16 +2,19 @@
   {
     "id": "passport-scan",
     "title": "Passport",
-    "description": "A valid passport open at the photo page"
+    "description": "A valid passport open at the photo page",
+    "enabled": true
   },
   {
     "id": "driving-license",
     "title": "Driving license",
-    "description": "A valid UK full or provisional UK driving license"
+    "description": "A valid UK full or provisional UK driving license",
+    "enabled": true
   },
   {
     "id": "bank-statement",
     "title": "Bank statement",
-    "description": "From the past three months"
+    "description": "From the past three months",
+    "enabled": true
   }
 ]

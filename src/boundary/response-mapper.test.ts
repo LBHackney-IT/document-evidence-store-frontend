@@ -47,6 +47,7 @@ describe('ResponseMapper', () => {
           id: 'passport-scan',
           title: 'Passport',
           description: 'A valid passport open at the photo page',
+          enabled: true,
         }),
       ]);
     });
@@ -138,6 +139,7 @@ describe('ResponseMapper', () => {
           id: 'proof-of-id',
           title: 'Proof of ID',
           description: 'A valid document that can be used to prove identity',
+          enabled: true,
         })
       );
     });
@@ -148,6 +150,7 @@ describe('ResponseMapper', () => {
           id: 'passport-scan',
           title: 'Passport',
           description: 'A valid passport open at the photo page',
+          enabled: true,
         })
       );
     });
