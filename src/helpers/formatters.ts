@@ -11,7 +11,10 @@ export const humanFileSize = (bytes: number): string => {
 };
 
 // For example: 10:15 am 5 Jun 2020 (2 days ago)
-export const formatDate = (dateTime: DateTime): string => {
+export const formatDate = (dateTime: DateTime | undefined): string => {
+  if (!dateTime) {
+    return '';
+  }
   return (
     dateTime.setLocale('en-gb').toFormat('h:mm a d LLLL y') +
     ' (' +

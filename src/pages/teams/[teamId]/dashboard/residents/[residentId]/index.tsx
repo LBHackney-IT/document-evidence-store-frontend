@@ -11,8 +11,14 @@ import { RequestAuthorizer } from '../../../../../../services/request-authorizer
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
+import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
+import { EvidenceRequest } from 'src/domain/evidence-request';
+import { DocumentType } from 'src/domain/document-type';
+import { DateTime } from 'luxon';
+import { EvidenceAwaitingSubmissionTile } from 'src/components/EvidenceAwaitingSubmissionTile';
 
 type ResidentPageProps = {
+  evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
   resident: Resident;
   teamId: string;
@@ -20,6 +26,7 @@ type ResidentPageProps = {
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
+  evidenceRequests,
   documentSubmissions,
   resident,
   teamId,
@@ -39,6 +46,44 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     (ds) => ds.state == 'REJECTED'
   );
 
+  interface EvidenceAwaitingSubmission {
+    documentType: string;
+    dateRequested: DateTime | undefined;
+    requestedBy: string | undefined;
+  }
+  const findEvidenceAwaitingSubmissions = () => {
+    const documentTypesMap = new Map<string, Set<DocumentType>>();
+    evidenceRequests.forEach((er) =>
+      documentTypesMap.set(er.id, new Set(er.documentTypes))
+    );
+    documentSubmissions.forEach((ds) => {
+      const currentDocumentTypesSet = documentTypesMap.get(
+        ds.evidenceRequestId
+      );
+
+      currentDocumentTypesSet?.forEach((dt) => {
+        if (dt.id === ds.documentType.id) {
+          currentDocumentTypesSet.delete(dt);
+        }
+      });
+    });
+    const awaitingSubmissions: EvidenceAwaitingSubmission[] = [];
+    documentTypesMap.forEach((value, key) => {
+      value.forEach((dt) => {
+        const evidenceRequestFromKey = evidenceRequests.find(
+          (er) => er.id == key
+        );
+        awaitingSubmissions.push({
+          documentType: dt.title,
+          dateRequested: evidenceRequestFromKey?.createdAt,
+          requestedBy: evidenceRequestFromKey?.userRequestedBy,
+        });
+      });
+    });
+    return awaitingSubmissions;
+  };
+  const evidenceAwaitingSubmissions = findEvidenceAwaitingSubmissions();
+
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
@@ -49,6 +94,26 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <h1 className="lbh-heading-h2">{resident.name}</h1>
       <p className="lbh-body">{resident.phoneNumber}</p>
       <p className="lbh-body">{resident.email}</p>
+
+      <div className="awaitingSubmission evidence-list">
+        <h2 className="lbh-heading-h3">Awaiting submission</h2>
+        <EvidenceList>
+          {evidenceAwaitingSubmissions &&
+          evidenceAwaitingSubmissions.length > 0 ? (
+            evidenceAwaitingSubmissions.map((item) => (
+              <EvidenceAwaitingSubmissionTile
+                key={item.documentType}
+                id={item.documentType}
+                documentType={item.documentType}
+                dateRequested={formatDate(item.dateRequested)}
+                requestedBy={item.requestedBy}
+              />
+            ))
+          ) : (
+            <h3>There are no documents awaiting submission</h3>
+          )}
+        </EvidenceList>
+      </div>
 
       <div
         className="toReview govuk-form-group--error"
@@ -168,14 +233,48 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   }
 
   const gateway = new EvidenceApiGateway();
-  const documentSubmissions = await gateway.getDocumentSubmissionsForResident(
+  const documentSubmissionsPromise = gateway.getDocumentSubmissionsForResident(
     user.email,
     team.name,
     residentId
   );
-  const resident = await gateway.getResident(user.email, residentId);
+  const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
+    user.email,
+    team.name,
+    residentId,
+    EvidenceRequestState.PENDING
+  );
+  const forReviewEvidenceRequestsPromise = gateway.getEvidenceRequests(
+    user.email,
+    team.name,
+    residentId,
+    EvidenceRequestState.FOR_REVIEW
+  );
+  const residentPromise = gateway.getResident(user.email, residentId);
+
+  const [
+    documentSubmissions,
+    pendingEvidenceRequests,
+    forReviewEvidenceRequests,
+    resident,
+  ] = await Promise.all([
+    documentSubmissionsPromise,
+    pendingEvidenceRequestsPromise,
+    forReviewEvidenceRequestsPromise,
+    residentPromise,
+  ]);
+
+  const evidenceRequests = pendingEvidenceRequests.concat(
+    forReviewEvidenceRequests
+  );
   return {
-    props: { documentSubmissions, resident, teamId, feedbackUrl },
+    props: {
+      evidenceRequests,
+      documentSubmissions,
+      resident,
+      teamId,
+      feedbackUrl,
+    },
   };
 });
 
