@@ -7,6 +7,7 @@ import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/ind
 import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';
 import { Constants } from '../helpers/Constants';
+import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
 
 jest.mock('../boundary/response-mapper');
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
@@ -25,6 +26,59 @@ describe('Evidence api gateway', () => {
     client: (client as unknown) as AxiosInstance,
   });
   const validateStatus = expect.any(Function);
+
+  describe('getDocumentTypes', () => {
+    describe('when successful', () => {
+      const expectedData = DocumentTypeFixture;
+      const teamName = 'Team Name';
+
+      beforeEach(() => {
+        mockedResponseMapper.mapDocumentType.mockClear();
+        client.get.mockResolvedValue({
+          data: expectedData,
+        } as AxiosResponse);
+      });
+
+      it('calls axios correctly without a query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=undefined`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a true query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, true);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=true`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a false query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, false);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=false`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+    });
+  });
 
   describe('GET request to /document_types', () => {
     const expectedData = {
