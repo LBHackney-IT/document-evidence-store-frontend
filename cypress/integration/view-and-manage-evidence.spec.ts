@@ -39,7 +39,7 @@ describe('Can view and manage evidence', () => {
 
     cy.get('h2').should('contain', 'Pending review');
     cy.get('h2').should('contain', 'Reviewed');
-    cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
+    cy.get('.reviewed a').eq(0).should('contain', 'Passport');
     cy.get('h2').should('contain', 'Rejected');
     cy.get('.rejected a').eq(0).should('contain', 'Proof of ID');
   });
@@ -209,7 +209,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view approved documents', () => {
-    cy.get('.reviewed a').contains('Proof of ID').click();
+    cy.get('.reviewed a').contains('Passport').click();
     cy.get('button').contains('Copy page URL');
     cy.get('h2').should('contain', 'History');
     cy.get('table').should('contain', 'Namey McName');
@@ -224,7 +224,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view page warning for document with expired claim', () => {
-    cy.get('.reviewed a').eq(1).contains('Proof of ID').click();
+    cy.get('.reviewed a').eq(1).contains('Passport').click();
     cy.get('section').contains('This document is no longer valid');
   });
 });
