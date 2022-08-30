@@ -33,10 +33,21 @@ describe('Evidence api gateway', () => {
       const teamName = 'Team Name';
 
       beforeEach(() => {
-        mockedResponseMapper.mapDocumentType.mockClear();
         client.get.mockResolvedValue({
           data: expectedData,
         } as AxiosResponse);
+
+        const mappedData = DocumentTypeFixture.map(
+          ResponseMapper.mapDocumentType
+        );
+
+        mockedResponseMapper.mapDocumentType.mockClear();
+
+        for (let i = 0; i < expectedData.length; i++) {
+          mockedResponseMapper.mapDocumentType.mockReturnValueOnce(
+            mappedData[i]
+          );
+        }
       });
 
       it('calls axios correctly without a query param', async () => {
@@ -76,6 +87,17 @@ describe('Evidence api gateway', () => {
             },
           }
         );
+      });
+
+      it('maps the response', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+
+        for (let i = 0; i < expectedData.length; i++) {
+          expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
+            i + 1,
+            expectedData[i]
+          );
+        }
       });
     });
   });

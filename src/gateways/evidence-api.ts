@@ -87,7 +87,7 @@ export class EvidenceApiGateway {
           },
         }
       );
-      return data.map(ResponseMapper.mapDocumentType);
+      return data.map((dt) => ResponseMapper.mapDocumentType(dt));
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
