@@ -40,7 +40,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
       <figure className={styles.preview}>
         {document.extension === 'jpeg' || document.extension === 'png' ? (
           <img src={downloadUrl} alt={documentSubmission.documentType.title} />
-        ) : document.extension === 'heic' ? (
+        ) : document.extension === 'heic' || document.extension === 'heif' ? (
           <LoadingBox
             loading={loading}
             title={documentSubmission.documentType.title}
