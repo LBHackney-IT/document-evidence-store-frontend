@@ -10,6 +10,7 @@ import { Constants } from '../helpers/Constants';
 import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
 
 jest.mock('../boundary/response-mapper');
+//this automatically mocks all instances of ResponseMapper in this suite
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
   typeof ResponseMapper
 >;
@@ -28,26 +29,15 @@ describe('Evidence api gateway', () => {
   const validateStatus = expect.any(Function);
 
   describe('getDocumentTypes', () => {
+    const teamName = 'Document Type Team Name';
+
     describe('when successful', () => {
-      const expectedData = DocumentTypeFixture;
-      const teamName = 'Team Name';
+      const expectedJson = DocumentTypeFixture;
 
       beforeEach(() => {
         client.get.mockResolvedValue({
-          data: expectedData,
+          data: expectedJson,
         } as AxiosResponse);
-
-        const mappedData = DocumentTypeFixture.map(
-          ResponseMapper.mapDocumentType
-        );
-
-        mockedResponseMapper.mapDocumentType.mockClear();
-
-        for (let i = 0; i < expectedData.length; i++) {
-          mockedResponseMapper.mapDocumentType.mockReturnValueOnce(
-            mappedData[i]
-          );
-        }
       });
 
       it('calls axios correctly without a query param', async () => {
@@ -89,15 +79,26 @@ describe('Evidence api gateway', () => {
         );
       });
 
-      it('maps the response', async () => {
+      it('passes the json from the GET to the mapDocType method', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
 
-        for (let i = 0; i < expectedData.length; i++) {
+        for (let i = 0; i < expectedJson.length; i++) {
           expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
             i + 1,
-            expectedData[i]
+            expectedJson[i]
           );
         }
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () =>
+          gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
       });
     });
   });
