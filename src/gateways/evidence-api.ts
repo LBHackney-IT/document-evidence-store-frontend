@@ -75,11 +75,11 @@ export class EvidenceApiGateway {
   async getDocumentTypes(
     userEmail: string,
     teamName: string,
-    enabled?: boolean
+    isEnabled?: boolean
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/${teamName}?enabled=${enabled}`,
+        `/api/v1/document_types/${teamName}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -97,11 +97,11 @@ export class EvidenceApiGateway {
   async getStaffSelectedDocumentTypes(
     userEmail: string,
     teamName: string,
-    enabled?: boolean
+    isEnabled?: boolean
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/staff_selected/${teamName}?enabled=${enabled}`,
+        `/api/v1/document_types/staff_selected/${teamName}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
