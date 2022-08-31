@@ -20,6 +20,7 @@ const acceptedMimeTypes = (): string => {
     'image/bmp', //.bmp
     'image/gif', //.gif
     'image/heic', //.heic
+    'image/heif', //.heif
     'image/jpeg', //.jpeg or .jpg
     'image/png', //.png
     'text/plain', //.txt
