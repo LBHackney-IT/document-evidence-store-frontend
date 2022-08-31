@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -51,7 +52,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     dateRequested: DateTime | undefined;
     requestedBy: string | undefined;
   }
-  const findEvidenceAwaitingSubmissions = () => {
+  const evidenceAwaitingSubmissions = useMemo(() => {
     const documentTypesMap = new Map<string, Set<DocumentType>>();
     evidenceRequests.forEach((er) =>
       documentTypesMap.set(er.id, new Set(er.documentTypes))
@@ -81,8 +82,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       });
     });
     return awaitingSubmissions;
-  };
-  const evidenceAwaitingSubmissions = findEvidenceAwaitingSubmissions();
+  }, [evidenceRequests, documentSubmissions]);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
