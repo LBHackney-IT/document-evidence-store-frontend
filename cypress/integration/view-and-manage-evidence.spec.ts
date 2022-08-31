@@ -44,8 +44,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('has breadcrumbs on resident page', () => {
-    cy.get('[data-cy="search-page"]').should('contain.text', 'Search page');
-    cy.get('[data-cy="search-page"]').click();
+    cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
+    cy.get('[data-testid="search-page"]').click();
     cy.get('a').contains('Namey McName');
     cy.get('h1').contains('Browse residents');
   });
