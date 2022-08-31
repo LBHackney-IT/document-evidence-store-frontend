@@ -51,7 +51,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       </Head>
       <h1 className="lbh-heading-h2">
         <Link href={`/teams/${teamId}/dashboard`}>
-          <a data-cy="search-page" className="lbh-link">
+          <a className="lbh-link" data-testid="search-page">
             Search page
           </a>
         </Link>
