@@ -2,14 +2,14 @@ export interface IDocumentType {
   id: string;
   title: string;
   description?: string;
-  enabled?: boolean;
+  enabled: boolean;
 }
 
 export class DocumentType implements IDocumentType {
   id: string;
   title: string;
   description?: string;
-  enabled?: boolean;
+  enabled: boolean;
 
   constructor(params: IDocumentType) {
     this.id = params.id;
