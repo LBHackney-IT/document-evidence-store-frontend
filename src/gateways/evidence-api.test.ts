@@ -8,6 +8,7 @@ import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';
 import { Constants } from '../helpers/Constants';
 import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
+import StaffSelectedDocumentTypeFixture from '../../cypress/fixtures/document_types/staffSelected.json';
 
 jest.mock('../boundary/response-mapper');
 //this automatically mocks all instances of ResponseMapper in this suite
@@ -96,6 +97,98 @@ describe('Evidence api gateway', () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
           gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('getStaffSelectedDocumentTypes', () => {
+    const teamName = 'Staff Selected Doc Type Team Name';
+
+    describe('when successful', () => {
+      const expectedJson = StaffSelectedDocumentTypeFixture;
+
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: expectedJson,
+        } as AxiosResponse);
+      });
+
+      it('calls axios correctly without a query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=undefined`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a true query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName,
+          true
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=true`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a false query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName,
+          false
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=false`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('passes the json from the GET to the mapDocType method', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName
+        );
+
+        for (let i = 0; i < expectedJson.length; i++) {
+          expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
+            i + 1,
+            expectedJson[i]
+          );
+        }
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () =>
+          gateway.getStaffSelectedDocumentTypes(
+            Constants.DUMMY_EMAIL,
+            teamName
+          );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
