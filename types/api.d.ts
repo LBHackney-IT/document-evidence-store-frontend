@@ -27,6 +27,7 @@ export interface DocumentSubmissionResponse
     IDocumentSubmission,
     | 'createdAt'
     | 'claimValidUntil'
+    | 'evidenceRequestId'
     | 'state'
     | 'documentType'
     | 'staffSelectedDocumentType'
@@ -36,6 +37,7 @@ export interface DocumentSubmissionResponse
   > {
   createdAt: string;
   claimValidUntil: string;
+  evidenceRequestId: string;
   retentionExpiresAt: string;
   state: string;
   documentType: IDocumentType;
