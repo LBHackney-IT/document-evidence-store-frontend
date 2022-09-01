@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
 import { DocumentSubmission } from 'src/domain/document-submission';
@@ -12,6 +11,10 @@ import { RequestAuthorizer } from '../../../../../../services/request-authorizer
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
 import SVGSymbol from 'src/components/SVGSymbol';
+import React from 'react';
+import ResidentPageTable from '../../../../../../components/ResidentPageTable';
+import Link from 'next/link';
+import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
@@ -91,9 +94,16 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           {resident.name} | Document Evidence Service | Hackney Council
         </title>
       </Head>
-      <h1 className="lbh-heading-h2">{resident.name}</h1>
-      <p className="lbh-body">{resident.phoneNumber}</p>
-      <p className="lbh-body">{resident.email}</p>
+      <h1 className="lbh-heading-h2">
+        <Link href={`/teams/${teamId}/dashboard`}>
+          <a className="lbh-link" data-testid="search-page">
+            Search page
+          </a>
+        </Link>
+        <img src="/divider.svg" alt="" className="lbu-divider" />
+        {resident.name}
+      </h1>
+      <ResidentPageTable resident={resident} />
 
       <div className="awaitingSubmission evidence-list">
         <h2 className="lbh-heading-h3">Awaiting submission</h2>
