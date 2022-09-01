@@ -16,6 +16,7 @@ export interface UploadPolicy {
 export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
+  evidenceRequestId: string;
   claimValidUntil: DateTime;
   retentionExpiresAt: DateTime;
   claimId: string;
@@ -33,6 +34,7 @@ export interface IDocumentSubmission {
 export class DocumentSubmission implements IDocumentSubmission {
   id: string;
   createdAt: DateTime;
+  evidenceRequestId: string;
   claimValidUntil: DateTime;
   retentionExpiresAt: DateTime;
   claimId: string;
@@ -49,6 +51,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   constructor(params: IDocumentSubmission) {
     this.id = params.id;
     this.createdAt = params.createdAt;
+    this.evidenceRequestId = params.evidenceRequestId;
     this.claimValidUntil = params.claimValidUntil;
     this.retentionExpiresAt = params.retentionExpiresAt;
     this.claimId = params.claimId;
