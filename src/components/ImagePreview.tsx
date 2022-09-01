@@ -13,9 +13,9 @@ const ImagePreview = (props: Props): JSX.Element | null => {
 
   if (!document) return null;
   const documentExtension = document?.extension;
-  const convertDocumentTypes = ['heic', 'heif'];
-  const nonConvertDocumentTypes = ['png', 'jpeg'];
-  if (convertDocumentTypes.includes(documentExtension as string)) {
+  const toConvertDocumentExtensions = ['heic', 'heif'];
+  const documentExtensions = ['png', 'jpeg'];
+  if (toConvertDocumentExtensions.includes(documentExtension as string)) {
     useEffect(() => {
       if (typeof window !== 'undefined') {
         (async () => {
@@ -41,9 +41,11 @@ const ImagePreview = (props: Props): JSX.Element | null => {
   return (
     <div>
       <figure className={styles.preview}>
-        {nonConvertDocumentTypes.includes(documentExtension as string) ? (
+        {documentExtensions.includes(documentExtension as string) ? (
           <img src={downloadUrl} alt={documentSubmission.documentType.title} />
-        ) : convertDocumentTypes.includes(documentExtension as string) ? (
+        ) : toConvertDocumentExtensions.includes(
+            documentExtension as string
+          ) ? (
           <LoadingBox
             loading={loading}
             title={documentSubmission.documentType.title}
