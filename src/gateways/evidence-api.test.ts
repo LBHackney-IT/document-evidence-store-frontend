@@ -270,6 +270,7 @@ describe('Evidence api gateway', () => {
         await gateway.getEvidenceRequests(
           Constants.DUMMY_EMAIL,
           'Housing benefit',
+          null,
           EvidenceRequestState.PENDING
         );
         expect(client.get).toHaveBeenLastCalledWith(
@@ -282,6 +283,7 @@ describe('Evidence api gateway', () => {
             },
             params: {
               team: 'Housing benefit',
+              residentId: null,
               state: EvidenceRequestState.PENDING,
             },
           }

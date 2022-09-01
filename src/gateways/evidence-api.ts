@@ -51,6 +51,7 @@ export class EvidenceApiGateway {
   async getEvidenceRequests(
     userEmail: string,
     teamName: string,
+    residentId?: string | null,
     state?: EvidenceRequestState | null
   ): Promise<EvidenceRequest[]> {
     try {
@@ -61,7 +62,7 @@ export class EvidenceApiGateway {
             Authorization: tokens?.evidence_requests?.GET,
             UserEmail: userEmail,
           },
-          params: { team: teamName, state: state },
+          params: { team: teamName, residentId: residentId, state: state },
         }
       );
 
