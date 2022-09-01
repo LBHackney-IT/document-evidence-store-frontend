@@ -69,6 +69,7 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
     const evidenceRequests = await gateway.getEvidenceRequests(
       user.email,
       team.name,
+      null,
       EvidenceRequestState.PENDING
     );
     return {
