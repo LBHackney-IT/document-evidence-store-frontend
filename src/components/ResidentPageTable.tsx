@@ -16,7 +16,7 @@ const ResidentPageTable: FunctionComponent<Props> = (props) => {
         </tr>
         <tr className="govuk-table__row">
           <th scope="row" className="govuk-table__header">
-            Mobile Number
+            Mobile number
           </th>
           {resident.phoneNumber.length ? (
             <td className="govuk-table__cell" data-testid="number-cell">
@@ -30,7 +30,7 @@ const ResidentPageTable: FunctionComponent<Props> = (props) => {
         </tr>
         <tr className="govuk-table__row">
           <th scope="row" className="govuk-table__header">
-            Email
+            Email address
           </th>
           {resident.email.length ? (
             <td className="govuk-table__cell" data-testid="email-cell">
