@@ -53,7 +53,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             <img
               src={conversionImage}
               alt={documentSubmission.documentType.title}
-              data-testid="heic-image"
+              data-testid="conversion-image"
             />
           </LoadingBox>
         ) : (
