@@ -34,11 +34,11 @@ describe('Can view and manage evidence', () => {
         .and('contain.text', 'Namey McName');
       cy.get('tr')
         .eq(1)
-        .should('contain.text', 'Mobile Number')
+        .should('contain.text', 'Mobile number')
         .and('contain.text', '+447123456780');
       cy.get('tr')
         .eq(2)
-        .should('contain.text', 'Email')
+        .should('contain.text', 'Email address')
         .and('contain.text', 'frodo@bagend.com');
     });
   });
