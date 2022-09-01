@@ -35,8 +35,10 @@ describe('Can view and manage evidence', () => {
 
   it('shows resident contact details and document submissions in all states', () => {
     cy.get('h1').should('contain', 'Namey McName');
-    cy.get('.toReview a').eq(0).contains('Proof of ID');
 
+    cy.get('h2').should('contain', 'Awaiting submission');
+    cy.get('.awaitingSubmission a').eq(0).should('contain', 'Passport');
+    cy.get('.toReview a').eq(0).contains('Proof of ID');
     cy.get('h2').should('contain', 'Pending review');
     cy.get('h2').should('contain', 'Reviewed');
     cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
@@ -45,6 +47,10 @@ describe('Can view and manage evidence', () => {
   });
 
   it('shows the correct date format', () => {
+    cy.get('.awaitingSubmission').should(
+      'contain',
+      '3:34 pm 30 November 2020 (2 years ago)'
+    );
     cy.get('.toReview').should(
       'contain',
       '10:23 am 14 January 2021 (last year)'
