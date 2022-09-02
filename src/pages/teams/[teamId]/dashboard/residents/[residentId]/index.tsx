@@ -133,18 +133,18 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <li
               className={
                 'govuk-tabs__list-item' +
-                (selectedTab === 'Past week'
+                (selectedTab === 'awaiting submissions'
                   ? ' govuk-tabs__list-item--selected'
                   : ' ')
               }
             >
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('Past week')}
-                href="#past-week"
+                onClick={() => handleTabClick('awaiting submissions')}
+                href="#awaiting submissions"
               >
                 {' '}
-                Past week{' '}
+                awaiting submissions{' '}
               </a>
             </li>
           </ul>
@@ -157,181 +157,69 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             }
             id="all-documents"
           >
-            <h2 className="lbh-heading-h2">all documents</h2>
             <table className="govuk-table">
               <thead className="govuk-table__head">
                 <tr className="govuk-table__row">
-                  <th className="govuk-table__header" scope="col">
-                    Case manager
-                  </th>
-                  <th className="govuk-table__header" scope="col">
-                    Cases opened
-                  </th>
-                  <th className="govuk-table__header" scope="col">
-                    Cases closed
-                  </th>
+                  <EvidenceList>
+                    {documentSubmissions && documentSubmissions.length > 0 ? (
+                      documentSubmissions.map((ds) => (
+                        <EvidenceTile
+                          teamId={teamId}
+                          residentId={residentId}
+                          key={ds.id}
+                          id={ds.id}
+                          title={String(ds.documentType.title)}
+                          createdAt={formatDate(ds.createdAt)}
+                          fileSizeInBytes={
+                            ds.document ? ds.document.fileSizeInBytes : 0
+                          }
+                          format={
+                            ds.document ? ds.document.extension : 'unknown'
+                          }
+                        />
+                      ))
+                    ) : (
+                      <h3>There are no documents to review</h3>
+                    )}
+                  </EvidenceList>
                 </tr>
               </thead>
-              <tbody className="govuk-table__body">
-                <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">David Francis</td>
-                  <td className="govuk-table__cell">3</td>
-                  <td className="govuk-table__cell">0</td>
-                </tr>
-                <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">Paul Farmer</td>
-                  <td className="govuk-table__cell">1</td>
-                  <td className="govuk-table__cell">0</td>
-                </tr>
-                <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">Rita Patel</td>
-                  <td className="govuk-table__cell">2</td>
-                  <td className="govuk-table__cell">0</td>
-                </tr>
-              </tbody>
             </table>
           </section>
           <section
             className={
               'govuk-tabs__panel ' +
-              (selectedTab === 'Past week' ? ' ' : 'govuk-tabs__panel--hidden')
+              (selectedTab === 'awaiting submissions'
+                ? ' '
+                : 'govuk-tabs__panel--hidden')
             }
-            id="past-week"
+            id="awaiting-submissions"
           >
-            <h2 className="lbh-heading-h2">Past week</h2>
             <table className="govuk-table">
-              <thead className="govuk-table__head">
-                <tr className="govuk-table__row">
-                  <th className="govuk-table__header" scope="col">
-                    Case manager
-                  </th>
-                  <th className="govuk-table__header" scope="col">
-                    Cases opened
-                  </th>
-                  <th className="govuk-table__header" scope="col">
-                    Cases closed
-                  </th>
-                </tr>
-              </thead>
               <tbody className="govuk-table__body">
                 <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">David Francis</td>
-                  <td className="govuk-table__cell">24</td>
-                  <td className="govuk-table__cell">18</td>
-                </tr>
-                <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">Paul Farmer</td>
-                  <td className="govuk-table__cell">16</td>
-                  <td className="govuk-table__cell">20</td>
-                </tr>
-                <tr className="govuk-table__row">
-                  <td className="govuk-table__cell">Rita Patel</td>
-                  <td className="govuk-table__cell">24</td>
-                  <td className="govuk-table__cell">27</td>
+                  <EvidenceList>
+                    {evidenceAwaitingSubmissions &&
+                    evidenceAwaitingSubmissions.length > 0 ? (
+                      evidenceAwaitingSubmissions.map((item) => (
+                        <EvidenceAwaitingSubmissionTile
+                          key={item.documentType}
+                          id={item.documentType}
+                          documentType={item.documentType}
+                          dateRequested={formatDate(item.dateRequested)}
+                          requestedBy={item.requestedBy}
+                        />
+                      ))
+                    ) : (
+                      <h3>There are no documents awaiting submission</h3>
+                    )}
+                  </EvidenceList>
                 </tr>
               </tbody>
             </table>
           </section>
         </div>
       </div>
-
-      {/*<Tabs>*/}
-      {/*  <Tabs.Title>Contents</Tabs.Title>*/}
-      {/*  <Tabs.List>*/}
-      {/*    <Tab href="#0" selected>*/}
-      {/*      Awaiting Submission*/}
-      {/*    </Tab>*/}
-      {/*    <Tab className="govuk-tabs__tab" href="#1">*/}
-      {/*      Past week*/}
-      {/*    </Tab>*/}
-      {/*    <Tab href="#2">Past month</Tab>*/}
-      {/*    <Tab href="#3">Past year</Tab>*/}
-      {/*  </Tabs.List>*/}
-      {/*  <Tabs.Panel id="0" selected>*/}
-      {/*    <Table>*/}
-      {/*      {evidenceAwaitingSubmissions &&*/}
-      {/*      evidenceAwaitingSubmissions.length > 0 ? (*/}
-      {/*        evidenceAwaitingSubmissions.map((item) => (*/}
-      {/*          <Table.Cell>*/}
-      {/*            <EvidenceAwaitingSubmissionTile*/}
-      {/*              key={item.documentType}*/}
-      {/*              id={item.documentType}*/}
-      {/*              documentType={item.documentType}*/}
-      {/*              dateRequested={formatDate(item.dateRequested)}*/}
-      {/*              requestedBy={item.requestedBy}*/}
-      {/*            />*/}
-      {/*          </Table.Cell>*/}
-      {/*        ))*/}
-      {/*      ) : (*/}
-      {/*        <Table.Cell>*/}
-      {/*          <h3>There are no documents awaiting submission</h3>*/}
-      {/*        </Table.Cell>*/}
-      {/*      )}*/}
-      {/*    </Table>*/}
-      {/*  </Tabs.Panel>*/}
-
-      {/*  <Tabs.Panel id="1">*/}
-      {/*    <H2>Past week</H2>*/}
-      {/*    <Table head={<Table.Row>rejected</Table.Row>}>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>David Francis</Table.Cell>*/}
-      {/*        <Table.Cell>24</Table.Cell>*/}
-      {/*        <Table.Cell>18</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Paul Farmer</Table.Cell>*/}
-      {/*        <Table.Cell>16</Table.Cell>*/}
-      {/*        <Table.Cell>20</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Rita Patel</Table.Cell>*/}
-      {/*        <Table.Cell>24</Table.Cell>*/}
-      {/*        <Table.Cell>27</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*    </Table>*/}
-      {/*  </Tabs.Panel>*/}
-      {/*  <Tabs.Panel id="1">*/}
-      {/*    <H2>Past month</H2>*/}
-      {/*    <Table head={<Table.Row>Approved</Table.Row>}>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>David Francis</Table.Cell>*/}
-      {/*        <Table.Cell>98</Table.Cell>*/}
-      {/*        <Table.Cell>95</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Paul Farmer</Table.Cell>*/}
-      {/*        <Table.Cell>122</Table.Cell>*/}
-      {/*        <Table.Cell>133</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Rita Patel</Table.Cell>*/}
-      {/*        <Table.Cell>126</Table.Cell>*/}
-      {/*        <Table.Cell>142</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*    </Table>*/}
-      {/*  </Tabs.Panel>*/}
-      {/*  <Tabs.Panel id="1">*/}
-      {/*    <H2>Past year</H2>*/}
-      {/*    <Table head={<Table.Row> Awaiting Submission</Table.Row>}>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>David Francis</Table.Cell>*/}
-      {/*        <Table.Cell>1380</Table.Cell>*/}
-      {/*        <Table.Cell></Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Paul Farmer</Table.Cell>*/}
-      {/*        <Table.Cell>1129</Table.Cell>*/}
-      {/*        <Table.Cell>1083</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*      <Table.Row>*/}
-      {/*        <Table.Cell>Rita Patel</Table.Cell>*/}
-      {/*        <Table.Cell>1539</Table.Cell>*/}
-      {/*        <Table.Cell>1265</Table.Cell>*/}
-      {/*      </Table.Row>*/}
-      {/*    </Table>*/}
-      {/*  </Tabs.Panel>*/}
-      {/*</Tabs>*/}
-
       <div className="awaitingSubmission evidence-list">
         <h2 className="lbh-heading-h3">Awaiting submission</h2>
         <EvidenceList>
