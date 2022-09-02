@@ -49,10 +49,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const rejectedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'REJECTED'
   );
-  const [selectedTab, setSelectedTab] = useState('all documents');
+  const [selectedTab, setSelectedTab] = useState('All documents');
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
-    console.log('--->' + tab);
   };
 
   interface EvidenceAwaitingSubmission {
