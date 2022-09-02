@@ -206,7 +206,7 @@ describe('Can view and manage evidence', () => {
       cy.get('[data-testid="error-invalid-date"]').should('not.contain.text');
 
       cy.get('button').contains('Yes, accept').click();
-
+      cy.wait('@updateDocumentState');
       cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
         state: 'APPROVED',
         userUpdatedBy: 'test@hackney.gov.uk',
@@ -334,14 +334,18 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('svg[class="icon-loading"]').should('be.visible');
     cy.get('figure').should('contain', 'HEIC');
     cy.get('figure').should('contain', '9.8 KB');
-    cy.get('[data-cy="heic-image"]')
+    cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).to.have.length(0));
     cy.wait(6000);
-    cy.get('[data-cy="heic-image"]')
+    cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).have.length.greaterThan(0));
-    cy.get('[data-cy="heic-image"]').should('have.attr', 'alt', 'Proof of ID');
+    cy.get('[data-testid="conversion-image"]').should(
+      'have.attr',
+      'alt',
+      'Proof of ID'
+    );
     cy.get('svg[class="icon-loading]').should('not.exist');
   });
 });

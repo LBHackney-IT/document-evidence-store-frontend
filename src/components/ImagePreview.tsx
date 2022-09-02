@@ -5,50 +5,55 @@ import LoadingBox from '@govuk-react/loading-box';
 import { humanFileSize } from '../helpers/formatters';
 
 const ImagePreview = (props: Props): JSX.Element | null => {
-  const [heicImage, setHeicImage] = useState('');
+  const [conversionImage, setConversionImage] = useState('');
   const [loading, setLoading] = useState(true);
 
   const { documentSubmission, downloadUrl } = props;
-
   const { document } = documentSubmission;
+
   if (!document) return null;
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      (async () => {
-        const { default: heic2any } = await import('heic2any');
-        fetch(downloadUrl)
-          .then((res) => res.blob())
-          .then((blob) =>
-            heic2any({
-              blob,
+  const documentExtension = document?.extension;
+  const toConvertDocumentExtensions = ['heic', 'heif'];
+  const documentExtensions = ['png', 'jpeg'];
+  if (toConvertDocumentExtensions.includes(documentExtension as string)) {
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        (async () => {
+          const { default: heic2any } = await import('heic2any');
+          fetch(downloadUrl)
+            .then((res) => res.blob())
+            .then((blob) =>
+              heic2any({
+                blob,
+              })
+            )
+            .then((conversionResult) => {
+              setConversionImage(URL.createObjectURL(conversionResult));
+              setLoading(false);
             })
-          )
-          .then((conversionResult) => {
-            setHeicImage(URL.createObjectURL(conversionResult));
-            setLoading(false);
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })();
-    }
-  }, []);
-
+            .catch((e) => {
+              console.log(e);
+            });
+        })();
+      }
+    }, []);
+  }
   return (
     <div>
       <figure className={styles.preview}>
-        {document.extension === 'jpeg' || document.extension === 'png' ? (
+        {documentExtensions.includes(documentExtension as string) ? (
           <img src={downloadUrl} alt={documentSubmission.documentType.title} />
-        ) : document.extension === 'heic' ? (
+        ) : toConvertDocumentExtensions.includes(
+            documentExtension as string
+          ) ? (
           <LoadingBox
             loading={loading}
             title={documentSubmission.documentType.title}
           >
             <img
-              data-cy="heic-image"
-              src={heicImage}
+              src={conversionImage}
               alt={documentSubmission.documentType.title}
+              data-testid="conversion-image"
             />
           </LoadingBox>
         ) : (
