@@ -10,7 +10,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
-import SVGSymbol from 'src/components/SVGSymbol';
+// import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
 import ResidentPageTable from '../../../../../../components/ResidentPageTable';
 import Link from 'next/link';
@@ -109,6 +109,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         {resident.name}
       </h1>
       <ResidentPageTable resident={resident} />
+      <div
+        style={{
+          paddingTop: '1.5em',
+        }}
+      ></div>
       <div className="js-enabled">
         <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
           <h2 className="govuk-tabs__title">Contents</h2>
@@ -116,46 +121,97 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <li
               className={
                 'govuk-tabs__list-item' +
-                (selectedTab === 'all documents'
+                (selectedTab === 'All documents'
                   ? ' govuk-tabs__list-item--selected'
                   : ' ')
               }
             >
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('all documents')}
-                href="#all-documents"
+                onClick={() => handleTabClick('All documents')}
+                href="#All-documents"
               >
                 {' '}
-                all documents{' '}
+                All documents{' '}
               </a>
             </li>
             <li
               className={
                 'govuk-tabs__list-item' +
-                (selectedTab === 'awaiting submissions'
+                (selectedTab === 'Awaiting submission'
                   ? ' govuk-tabs__list-item--selected'
                   : ' ')
               }
             >
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('awaiting submissions')}
-                href="#awaiting submissions"
+                onClick={() => handleTabClick('Awaiting submission')}
+                href="#Awaiting-submission"
               >
                 {' '}
-                awaiting submissions{' '}
+                Awaiting submission{' '}
+              </a>
+            </li>
+            <li
+              className={
+                'govuk-tabs__list-item' +
+                (selectedTab === 'Pending Review'
+                  ? ' govuk-tabs__list-item--selected'
+                  : ' ')
+              }
+            >
+              <a
+                className="govuk-tabs__tab"
+                onClick={() => handleTabClick('Pending Review')}
+                href="#Pending Review"
+              >
+                {' '}
+                Pending Review{' '}
+              </a>
+            </li>
+            <li
+              className={
+                'govuk-tabs__list-item' +
+                (selectedTab === 'Approved'
+                  ? ' govuk-tabs__list-item--selected'
+                  : ' ')
+              }
+            >
+              <a
+                className="govuk-tabs__tab"
+                onClick={() => handleTabClick('Approved')}
+                href="#Approved"
+              >
+                {' '}
+                Approved{' '}
+              </a>
+            </li>
+            <li
+              className={
+                'govuk-tabs__list-item' +
+                (selectedTab === 'Rejected'
+                  ? ' govuk-tabs__list-item--selected'
+                  : ' ')
+              }
+            >
+              <a
+                className="govuk-tabs__tab"
+                onClick={() => handleTabClick('Rejected')}
+                href="#Rejected"
+              >
+                {' '}
+                Rejected{' '}
               </a>
             </li>
           </ul>
           <section
             className={
               'govuk-tabs__panel ' +
-              (selectedTab === 'all documents'
+              (selectedTab === 'All documents'
                 ? ' '
                 : 'govuk-tabs__panel--hidden')
             }
-            id="all-documents"
+            id="All-documents"
           >
             <table className="govuk-table">
               <thead className="govuk-table__head">
@@ -186,14 +242,15 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               </thead>
             </table>
           </section>
+          {/*Awaiting submission*/}
           <section
             className={
               'govuk-tabs__panel ' +
-              (selectedTab === 'awaiting submissions'
+              (selectedTab === 'Awaiting submission'
                 ? ' '
                 : 'govuk-tabs__panel--hidden')
             }
-            id="awaiting-submissions"
+            id="Awaiting-submission"
           >
             <table className="govuk-table">
               <tbody className="govuk-table__body">
@@ -218,116 +275,246 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               </tbody>
             </table>
           </section>
+          {/*Pending Review*/}
+          <section
+            className={
+              'govuk-tabs__panel ' +
+              (selectedTab === 'Pending Review'
+                ? ' '
+                : 'govuk-tabs__panel--hidden')
+            }
+            id="Pending-Review"
+          >
+            <table className="govuk-table">
+              <tbody className="govuk-table__body">
+                <tr className="govuk-table__row">
+                  <div
+                    className="toReview govuk-form-group--error"
+                    style={{
+                      borderLeftColor: '#F0D232',
+                      backgroundColor: '#FFFBF4',
+                      paddingTop: '1.5em',
+                    }}
+                  >
+                    <EvidenceList>
+                      {toReviewDocumentSubmissions &&
+                      toReviewDocumentSubmissions.length > 0 ? (
+                        toReviewDocumentSubmissions.map((ds) => (
+                          <EvidenceTile
+                            teamId={teamId}
+                            residentId={residentId}
+                            key={ds.id}
+                            id={ds.id}
+                            title={String(ds.documentType.title)}
+                            createdAt={formatDate(ds.createdAt)}
+                            fileSizeInBytes={
+                              ds.document ? ds.document.fileSizeInBytes : 0
+                            }
+                            format={
+                              ds.document ? ds.document.extension : 'unknown'
+                            }
+                            // purpose="Example form"
+                            toReview
+                          />
+                        ))
+                      ) : (
+                        <h3>There are no documents to review</h3>
+                      )}
+                    </EvidenceList>
+                  </div>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          {/*Approved*/}
+          <section
+            className={
+              'govuk-tabs__panel ' +
+              (selectedTab === 'Approved' ? ' ' : 'govuk-tabs__panel--hidden')
+            }
+            id="Approved"
+          >
+            <table className="govuk-table">
+              <tbody className="govuk-table__body">
+                <tr className="govuk-table__row">
+                  <EvidenceList>
+                    {reviewedDocumentSubmissions &&
+                    reviewedDocumentSubmissions.length > 0 ? (
+                      reviewedDocumentSubmissions.map((ds) => (
+                        <EvidenceTile
+                          teamId={teamId}
+                          residentId={residentId}
+                          key={ds.id}
+                          id={ds.id}
+                          title={String(ds.staffSelectedDocumentType?.title)}
+                          createdAt={formatDate(ds.createdAt)}
+                          fileSizeInBytes={
+                            ds.document ? ds.document.fileSizeInBytes : 0
+                          }
+                          format={
+                            ds.document ? ds.document.extension : 'unknown'
+                          }
+                          // purpose="Example form"
+                        />
+                      ))
+                    ) : (
+                      <h3>There are no reviewed documents</h3>
+                    )}
+                  </EvidenceList>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          {/*Rejected*/}
+          <section
+            className={
+              'govuk-tabs__panel ' +
+              (selectedTab === 'Rejected' ? ' ' : 'govuk-tabs__panel--hidden')
+            }
+            id="Rejected"
+          >
+            <table className="govuk-table">
+              <tbody className="govuk-table__body">
+                <tr className="govuk-table__row">
+                  <EvidenceList>
+                    {rejectedDocumentSubmissions &&
+                      rejectedDocumentSubmissions.length > 0 &&
+                      rejectedDocumentSubmissions.map((ds) => (
+                        <EvidenceTile
+                          teamId={teamId}
+                          residentId={residentId}
+                          key={ds.id}
+                          id={ds.id}
+                          title={String(ds.documentType.title)}
+                          createdAt={formatDate(ds.createdAt)}
+                          fileSizeInBytes={
+                            ds.document ? ds.document.fileSizeInBytes : 0
+                          }
+                          format={
+                            ds.document ? ds.document.extension : 'unknown'
+                          }
+                          // purpose="Example form"
+                        />
+                      ))}
+                  </EvidenceList>
+                </tr>
+              </tbody>
+            </table>
+          </section>
         </div>
       </div>
-      <div className="awaitingSubmission evidence-list">
-        <h2 className="lbh-heading-h3">Awaiting submission</h2>
-        <EvidenceList>
-          {evidenceAwaitingSubmissions &&
-          evidenceAwaitingSubmissions.length > 0 ? (
-            evidenceAwaitingSubmissions.map((item) => (
-              <EvidenceAwaitingSubmissionTile
-                key={item.documentType}
-                id={item.documentType}
-                documentType={item.documentType}
-                dateRequested={formatDate(item.dateRequested)}
-                requestedBy={item.requestedBy}
-              />
-            ))
-          ) : (
-            <h3>There are no documents awaiting submission</h3>
-          )}
-        </EvidenceList>
-      </div>
+      {/*<div className="awaitingSubmission evidence-list">*/}
+      {/*  <h2 className="lbh-heading-h3">Awaiting submission</h2>*/}
+      {/*  <EvidenceList>*/}
+      {/*    {evidenceAwaitingSubmissions &&*/}
+      {/*    evidenceAwaitingSubmissions.length > 0 ? (*/}
+      {/*      evidenceAwaitingSubmissions.map((item) => (*/}
+      {/*        <EvidenceAwaitingSubmissionTile*/}
+      {/*          key={item.documentType}*/}
+      {/*          id={item.documentType}*/}
+      {/*          documentType={item.documentType}*/}
+      {/*          dateRequested={formatDate(item.dateRequested)}*/}
+      {/*          requestedBy={item.requestedBy}*/}
+      {/*        />*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <h3>There are no documents awaiting submission</h3>*/}
+      {/*    )}*/}
+      {/*  </EvidenceList>*/}
+      {/*</div>*/}
 
-      <div
-        className="toReview govuk-form-group--error"
-        style={{
-          borderLeftColor: '#F0D232',
-          backgroundColor: '#FFFBF4',
-          paddingTop: '1.5em',
-        }}
-      >
-        <h2 className="lbh-heading-h3">
-          <SVGSymbol status="toReview" />
-          Pending review
-        </h2>
+      {/*Pending review*/}
+      {/*Approved*/}
+      {/*Rejected*/}
 
-        <EvidenceList>
-          {toReviewDocumentSubmissions &&
-          toReviewDocumentSubmissions.length > 0 ? (
-            toReviewDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-                toReview
-              />
-            ))
-          ) : (
-            <h3>There are no documents to review</h3>
-          )}
-        </EvidenceList>
-      </div>
+      {/*<div*/}
+      {/*  className="toReview govuk-form-group--error"*/}
+      {/*  style={{*/}
+      {/*    borderLeftColor: '#F0D232',*/}
+      {/*    backgroundColor: '#FFFBF4',*/}
+      {/*    paddingTop: '1.5em',*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <h2 className="lbh-heading-h3">*/}
+      {/*    <SVGSymbol status="toReview" />*/}
+      {/*    Pending review*/}
+      {/*  </h2>*/}
 
-      <div className="reviewed evidence-list">
-        <h2 className="lbh-heading-h3">
-          <SVGSymbol status="reviewed" />
-          Reviewed
-        </h2>
+      {/*  <EvidenceList>*/}
+      {/*    {toReviewDocumentSubmissions &&*/}
+      {/*    toReviewDocumentSubmissions.length > 0 ? (*/}
+      {/*      toReviewDocumentSubmissions.map((ds) => (*/}
+      {/*        <EvidenceTile*/}
+      {/*          teamId={teamId}*/}
+      {/*          residentId={residentId}*/}
+      {/*          key={ds.id}*/}
+      {/*          id={ds.id}*/}
+      {/*          title={String(ds.documentType.title)}*/}
+      {/*          createdAt={formatDate(ds.createdAt)}*/}
+      {/*          fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}*/}
+      {/*          format={ds.document ? ds.document.extension : 'unknown'}*/}
+      {/*          // purpose="Example form"*/}
+      {/*          toReview*/}
+      {/*        />*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <h3>There are no documents to review</h3>*/}
+      {/*    )}*/}
+      {/*  </EvidenceList>*/}
+      {/*</div>*/}
 
-        <EvidenceList twoColumns>
-          {reviewedDocumentSubmissions &&
-          reviewedDocumentSubmissions.length > 0 ? (
-            reviewedDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.staffSelectedDocumentType?.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-              />
-            ))
-          ) : (
-            <h3>There are no reviewed documents</h3>
-          )}
-        </EvidenceList>
-      </div>
+      {/*<div className="reviewed evidence-list">*/}
+      {/*  <h2 className="lbh-heading-h3">*/}
+      {/*    <SVGSymbol status="reviewed" />*/}
+      {/*    Reviewed*/}
+      {/*  </h2>*/}
 
-      {rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (
-        <div className="rejected evidence-list">
-          <h2 className="lbh-heading-h3">
-            <SVGSymbol status="rejected" />
-            Rejected
-          </h2>
+      {/*  <EvidenceList twoColumns>*/}
+      {/*    {reviewedDocumentSubmissions &&*/}
+      {/*    reviewedDocumentSubmissions.length > 0 ? (*/}
+      {/*      reviewedDocumentSubmissions.map((ds) => (*/}
+      {/*        <EvidenceTile*/}
+      {/*          teamId={teamId}*/}
+      {/*          residentId={residentId}*/}
+      {/*          key={ds.id}*/}
+      {/*          id={ds.id}*/}
+      {/*          title={String(ds.staffSelectedDocumentType?.title)}*/}
+      {/*          createdAt={formatDate(ds.createdAt)}*/}
+      {/*          fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}*/}
+      {/*          format={ds.document ? ds.document.extension : 'unknown'}*/}
+      {/*          // purpose="Example form"*/}
+      {/*        />*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <h3>There are no reviewed documents</h3>*/}
+      {/*    )}*/}
+      {/*  </EvidenceList>*/}
+      {/*</div>*/}
 
-          <EvidenceList twoColumns>
-            {rejectedDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-              />
-            ))}
-          </EvidenceList>
-        </div>
-      )}
+      {/*{rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (*/}
+      {/*  <div className="rejected evidence-list">*/}
+      {/*    <h2 className="lbh-heading-h3">*/}
+      {/*      <SVGSymbol status="rejected" />*/}
+      {/*      Rejected*/}
+      {/*    </h2>*/}
+
+      {/*    <EvidenceList twoColumns>*/}
+      {/*      {rejectedDocumentSubmissions.map((ds) => (*/}
+      {/*        <EvidenceTile*/}
+      {/*          teamId={teamId}*/}
+      {/*          residentId={residentId}*/}
+      {/*          key={ds.id}*/}
+      {/*          id={ds.id}*/}
+      {/*          title={String(ds.documentType.title)}*/}
+      {/*          createdAt={formatDate(ds.createdAt)}*/}
+      {/*          fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}*/}
+      {/*          format={ds.document ? ds.document.extension : 'unknown'}*/}
+      {/*          // purpose="Example form"*/}
+      {/*        />*/}
+      {/*      ))}*/}
+      {/*    </EvidenceList>*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </Layout>
   );
 };
