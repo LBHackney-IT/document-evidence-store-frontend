@@ -26,6 +26,30 @@ describe('Can view and manage evidence', () => {
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
+  it('checks if resident information is displayed correctly in a table', () => {
+    cy.get('tbody').within(() => {
+      cy.get('tr')
+        .eq(0)
+        .should('contain.text', 'Name')
+        .and('contain.text', 'Namey McName');
+      cy.get('tr')
+        .eq(1)
+        .should('contain.text', 'Mobile number')
+        .and('contain.text', '+447123456780');
+      cy.get('tr')
+        .eq(2)
+        .should('contain.text', 'Email address')
+        .and('contain.text', 'frodo@bagend.com');
+    });
+  });
+
+  it('has breadcrumbs on resident page', () => {
+    cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
+    cy.get('[data-testid="search-page"]').click();
+    cy.get('a').contains('Namey McName');
+    cy.get('h1').contains('Browse residents');
+  });
+
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
     cy.get('a').contains('Proof of ID').click();
@@ -182,7 +206,7 @@ describe('Can view and manage evidence', () => {
       cy.get('[data-testid="error-invalid-date"]').should('not.contain.text');
 
       cy.get('button').contains('Yes, accept').click();
-
+      cy.wait('@updateDocumentState');
       cy.get('@updateDocumentState').its('request.body').should('deep.equal', {
         state: 'APPROVED',
         userUpdatedBy: 'test@hackney.gov.uk',
@@ -268,6 +292,7 @@ describe('When a user inputs a validity date that is in the past', () => {
       cy.get('button').contains('Yes, accept').click();
 
       //assert
+      cy.wait('@acceptInvalidDate');
       cy.get('fieldset>span')
         .eq(0)
         .should('contain', 'The date cannot be in the past.');
@@ -309,14 +334,14 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('svg[class="icon-loading"]').should('be.visible');
     cy.get('figure').should('contain', 'HEIC');
     cy.get('figure').should('contain', '9.8 KB');
-    cy.get('[data-testid="heic-image"]')
+    cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).to.have.length(0));
     cy.wait(6000);
-    cy.get('[data-testid="heic-image"]')
+    cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).have.length.greaterThan(0));
-    cy.get('[data-testid="heic-image"]').should(
+    cy.get('[data-testid="conversion-image"]').should(
       'have.attr',
       'alt',
       'Proof of ID'

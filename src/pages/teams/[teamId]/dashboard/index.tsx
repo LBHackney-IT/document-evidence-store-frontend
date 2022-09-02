@@ -11,7 +11,6 @@ import { InternalApiGateway } from '../../../../gateways/internal-api';
 import { Resident } from '../../../../domain/resident';
 import { ResidentSummaryTable } from '../../../../components/ResidentSummaryTable';
 import TableSkeleton from '../../../../components/TableSkeleton';
-// import Tabs from '../../../../components/Tabs';
 import { RequestAuthorizer } from '../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../services/team-helper';
 import { Team } from '../../../../domain/team';
