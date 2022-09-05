@@ -92,32 +92,38 @@ describe('Can view and manage evidence', () => {
 
   it('shows the correct date format', () => {
     cy.get('a.govuk-tabs__tab[href*="Awaiting-submission"]').click();
-    cy.get('section p').should(
+    cy.get('section[id="Awaiting-submission"] p').should(
       'contain',
       '3:34 pm 30 November 2020 (2 years ago)'
     );
 
     cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section p').should(
+    cy.get('section[id="Pending-review"] p').should(
       'contain',
       '10:23 am 14 January 2021 (last year)'
     );
 
     cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
-    cy.get('section p').should(
+    cy.get('section[id="Approved"] p').should(
       'contain',
       '10:23 am 25 December 2020 (2 years ago)'
     );
 
     cy.get('a.govuk-tabs__tab[href*="Rejected"]').click();
-    cy.get('section p').should(
+    cy.get('section[id="Rejected"] p').should(
       'contain',
       '10:23 am 30 December 2020 (2 years ago)'
     );
   });
 
   it('lets you see an image document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(0).contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]')
+      .should('contain', 'Pending Review')
+      .click();
+    cy.get('section[id="Pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
 
     cy.contains('h1', 'Namey McNameProof of ID');
 
@@ -139,7 +145,11 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(1).contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"] a')
+      .eq(1)
+      .contains('Proof of ID')
+      .click();
 
     cy.contains('h1', 'Namey McNameProof of ID');
 
@@ -155,7 +165,12 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
-    cy.get('a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+
     cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Accept').click();
 
@@ -187,7 +202,12 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can throw error when entering an incorrect date when approving document', () => {
-    cy.get('a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+
     cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Accept').click();
 
@@ -210,7 +230,12 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve document if date entered then removed', () => {
-    cy.get('a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+
     cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Accept').click();
 
@@ -247,7 +272,12 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject the document', () => {
-    cy.get('a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+
     cy.contains('h1', 'Namey McNameProof of ID');
     cy.get('button').contains('Request new file').click();
 
@@ -266,7 +296,9 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view approved documents', () => {
-    cy.get('.reviewed a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
+    cy.get('section[id="Approved"]').eq(0).contains('Proof of ID').click();
+
     cy.get('button').contains('Copy page URL');
     cy.get('h2').should('contain', 'History');
     cy.get('table').should('contain', 'Namey McName');
@@ -275,14 +307,20 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view rejected documents', () => {
-    cy.get('.rejected a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Rejected"]').click();
+    cy.get('section[id="Rejected"]').eq(0).contains('Proof of ID').click();
+
     cy.get('h2').should('contain', 'History');
     cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
 
   it('can view page warning for document with expired claim', () => {
-    cy.get('.reviewed a').eq(1).contains('Proof of ID').click();
-    cy.get('section').contains('This document is no longer valid');
+    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
+    cy.get('section[id="Approved"] a').eq(1).contains('Proof of ID').click();
+
+    cy.get('[data-testid="page-warning"]').contains(
+      'This document is no longer valid'
+    );
   });
 });
 
@@ -305,7 +343,9 @@ describe('When a user inputs a validity date that is in the past', () => {
 
   it('shows an error', () => {
     //arrange
-    cy.get('a').contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"').eq(0).contains('Proof of ID').click();
+
     cy.get('button').contains('Accept').click();
 
     cy.get('[role=dialog]').within(() => {
@@ -351,7 +391,11 @@ describe('Can view and manage evidence with HEIC document', () => {
   });
 
   it('lets you see an heic document detail page with actions and information', () => {
-    cy.get('.toReview a').eq(2).contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section[id="Pending-review"] a')
+      .eq(2)
+      .contains('Proof of ID')
+      .click();
 
     cy.contains('h1', 'Namey McNameProof of ID');
 
@@ -364,7 +408,7 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).to.have.length(0));
-    cy.wait(6000);
+    cy.wait(1000);
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).have.length.greaterThan(0));
