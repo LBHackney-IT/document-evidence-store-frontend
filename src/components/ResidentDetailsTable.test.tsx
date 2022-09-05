@@ -1,9 +1,9 @@
 import React from 'react';
 import { cleanup, render } from '@testing-library/react';
 import { Resident } from '../domain/resident';
-import ResidentPageTable from './ResidentPageTable';
+import ResidentDetailsTable from './ResidentDetailsTable';
 
-describe('ResidentPageTable', () => {
+describe('ResidentDetailsTable', () => {
   afterEach(cleanup);
   const resident: Resident = {
     id: '123',
@@ -20,7 +20,9 @@ describe('ResidentPageTable', () => {
   };
 
   test('it renders correctly', async () => {
-    const componentTestOne = render(<ResidentPageTable resident={resident} />);
+    const componentTestOne = render(
+      <ResidentDetailsTable resident={resident} />
+    );
     expect(componentTestOne.getByTestId('name-cell')).toHaveTextContent(
       'Frodo'
     );
@@ -34,7 +36,7 @@ describe('ResidentPageTable', () => {
 
   test("displays '-' as value if either email or mobile is missing", () => {
     const componentTestTwo = render(
-      <ResidentPageTable resident={residentTwo} />
+      <ResidentDetailsTable resident={residentTwo} />
     );
     expect(componentTestTwo.getByTestId('name-cell')).toHaveTextContent('Fred');
     expect(

@@ -12,7 +12,7 @@ import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
 // import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
-import ResidentPageTable from '../../../../../../components/ResidentPageTable';
+import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
@@ -107,7 +107,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {resident.name}
       </h1>
-      <ResidentPageTable resident={resident} />
+      <ResidentDetailsTable resident={resident} />
       <div
         style={{
           paddingTop: '1.5em',
