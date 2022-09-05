@@ -128,7 +128,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('All documents')}
-                href="#All-documents"
+                href={'#All-documents'}
               >
                 {' '}
                 All documents{' '}
@@ -145,7 +145,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Awaiting submission')}
-                href="#Awaiting-submission"
+                href={'#Awaiting-submission'}
               >
                 {' '}
                 Awaiting submission{' '}
@@ -162,7 +162,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Pending Review')}
-                href="#Pending Review"
+                href={'#Pending-review'}
               >
                 {' '}
                 Pending Review{' '}
@@ -179,7 +179,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Approved')}
-                href="#Approved"
+                href={'#Approved'}
               >
                 {' '}
                 Approved{' '}
@@ -196,7 +196,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Rejected')}
-                href="#Rejected"
+                href={'#Rejected'}
               >
                 {' '}
                 Rejected{' '}
@@ -282,7 +282,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 ? ' '
                 : 'govuk-tabs__panel--hidden')
             }
-            id="Pending-Review"
+            id="Pending-review"
           >
             <table className="govuk-table">
               <tbody className="govuk-table__body">

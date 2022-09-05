@@ -60,14 +60,34 @@ describe('Can view and manage evidence', () => {
   it('shows resident contact details and document submissions in all states', () => {
     cy.get('h1').should('contain', 'Namey McName');
 
-    cy.get('h2').should('contain', 'Awaiting submission');
-    cy.get('.awaitingSubmission a').eq(0).should('contain', 'Passport');
-    cy.get('.toReview a').eq(0).contains('Proof of ID');
-    cy.get('h2').should('contain', 'Pending review');
-    cy.get('h2').should('contain', 'Reviewed');
-    cy.get('.reviewed a').eq(0).should('contain', 'Proof of ID');
-    cy.get('h2').should('contain', 'Rejected');
-    cy.get('.rejected a').eq(0).should('contain', 'Proof of ID');
+    cy.get('a.govuk-tabs__tab[href*="All-documents"]')
+      .should('contain', 'All documents')
+      .click();
+    cy.get('section[id*="All-documents"] h3').should('have.length', 6);
+
+    cy.get('a.govuk-tabs__tab[href*="Awaiting-submission"]')
+      .should('contain', 'Awaiting submission')
+      .click();
+    cy.get('h3').should('contain', 'Passport');
+    cy.get('section[id*="Awaiting-submission"] h3').should('have.length', 3);
+
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]')
+      .should('contain', 'Pending Review')
+      .click();
+    cy.get('h3').contains('Proof of ID');
+    cy.get('section[id*="Pending-review"] h3').should('have.length', 3);
+
+    cy.get('a.govuk-tabs__tab[href*="Approved"]')
+      .should('contain', 'Approved')
+      .click();
+    cy.get('h3').contains('Proof of ID');
+    cy.get('section[id*="Approved"] h3').should('have.length', 2);
+
+    cy.get('a.govuk-tabs__tab[href*="Rejected"]')
+      .should('contain', 'Rejected')
+      .click();
+    cy.get('h3').contains('Proof of ID');
+    cy.get('section[id*="Rejected"] h3').should('have.length', 1);
   });
 
   it('shows the correct date format', () => {
