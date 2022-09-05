@@ -115,7 +115,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       ></div>
       <div className="js-enabled">
         <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
-          <h2 className="govuk-tabs__title">Contents</h2>
           <ul className="govuk-tabs__list">
             <li
               className={
@@ -130,8 +129,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 onClick={() => handleTabClick('All documents')}
                 href={'#All-documents'}
               >
-                {' '}
-                All documents{' '}
+                <h2 className="govuk-body">All documents</h2>
               </a>
             </li>
             <li
@@ -147,8 +145,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 onClick={() => handleTabClick('Awaiting submission')}
                 href={'#Awaiting-submission'}
               >
-                {' '}
-                Awaiting submission{' '}
+                <h2 className="govuk-body">Awaiting submission</h2>
               </a>
             </li>
             <li
@@ -164,8 +161,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 onClick={() => handleTabClick('Pending Review')}
                 href={'#Pending-review'}
               >
-                {' '}
-                Pending Review{' '}
+                <h2 className="govuk-body">Pending Review</h2>
               </a>
             </li>
             <li
@@ -181,8 +177,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 onClick={() => handleTabClick('Approved')}
                 href={'#Approved'}
               >
-                {' '}
-                Approved{' '}
+                <h2 className="govuk-body">Approved</h2>
               </a>
             </li>
             <li
@@ -198,8 +193,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 onClick={() => handleTabClick('Rejected')}
                 href={'#Rejected'}
               >
-                {' '}
-                Rejected{' '}
+                <h2 className="govuk-body">Rejected</h2>
               </a>
             </li>
           </ul>

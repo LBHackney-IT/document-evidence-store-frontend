@@ -26,6 +26,13 @@ describe('Can view and manage evidence', () => {
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
+  it('pages have no detectable accessibility issues', () => {
+    cy.checkA11y();
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
+    cy.checkA11y();
+  });
+
   it('checks if resident information is displayed correctly in a table', () => {
     cy.get('tbody').within(() => {
       cy.get('tr')
@@ -48,13 +55,6 @@ describe('Can view and manage evidence', () => {
     cy.get('[data-testid="search-page"]').click();
     cy.get('a').contains('Namey McName');
     cy.get('h1').contains('Browse residents');
-  });
-
-  it('pages have no detectable accessibility issues', () => {
-    cy.checkA11y();
-    cy.get('a').contains('Proof of ID').click();
-    cy.contains('h1', 'Namey McNameProof of ID');
-    cy.checkA11y();
   });
 
   it('shows resident contact details and document submissions in all states', () => {
@@ -408,7 +408,7 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).to.have.length(0));
-    cy.wait(1000);
+    cy.wait(2000);
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
       .then((src) => expect(src).have.length.greaterThan(0));
