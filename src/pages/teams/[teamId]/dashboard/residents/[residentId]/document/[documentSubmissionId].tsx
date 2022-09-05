@@ -211,7 +211,8 @@ export const getServerSideProps = withAuth(async (ctx) => {
   );
   const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
     user.email,
-    team.name
+    team.name,
+    true
   );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 

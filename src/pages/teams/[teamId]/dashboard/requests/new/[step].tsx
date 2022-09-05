@@ -244,7 +244,11 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     }
 
     const gateway = new EvidenceApiGateway();
-    const documentTypes = await gateway.getDocumentTypes(user.email, team.name);
+    const documentTypes = await gateway.getDocumentTypes(
+      user.email,
+      team.name,
+      true
+    );
     return { props: { documentTypes, team, user, feedbackUrl } };
   }
 );

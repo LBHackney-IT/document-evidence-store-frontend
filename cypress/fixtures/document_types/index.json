@@ -2,11 +2,13 @@
   {
     "id": "proof-of-id",
     "title": "Proof of ID",
-    "description": "A valid document that can be used to prove identity"
+    "description": "A valid document that can be used to prove identity",
+    "enabled": true
   },
   {
     "id": "repairs-photo",
     "title": "Repairs photo",
-    "description": "A photo of the issue that need to be repaired"
+    "description": "A photo of the issue that need to be repaired",
+    "enabled": true
   }
 ]

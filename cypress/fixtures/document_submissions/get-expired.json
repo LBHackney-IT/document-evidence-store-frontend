@@ -2,7 +2,8 @@
   "documentType": {
     "id": "proof-of-id",
     "title": "Proof of ID",
-    "description": "A valid document that can be used to prove identity"
+    "description": "A valid document that can be used to prove identity",
+    "enabled": true
   },
   "staffSelectedDocumentType": {
     "id": "proof-of-id",

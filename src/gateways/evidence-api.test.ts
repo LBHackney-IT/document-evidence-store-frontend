@@ -7,8 +7,11 @@ import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/ind
 import { EvidenceApiGateway } from './evidence-api';
 import { InternalServerError } from './internal-api';
 import { Constants } from '../helpers/Constants';
+import DocumentTypeFixture from '../../cypress/fixtures/document_types/index.json';
+import StaffSelectedDocumentTypeFixture from '../../cypress/fixtures/document_types/staffSelected.json';
 
 jest.mock('../boundary/response-mapper');
+//this automatically mocks all instances of ResponseMapper in this suite
 const mockedResponseMapper = ResponseMapper as jest.Mocked<
   typeof ResponseMapper
 >;
@@ -25,6 +28,173 @@ describe('Evidence api gateway', () => {
     client: (client as unknown) as AxiosInstance,
   });
   const validateStatus = expect.any(Function);
+
+  describe('getDocumentTypes', () => {
+    const teamName = 'Document Type Team Name';
+
+    describe('when successful', () => {
+      const expectedJson = DocumentTypeFixture;
+
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: expectedJson,
+        } as AxiosResponse);
+      });
+
+      it('calls axios correctly without a query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=undefined`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a true query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, true);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=true`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a false query param', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, false);
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/${teamName}?enabled=false`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('passes the json from the GET to the mapDocType method', async () => {
+        await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+
+        for (let i = 0; i < expectedJson.length; i++) {
+          expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
+            i + 1,
+            expectedJson[i]
+          );
+        }
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () =>
+          gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('getStaffSelectedDocumentTypes', () => {
+    const teamName = 'Staff Selected Doc Type Team Name';
+
+    describe('when successful', () => {
+      const expectedJson = StaffSelectedDocumentTypeFixture;
+
+      beforeEach(() => {
+        client.get.mockResolvedValue({
+          data: expectedJson,
+        } as AxiosResponse);
+      });
+
+      it('calls axios correctly without a query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=undefined`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a true query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName,
+          true
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=true`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('calls axios correctly with a false query param', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName,
+          false
+        );
+        expect(client.get).toHaveBeenLastCalledWith(
+          `/api/v1/document_types/staff_selected/${teamName}?enabled=false`,
+          {
+            headers: {
+              Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
+              UserEmail: Constants.DUMMY_EMAIL,
+            },
+          }
+        );
+      });
+
+      it('passes the json from the GET to the mapDocType method', async () => {
+        await gateway.getStaffSelectedDocumentTypes(
+          Constants.DUMMY_EMAIL,
+          teamName
+        );
+
+        for (let i = 0; i < expectedJson.length; i++) {
+          expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
+            i + 1,
+            expectedJson[i]
+          );
+        }
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.get.mockRejectedValue(new Error('Network error'));
+        const functionCall = () =>
+          gateway.getStaffSelectedDocumentTypes(
+            Constants.DUMMY_EMAIL,
+            teamName
+          );
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
 
   describe('GET request to /document_types', () => {
     const expectedData = {
@@ -107,141 +277,146 @@ describe('Evidence api gateway', () => {
   });
 
   describe('POST request to /evidence_requests', () => {
-    const path = ['evidence_requests'];
-    const method = 'POST';
-    const headers = {
-      useremail: Constants.DUMMY_EMAIL,
-    };
-    const body = {
-      data: 'bar',
-    };
-    const expectedData = 'response to POST';
-    const expectedStatus = 200;
-    const expectedResponse = { data: expectedData, status: expectedStatus };
-
-    beforeEach(() => {
-      client.request.mockImplementation(
-        async () =>
-          ({
-            data: expectedData,
-            status: expectedStatus,
-          } as AxiosResponse)
-      );
-    });
-
-    it('the request returns the correct response', async () => {
-      const response = await gateway.request(path, method, headers, body);
-      expect(response).toEqual(expectedResponse);
-      expect(client.request).toHaveBeenCalledWith({
-        method,
-        url: `/api/v1/${path.join('/')}`,
-        data: body,
-        headers: {
-          Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
-          useremail: Constants.DUMMY_EMAIL,
-        },
-        validateStatus,
-      });
-    });
-  });
-
-  describe('when request fails', () => {
-    const path = ['evidence_requests'];
-    const method = 'POST';
-    const expectedData = 'error details';
-    const expectedStatus = 400;
-    const expectedResponse = { data: expectedData, status: expectedStatus };
-
-    beforeEach(() => {
-      client.request.mockImplementation(
-        async () =>
-          ({
-            data: expectedData,
-            status: expectedStatus,
-          } as AxiosResponse)
-      );
-    });
-
-    it('does not throw an error', async () => {
-      const response = await gateway.request(path, method, {
+    describe('when the request is successful', () => {
+      const path = ['evidence_requests'];
+      const method = 'POST';
+      const headers = {
         useremail: Constants.DUMMY_EMAIL,
+      };
+      const body = {
+        data: 'bar',
+      };
+      const expectedData = 'response to POST';
+      const expectedStatus = 200;
+      const expectedResponse = { data: expectedData, status: expectedStatus };
+
+      beforeEach(() => {
+        client.request.mockImplementation(
+          async () =>
+            ({
+              data: expectedData,
+              status: expectedStatus,
+            } as AxiosResponse)
+        );
       });
-      expect(response).toEqual(expectedResponse);
+
+      it('the request returns the correct response', async () => {
+        const response = await gateway.request(path, method, headers, body);
+        expect(response).toEqual(expectedResponse);
+        expect(client.request).toHaveBeenCalledWith({
+          method,
+          url: `/api/v1/${path.join('/')}`,
+          data: body,
+          headers: {
+            Authorization:
+              process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_POST,
+            useremail: Constants.DUMMY_EMAIL,
+          },
+          validateStatus,
+        });
+      });
     });
 
-    describe('when axios request fails', () => {
-      const expectedStatus = 500;
-      const expectedResponse = { status: 500 };
+    describe('when request fails', () => {
+      const path = ['evidence_requests'];
+      const method = 'POST';
+      const expectedData = 'error details';
+      const expectedStatus = 400;
+      const expectedResponse = { data: expectedData, status: expectedStatus };
+
       beforeEach(() => {
-        client.request.mockRejectedValue({
-          status: expectedStatus,
-        } as AxiosResponse);
+        client.request.mockImplementation(
+          async () =>
+            ({
+              data: expectedData,
+              status: expectedStatus,
+            } as AxiosResponse)
+        );
       });
 
-      it('returns status code 500', async () => {
+      it('does not throw an error', async () => {
         const response = await gateway.request(path, method, {
           useremail: Constants.DUMMY_EMAIL,
         });
         expect(response).toEqual(expectedResponse);
       });
+
+      describe('when axios request fails', () => {
+        const expectedStatus = 500;
+        const expectedResponse = { status: 500 };
+        beforeEach(() => {
+          client.request.mockRejectedValue({
+            status: expectedStatus,
+          } as AxiosResponse);
+        });
+
+        it('returns status code 500', async () => {
+          const response = await gateway.request(path, method, {
+            useremail: Constants.DUMMY_EMAIL,
+          });
+          expect(response).toEqual(expectedResponse);
+        });
+      });
     });
   });
 
-  describe('for a nested path', () => {
-    const path = ['evidence_requests', '0123456'];
-    const expectedStatus = 200;
-    const expectedData = { foo: 'bar' };
-    const expectedResponse = {
-      data: expectedData,
-      status: expectedStatus,
-    };
-    const method = 'GET';
+  describe('GET request to /evidence_requests', () => {
+    describe('for a nested path', () => {
+      const path = ['evidence_requests', '0123456'];
+      const expectedStatus = 200;
+      const expectedData = { foo: 'bar' };
+      const expectedResponse = {
+        data: expectedData,
+        status: expectedStatus,
+      };
+      const method = 'GET';
 
-    beforeEach(() => {
-      client.request.mockImplementation(
-        async () =>
-          ({
-            data: expectedData,
-            status: expectedStatus,
-          } as AxiosResponse)
-      );
-    });
-
-    it('returns the correct response', async () => {
-      const response = await gateway.request(path, method, {
-        useremail: Constants.DUMMY_EMAIL,
+      beforeEach(() => {
+        client.request.mockImplementation(
+          async () =>
+            ({
+              data: expectedData,
+              status: expectedStatus,
+            } as AxiosResponse)
+        );
       });
-      expect(response).toEqual(expectedResponse);
-      expect(client.request).toHaveBeenCalledWith({
-        method,
-        url: `/api/v1/${path.join('/')}`,
-        data: undefined,
-        validateStatus,
-        headers: {
-          Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+
+      it('returns the correct response', async () => {
+        const response = await gateway.request(path, method, {
           useremail: Constants.DUMMY_EMAIL,
-        },
+        });
+        expect(response).toEqual(expectedResponse);
+        expect(client.request).toHaveBeenCalledWith({
+          method,
+          url: `/api/v1/${path.join('/')}`,
+          data: undefined,
+          validateStatus,
+          headers: {
+            Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+            useremail: Constants.DUMMY_EMAIL,
+          },
+        });
       });
-    });
 
-    it('sends required headers only', async () => {
-      // content-length is not present in EvidenceApiGateway.headersToSendToEvidenceApi
-      // so it is filtered out before sending the request onto EvidenceApi
-      await gateway.request(path, method, {
-        useremail: Constants.DUMMY_EMAIL,
-        'content-type': 'application/json',
-        'content-length': 915,
-      });
-      expect(client.request).toHaveBeenCalledWith({
-        method,
-        url: `/api/v1/${path.join('/')}`,
-        data: undefined,
-        validateStatus,
-        headers: {
-          Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+      it('sends required headers only', async () => {
+        // content-length is not present in EvidenceApiGateway.headersToSendToEvidenceApi
+        // so it is filtered out before sending the request onto EvidenceApi
+        await gateway.request(path, method, {
           useremail: Constants.DUMMY_EMAIL,
           'content-type': 'application/json',
-        },
+          'content-length': 915,
+        });
+        expect(client.request).toHaveBeenCalledWith({
+          method,
+          url: `/api/v1/${path.join('/')}`,
+          data: undefined,
+          validateStatus,
+          headers: {
+            Authorization: process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
+            useremail: Constants.DUMMY_EMAIL,
+            'content-type': 'application/json',
+          },
+        });
       });
     });
   });
