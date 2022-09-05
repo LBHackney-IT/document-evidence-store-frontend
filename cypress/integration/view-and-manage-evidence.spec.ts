@@ -91,19 +91,26 @@ describe('Can view and manage evidence', () => {
   });
 
   it('shows the correct date format', () => {
-    cy.get('.awaitingSubmission').should(
+    cy.get('a.govuk-tabs__tab[href*="Awaiting-submission"]').click();
+    cy.get('section p').should(
       'contain',
       '3:34 pm 30 November 2020 (2 years ago)'
     );
-    cy.get('.toReview').should(
+
+    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+    cy.get('section p').should(
       'contain',
       '10:23 am 14 January 2021 (last year)'
     );
-    cy.get('.reviewed').should(
+
+    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
+    cy.get('section p').should(
       'contain',
       '10:23 am 25 December 2020 (2 years ago)'
     );
-    cy.get('.rejected').should(
+
+    cy.get('a.govuk-tabs__tab[href*="Rejected"]').click();
+    cy.get('section p').should(
       'contain',
       '10:23 am 30 December 2020 (2 years ago)'
     );
