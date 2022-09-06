@@ -225,6 +225,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                           format={
                             ds.document ? ds.document.extension : 'unknown'
                           }
+                          state={ds.state}
                         />
                       ))
                     ) : (
@@ -308,6 +309,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                             }
                             // purpose="Example form"
                             toReview
+                            state={ds.state}
                           />
                         ))
                       ) : (
@@ -348,6 +350,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                             ds.document ? ds.document.extension : 'unknown'
                           }
                           // purpose="Example form"
+                          state={ds.state}
                         />
                       ))
                     ) : (
@@ -386,7 +389,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                           format={
                             ds.document ? ds.document.extension : 'unknown'
                           }
-                          // purpose="Example form"
+                          state={ds.state}
                         />
                       ))}
                   </EvidenceList>
