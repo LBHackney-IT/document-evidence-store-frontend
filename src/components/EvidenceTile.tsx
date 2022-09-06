@@ -4,43 +4,55 @@ import styles from '../styles/EvidenceTile.module.scss';
 import { humanFileSize } from '../helpers/formatters';
 import { DocumentState } from '../domain/document-submission';
 
-export const EvidenceTile: FunctionComponent<Props> = (props) => (
-  <table className={styles.item}>
-    <tr className="govuk-table__row">
-      <td>
-        <li>
-          <div className="govuk-summary-list lbh-summary-list">
-            <h3 className={`${styles.title} lbh-heading-h3`}>
-              <Link
-                href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}`}
-              >
-                <a className="lbh-link">{props.title}</a>
-              </Link>
-              <p
-                className={`lbh-body-s ${styles.title}`}
-                style={{ display: 'inline', marginLeft: '8px' }}
-              >
-                {`(${props.format?.toUpperCase()} ${humanFileSize(
-                  props.fileSizeInBytes
-                )})`}
+export const EvidenceTile: FunctionComponent<Props> = (props) => {
+  const documentState = props.state;
+  const states = ['UPLOADED', 'APPROVED', 'REJECTED'];
+
+  function giveTagColor(documentState: string) {
+    if (documentState === 'UPLOADED') return 'lbh-tag--yellow';
+    else if (documentState === 'APPROVED') return 'lbh-tag--green';
+    else if (documentState === 'REJECTED') return 'lbh-tag--red';
+  }
+  return (
+    <table className={styles.item}>
+      <tr className="govuk-table__row">
+        <td>
+          <li>
+            <div className="govuk-summary-list lbh-summary-list">
+              <h3 className={`${styles.title} lbh-heading-h3`}>
+                <Link
+                  href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}`}
+                >
+                  <a className="lbh-link">{props.title}</a>
+                </Link>
+                <p
+                  className={`lbh-body-s ${styles.title}`}
+                  style={{ display: 'inline', marginLeft: '8px' }}
+                >
+                  {`(${props.format?.toUpperCase()} ${humanFileSize(
+                    props.fileSizeInBytes
+                  )})`}
+                </p>
+              </h3>
+              <p className={`lbh-body-s ${styles.meta}`}>
+                {props.createdAt}
+                {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
-            </h3>
-            <p className={`lbh-body-s ${styles.meta}`}>
-              {props.createdAt}
-              {/* {props.purpose && <> with {props.purpose}</>} */}
-            </p>
-          </div>
-        </li>
-      </td>
-      <td></td>
-      <td style={{ width: 150 }}>
-        {' '}
-        {props.state.charAt(0).toUpperCase() +
-          props.state.toLowerCase().slice(1)}
-      </td>
-    </tr>
-  </table>
-);
+            </div>
+          </li>
+        </td>
+        <td></td>
+        <td style={{ width: 150 }}>
+          <span className={'govuk-tag ' + giveTagColor(documentState)}>
+            {states.includes(documentState)
+              ? documentState
+              : 'AWAITING SUBMISSION'}
+          </span>
+        </td>
+      </tr>
+    </table>
+  );
+};
 
 export const EvidenceList: FunctionComponent<ListProps> = (props) => (
   <ul className={props.twoColumns ? styles.twoColumnList : styles.list}>

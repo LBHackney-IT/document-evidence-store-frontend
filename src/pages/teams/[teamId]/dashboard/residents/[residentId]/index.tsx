@@ -280,45 +280,42 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             id="Pending-review"
           >
             <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <tr className="govuk-table__row">
-                  <div
-                    className="toReview govuk-form-group--error"
-                    style={{
-                      borderLeftColor: '#F0D232',
-                      backgroundColor: '#FFFBF4',
-                      paddingTop: '1.5em',
-                    }}
-                  >
-                    <EvidenceList>
-                      {toReviewDocumentSubmissions &&
-                      toReviewDocumentSubmissions.length > 0 ? (
-                        toReviewDocumentSubmissions.map((ds) => (
-                          <EvidenceTile
-                            teamId={teamId}
-                            residentId={residentId}
-                            key={ds.id}
-                            id={ds.id}
-                            title={String(ds.documentType.title)}
-                            createdAt={formatDate(ds.createdAt)}
-                            fileSizeInBytes={
-                              ds.document ? ds.document.fileSizeInBytes : 0
-                            }
-                            format={
-                              ds.document ? ds.document.extension : 'unknown'
-                            }
-                            // purpose="Example form"
-                            toReview
-                            state={ds.state}
-                          />
-                        ))
-                      ) : (
-                        <h3>There are no documents to review</h3>
-                      )}
-                    </EvidenceList>
-                  </div>
-                </tr>
-              </tbody>
+              {/*<tbody className="govuk-table__body">*/}
+
+              <div
+                className="toReview govuk-form-group--error"
+                style={{
+                  borderLeftColor: '#8EB6DC',
+                  paddingTop: '1.5em',
+                }}
+              >
+                <EvidenceList>
+                  {toReviewDocumentSubmissions &&
+                  toReviewDocumentSubmissions.length > 0 ? (
+                    toReviewDocumentSubmissions.map((ds) => (
+                      <EvidenceTile
+                        teamId={teamId}
+                        residentId={residentId}
+                        key={ds.id}
+                        id={ds.id}
+                        title={String(ds.documentType.title)}
+                        createdAt={formatDate(ds.createdAt)}
+                        fileSizeInBytes={
+                          ds.document ? ds.document.fileSizeInBytes : 0
+                        }
+                        format={ds.document ? ds.document.extension : 'unknown'}
+                        // purpose="Example form"
+                        toReview
+                        state={ds.state}
+                      />
+                    ))
+                  ) : (
+                    <h3>There are no documents to review</h3>
+                  )}
+                </EvidenceList>
+              </div>
+
+              {/*</tbody>*/}
             </table>
           </section>
           {/*Approved*/}
