@@ -38,6 +38,14 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
                 {props.createdAt}
                 {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
+              <p className={`lbh-body-s ${styles.meta}`}>
+                {props.reason}
+                {/* {props.purpose && <> with {props.purpose}</>} */}
+              </p>
+              <p className={`lbh-body-s ${styles.meta}`}>
+                Requested by {props.requestedBy}
+                {/* {props.purpose && <> with {props.purpose}</>} */}
+              </p>
             </div>
           </li>
         </td>
@@ -79,4 +87,6 @@ interface Props {
   purpose?: string;
   toReview?: boolean;
   state: DocumentState;
+  reason: string | undefined;
+  requestedBy: string | undefined;
 }

@@ -20,9 +20,6 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
             <p className={`lbh-body-s ${styles.meta}`}>
               Requested by: {props.requestedBy}
             </p>
-            <p className={`lbh-body-s ${styles.meta}`}>
-              Requested by: {props.requestedBy}
-            </p>
           </div>
         </li>
       </td>

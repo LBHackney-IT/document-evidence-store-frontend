@@ -91,6 +91,22 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
 
+  const getReason = (id: string) => {
+    for (let i = 0; i < evidenceRequests.length; i++) {
+      if (evidenceRequests[i].id === id) {
+        return evidenceRequests[i].reason;
+      } else return evidenceRequests[0].reason;
+    }
+  };
+
+  const getUserRequestedBy = (id: string) => {
+    for (let i = 0; i < evidenceRequests.length; i++) {
+      if (evidenceRequests[i].id === id) {
+        return evidenceRequests[i].userRequestedBy;
+      } else return evidenceRequests[0].userRequestedBy;
+    }
+  };
+
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
@@ -226,6 +242,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                             ds.document ? ds.document.extension : 'unknown'
                           }
                           state={ds.state}
+                          reason={getReason(ds.id)}
+                          requestedBy={getUserRequestedBy(ds.id)}
                         />
                       ))
                     ) : (
@@ -249,22 +267,30 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             <table className="govuk-table">
               <tbody className="govuk-table__body">
                 <tr className="govuk-table__row">
-                  <EvidenceList>
-                    {evidenceAwaitingSubmissions &&
-                    evidenceAwaitingSubmissions.length > 0 ? (
-                      evidenceAwaitingSubmissions.map((item) => (
-                        <EvidenceAwaitingSubmissionTile
-                          key={item.documentType}
-                          id={item.documentType}
-                          documentType={item.documentType}
-                          dateRequested={formatDate(item.dateRequested)}
-                          requestedBy={item.requestedBy}
-                        />
-                      ))
-                    ) : (
-                      <h3>There are no documents awaiting submission</h3>
-                    )}
-                  </EvidenceList>
+                  <div
+                    className="toReview govuk-form-group--error"
+                    style={{
+                      borderLeftColor: '#FFF6BB',
+                      paddingTop: '1.5em',
+                    }}
+                  >
+                    <EvidenceList>
+                      {evidenceAwaitingSubmissions &&
+                      evidenceAwaitingSubmissions.length > 0 ? (
+                        evidenceAwaitingSubmissions.map((item) => (
+                          <EvidenceAwaitingSubmissionTile
+                            key={item.documentType}
+                            id={item.documentType}
+                            documentType={item.documentType}
+                            dateRequested={formatDate(item.dateRequested)}
+                            requestedBy={item.requestedBy}
+                          />
+                        ))
+                      ) : (
+                        <h3>There are no documents awaiting submission</h3>
+                      )}
+                    </EvidenceList>
+                  </div>
                 </tr>
               </tbody>
             </table>
@@ -307,6 +333,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                         // purpose="Example form"
                         toReview
                         state={ds.state}
+                        reason={getReason(ds.id)}
+                        requestedBy={getUserRequestedBy(ds.id)}
                       />
                     ))
                   ) : (
@@ -327,35 +355,47 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             id="Approved"
           >
             <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <tr className="govuk-table__row">
-                  <EvidenceList>
-                    {reviewedDocumentSubmissions &&
-                    reviewedDocumentSubmissions.length > 0 ? (
-                      reviewedDocumentSubmissions.map((ds) => (
-                        <EvidenceTile
-                          teamId={teamId}
-                          residentId={residentId}
-                          key={ds.id}
-                          id={ds.id}
-                          title={String(ds.staffSelectedDocumentType?.title)}
-                          createdAt={formatDate(ds.createdAt)}
-                          fileSizeInBytes={
-                            ds.document ? ds.document.fileSizeInBytes : 0
-                          }
-                          format={
-                            ds.document ? ds.document.extension : 'unknown'
-                          }
-                          // purpose="Example form"
-                          state={ds.state}
-                        />
-                      ))
-                    ) : (
-                      <h3>There are no reviewed documents</h3>
-                    )}
-                  </EvidenceList>
-                </tr>
-              </tbody>
+              <div
+                className="toReview govuk-form-group--error"
+                style={{
+                  borderLeftColor: '#B2DFDB',
+                  paddingTop: '1.5em',
+                }}
+              >
+                <tbody className="govuk-table__body">
+                  <tr className="govuk-table__row">
+                    <EvidenceList>
+                      {reviewedDocumentSubmissions &&
+                      reviewedDocumentSubmissions.length > 0 ? (
+                        reviewedDocumentSubmissions.map((ds) => (
+                          <EvidenceTile
+                            teamId={teamId}
+                            residentId={residentId}
+                            key={ds.id}
+                            id={ds.id}
+                            title={String(ds.staffSelectedDocumentType?.title)}
+                            createdAt={formatDate(ds.createdAt)}
+                            fileSizeInBytes={
+                              ds.document ? ds.document.fileSizeInBytes : 0
+                            }
+                            format={
+                              ds.document ? ds.document.extension : 'unknown'
+                            }
+                            // purpose="Example form"
+                            state={ds.state}
+                            reason={getReason(ds.evidenceRequestId)}
+                            requestedBy={getUserRequestedBy(
+                              ds.evidenceRequestId
+                            )}
+                          />
+                        ))
+                      ) : (
+                        <h3>There are no reviewed documents</h3>
+                      )}
+                    </EvidenceList>
+                  </tr>
+                </tbody>
+              </div>
             </table>
           </section>
           {/*Rejected*/}
@@ -367,31 +407,43 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             id="Rejected"
           >
             <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <tr className="govuk-table__row">
-                  <EvidenceList>
-                    {rejectedDocumentSubmissions &&
-                      rejectedDocumentSubmissions.length > 0 &&
-                      rejectedDocumentSubmissions.map((ds) => (
-                        <EvidenceTile
-                          teamId={teamId}
-                          residentId={residentId}
-                          key={ds.id}
-                          id={ds.id}
-                          title={String(ds.documentType.title)}
-                          createdAt={formatDate(ds.createdAt)}
-                          fileSizeInBytes={
-                            ds.document ? ds.document.fileSizeInBytes : 0
-                          }
-                          format={
-                            ds.document ? ds.document.extension : 'unknown'
-                          }
-                          state={ds.state}
-                        />
-                      ))}
-                  </EvidenceList>
-                </tr>
-              </tbody>
+              <div
+                className="toReview govuk-form-group--error"
+                style={{
+                  borderLeftColor: '#F8D1CD',
+                  paddingTop: '1.5em',
+                }}
+              >
+                <tbody className="govuk-table__body">
+                  <tr className="govuk-table__row">
+                    <EvidenceList>
+                      {rejectedDocumentSubmissions &&
+                        rejectedDocumentSubmissions.length > 0 &&
+                        rejectedDocumentSubmissions.map((ds) => (
+                          <EvidenceTile
+                            teamId={teamId}
+                            residentId={residentId}
+                            key={ds.id}
+                            id={ds.id}
+                            title={String(ds.documentType.title)}
+                            createdAt={formatDate(ds.createdAt)}
+                            fileSizeInBytes={
+                              ds.document ? ds.document.fileSizeInBytes : 0
+                            }
+                            format={
+                              ds.document ? ds.document.extension : 'unknown'
+                            }
+                            state={ds.state}
+                            reason={getReason(ds.evidenceRequestId)}
+                            requestedBy={getUserRequestedBy(
+                              ds.evidenceRequestId
+                            )}
+                          />
+                        ))}
+                    </EvidenceList>
+                  </tr>
+                </tbody>
+              </div>
             </table>
           </section>
         </div>
