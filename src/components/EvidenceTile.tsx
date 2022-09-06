@@ -9,9 +9,9 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
   const states = ['UPLOADED', 'APPROVED', 'REJECTED'];
 
   function giveTagColor(documentState: string) {
-    if (documentState === 'UPLOADED') return 'lbh-tag--yellow';
-    else if (documentState === 'APPROVED') return 'lbh-tag--green';
-    else if (documentState === 'REJECTED') return 'lbh-tag--red';
+    if (documentState === 'UPLOADED') return 'lbh-tag lbh-tag--blue';
+    else if (documentState === 'APPROVED') return 'lbh-tag lbh-tag--green';
+    else if (documentState === 'REJECTED') return 'lbh-tag lbh-tag--red';
   }
   return (
     <table className={styles.item}>
@@ -43,7 +43,10 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
         </td>
         <td></td>
         <td style={{ width: 150 }}>
-          <span className={'govuk-tag ' + giveTagColor(documentState)}>
+          <span
+            className={'govuk-tag ' + giveTagColor(documentState)}
+            style={{ display: 'inline-flex' }}
+          >
             {states.includes(documentState)
               ? documentState
               : 'AWAITING SUBMISSION'}
