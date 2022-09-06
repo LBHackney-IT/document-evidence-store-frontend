@@ -35,11 +35,11 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
                 </p>
               </h3>
               <p className={`lbh-body-s ${styles.meta}`}>
-                {props.createdAt}
+                Date Created : {props.createdAt}
                 {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
               <p className={`lbh-body-s ${styles.meta}`}>
-                {props.reason}
+                Requested Reason: {props.reason}
                 {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
               <p className={`lbh-body-s ${styles.meta}`}>
