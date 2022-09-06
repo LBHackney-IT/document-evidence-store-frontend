@@ -14,7 +14,8 @@
       {
         "id": "passport-scan",
         "title": "Passport",
-        "description": "A valid passport open at the photo page"
+        "description": "A valid passport open at the photo page",
+        "enabled": true
       }
     ],
     "team": "Development Housing Team",
@@ -37,7 +38,8 @@
       {
         "id": "driving-license",
         "title": "Driving license",
-        "description": "A valid UK full or provisional UK driving license"
+        "description": "A valid UK full or provisional UK driving license",
+        "enabled": true
       }
     ],
     "team": "Development Housing Team",
@@ -60,7 +62,8 @@
       {
         "id": "passport-scan",
         "title": "Passport",
-        "description": "A valid passport open at the photo page"
+        "description": "A valid passport open at the photo page",
+        "enabled": true
       }
     ],
     "team": "Development Housing Team",

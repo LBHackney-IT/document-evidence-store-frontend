@@ -75,11 +75,12 @@ export class EvidenceApiGateway {
 
   async getDocumentTypes(
     userEmail: string,
-    teamName: string
+    teamName: string,
+    isEnabled?: boolean
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/${teamName}`,
+        `/api/v1/document_types/${teamName}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -87,7 +88,7 @@ export class EvidenceApiGateway {
           },
         }
       );
-      return data.map(ResponseMapper.mapDocumentType);
+      return data.map((dt) => ResponseMapper.mapDocumentType(dt));
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
@@ -96,11 +97,12 @@ export class EvidenceApiGateway {
 
   async getStaffSelectedDocumentTypes(
     userEmail: string,
-    teamName: string
+    teamName: string,
+    isEnabled?: boolean
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/staff_selected/${teamName}`,
+        `/api/v1/document_types/staff_selected/${teamName}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -108,7 +110,7 @@ export class EvidenceApiGateway {
           },
         }
       );
-      return data.map(ResponseMapper.mapDocumentType);
+      return data.map((er) => ResponseMapper.mapDocumentType(er));
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
