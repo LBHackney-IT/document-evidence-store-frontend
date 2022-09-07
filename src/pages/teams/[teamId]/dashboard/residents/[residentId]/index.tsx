@@ -275,7 +275,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                     className="toReview govuk-form-group--error"
                     style={{
                       borderLeftColor: '#FFF6BB',
-                      paddingTop: '1.5em',
                     }}
                   >
                     <EvidenceList>
@@ -316,7 +315,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 className="toReview govuk-form-group--error"
                 style={{
                   borderLeftColor: '#8EB6DC',
-                  paddingTop: '1.5em',
                 }}
               >
                 <EvidenceList>
@@ -363,7 +361,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 className="toReview govuk-form-group--error"
                 style={{
                   borderLeftColor: '#B2DFDB',
-                  paddingTop: '1.5em',
                 }}
               >
                 <tbody className="govuk-table__body">
@@ -394,7 +391,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                           />
                         ))
                       ) : (
-                        <h3>There are no reviewed documents</h3>
+                        <h3>There are no approved documents</h3>
                       )}
                     </EvidenceList>
                   </tr>
@@ -415,14 +412,13 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 className="toReview govuk-form-group--error"
                 style={{
                   borderLeftColor: '#F8D1CD',
-                  paddingTop: '1.5em',
                 }}
               >
                 <tbody className="govuk-table__body">
                   <tr className="govuk-table__row">
                     <EvidenceList>
                       {rejectedDocumentSubmissions &&
-                        rejectedDocumentSubmissions.length > 0 &&
+                      rejectedDocumentSubmissions.length > 0 ? (
                         rejectedDocumentSubmissions.map((ds) => (
                           <EvidenceTile
                             teamId={teamId}
@@ -443,7 +439,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                               ds.evidenceRequestId
                             )}
                           />
-                        ))}
+                        ))
+                      ) : (
+                        <h3>There are no rejected documents</h3>
+                      )}
                     </EvidenceList>
                   </tr>
                 </tbody>
