@@ -91,10 +91,13 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
 
+  console.log(evidenceRequests);
+
   const getReason = (id: string) => {
     for (let i = 0; i < evidenceRequests.length; i++) {
       if (evidenceRequests[i].id === id) {
         return evidenceRequests[i].reason;
+        break;
       } else return evidenceRequests[0].reason;
     }
   };
@@ -103,6 +106,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     for (let i = 0; i < evidenceRequests.length; i++) {
       if (evidenceRequests[i].id === id) {
         return evidenceRequests[i].userRequestedBy;
+        break;
       } else return evidenceRequests[0].userRequestedBy;
     }
   };
