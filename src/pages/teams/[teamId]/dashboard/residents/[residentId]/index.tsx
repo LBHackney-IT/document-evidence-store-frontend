@@ -246,8 +246,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                             ds.document ? ds.document.extension : 'unknown'
                           }
                           state={ds.state}
-                          reason={getReason(ds.id)}
-                          requestedBy={getUserRequestedBy(ds.id)}
+                          reason={getReason(ds.evidenceRequestId)}
+                          requestedBy={getUserRequestedBy(ds.evidenceRequestId)}
                         />
                       ))
                     ) : (
@@ -337,8 +337,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                         // purpose="Example form"
                         toReview
                         state={ds.state}
-                        reason={getReason(ds.id)}
-                        requestedBy={getUserRequestedBy(ds.id)}
+                        reason={getReason(ds.evidenceRequestId)}
+                        requestedBy={getUserRequestedBy(ds.evidenceRequestId)}
                       />
                     ))
                   ) : (
