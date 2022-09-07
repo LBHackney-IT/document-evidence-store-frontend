@@ -8,11 +8,13 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
   const documentState = props.state;
   const states = ['UPLOADED', 'APPROVED', 'REJECTED'];
 
-  function giveTagColor(documentState: string) {
-    if (documentState === 'UPLOADED') return 'lbh-tag lbh-tag--blue';
-    else if (documentState === 'APPROVED') return 'lbh-tag lbh-tag--green';
-    else if (documentState === 'REJECTED') return 'lbh-tag lbh-tag--red';
-  }
+  const giveTagColor = (documentState: string) => {
+    {
+      if (documentState === 'UPLOADED') return 'lbh-tag lbh-tag--blue';
+      else if (documentState === 'APPROVED') return 'lbh-tag lbh-tag--green';
+      else if (documentState === 'REJECTED') return 'lbh-tag lbh-tag--red';
+    }
+  };
   return (
     <table className={styles.item}>
       <tr className="govuk-table__row">
@@ -36,26 +38,23 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
               </h3>
               <p className={`lbh-body-s ${styles.meta}`}>
                 Date Created : {props.createdAt}
-                {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
-              <p className={`lbh-body-s ${styles.meta}`}>
-                Requested Reason: {props.reason}
-                {/* {props.purpose && <> with {props.purpose}</>} */}
-              </p>
+              <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
               <p className={`lbh-body-s ${styles.meta}`}>
                 Requested by {props.requestedBy}
-                {/* {props.purpose && <> with {props.purpose}</>} */}
               </p>
             </div>
           </li>
         </td>
         <td></td>
-        <td style={{ width: 150 }}>
+        <td style={{ width: 180 }}>
           <span
             className={'govuk-tag ' + giveTagColor(documentState)}
             style={{ display: 'inline-flex' }}
           >
-            {states.includes(documentState)
+            {documentState === 'UPLOADED'
+              ? 'PENDING REVIEW'
+              : states.includes(documentState)
               ? documentState
               : 'AWAITING SUBMISSION'}
           </span>
