@@ -50,7 +50,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
         <td style={{ width: 180 }}>
           <span
             className={'govuk-tag ' + giveTagColor(documentState)}
-            style={{ display: 'inline-flex' }}
+            style={{ display: 'inline' }}
           >
             {documentState === 'UPLOADED'
               ? 'PENDING REVIEW'
