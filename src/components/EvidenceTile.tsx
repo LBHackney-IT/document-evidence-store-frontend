@@ -6,8 +6,6 @@ import { DocumentState } from '../domain/document-submission';
 
 export const EvidenceTile: FunctionComponent<Props> = (props) => {
   const documentState = props.state;
-  const states = ['UPLOADED', 'APPROVED', 'REJECTED'];
-
   const giveTagColor = (documentState: string) => {
     {
       if (documentState === 'UPLOADED') return 'lbh-tag lbh-tag--blue';
@@ -37,7 +35,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
                 </p>
               </h3>
               <p className={`lbh-body-s ${styles.meta}`}>
-                Date Created : {props.createdAt}
+                Date created: {props.createdAt}
               </p>
               <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
               <p className={`lbh-body-s ${styles.meta}`}>
@@ -52,11 +50,7 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
             className={'govuk-tag ' + giveTagColor(documentState)}
             style={{ display: 'inline' }}
           >
-            {documentState === 'UPLOADED'
-              ? 'PENDING REVIEW'
-              : states.includes(documentState)
-              ? documentState
-              : 'AWAITING SUBMISSION'}
+            {documentState === 'UPLOADED' ? 'PENDING REVIEW' : documentState}
           </span>
         </td>
       </tr>
