@@ -26,52 +26,57 @@ describe('Can view and manage evidence', () => {
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
-  // it('pages have no detectable accessibility issues', () => {
-  //   cy.checkA11y({
-  //     exclude: ['table'],
-  //   });
-  //   cy.get('a').contains('Proof of ID').click();
-  //   cy.contains('h1', 'Namey McNameProof of ID');
-  //   cy.checkA11y();
-  // });
+  it('pages have no detectable accessibility issues', () => {
+    cy.checkA11y({
+      exclude: ['table'],
+    });
+    cy.get('a').contains('Proof of ID').click();
+    cy.contains('h1', 'Namey McNameProof of ID');
+    cy.checkA11y();
+  });
 
-  // it('checks if resident information is displayed correctly in a table', () => {
-  //   cy.get('tbody').within(() => {
-  //     cy.get('tr')
-  //       .eq(0)
-  //       .should('contain.text', 'Name')
-  //       .and('contain.text', 'Namey McName');
-  //     cy.get('tr')
-  //       .eq(1)
-  //       .should('contain.text', 'Mobile number')
-  //       .and('contain.text', '+447123456780');
-  //     cy.get('tr')
-  //       .eq(2)
-  //       .should('contain.text', 'Email address')
-  //       .and('contain.text', 'frodo@bagend.com');
-  //   });
-  // });
+  it('checks if resident information is displayed correctly in a table', () => {
+    cy.get('tbody').within(() => {
+      cy.get('tr')
+        .eq(0)
+        .should('contain.text', 'Name')
+        .and('contain.text', 'Namey McName');
+      cy.get('tr')
+        .eq(1)
+        .should('contain.text', 'Mobile number')
+        .and('contain.text', '+447123456780');
+      cy.get('tr')
+        .eq(2)
+        .should('contain.text', 'Email address')
+        .and('contain.text', 'frodo@bagend.com');
+    });
+  });
 
-  // it('has breadcrumbs on resident page', () => {
-  //   cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
-  //   cy.get('[data-testid="search-page"]').click();
-  //   cy.get('a').contains('Namey McName');
-  //   cy.get('h1').contains('Browse residents');
-  // });
+  it('has breadcrumbs on resident page', () => {
+    cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
+    cy.get('[data-testid="search-page"]').click();
+    cy.get('a').contains('Namey McName');
+    cy.get('h1').contains('Browse residents');
+  });
 
-  it('shows resident contact details and document submissions in all states', () => {
+  it('shows all documents tab and document submissions in all states', () => {
     cy.get('h1').should('contain', 'Namey McName');
     cy.get('h2').should('contain', 'All documents');
+
     cy.get('section[id="All-documents"] table')
       .eq(1)
-      .should('contain', 'UPLOADED');
+      .should('contain', 'AWAITING SUBMISSION');
+
     cy.get('section[id="All-documents"] table')
       .eq(4)
-      .should('contain', 'APPROVED');
+      .should('contain', 'PENDING REVIEW');
     cy.get('section[id="All-documents"] table')
-      .eq(5)
+      .eq(7)
+      .should('contain', 'APPROVED')
+      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
+    cy.get('section[id="All-documents"] table')
+      .eq(8)
       .should('contain', 'REJECTED');
-    cy.get('[class^="govuk-table__row"]').should('have.length', 6);
   });
 
   it('shows the correct date format', () => {
@@ -145,7 +150,6 @@ describe('Can view and manage evidence', () => {
 
     cy.contains('PDF');
     cy.contains('54.0 KB');
-    // cy.get('a').should('contain', 'Open in new tab').and('have.attr', 'href');
   });
 
   it('can approve the document', () => {
@@ -281,7 +285,7 @@ describe('Can view and manage evidence', () => {
 
   it('can view approved documents', () => {
     cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
-    cy.get('section[id="Approved"]').eq(0).contains('Proof of ID').click();
+    cy.get('section[id="Approved"]').eq(0).contains('Passport').click();
   });
 
   it('can view rejected documents', () => {
@@ -293,106 +297,112 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view page warning for document with expired claim', () => {
-    cy.get('.reviewed a').eq(1).contains('Passport').click();
-    cy.get('section').contains('This document is no longer valid');
-  });
-});
+    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
+    cy.get('section[id="Approved"] a').eq(1).contains('Passport').click();
 
-describe('When a user inputs a validity date that is in the past', () => {
-  beforeEach(() => {
-    cy.login();
-
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      req.responseTimeout = 5000;
-      req.reply((res) => {
-        res.send(400, 'The date cannot be in the past.');
-      });
-    }).as('acceptInvalidDate');
-
-    cy.visit(`http://localhost:3000/teams/2/dashboard`);
-
-    cy.get('a').contains('Namey McName').click();
-    cy.contains('h1', 'Namey McName');
-  });
-
-  it('shows an error', () => {
-    //arrange
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"').eq(0).contains('Proof of ID').click();
-
-    cy.get('button').contains('Accept').click();
-
-    cy.get('[role=dialog]').within(() => {
-      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
-
-      cy.get('label').contains('Day').next('input').type('01');
-      cy.get('label').contains('Month').next('input').type('01');
-      cy.get('label').contains('Year').next('input').type('1992');
-
-      //act
-      cy.get('button').contains('Yes, accept').click();
-
-      //assert
-      cy.wait('@acceptInvalidDate');
-      cy.get('fieldset>span')
-        .eq(0)
-        .should('contain', 'The date cannot be in the past.');
-    });
-  });
-});
-
-describe('Can view and manage evidence with HEIC document', () => {
-  beforeEach(() => {
-    cy.login();
-
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      const body = {
-        ...dsFixtureHeic,
-        id: 456,
-        state: req.body.state,
-        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-      };
-      req.reply((res) => {
-        res.send(200, body);
-      });
-    });
-
-    cy.visit(`http://localhost:3000/teams/2/dashboard`);
-    cy.injectAxe();
-
-    cy.get('a').contains('Namey McName').click();
-    cy.contains('h1', 'Namey McName');
-  });
-
-  it('lets you see an heic document detail page with actions and information', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"] a')
-      .eq(2)
-      .contains('Proof of ID')
-      .click();
-
-    cy.contains('h1', 'Namey McNameProof of ID');
-
-    cy.get('button').should('contain', 'Accept');
-    cy.get('button').should('contain', 'Request new file');
-    cy.get('h2').should('contain', 'Preview');
-    cy.get('svg[class="icon-loading"]').should('be.visible');
-    cy.get('figure').should('contain', 'HEIC');
-    cy.get('figure').should('contain', '9.8 KB');
-    cy.get('[data-testid="conversion-image"]')
-      .should('have.attr', 'src')
-      .then((src) => expect(src).to.have.length(0));
-    cy.wait(2000);
-    cy.get('[data-testid="conversion-image"]')
-      .should('have.attr', 'src')
-      .then((src) => expect(src).have.length.greaterThan(0));
-    cy.get('[data-testid="conversion-image"]').should(
-      'have.attr',
-      'alt',
-      'Proof of ID'
+    cy.get('[data-testid="page-warning"]').contains(
+      'This document is no longer valid'
     );
-    cy.get('svg[class="icon-loading]').should('not.exist');
+  });
+
+  describe('When a user inputs a validity date that is in the past', () => {
+    beforeEach(() => {
+      cy.login();
+
+      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+        req.responseTimeout = 5000;
+        req.reply((res) => {
+          res.send(400, 'The date cannot be in the past.');
+        });
+      }).as('acceptInvalidDate');
+
+      cy.visit(`http://localhost:3000/teams/2/dashboard`);
+
+      cy.get('a').contains('Namey McName').click();
+      cy.contains('h1', 'Namey McName');
+    });
+
+    it('shows an error', () => {
+      //arrange
+      cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+      cy.get('section[id="Pending-review"')
+        .eq(0)
+        .contains('Proof of ID')
+        .click();
+
+      cy.get('button').contains('Accept').click();
+
+      cy.get('[role=dialog]').within(() => {
+        cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+
+        cy.get('label').contains('Day').next('input').type('01');
+        cy.get('label').contains('Month').next('input').type('01');
+        cy.get('label').contains('Year').next('input').type('1992');
+
+        //act
+        cy.get('button').contains('Yes, accept').click();
+
+        //assert
+        cy.wait('@acceptInvalidDate');
+        cy.get('fieldset>span')
+          .eq(0)
+          .should('contain', 'The date cannot be in the past.');
+      });
+    });
+  });
+
+  describe('Can view and manage evidence with HEIC document', () => {
+    beforeEach(() => {
+      cy.login();
+
+      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+        const body = {
+          ...dsFixtureHeic,
+          id: 456,
+          state: req.body.state,
+          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+        };
+        req.reply((res) => {
+          res.send(200, body);
+        });
+      });
+
+      cy.visit(`http://localhost:3000/teams/2/dashboard`);
+      cy.injectAxe();
+
+      cy.get('a').contains('Namey McName').click();
+      cy.contains('h1', 'Namey McName');
+    });
+
+    it('lets you see an heic document detail page with actions and information', () => {
+      cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
+      cy.get('section[id="Pending-review"] a')
+        .eq(2)
+        .contains('Proof of ID')
+        .click();
+
+      cy.contains('h1', 'Namey McNameProof of ID');
+
+      cy.get('button').should('contain', 'Accept');
+      cy.get('button').should('contain', 'Request new file');
+      cy.get('h2').should('contain', 'Preview');
+      cy.get('svg[class="icon-loading"]').should('be.visible');
+      cy.get('figure').should('contain', 'HEIC');
+      cy.get('figure').should('contain', '9.8 KB');
+      cy.get('[data-testid="conversion-image"]')
+        .should('have.attr', 'src')
+        .then((src) => expect(src).to.have.length(0));
+      cy.wait(2000);
+      cy.get('[data-testid="conversion-image"]')
+        .should('have.attr', 'src')
+        .then((src) => expect(src).have.length.greaterThan(0));
+      cy.get('[data-testid="conversion-image"]').should(
+        'have.attr',
+        'alt',
+        'Proof of ID'
+      );
+      cy.get('svg[class="icon-loading]').should('not.exist');
+    });
   });
 });
-
 export {};
