@@ -54,6 +54,18 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     setSelectedTab(tab);
   };
 
+  const selectTab = (tabName: string) => {
+    if (selectedTab === tabName) {
+      return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
+    } else return 'govuk-tabs__list-item';
+  };
+
+  const showPanel = (tabName: string) => {
+    if (selectedTab === tabName) {
+      return 'govuk-tabs__panel';
+    } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
+  };
+
   interface EvidenceAwaitingSubmission {
     documentType: string;
     dateRequested: DateTime | undefined;
@@ -137,14 +149,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <div className="js-enabled">
         <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
           <ul className="govuk-tabs__list">
-            <li
-              className={
-                'govuk-tabs__list-item' +
-                (selectedTab === 'All documents'
-                  ? ' govuk-tabs__list-item--selected'
-                  : ' ')
-              }
-            >
+            <li className={selectTab('All documents')}>
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('All documents')}
@@ -153,14 +158,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 <h2 className="govuk-body">All documents</h2>
               </a>
             </li>
-            <li
-              className={
-                'govuk-tabs__list-item' +
-                (selectedTab === 'Awaiting submission'
-                  ? ' govuk-tabs__list-item--selected'
-                  : ' ')
-              }
-            >
+            <li className={selectTab('Awaiting submission')}>
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Awaiting submission')}
@@ -169,14 +167,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 <h2 className="govuk-body">Awaiting submission</h2>
               </a>
             </li>
-            <li
-              className={
-                'govuk-tabs__list-item' +
-                (selectedTab === 'Pending Review'
-                  ? ' govuk-tabs__list-item--selected'
-                  : ' ')
-              }
-            >
+            <li className={selectTab('Pending Review')}>
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Pending Review')}
@@ -185,14 +176,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 <h2 className="govuk-body">Pending Review</h2>
               </a>
             </li>
-            <li
-              className={
-                'govuk-tabs__list-item' +
-                (selectedTab === 'Approved'
-                  ? ' govuk-tabs__list-item--selected'
-                  : ' ')
-              }
-            >
+            <li className={selectTab('Approved')}>
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Approved')}
@@ -201,14 +185,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 <h2 className="govuk-body">Approved</h2>
               </a>
             </li>
-            <li
-              className={
-                'govuk-tabs__list-item' +
-                (selectedTab === 'Rejected'
-                  ? ' govuk-tabs__list-item--selected'
-                  : ' ')
-              }
-            >
+            <li className={selectTab('Rejected')}>
               <a
                 className="govuk-tabs__tab"
                 onClick={() => handleTabClick('Rejected')}
@@ -242,7 +219,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                             requestedBy={evidence.requestedBy}
                           />
                         ))}
-                      {documentSubmissions && documentSubmissions.length > 0 ? (
+                      {evidenceAwaitingSubmissions ||
+                      (documentSubmissions &&
+                        documentSubmissions.length > 0) ? (
                         documentSubmissions.map((ds) => (
                           <EvidenceTile
                             teamId={teamId}
@@ -275,12 +254,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           </section>
           {/*Awaiting submission*/}
           <section
-            className={
-              'govuk-tabs__panel ' +
-              (selectedTab === 'Awaiting submission'
-                ? ' '
-                : 'govuk-tabs__panel--hidden')
-            }
+            className={showPanel('Awaiting submission')}
             id="Awaiting-submission"
           >
             <table className="govuk-table">
@@ -314,15 +288,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Pending Review*/}
-          <section
-            className={
-              'govuk-tabs__panel ' +
-              (selectedTab === 'Pending Review'
-                ? ' '
-                : 'govuk-tabs__panel--hidden')
-            }
-            id="Pending-review"
-          >
+          <section className={showPanel('Pending Review')} id="Pending-review">
             <table className="govuk-table">
               <tbody className="govuk-table__body">
                 <div
@@ -364,13 +330,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Approved*/}
-          <section
-            className={
-              'govuk-tabs__panel ' +
-              (selectedTab === 'Approved' ? ' ' : 'govuk-tabs__panel--hidden')
-            }
-            id="Approved"
-          >
+          <section className={showPanel('Approved')} id="Approved">
             <table className="govuk-table">
               <div
                 className="toReview govuk-form-group--error"
@@ -415,13 +375,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Rejected*/}
-          <section
-            className={
-              'govuk-tabs__panel ' +
-              (selectedTab === 'Rejected' ? ' ' : 'govuk-tabs__panel--hidden')
-            }
-            id="Rejected"
-          >
+          <section className={showPanel('Rejected')} id="Rejected">
             <table className="govuk-table">
               <div
                 className="toReview govuk-form-group--error"
