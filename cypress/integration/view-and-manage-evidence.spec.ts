@@ -322,7 +322,7 @@ describe('Can view and manage evidence', () => {
       cy.contains('h1', 'Namey McName');
     });
 
-    it('shows an error', () => {
+    it('shows an error', async () => {
       //arrange
       cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
       cy.get('section[id="Pending-review"')
@@ -340,9 +340,10 @@ describe('Can view and manage evidence', () => {
         cy.get('label').contains('Year').next('input').type('1992');
 
         //act
-        cy.get('button').contains('Yes, accept').click();
+        cy.get('[data-testid="accept"]').click();
 
         //assert
+
         cy.wait('@acceptInvalidDate');
         cy.get('fieldset>span')
           .eq(0)
@@ -392,7 +393,7 @@ describe('Can view and manage evidence', () => {
       cy.get('[data-testid="conversion-image"]')
         .should('have.attr', 'src')
         .then((src) => expect(src).to.have.length(0));
-      cy.wait(2000);
+      cy.wait(5000);
       cy.get('[data-testid="conversion-image"]')
         .should('have.attr', 'src')
         .then((src) => expect(src).have.length.greaterThan(0));

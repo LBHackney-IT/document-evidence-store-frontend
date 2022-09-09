@@ -192,6 +192,7 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
                 className="govuk-button lbh-button"
                 type="submit"
                 disabled={isSubmitting}
+                data-testid="accept"
               >
                 Yes, accept
               </button>
