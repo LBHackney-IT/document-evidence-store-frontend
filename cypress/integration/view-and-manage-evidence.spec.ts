@@ -107,7 +107,7 @@ describe('Can view and manage evidence', () => {
 
   it('lets you see an image document detail page with actions and information', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]')
-      .should('contain', 'Pending Review')
+      .should('contain', 'Pending review')
       .click();
     cy.get('section[id="pending-review"]')
       .eq(0)
