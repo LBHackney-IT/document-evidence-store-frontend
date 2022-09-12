@@ -109,12 +109,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   }, [evidenceRequests, documentSubmissions]);
 
   const getReason = (id: string) => {
-    for (let i = 0; i < evidenceRequests.length; i++) {
-      if (evidenceRequests[i].id === id) {
-        return evidenceRequests[i].reason;
-        break;
-      } else return evidenceRequests[0].reason;
-    }
+    const evidenceRequest = evidenceRequests.find((er) => er.id === id);
+    return evidenceRequest?.reason;
   };
 
   const getUserRequestedBy = (id: string) => {
