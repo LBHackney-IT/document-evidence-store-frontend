@@ -63,53 +63,53 @@ describe('Can view and manage evidence', () => {
     cy.get('h1').should('contain', 'Namey McName');
     cy.get('h2').should('contain', 'All documents');
 
-    cy.get('section[id="All-documents"] table')
+    cy.get('section[id="all-documents"] table')
       .eq(1)
       .should('contain', 'AWAITING SUBMISSION');
 
-    cy.get('section[id="All-documents"] table')
+    cy.get('section[id="all-documents"] table')
       .eq(4)
       .should('contain', 'PENDING REVIEW');
-    cy.get('section[id="All-documents"] table')
+    cy.get('section[id="all-documents"] table')
       .eq(7)
       .should('contain', 'APPROVED')
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
-    cy.get('section[id="All-documents"] table')
+    cy.get('section[id="all-documents"] table')
       .eq(8)
       .should('contain', 'REJECTED');
   });
 
   it('shows the correct date format', () => {
-    cy.get('a.govuk-tabs__tab[href*="Awaiting-submission"]').click();
-    cy.get('section[id="Awaiting-submission"] p').should(
+    cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
+    cy.get('section[id="awaiting-submission"] p').should(
       'contain',
       '3:34 pm 30 November 2020 (2 years ago)'
     );
 
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"] p').should(
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"] p').should(
       'contain',
       '10:23 am 14 January 2021 (last year)'
     );
 
-    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
-    cy.get('section[id="Approved"] p').should(
+    cy.get('a.govuk-tabs__tab[href*="approved"]').click();
+    cy.get('section[id="approved"] p').should(
       'contain',
       '10:23 am 25 December 2020 (2 years ago)'
     );
 
-    cy.get('a.govuk-tabs__tab[href*="Rejected"]').click();
-    cy.get('section[id="Rejected"] p').should(
+    cy.get('a.govuk-tabs__tab[href*="rejected"]').click();
+    cy.get('section[id="rejected"] p').should(
       'contain',
       '10:23 am 30 December 2020 (2 years ago)'
     );
   });
 
   it('lets you see an image document detail page with actions and information', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]')
       .should('contain', 'Pending Review')
       .click();
-    cy.get('section[id="Pending-review"]')
+    cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
       .click();
@@ -134,8 +134,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('lets you see an PDF document detail page with actions and information', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"] a')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"] a')
       .eq(1)
       .contains('Proof of ID')
       .click();
@@ -153,8 +153,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"]')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
       .click();
@@ -190,8 +190,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can throw error when entering an incorrect date when approving document', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"]')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
       .click();
@@ -218,8 +218,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve document if date entered then removed', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"]')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
       .click();
@@ -260,8 +260,8 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject the document', () => {
-    cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-    cy.get('section[id="Pending-review"]')
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
       .click();
@@ -284,21 +284,21 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can view approved documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
-    cy.get('section[id="Approved"]').eq(0).contains('Passport').click();
+    cy.get('a.govuk-tabs__tab[href*="approved"]').click();
+    cy.get('section[id="approved"]').eq(0).contains('Passport').click();
   });
 
   it('can view rejected documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="Rejected"]').click();
-    cy.get('section[id="Rejected"]').eq(0).contains('Proof of ID').click();
+    cy.get('a.govuk-tabs__tab[href*="rejected"]').click();
+    cy.get('section[id="rejected"]').eq(0).contains('Proof of ID').click();
 
     cy.get('h2').should('contain', 'History');
     cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
 
   it('can view page warning for document with expired claim', () => {
-    cy.get('a.govuk-tabs__tab[href*="Approved"]').click();
-    cy.get('section[id="Approved"] a').eq(1).contains('Passport').click();
+    cy.get('a.govuk-tabs__tab[href*="approved"]').click();
+    cy.get('section[id="approved"] a').eq(1).contains('Passport').click();
 
     cy.get('[data-testid="page-warning"]').contains(
       'This document is no longer valid'
@@ -324,8 +324,8 @@ describe('Can view and manage evidence', () => {
 
     it('shows an error', async () => {
       //arrange
-      cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-      cy.get('section[id="Pending-review"')
+      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+      cy.get('section[id="pending-review"')
         .eq(0)
         .contains('Proof of ID')
         .click();
@@ -376,8 +376,8 @@ describe('Can view and manage evidence', () => {
     });
 
     it('lets you see an heic document detail page with actions and information', () => {
-      cy.get('a.govuk-tabs__tab[href*="Pending-review"]').click();
-      cy.get('section[id="Pending-review"] a')
+      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+      cy.get('section[id="pending-review"] a')
         .eq(2)
         .contains('Proof of ID')
         .click();

@@ -20,6 +20,7 @@ import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { DateTime } from 'luxon';
 import { EvidenceAwaitingSubmissionTile } from 'src/components/EvidenceAwaitingSubmissionTile';
+import { DocumentSubmissionTabState } from '../../../../../../domain/enums/DocumentSubmissionTabState';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -49,8 +50,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const rejectedDocumentSubmissions = documentSubmissions.filter(
     (ds) => ds.state == 'REJECTED'
   );
-  const [selectedTab, setSelectedTab] = useState('All documents');
-  const handleTabClick = (tab: string) => {
+  const [selectedTab, setSelectedTab] = useState(
+    DocumentSubmissionTabState.ALL_DOCUMENTS
+  );
+
+  const handleTabClick = (tab: DocumentSubmissionTabState) => {
     setSelectedTab(tab);
   };
 
@@ -104,8 +108,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
 
-  console.log(evidenceRequests);
-
   const getReason = (id: string) => {
     for (let i = 0; i < evidenceRequests.length; i++) {
       if (evidenceRequests[i].id === id) {
@@ -142,54 +144,70 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       </h1>
       <ResidentDetailsTable resident={resident} />
       <div
+        className="js-enabled"
         style={{
           paddingTop: '1.5em',
         }}
-      ></div>
-      <div className="js-enabled">
+      >
         <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
           <ul className="govuk-tabs__list">
-            <li className={selectTab('All documents')}>
+            <li className={selectTab(DocumentSubmissionTabState.ALL_DOCUMENTS)}>
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('All documents')}
+                onClick={() =>
+                  handleTabClick(DocumentSubmissionTabState.ALL_DOCUMENTS)
+                }
                 href={'#All-documents'}
               >
                 <h2 className="govuk-body">All documents</h2>
               </a>
             </li>
-            <li className={selectTab('Awaiting submission')}>
+            <li
+              className={selectTab(
+                DocumentSubmissionTabState.AWAITING_SUBMISSION
+              )}
+            >
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('Awaiting submission')}
-                href={'#Awaiting-submission'}
+                onClick={() =>
+                  handleTabClick(DocumentSubmissionTabState.AWAITING_SUBMISSION)
+                }
+                href={'#' + DocumentSubmissionTabState.AWAITING_SUBMISSION}
               >
                 <h2 className="govuk-body">Awaiting submission</h2>
               </a>
             </li>
-            <li className={selectTab('Pending Review')}>
+            <li
+              className={selectTab(DocumentSubmissionTabState.PENDING_REVIEW)}
+            >
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('Pending Review')}
-                href={'#Pending-review'}
+                onClick={() =>
+                  handleTabClick(DocumentSubmissionTabState.PENDING_REVIEW)
+                }
+                href={'#' + DocumentSubmissionTabState.PENDING_REVIEW}
               >
                 <h2 className="govuk-body">Pending Review</h2>
               </a>
             </li>
-            <li className={selectTab('Approved')}>
+            <li className={selectTab(DocumentSubmissionTabState.APPROVED)}>
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('Approved')}
-                href={'#Approved'}
+                onClick={() =>
+                  handleTabClick(DocumentSubmissionTabState.APPROVED)
+                }
+                href={'#' + DocumentSubmissionTabState.APPROVED}
               >
                 <h2 className="govuk-body">Approved</h2>
               </a>
             </li>
-            <li className={selectTab('Rejected')}>
+            <li className={selectTab(DocumentSubmissionTabState.REJECTED)}>
               <a
                 className="govuk-tabs__tab"
-                onClick={() => handleTabClick('Rejected')}
-                href={'#Rejected'}
+                onClick={() =>
+                  handleTabClick(DocumentSubmissionTabState.REJECTED)
+                }
+                href={'#' + DocumentSubmissionTabState.REJECTED}
               >
                 <h2 className="govuk-body">Rejected</h2>
               </a>
@@ -198,11 +216,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           <section
             className={
               'govuk-tabs__panel ' +
-              (selectedTab === 'All documents'
+              (selectedTab === DocumentSubmissionTabState.ALL_DOCUMENTS
                 ? ' '
                 : 'govuk-tabs__panel--hidden')
             }
-            id="All-documents"
+            id={DocumentSubmissionTabState.ALL_DOCUMENTS}
           >
             <table className="govuk-table">
               <tbody className="govuk-table__body">
@@ -254,8 +272,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           </section>
           {/*Awaiting submission*/}
           <section
-            className={showPanel('Awaiting submission')}
-            id="Awaiting-submission"
+            className={showPanel(
+              DocumentSubmissionTabState.AWAITING_SUBMISSION
+            )}
+            id={DocumentSubmissionTabState.AWAITING_SUBMISSION}
           >
             <table className="govuk-table">
               <tbody className="govuk-table__body">
@@ -288,7 +308,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Pending Review*/}
-          <section className={showPanel('Pending Review')} id="Pending-review">
+          <section
+            className={showPanel(DocumentSubmissionTabState.PENDING_REVIEW)}
+            id={DocumentSubmissionTabState.PENDING_REVIEW}
+          >
             <table className="govuk-table">
               <tbody className="govuk-table__body">
                 <div
@@ -330,7 +353,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Approved*/}
-          <section className={showPanel('Approved')} id="Approved">
+          <section
+            className={showPanel(DocumentSubmissionTabState.APPROVED)}
+            id={DocumentSubmissionTabState.APPROVED}
+          >
             <table className="govuk-table">
               <div
                 className="toReview govuk-form-group--error"
@@ -375,7 +401,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
             </table>
           </section>
           {/*Rejected*/}
-          <section className={showPanel('Rejected')} id="Rejected">
+          <section
+            className={showPanel(DocumentSubmissionTabState.REJECTED)}
+            id={DocumentSubmissionTabState.REJECTED}
+          >
             <table className="govuk-table">
               <div
                 className="toReview govuk-form-group--error"
