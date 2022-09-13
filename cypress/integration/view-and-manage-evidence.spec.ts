@@ -283,6 +283,22 @@ describe('Can view and manage evidence', () => {
     });
   });
 
+  it('can view awaiting submission documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
+    cy.get('section[id="awaiting-submission"]')
+      .eq(0)
+      .contains('Passport')
+      .click();
+  });
+
+  it('can view pending review documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+  });
+
   it('can view approved documents', () => {
     cy.get('a.govuk-tabs__tab[href*="approved"]').click();
     cy.get('section[id="approved"]').eq(0).contains('Passport').click();
