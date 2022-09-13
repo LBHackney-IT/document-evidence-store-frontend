@@ -2,7 +2,10 @@ import { useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  IDocumentSubmission,
+} from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
 import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
@@ -29,18 +32,24 @@ type ResidentPageProps = {
   feedbackUrl: string;
 };
 
+type EvidenceAwaitingSubmission = {
+  documentType: string;
+  dateRequested: DateTime | undefined;
+  requestedBy: string | undefined;
+  kind: 'EvidenceAwaitingSubmission';
+};
+
+type IDocumentSubmissionWithKind = IDocumentSubmission & {
+  kind: 'DocumentSubmissionWithKind';
+};
+
+type DocumentTabItem = IDocumentSubmissionWithKind | EvidenceAwaitingSubmission;
+
 type DocumentTab = {
   id: string;
   humanReadableName: string;
+  documents: DocumentTabItem[];
 };
-
-const DocumentTabs: DocumentTab[] = [
-  { id: 'all-documents', humanReadableName: 'All documents' },
-  { id: 'awaiting-submission', humanReadableName: 'Awaiting submission' },
-  { id: 'pending-review', humanReadableName: 'Pending review' },
-  { id: 'approved', humanReadableName: 'Approved' },
-  { id: 'rejected', humanReadableName: 'Rejected' },
-];
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
@@ -54,38 +63,25 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     residentId: string;
   };
 
-  const toReviewDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'UPLOADED' && ds.document?.fileType
-  );
-  const reviewedDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'APPROVED'
-  );
-  const rejectedDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'REJECTED'
-  );
-  const [selectedTab, setSelectedTab] = useState('all-documents');
+  const toReviewDocumentSubmissions = documentSubmissions
+    .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
+    .map<IDocumentSubmissionWithKind>((ds) => ({
+      ...ds,
+      kind: 'DocumentSubmissionWithKind',
+    }));
+  const reviewedDocumentSubmissions = documentSubmissions
+    .filter((ds) => ds.state == 'APPROVED')
+    .map<IDocumentSubmissionWithKind>((ds) => ({
+      ...ds,
+      kind: 'DocumentSubmissionWithKind',
+    }));
+  const rejectedDocumentSubmissions = documentSubmissions
+    .filter((ds) => ds.state == 'REJECTED')
+    .map<IDocumentSubmissionWithKind>((ds) => ({
+      ...ds,
+      kind: 'DocumentSubmissionWithKind',
+    }));
 
-  const handleTabClick = (tab: string) => {
-    setSelectedTab(tab);
-  };
-
-  const selectTab = (tabName: string) => {
-    if (selectedTab === tabName) {
-      return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
-    } else return 'govuk-tabs__list-item';
-  };
-
-  const showPanel = (tabName: string) => {
-    if (selectedTab === tabName) {
-      return 'govuk-tabs__panel';
-    } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
-  };
-
-  interface EvidenceAwaitingSubmission {
-    documentType: string;
-    dateRequested: DateTime | undefined;
-    requestedBy: string | undefined;
-  }
   const evidenceAwaitingSubmissions = useMemo(() => {
     const documentTypesMap = new Map<string, Set<DocumentType>>();
     evidenceRequests.forEach((er) =>
@@ -113,11 +109,58 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           documentType: dt.title,
           dateRequested: evidenceRequestFromKey?.createdAt,
           requestedBy: evidenceRequestFromKey?.userRequestedBy,
+          kind: 'EvidenceAwaitingSubmission',
         });
       });
     });
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
+
+  const DocumentTabs: DocumentTab[] = [
+    {
+      id: 'all-documents',
+      humanReadableName: 'All documents',
+      documents: evidenceAwaitingSubmissions, //TODO: join all the documents here
+    },
+    {
+      id: 'awaiting-submission',
+      humanReadableName: 'Awaiting submission',
+      documents: evidenceAwaitingSubmissions,
+    },
+    {
+      id: 'pending-review',
+      humanReadableName: 'Pending review',
+      documents: toReviewDocumentSubmissions,
+    },
+    {
+      id: 'approved',
+      humanReadableName: 'Approved',
+      documents: reviewedDocumentSubmissions,
+    },
+    {
+      id: 'rejected',
+      humanReadableName: 'Rejected',
+      documents: rejectedDocumentSubmissions,
+    },
+  ];
+
+  const [selectedTab, setSelectedTab] = useState('all-documents');
+
+  const handleTabClick = (tab: string) => {
+    setSelectedTab(tab);
+  };
+
+  const selectTab = (tabName: string) => {
+    if (selectedTab === tabName) {
+      return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
+    } else return 'govuk-tabs__list-item';
+  };
+
+  const showPanel = (tabName: string) => {
+    if (selectedTab === tabName) {
+      return 'govuk-tabs__panel';
+    } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
+  };
 
   const getReason = (id: string) => {
     const evidenceRequest = evidenceRequests.find((er) => er.id === id);
@@ -154,243 +197,121 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       >
         <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
           <ul className="govuk-tabs__list">
-            {DocumentTabs.map((dt) => {
+            {DocumentTabs.map((documentTab) => {
               return (
-                <li className={selectTab(dt.id)}>
+                <li className={selectTab(documentTab.id)}>
                   <a
                     className="govuk-tabs__tab"
-                    onClick={() => handleTabClick(dt.id)}
-                    href={'#' + dt.id}
+                    onClick={() => handleTabClick(documentTab.id)}
+                    href={'#' + documentTab.id}
                   >
-                    <h2 className="govuk-body">{dt.humanReadableName}</h2>
+                    <h2 className="govuk-body">
+                      {documentTab.humanReadableName}
+                    </h2>
                   </a>
                 </li>
               );
             })}
           </ul>
-          <section
-            className={
-              'govuk-tabs__panel ' +
-              (selectedTab === 'all-documents'
-                ? ' '
-                : 'govuk-tabs__panel--hidden')
-            }
-            id="all-documents"
-          >
-            <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <thead className="govuk-table__head">
-                  <tr className="govuk-table__row">
-                    <EvidenceList>
-                      {evidenceAwaitingSubmissions &&
-                        evidenceAwaitingSubmissions.length > 0 &&
-                        evidenceAwaitingSubmissions.map((evidence) => (
-                          <EvidenceAwaitingSubmissionTile
-                            id={evidence.documentType}
-                            documentType={evidence.documentType}
-                            dateRequested={formatDate(evidence.dateRequested)}
-                            requestedBy={evidence.requestedBy}
-                          />
-                        ))}
-                      {evidenceAwaitingSubmissions ||
-                      (documentSubmissions &&
-                        documentSubmissions.length > 0) ? (
-                        documentSubmissions.map((ds) => (
-                          <EvidenceTile
-                            teamId={teamId}
-                            residentId={residentId}
-                            key={ds.id}
-                            id={ds.id}
-                            title={String(ds.documentType.title)}
-                            createdAt={formatDate(ds.createdAt)}
-                            fileSizeInBytes={
-                              ds.document ? ds.document.fileSizeInBytes : 0
-                            }
-                            format={
-                              ds.document ? ds.document.extension : 'unknown'
-                            }
-                            state={ds.state}
-                            reason={getReason(ds.evidenceRequestId)}
-                            requestedBy={getUserRequestedBy(
-                              ds.evidenceRequestId
-                            )}
-                          />
-                        ))
-                      ) : (
-                        <h3>There are no documents to review</h3>
-                      )}
-                    </EvidenceList>
-                  </tr>
-                </thead>
-              </tbody>
-            </table>
-          </section>
-          {/*Awaiting submission*/}
-          <section
-            className={showPanel('awaiting-submission')}
-            id="awaiting-submission"
-          >
-            <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <tr className="govuk-table__row">
-                  <div
-                    className="toReview govuk-form-group--error"
-                    style={{
-                      borderLeftColor: '#FFF6BB',
-                    }}
-                  >
-                    <EvidenceList>
-                      {evidenceAwaitingSubmissions &&
-                      evidenceAwaitingSubmissions.length > 0 ? (
-                        evidenceAwaitingSubmissions.map((item) => (
-                          <EvidenceAwaitingSubmissionTile
-                            key={item.documentType}
-                            id={item.documentType}
-                            documentType={item.documentType}
-                            dateRequested={formatDate(item.dateRequested)}
-                            requestedBy={item.requestedBy}
-                          />
-                        ))
-                      ) : (
-                        <h3>There are no documents awaiting submission</h3>
-                      )}
-                    </EvidenceList>
-                  </div>
-                </tr>
-              </tbody>
-            </table>
-          </section>
-          {/*Pending Review*/}
-          <section className={showPanel('pending-review')} id="pending-review">
-            <table className="govuk-table">
-              <tbody className="govuk-table__body">
-                <div
-                  className="toReview govuk-form-group--error"
-                  style={{
-                    borderLeftColor: '#8EB6DC',
-                  }}
-                >
-                  <EvidenceList>
-                    {toReviewDocumentSubmissions &&
-                    toReviewDocumentSubmissions.length > 0 ? (
-                      toReviewDocumentSubmissions.map((ds) => (
-                        <EvidenceTile
-                          teamId={teamId}
-                          residentId={residentId}
-                          key={ds.id}
-                          id={ds.id}
-                          title={String(ds.documentType.title)}
-                          createdAt={formatDate(ds.createdAt)}
-                          fileSizeInBytes={
-                            ds.document ? ds.document.fileSizeInBytes : 0
-                          }
-                          format={
-                            ds.document ? ds.document.extension : 'unknown'
-                          }
-                          // purpose="Example form"
-                          toReview
-                          state={ds.state}
-                          reason={getReason(ds.evidenceRequestId)}
-                          requestedBy={getUserRequestedBy(ds.evidenceRequestId)}
-                        />
-                      ))
-                    ) : (
-                      <h3>There are no documents to review</h3>
-                    )}
-                  </EvidenceList>
-                </div>
-              </tbody>
-            </table>
-          </section>
-          {/*Approved*/}
-          <section className={showPanel('approved')} id="approved">
-            <table className="govuk-table">
-              <div
-                className="toReview govuk-form-group--error"
-                style={{
-                  borderLeftColor: '#B2DFDB',
-                }}
+          {DocumentTabs.map((documentTab) => {
+            return (
+              <section
+                className={showPanel(documentTab.id)}
+                id={documentTab.id}
               >
-                <tbody className="govuk-table__body">
-                  <tr className="govuk-table__row">
-                    <EvidenceList>
-                      {reviewedDocumentSubmissions &&
-                      reviewedDocumentSubmissions.length > 0 ? (
-                        reviewedDocumentSubmissions.map((ds) => (
-                          <EvidenceTile
-                            teamId={teamId}
-                            residentId={residentId}
-                            key={ds.id}
-                            id={ds.id}
-                            title={String(ds.staffSelectedDocumentType?.title)}
-                            createdAt={formatDate(ds.createdAt)}
-                            fileSizeInBytes={
-                              ds.document ? ds.document.fileSizeInBytes : 0
-                            }
-                            format={
-                              ds.document ? ds.document.extension : 'unknown'
-                            }
-                            // purpose="Example form"
-                            state={ds.state}
-                            reason={getReason(ds.evidenceRequestId)}
-                            requestedBy={getUserRequestedBy(
-                              ds.evidenceRequestId
-                            )}
-                          />
-                        ))
-                      ) : (
-                        <h3>There are no approved documents</h3>
-                      )}
-                    </EvidenceList>
-                  </tr>
-                </tbody>
-              </div>
-            </table>
-          </section>
-          {/*Rejected*/}
-          <section className={showPanel('rejected')} id="rejected">
-            <table className="govuk-table">
-              <div
-                className="toReview govuk-form-group--error"
-                style={{
-                  borderLeftColor: '#F8D1CD',
-                }}
-              >
-                <tbody className="govuk-table__body">
-                  <tr className="govuk-table__row">
-                    <EvidenceList>
-                      {rejectedDocumentSubmissions &&
-                      rejectedDocumentSubmissions.length > 0 ? (
-                        rejectedDocumentSubmissions.map((ds) => (
-                          <EvidenceTile
-                            teamId={teamId}
-                            residentId={residentId}
-                            key={ds.id}
-                            id={ds.id}
-                            title={String(ds.documentType.title)}
-                            createdAt={formatDate(ds.createdAt)}
-                            fileSizeInBytes={
-                              ds.document ? ds.document.fileSizeInBytes : 0
-                            }
-                            format={
-                              ds.document ? ds.document.extension : 'unknown'
-                            }
-                            state={ds.state}
-                            reason={getReason(ds.evidenceRequestId)}
-                            requestedBy={getUserRequestedBy(
-                              ds.evidenceRequestId
-                            )}
-                          />
-                        ))
-                      ) : (
-                        <h3>There are no rejected documents</h3>
-                      )}
-                    </EvidenceList>
-                  </tr>
-                </tbody>
-              </div>
-            </table>
-          </section>
+                <table className="govuk-table">
+                  <tbody className="govuk-table__body">
+                    <thead className="govuk-table__head">
+                      <tr className="govuk-table__row">
+                        {/*          className="toReview govuk-form-group--error"*/}
+                        {/*          style={{*/}
+                        {/*            borderLeftColor: '#FFF6BB',*/}
+                        {/*          }}*/}
+
+                        {/*        className="toReview govuk-form-group--error"*/}
+                        {/*        style={{*/}
+                        {/*          borderLeftColor: '#8EB6DC',*/}
+                        {/*        }}*/}
+
+                        {/*      className="toReview govuk-form-group--error"*/}
+                        {/*      style={{*/}
+                        {/*        borderLeftColor: '#B2DFDB',*/}
+                        {/*      }}*/}
+
+                        {/*      className="toReview govuk-form-group--error"*/}
+                        {/*      style={{*/}
+                        {/*        borderLeftColor: '#F8D1CD',*/}
+                        {/*      }}*/}
+                        <EvidenceList>
+                          {documentTab.documents &&
+                          documentTab.documents.length > 0 ? (
+                            documentTab.documents.map(
+                              (documentTabItem: DocumentTabItem, index) => {
+                                switch (documentTabItem.kind) {
+                                  case 'DocumentSubmissionWithKind':
+                                    return (
+                                      <EvidenceTile
+                                        teamId={teamId}
+                                        residentId={residentId}
+                                        key={documentTabItem.id}
+                                        id={documentTabItem.id}
+                                        title={
+                                          documentTabItem
+                                            .staffSelectedDocumentType?.title ||
+                                          documentTabItem.documentType.title
+                                        }
+                                        createdAt={formatDate(
+                                          documentTabItem.createdAt
+                                        )}
+                                        fileSizeInBytes={
+                                          documentTabItem.document
+                                            ? documentTabItem.document
+                                                .fileSizeInBytes
+                                            : 0
+                                        }
+                                        format={
+                                          documentTabItem.document
+                                            ? documentTabItem.document.extension
+                                            : 'unknown'
+                                        }
+                                        state={documentTabItem.state}
+                                        reason={getReason(
+                                          documentTabItem.evidenceRequestId
+                                        )}
+                                        requestedBy={getUserRequestedBy(
+                                          documentTabItem.evidenceRequestId
+                                        )}
+                                      />
+                                    );
+                                  case 'EvidenceAwaitingSubmission':
+                                    return (
+                                      <EvidenceAwaitingSubmissionTile
+                                        id={index}
+                                        documentType={
+                                          documentTabItem.documentType
+                                        }
+                                        dateRequested={
+                                          documentTabItem.dateRequested
+                                        }
+                                        requestedBy={
+                                          documentTabItem.requestedBy
+                                        }
+                                      />
+                                    );
+                                }
+                              }
+                            )
+                          ) : (
+                            <h3>There are no documents to review</h3>
+                          )}
+                        </EvidenceList>
+                      </tr>
+                    </thead>
+                  </tbody>
+                </table>
+              </section>
+            );
+          })}
         </div>
       </div>
     </Layout>
