@@ -38,11 +38,11 @@ type EvidenceAwaitingSubmission = {
   kind: 'EvidenceAwaitingSubmission';
 };
 
-type IDocumentSubmissionWithKind = IDocumentSubmission & {
+type DocumentSubmissionWithKind = IDocumentSubmission & {
   kind: 'DocumentSubmissionWithKind';
 };
 
-type DocumentTabItem = IDocumentSubmissionWithKind | EvidenceAwaitingSubmission;
+type DocumentTabItem = DocumentSubmissionWithKind | EvidenceAwaitingSubmission;
 
 type DocumentTab = {
   id: string;
@@ -64,19 +64,19 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   const toReviewDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
-    .map<IDocumentSubmissionWithKind>((ds) => ({
+    .map<DocumentSubmissionWithKind>((ds) => ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
   const reviewedDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'APPROVED')
-    .map<IDocumentSubmissionWithKind>((ds) => ({
+    .map<DocumentSubmissionWithKind>((ds) => ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
   const rejectedDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'REJECTED')
-    .map<IDocumentSubmissionWithKind>((ds) => ({
+    .map<DocumentSubmissionWithKind>((ds) => ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
