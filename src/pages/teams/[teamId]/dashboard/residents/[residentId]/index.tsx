@@ -21,7 +21,6 @@ import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
-import { DateTime } from 'luxon';
 import { EvidenceAwaitingSubmissionTile } from 'src/components/EvidenceAwaitingSubmissionTile';
 
 type ResidentPageProps = {
@@ -34,7 +33,7 @@ type ResidentPageProps = {
 
 type EvidenceAwaitingSubmission = {
   documentType: string;
-  dateRequested: DateTime | undefined;
+  dateRequested: string | undefined;
   requestedBy: string | undefined;
   kind: 'EvidenceAwaitingSubmission';
 };
@@ -107,7 +106,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         );
         awaitingSubmissions.push({
           documentType: dt.title,
-          dateRequested: evidenceRequestFromKey?.createdAt,
+          dateRequested: formatDate(evidenceRequestFromKey?.createdAt),
           requestedBy: evidenceRequestFromKey?.userRequestedBy,
           kind: 'EvidenceAwaitingSubmission',
         });
@@ -284,6 +283,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                                       />
                                     );
                                   case 'EvidenceAwaitingSubmission':
+                                    // return 'hello';
                                     return (
                                       <EvidenceAwaitingSubmissionTile
                                         id={index}

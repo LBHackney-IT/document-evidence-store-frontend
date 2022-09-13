@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import styles from '../styles/EvidenceTile.module.scss';
-import { DateTime } from 'luxon';
 
 export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
   props
@@ -39,6 +38,6 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
 interface Props {
   id: number;
   documentType: string;
-  dateRequested: DateTime | undefined;
+  dateRequested: string | undefined;
   requestedBy: string | undefined;
 }
