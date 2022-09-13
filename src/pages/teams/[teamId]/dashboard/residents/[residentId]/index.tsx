@@ -22,6 +22,7 @@ import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceAwaitingSubmissionTile } from 'src/components/EvidenceAwaitingSubmissionTile';
+import { DateTime } from 'luxon';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -33,7 +34,7 @@ type ResidentPageProps = {
 
 type EvidenceAwaitingSubmission = {
   documentType: string;
-  dateRequested: string | undefined;
+  dateRequested: DateTime | undefined;
   requestedBy: string | undefined;
   kind: 'EvidenceAwaitingSubmission';
 };
@@ -106,7 +107,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         );
         awaitingSubmissions.push({
           documentType: dt.title,
-          dateRequested: formatDate(evidenceRequestFromKey?.createdAt),
+          dateRequested: evidenceRequestFromKey?.createdAt,
           requestedBy: evidenceRequestFromKey?.userRequestedBy,
           kind: 'EvidenceAwaitingSubmission',
         });
