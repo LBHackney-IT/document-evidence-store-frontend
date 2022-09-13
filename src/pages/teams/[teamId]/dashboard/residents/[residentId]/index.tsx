@@ -116,11 +116,18 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
 
+  const allDocumentSubmissions = [
+    ...toReviewDocumentSubmissions,
+    ...reviewedDocumentSubmissions,
+    ...rejectedDocumentSubmissions,
+    ...evidenceAwaitingSubmissions,
+  ];
+
   const DocumentTabs: DocumentTab[] = [
     {
       id: 'all-documents',
       humanReadableName: 'All documents',
-      documents: evidenceAwaitingSubmissions, //TODO: join all the documents here
+      documents: allDocumentSubmissions,
     },
     {
       id: 'awaiting-submission',
