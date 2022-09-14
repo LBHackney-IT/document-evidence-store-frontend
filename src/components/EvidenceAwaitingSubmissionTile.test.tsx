@@ -1,20 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile';
+import { DateTime } from 'luxon';
 
 describe('EvidenceAwaitingSubmissionTile', () => {
   it('renders the expected data', () => {
+    const date = DateTime.local(2022, 8, 25, 11, 28).setLocale('en-gb');
     render(
       <EvidenceAwaitingSubmissionTile
-        id={'123'}
+        id={123}
         documentType={'Proof of ID'}
-        dateRequested={'11:28 am 25 August 2022 (yesterday)'}
+        dateRequested={date}
         requestedBy={'example@example.com'}
       ></EvidenceAwaitingSubmissionTile>
     );
     expect(screen.getByText('Proof of ID'));
     expect(
-      screen.getByText('Date requested: 11:28 am 25 August 2022 (yesterday)')
+      screen.getByText('Date requested: 11:28 am 25 August 2022 (last month)')
     );
     expect(screen.getByText('Requested by: example@example.com'));
   });
