@@ -4,14 +4,22 @@ import styles from '../styles/EvidenceTile.module.scss';
 import { humanFileSize } from '../helpers/formatters';
 import { DocumentState } from '../domain/document-submission';
 
-export const EvidenceTile: FunctionComponent<Props> = (props) => {
-  const documentState = props.state;
-  const giveTagColor = (documentState: string) => {
-    {
-      if (documentState === 'UPLOADED') return 'lbh-tag lbh-tag--blue';
-      else if (documentState === 'APPROVED') return 'lbh-tag lbh-tag--green';
-      else if (documentState === 'REJECTED') return 'lbh-tag lbh-tag--red';
-    }
+export const EvidenceTile: FunctionComponent<Props> = ({
+  teamId,
+  residentId,
+  id,
+  format,
+  fileSizeInBytes,
+  title,
+  createdAt,
+  state,
+  reason,
+  requestedBy,
+}) => {
+  const tagColour = {
+    UPLOADED: 'lbh-tag lbh-tag--blue',
+    APPROVED: 'lbh-tag lbh-tag--green',
+    REJECTED: 'lbh-tag lbh-tag--red',
   };
   return (
     <table className={styles.item}>
@@ -21,25 +29,25 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
             <div className="govuk-summary-list lbh-summary-list">
               <h3 className={`${styles.title} lbh-heading-h3`}>
                 <Link
-                  href={`/teams/${props.teamId}/dashboard/residents/${props.residentId}/document/${props.id}`}
+                  href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${id}`}
                 >
-                  <a className="lbh-link">{props.title}</a>
+                  <a className="lbh-link">{title}</a>
                 </Link>
                 <p
                   className={`lbh-body-s ${styles.title}`}
                   style={{ display: 'inline', marginLeft: '8px' }}
                 >
-                  {`(${props.format?.toUpperCase()} ${humanFileSize(
-                    props.fileSizeInBytes
+                  {`(${format?.toUpperCase()} ${humanFileSize(
+                    fileSizeInBytes
                   )})`}
                 </p>
               </h3>
               <p className={`lbh-body-s ${styles.meta}`}>
-                Date created: {props.createdAt}
+                Date created: {createdAt}
               </p>
-              <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
+              <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
               <p className={`lbh-body-s ${styles.meta}`}>
-                Requested by {props.requestedBy}
+                Requested by {requestedBy}
               </p>
             </div>
           </li>
@@ -47,10 +55,10 @@ export const EvidenceTile: FunctionComponent<Props> = (props) => {
         <td></td>
         <td style={{ width: 180 }}>
           <span
-            className={'govuk-tag ' + giveTagColor(documentState)}
+            className={'govuk-tag ' + tagColour[state]}
             style={{ display: 'inline' }}
           >
-            {documentState === 'UPLOADED' ? 'PENDING REVIEW' : documentState}
+            {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
           </span>
         </td>
       </tr>
@@ -77,8 +85,6 @@ interface Props {
   fileSizeInBytes: number;
   title: string;
   createdAt: string;
-  purpose?: string;
-  toReview?: boolean;
   state: DocumentState;
   reason: string | undefined;
   requestedBy: string | undefined;
