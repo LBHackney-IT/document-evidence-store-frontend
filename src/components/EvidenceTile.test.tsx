@@ -21,7 +21,7 @@ describe('EvidenceTile', () => {
       />
     );
     expect(screen.getByText('Foo'));
-    expect(screen.getByText('Date created: 1 day ago'));
+    expect(screen.getByText('Date uploaded: 1 day ago'));
     expect(screen.getByText('(PDF 1.0 KB)'));
     expect(screen.getByText('APPROVED'));
   });
