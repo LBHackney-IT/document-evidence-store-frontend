@@ -12,6 +12,7 @@ describe('EvidenceAwaitingSubmissionTile', () => {
         documentType={'Proof of ID'}
         dateRequested={date}
         requestedBy={'example@example.com'}
+        reason={'this is a reason'}
       ></EvidenceAwaitingSubmissionTile>
     );
     expect(screen.getByText('Proof of ID'));
@@ -19,5 +20,6 @@ describe('EvidenceAwaitingSubmissionTile', () => {
       screen.getByText('Date requested: 11:28 am 25 August 2022 (last month)')
     );
     expect(screen.getByText('Requested by: example@example.com'));
+    expect(screen.getByText('this is a reason'));
   });
 });

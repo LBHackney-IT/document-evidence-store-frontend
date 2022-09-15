@@ -35,6 +35,7 @@ type EvidenceAwaitingSubmission = {
   documentType: string;
   dateRequested: DateTime | undefined;
   requestedBy: string | undefined;
+  reason: string | undefined;
   kind: 'EvidenceAwaitingSubmission';
 };
 
@@ -110,6 +111,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           documentType: dt.title,
           dateRequested: evidenceRequestFromKey?.createdAt,
           requestedBy: evidenceRequestFromKey?.userRequestedBy,
+          reason: evidenceRequestFromKey?.reason,
           kind: 'EvidenceAwaitingSubmission',
         });
       });
@@ -289,6 +291,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                                   documentType={documentTabItem.documentType}
                                   dateRequested={documentTabItem.dateRequested}
                                   requestedBy={documentTabItem.requestedBy}
+                                  reason={documentTabItem.reason}
                                 />
                               );
                           }

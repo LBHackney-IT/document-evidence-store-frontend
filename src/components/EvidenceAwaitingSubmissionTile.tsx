@@ -19,6 +19,7 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
             <p className={`lbh-body-s ${styles.meta}`}>
               Date requested: {formatDate(props.dateRequested)}
             </p>
+            <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
             <p className={`lbh-body-s ${styles.meta}`}>
               Requested by: {props.requestedBy}
             </p>
@@ -42,4 +43,5 @@ interface Props {
   documentType: string;
   dateRequested: DateTime | undefined;
   requestedBy: string | undefined;
+  reason: string | undefined;
 }
