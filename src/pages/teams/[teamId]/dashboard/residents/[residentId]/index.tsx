@@ -279,6 +279,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                                   requestedBy={getUserRequestedBy(
                                     documentTabItem.evidenceRequestId
                                   )}
+                                  userUpdatedBy={documentTabItem.userUpdatedBy}
                                 />
                               );
                             case 'EvidenceAwaitingSubmission':

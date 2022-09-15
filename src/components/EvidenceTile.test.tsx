@@ -14,11 +14,10 @@ describe('EvidenceTile', () => {
         createdAt="1 day ago"
         fileSizeInBytes={1024}
         format="PDF"
-        purpose="Example form"
-        toReview
         state={DocumentState.APPROVED}
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
+        userUpdatedBy={'approver1@email.com'}
       />
     );
     expect(screen.getByText('Foo'));
@@ -37,10 +36,10 @@ describe('EvidenceTile', () => {
         createdAt="1 day ago"
         fileSizeInBytes={1024}
         format="PDF"
-        purpose="Example form"
         state={DocumentState.APPROVED}
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
+        userUpdatedBy={'approver1@email.com'}
       />
     );
     expect(screen.queryByText('Accept')).toBeNull();

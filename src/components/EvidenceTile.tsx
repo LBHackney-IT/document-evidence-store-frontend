@@ -15,6 +15,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
   state,
   reason,
   requestedBy,
+  userUpdatedBy,
 }) => {
   const tagColour = {
     UPLOADED: 'lbh-tag lbh-tag--blue',
@@ -43,12 +44,17 @@ export const EvidenceTile: FunctionComponent<Props> = ({
                 </p>
               </h3>
               <p className={`lbh-body-s ${styles.meta}`}>
-                Date created: {createdAt}
+                Date uploaded: {createdAt}
               </p>
               <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
               <p className={`lbh-body-s ${styles.meta}`}>
                 Requested by {requestedBy}
               </p>
+              {state === 'APPROVED' && (
+                <p className={`lbh-body-s ${styles.meta}`}>
+                  Approved by {userUpdatedBy}
+                </p>
+              )}
             </div>
           </li>
         </td>
@@ -88,4 +94,5 @@ interface Props {
   state: DocumentState;
   reason: string | undefined;
   requestedBy: string | undefined;
+  userUpdatedBy: string | null;
 }
