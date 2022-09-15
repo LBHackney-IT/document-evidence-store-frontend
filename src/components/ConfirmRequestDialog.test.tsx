@@ -9,7 +9,6 @@ import {
 import ConfirmRequestDialog from './ConfirmRequestDialog';
 import DocumentTypesFixture from '../../cypress/fixtures/document_types/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
-import { EvidenceRequestRequest } from '../gateways/internal-api';
 import { Form, Formik } from 'formik';
 
 const onAccept = jest.fn();
@@ -18,7 +17,7 @@ const documentTypes = DocumentTypesFixture.map(ResponseMapper.mapDocumentType);
 
 describe('Confirm Request Dialog', () => {
   describe('when there is a request', () => {
-    const request: EvidenceRequestRequest = {
+    const request = {
       documentTypes: ['passport'],
       deliveryMethods: ['EMAIL', 'SMS'],
       resident: {
@@ -56,9 +55,9 @@ describe('Confirm Request Dialog', () => {
       ).toBeVisible();
       expect(screen.getByText('For the following evidences:')).toBeVisible();
       expect(screen.getByText('Confirm')).toBeVisible();
-      Object.values(request.resident).forEach((text) =>
-        expect(screen.getByText(text)).toBeVisible()
-      );
+      expect(screen.getByText(request.resident.name)).toBeVisible();
+      expect(screen.getByText(request.resident.email)).toBeVisible();
+      expect(screen.getByText(request.resident.phoneNumber)).toBeVisible();
       expect(screen.getByText('you shall not pass!')).toBeVisible();
       expect.assertions(7);
     });
