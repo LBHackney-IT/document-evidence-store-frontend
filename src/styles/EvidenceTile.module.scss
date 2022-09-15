@@ -12,17 +12,17 @@
 }
 
 .item {
-  margin-top: 0px;
-  padding: 25px 0px;
-  border-top: 1px solid #dee0e2;
+  margin-top: 0;
+  padding: 25px 0;
+  border-bottom: 1px solid #dee0e2;
   &:last-of-type {
-    border-bottom: 1px solid #dee0e2;
+    border-bottom: none;
   }
   @media screen and (min-width: 700px) {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 0px;
+    margin-top: 0;
   }
 }
 
@@ -33,7 +33,7 @@
 }
 
 .preview {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', sans-serif;
   background: #dee0e2;
   height: 112px;
   width: 80px;
