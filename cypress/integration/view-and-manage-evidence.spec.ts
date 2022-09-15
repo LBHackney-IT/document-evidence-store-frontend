@@ -64,19 +64,26 @@ describe('Can view and manage evidence', () => {
     cy.get('h2').should('contain', 'All documents');
 
     cy.get('section[id="all-documents"] table')
-      .eq(1)
-      .should('contain', 'AWAITING SUBMISSION');
+      .eq(0)
+      .should('contain', 'PENDING REVIEW')
+      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
 
     cy.get('section[id="all-documents"] table')
-      .eq(4)
-      .should('contain', 'PENDING REVIEW');
-    cy.get('section[id="all-documents"] table')
-      .eq(7)
+      .eq(3)
       .should('contain', 'APPROVED')
-      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
+      .and('contain.text', 'Passport(PNG 24.7 KB)');
+
     cy.get('section[id="all-documents"] table')
-      .eq(8)
-      .should('contain', 'REJECTED');
+      .eq(5)
+      .should('contain', 'REJECTED')
+      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
+
+    cy.get('section[id="all-documents"] table')
+      .eq(6)
+      .should('contain', 'AWAITING SUBMISSION')
+      .and('contain.text', 'Passport');
+
+    cy.get('section[id="all-documents"] table').should('have.length', 8);
   });
 
   it('shows the correct date format', () => {
@@ -285,10 +292,7 @@ describe('Can view and manage evidence', () => {
 
   it('can view awaiting submission documents', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
-    cy.get('section[id="awaiting-submission"]')
-      .eq(0)
-      .contains('Passport')
-      .click();
+    cy.get('section[id="awaiting-submission"]').eq(0).contains('Passport');
   });
 
   it('can view pending review documents', () => {
