@@ -13,7 +13,6 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import { formatDate } from '../../../../../../helpers/formatters';
-// import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
@@ -49,6 +48,8 @@ type DocumentTab = {
   id: string;
   humanReadableName: string;
   documents: DocumentTabItem[];
+  className: 'govuk-form-group--error' | undefined;
+  style: '#FFF6BB' | '#8EB6DC' | '#B2DFDB' | '#F8D1CD' | undefined;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
@@ -128,26 +129,36 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       id: 'all-documents',
       humanReadableName: 'All documents',
       documents: allDocumentSubmissions,
+      className: undefined,
+      style: undefined,
     },
     {
       id: 'awaiting-submission',
       humanReadableName: 'Awaiting submission',
       documents: evidenceAwaitingSubmissions,
+      className: undefined,
+      style: '#FFF6BB',
     },
     {
       id: 'pending-review',
       humanReadableName: 'Pending review',
       documents: toReviewDocumentSubmissions,
+      className: 'govuk-form-group--error',
+      style: '#8EB6DC',
     },
     {
       id: 'approved',
       humanReadableName: 'Approved',
       documents: reviewedDocumentSubmissions,
+      className: 'govuk-form-group--error',
+      style: '#B2DFDB',
     },
     {
       id: 'rejected',
       humanReadableName: 'Rejected',
       documents: rejectedDocumentSubmissions,
+      className: 'govuk-form-group--error',
+      style: '#F8D1CD',
     },
   ];
 
@@ -226,97 +237,68 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
                 className={showPanel(documentTab.id)}
                 id={documentTab.id}
               >
-                <table className="govuk-table">
-                  <tbody className="govuk-table__body">
-                    <thead className="govuk-table__head">
-                      <tr className="govuk-table__row">
-                        {/*          className="toReview govuk-form-group--error"*/}
-                        {/*          style={{*/}
-                        {/*            borderLeftColor: '#FFF6BB',*/}
-                        {/*          }}*/}
-
-                        {/*        className="toReview govuk-form-group--error"*/}
-                        {/*        style={{*/}
-                        {/*          borderLeftColor: '#8EB6DC',*/}
-                        {/*        }}*/}
-
-                        {/*      className="toReview govuk-form-group--error"*/}
-                        {/*      style={{*/}
-                        {/*        borderLeftColor: '#B2DFDB',*/}
-                        {/*      }}*/}
-
-                        {/*      className="toReview govuk-form-group--error"*/}
-                        {/*      style={{*/}
-                        {/*        borderLeftColor: '#F8D1CD',*/}
-                        {/*      }}*/}
-                        <EvidenceList>
-                          {documentTab.documents &&
-                          documentTab.documents.length > 0 ? (
-                            documentTab.documents.map(
-                              (documentTabItem: DocumentTabItem, index) => {
-                                switch (documentTabItem.kind) {
-                                  case 'DocumentSubmissionWithKind':
-                                    return (
-                                      <EvidenceTile
-                                        teamId={teamId}
-                                        residentId={residentId}
-                                        key={documentTabItem.id}
-                                        id={documentTabItem.id}
-                                        title={
-                                          documentTabItem
-                                            .staffSelectedDocumentType?.title ||
-                                          documentTabItem.documentType.title
-                                        }
-                                        createdAt={formatDate(
-                                          documentTabItem.createdAt
-                                        )}
-                                        fileSizeInBytes={
-                                          documentTabItem.document
-                                            ? documentTabItem.document
-                                                .fileSizeInBytes
-                                            : 0
-                                        }
-                                        format={
-                                          documentTabItem.document
-                                            ? documentTabItem.document.extension
-                                            : 'unknown'
-                                        }
-                                        state={documentTabItem.state}
-                                        reason={getReason(
-                                          documentTabItem.evidenceRequestId
-                                        )}
-                                        requestedBy={getUserRequestedBy(
-                                          documentTabItem.evidenceRequestId
-                                        )}
-                                      />
-                                    );
-                                  case 'EvidenceAwaitingSubmission':
-                                    // return 'hello';
-                                    return (
-                                      <EvidenceAwaitingSubmissionTile
-                                        id={index}
-                                        documentType={
-                                          documentTabItem.documentType
-                                        }
-                                        dateRequested={
-                                          documentTabItem.dateRequested
-                                        }
-                                        requestedBy={
-                                          documentTabItem.requestedBy
-                                        }
-                                      />
-                                    );
-                                }
-                              }
-                            )
-                          ) : (
-                            <h3>There are no documents to review</h3>
-                          )}
-                        </EvidenceList>
-                      </tr>
-                    </thead>
-                  </tbody>
-                </table>
+                <article
+                  className={documentTab.className}
+                  style={{ borderLeftColor: documentTab.style }}
+                >
+                  <EvidenceList>
+                    {documentTab.documents &&
+                    documentTab.documents.length > 0 ? (
+                      documentTab.documents.map(
+                        (documentTabItem: DocumentTabItem, index) => {
+                          switch (documentTabItem.kind) {
+                            case 'DocumentSubmissionWithKind':
+                              return (
+                                <EvidenceTile
+                                  teamId={teamId}
+                                  residentId={residentId}
+                                  key={documentTabItem.id}
+                                  id={documentTabItem.id}
+                                  title={
+                                    documentTabItem.staffSelectedDocumentType
+                                      ?.title ||
+                                    documentTabItem.documentType.title
+                                  }
+                                  createdAt={formatDate(
+                                    documentTabItem.createdAt
+                                  )}
+                                  fileSizeInBytes={
+                                    documentTabItem.document
+                                      ? documentTabItem.document.fileSizeInBytes
+                                      : 0
+                                  }
+                                  format={
+                                    documentTabItem.document
+                                      ? documentTabItem.document.extension
+                                      : 'unknown'
+                                  }
+                                  state={documentTabItem.state}
+                                  reason={getReason(
+                                    documentTabItem.evidenceRequestId
+                                  )}
+                                  requestedBy={getUserRequestedBy(
+                                    documentTabItem.evidenceRequestId
+                                  )}
+                                  documentTabId={documentTab.id}
+                                />
+                              );
+                            case 'EvidenceAwaitingSubmission':
+                              return (
+                                <EvidenceAwaitingSubmissionTile
+                                  id={index}
+                                  documentType={documentTabItem.documentType}
+                                  dateRequested={documentTabItem.dateRequested}
+                                  requestedBy={documentTabItem.requestedBy}
+                                />
+                              );
+                          }
+                        }
+                      )
+                    ) : (
+                      <h3>There are no documents to review</h3>
+                    )}
+                  </EvidenceList>
+                </article>
               </section>
             );
           })}
