@@ -136,7 +136,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       id: 'awaiting-submission',
       humanReadableName: 'Awaiting submission',
       documents: evidenceAwaitingSubmissions,
-      className: undefined,
+      className: 'govuk-form-group--error',
       style: '#FFF6BB',
     },
     {
