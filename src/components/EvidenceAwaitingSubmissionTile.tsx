@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
   props
 ) => (
-  <table className={styles.item}>
+  <table>
     <tr className="govuk-table__row">
       <td>
         <li className="govuk-summary-list lbh-summary-list">

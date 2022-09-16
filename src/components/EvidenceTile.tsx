@@ -23,7 +23,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
     REJECTED = 'lbh-tag lbh-tag--red',
   }
   return (
-    <table className={styles.item}>
+    <table>
       <tr className="govuk-table__row">
         <td>
           <li>

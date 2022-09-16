@@ -10,6 +10,7 @@ import {
 } from '../domain/document-submission';
 import { DocumentType } from '../domain/document-type';
 import { useRouter } from 'next/router';
+import styles from '../styles/EvidenceTile.module.scss';
 
 type EvidenceAwaitingSubmission = {
   documentType: string;
@@ -205,7 +206,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
                             return (
-                              <li>
+                              <li className={styles.item}>
                                 <EvidenceTile
                                   teamId={teamId}
                                   residentId={residentId}
@@ -242,7 +243,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                             );
                           case 'EvidenceAwaitingSubmission':
                             return (
-                              <li>
+                              <li className={styles.item}>
                                 <EvidenceAwaitingSubmissionTile
                                   id={index}
                                   documentType={documentTabItem.documentType}
