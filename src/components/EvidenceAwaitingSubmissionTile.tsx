@@ -17,13 +17,22 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
                   {props.documentType}
                 </a>
               </h3>
-              <p className={`lbh-body-s ${styles.meta}`}>
-                Date requested: {formatDate(props.dateRequested)}
-              </p>
-              <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
-              <p className={`lbh-body-s ${styles.meta}`}>
-                Requested by {props.requestedBy}
-              </p>
+
+              {props?.dateRequested && (
+                <p className={`lbh-body-s ${styles.meta}`}>
+                  Date requested: {formatDate(props.dateRequested)}
+                </p>
+              )}
+              {props?.reason && (
+                <p className={`lbh-body-s ${styles.meta}`} data-testid="reason">
+                  {props.reason}
+                </p>
+              )}
+              {props?.requestedBy && (
+                <p className={`lbh-body-s ${styles.meta}`}>
+                  Requested by {props?.requestedBy}
+                </p>
+              )}
             </div>
           </li>
         </td>

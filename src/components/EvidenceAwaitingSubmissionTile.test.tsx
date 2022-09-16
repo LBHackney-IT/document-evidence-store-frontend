@@ -19,7 +19,23 @@ describe('EvidenceAwaitingSubmissionTile', () => {
     expect(
       screen.getByText('Date requested: 11:28 am 25 August 2022 (last month)')
     );
-    expect(screen.getByText('Requested by: example@example.com'));
+    expect(screen.getByText('Requested by example@example.com'));
     expect(screen.getByText('this is a reason'));
+  });
+
+  it('renders with undefined values', () => {
+    render(
+      <EvidenceAwaitingSubmissionTile
+        id={123}
+        documentType={'Proof of ID'}
+        dateRequested={undefined}
+        requestedBy={undefined}
+        reason={undefined}
+      ></EvidenceAwaitingSubmissionTile>
+    );
+    expect(screen.getByText('Proof of ID'));
+    expect(screen.queryByText('Date requested:')).toBeNull();
+    expect(screen.queryByText('Requested by')).toBeNull();
+    expect(screen.queryByTestId('reason')).toBeNull();
   });
 });
