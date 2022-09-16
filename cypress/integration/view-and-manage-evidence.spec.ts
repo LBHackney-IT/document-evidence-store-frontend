@@ -66,27 +66,51 @@ describe('Can view and manage evidence', () => {
     cy.get('section[id="all-documents"] table')
       .eq(0)
       .should('contain', 'PENDING REVIEW')
-      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
+      .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
+      .and(
+        'contain.text',
+        'Date uploaded: 10:23 am 14 January 2021 (last year)'
+      )
+      .and('contain.text', 'reason number 1')
+      .and('contain.text', 'Requested by test1@hackney.gov.uk');
 
     cy.get('section[id="all-documents"] table')
       .eq(3)
       .should('contain', 'APPROVED')
-      .and('contain.text', 'Passport(PNG 24.7 KB)');
+      .and('contain.text', 'Passport(PNG 24.7 KB)')
+      .and(
+        'contain.text',
+        'Date uploaded: 10:23 am 25 December 2020 (2 years ago)'
+      )
+      .and('contain.text', 'reason number 1')
+      .and('contain.text', 'Requested by test1@hackney.gov.uk');
 
     cy.get('section[id="all-documents"] table')
       .eq(5)
       .should('contain', 'REJECTED')
-      .and('contain.text', 'Proof of ID(PNG 24.7 KB)');
+      .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
+      .and(
+        'contain.text',
+        'Date uploaded: 10:23 am 30 December 2020 (2 years ago)'
+      )
+      .and('contain.text', 'reason number 2')
+      .and('contain.text', 'Requested by test2@hackney.gov.uk');
 
     cy.get('section[id="all-documents"] table')
       .eq(6)
       .should('contain', 'AWAITING SUBMISSION')
-      .and('contain.text', 'Passport');
+      .and('contain.text', 'Passport')
+      .and(
+        'contain.text',
+        'Date requested: 3:34 pm 30 November 2020 (2 years ago)'
+      )
+      .and('contain.text', 'reason number 1')
+      .and('contain.text', 'Requested by test1@hackney.gov.uk');
 
     cy.get('section[id="all-documents"] table').should('have.length', 9);
   });
 
-  it('shows the correct date format', () => {
+  it('clicks through to the tab and shows the correct date format', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
     cy.get('section[id="awaiting-submission"] p').should(
       'contain',
@@ -110,6 +134,35 @@ describe('Can view and manage evidence', () => {
       'contain',
       '10:23 am 30 December 2020 (2 years ago)'
     );
+  });
+
+  it('can view all awaiting submission documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
+    cy.get('section[id="awaiting-submission"] table').should('have.length', 3);
+  });
+
+  it('can view pending review documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"] table').should('have.length', 3);
+    cy.get('section[id="pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+  });
+
+  it('can view approved documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="approved"]').click();
+    cy.get('section[id="approved"] table').should('have.length', 2);
+    cy.get('section[id="approved"]').eq(0).contains('Passport').click();
+  });
+
+  it('can view rejected documents', () => {
+    cy.get('a.govuk-tabs__tab[href*="rejected"]').click();
+    cy.get('section[id="rejected"] table').should('have.length', 1);
+    cy.get('section[id="rejected"]').eq(0).contains('Proof of ID').click();
+
+    cy.get('h2').should('contain', 'History');
+    cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
 
   it('lets you see an image document detail page with actions and information', () => {
@@ -288,32 +341,6 @@ describe('Can view and manage evidence', () => {
       userUpdatedBy: 'test@hackney.gov.uk',
       rejectionReason: 'some rejection reason',
     });
-  });
-
-  it('can view awaiting submission documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
-    cy.get('section[id="awaiting-submission"]').eq(0).contains('Passport');
-  });
-
-  it('can view pending review documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
-    cy.get('section[id="pending-review"]')
-      .eq(0)
-      .contains('Proof of ID')
-      .click();
-  });
-
-  it('can view approved documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="approved"]').click();
-    cy.get('section[id="approved"]').eq(0).contains('Passport').click();
-  });
-
-  it('can view rejected documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="rejected"]').click();
-    cy.get('section[id="rejected"]').eq(0).contains('Proof of ID').click();
-
-    cy.get('h2').should('contain', 'History');
-    cy.get('.lbh-rejection-reason').should('contain', 'some rejection reason');
   });
 
   it('can view page warning for document with expired claim', () => {

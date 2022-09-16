@@ -22,7 +22,7 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
               </p>
               <p className={`lbh-body-s ${styles.meta}`}>{props.reason}</p>
               <p className={`lbh-body-s ${styles.meta}`}>
-                Requested by: {props.requestedBy}
+                Requested by {props.requestedBy}
               </p>
             </div>
           </li>
