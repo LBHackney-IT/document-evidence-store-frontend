@@ -17,11 +17,11 @@ export const EvidenceTile: FunctionComponent<Props> = ({
   requestedBy,
   userUpdatedBy,
 }) => {
-  const tagColour = {
-    UPLOADED: 'lbh-tag lbh-tag--blue',
-    APPROVED: 'lbh-tag lbh-tag--green',
-    REJECTED: 'lbh-tag lbh-tag--red',
-  };
+  enum tagColour {
+    UPLOADED = 'lbh-tag lbh-tag--blue',
+    APPROVED = 'lbh-tag lbh-tag--green',
+    REJECTED = 'lbh-tag lbh-tag--red',
+  }
   return (
     <table className={styles.item}>
       <tr className="govuk-table__row">
