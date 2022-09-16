@@ -60,10 +60,10 @@ export const EvidenceTile: FunctionComponent<Props> = ({
             </li>
           </td>
           <td></td>
-          <td style={{ width: 180 }}>
+          <td>
             <span
               className={'govuk-tag ' + tagColour[state]}
-              style={{ display: 'inline' }}
+              style={{ whiteSpace: 'nowrap', marginRight: '80px' }}
             >
               {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
             </span>

@@ -27,10 +27,10 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
             </div>
           </li>
         </td>
-        <td style={{ width: 180 }}>
+        <td>
           <span
             className="govuk-tag lbh-tag lbh-tag--yellow"
-            style={{ padding: '0px' }}
+            style={{ whiteSpace: 'nowrap', marginRight: '80px' }}
           >
             AWAITING SUBMISSION
           </span>
