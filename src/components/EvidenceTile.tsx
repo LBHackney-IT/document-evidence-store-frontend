@@ -61,10 +61,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
           </td>
           <td></td>
           <td>
-            <span
-              className={'govuk-tag ' + tagColour[state]}
-              style={{ whiteSpace: 'nowrap', marginRight: '80px' }}
-            >
+            <span className={`govuk-tag ${tagColour[state]} ${styles.tag}`}>
               {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
             </span>
           </td>
