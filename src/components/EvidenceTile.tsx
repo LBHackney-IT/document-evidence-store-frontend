@@ -24,50 +24,52 @@ export const EvidenceTile: FunctionComponent<Props> = ({
   }
   return (
     <table>
-      <tr className="govuk-table__row">
-        <td>
-          <li>
-            <div className="govuk-summary-list lbh-summary-list">
-              <h3 className={`${styles.title} lbh-heading-h3`}>
-                <Link
-                  href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${id}`}
-                >
-                  <a className="lbh-link">{title}</a>
-                </Link>
-                <p
-                  className={`lbh-body-s ${styles.title}`}
-                  style={{ display: 'inline', marginLeft: '8px' }}
-                >
-                  {`(${format?.toUpperCase()} ${humanFileSize(
-                    fileSizeInBytes
-                  )})`}
-                </p>
-              </h3>
-              <p className={`lbh-body-s ${styles.meta}`}>
-                Date uploaded: {createdAt}
-              </p>
-              <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
-              <p className={`lbh-body-s ${styles.meta}`}>
-                Requested by {requestedBy}
-              </p>
-              {state === 'APPROVED' && (
+      <tbody>
+        <tr className="govuk-table__row">
+          <td>
+            <li>
+              <div className="govuk-summary-list lbh-summary-list">
+                <h3 className={`${styles.title} lbh-heading-h3`}>
+                  <Link
+                    href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${id}`}
+                  >
+                    <a className="lbh-link">{title}</a>
+                  </Link>
+                  <p
+                    className={`lbh-body-s ${styles.title}`}
+                    style={{ display: 'inline', marginLeft: '8px' }}
+                  >
+                    {`(${format?.toUpperCase()} ${humanFileSize(
+                      fileSizeInBytes
+                    )})`}
+                  </p>
+                </h3>
                 <p className={`lbh-body-s ${styles.meta}`}>
-                  Approved by {userUpdatedBy}
+                  Date uploaded: {createdAt}
                 </p>
-              )}
-            </div>
-          </li>
-        </td>
-        <td></td>
-        <td style={{ width: 180 }}>
-          <span
-            className={'govuk-tag ' + tagColour[state]}
-            style={{ display: 'inline' }}
-          >
-            {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
-          </span>
-        </td>
-      </tr>
+                <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
+                <p className={`lbh-body-s ${styles.meta}`}>
+                  Requested by {requestedBy}
+                </p>
+                {state === 'APPROVED' && (
+                  <p className={`lbh-body-s ${styles.meta}`}>
+                    Approved by {userUpdatedBy}
+                  </p>
+                )}
+              </div>
+            </li>
+          </td>
+          <td></td>
+          <td style={{ width: 180 }}>
+            <span
+              className={'govuk-tag ' + tagColour[state]}
+              style={{ display: 'inline' }}
+            >
+              {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
+            </span>
+          </td>
+        </tr>
+      </tbody>
     </table>
   );
 };
