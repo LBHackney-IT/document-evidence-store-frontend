@@ -83,7 +83,7 @@ describe('Can view and manage evidence', () => {
       .should('contain', 'AWAITING SUBMISSION')
       .and('contain.text', 'Passport');
 
-    cy.get('section[id="all-documents"] table').should('have.length', 8);
+    cy.get('section[id="all-documents"] table').should('have.length', 9);
   });
 
   it('shows the correct date format', () => {

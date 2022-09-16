@@ -205,48 +205,52 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
                             return (
-                              <EvidenceTile
-                                teamId={teamId}
-                                residentId={residentId}
-                                key={documentTabItem.id}
-                                id={documentTabItem.id}
-                                title={
-                                  documentTabItem.staffSelectedDocumentType
-                                    ?.title ||
-                                  documentTabItem.documentType.title
-                                }
-                                createdAt={formatDate(
-                                  documentTabItem.createdAt
-                                )}
-                                fileSizeInBytes={
-                                  documentTabItem.document
-                                    ? documentTabItem.document.fileSizeInBytes
-                                    : 0
-                                }
-                                format={
-                                  documentTabItem.document
-                                    ? documentTabItem.document.extension
-                                    : 'unknown'
-                                }
-                                state={documentTabItem.state}
-                                reason={getReason(
-                                  documentTabItem.evidenceRequestId
-                                )}
-                                requestedBy={getUserRequestedBy(
-                                  documentTabItem.evidenceRequestId
-                                )}
-                                userUpdatedBy={documentTabItem.userUpdatedBy}
-                              />
+                              <li>
+                                <EvidenceTile
+                                  teamId={teamId}
+                                  residentId={residentId}
+                                  key={documentTabItem.id}
+                                  id={documentTabItem.id}
+                                  title={
+                                    documentTabItem.staffSelectedDocumentType
+                                      ?.title ||
+                                    documentTabItem.documentType.title
+                                  }
+                                  createdAt={formatDate(
+                                    documentTabItem.createdAt
+                                  )}
+                                  fileSizeInBytes={
+                                    documentTabItem.document
+                                      ? documentTabItem.document.fileSizeInBytes
+                                      : 0
+                                  }
+                                  format={
+                                    documentTabItem.document
+                                      ? documentTabItem.document.extension
+                                      : 'unknown'
+                                  }
+                                  state={documentTabItem.state}
+                                  reason={getReason(
+                                    documentTabItem.evidenceRequestId
+                                  )}
+                                  requestedBy={getUserRequestedBy(
+                                    documentTabItem.evidenceRequestId
+                                  )}
+                                  userUpdatedBy={documentTabItem.userUpdatedBy}
+                                />
+                              </li>
                             );
                           case 'EvidenceAwaitingSubmission':
                             return (
-                              <EvidenceAwaitingSubmissionTile
-                                id={index}
-                                documentType={documentTabItem.documentType}
-                                dateRequested={documentTabItem.dateRequested}
-                                requestedBy={documentTabItem.requestedBy}
-                                reason={documentTabItem.reason}
-                              />
+                              <li>
+                                <EvidenceAwaitingSubmissionTile
+                                  id={index}
+                                  documentType={documentTabItem.documentType}
+                                  dateRequested={documentTabItem.dateRequested}
+                                  requestedBy={documentTabItem.requestedBy}
+                                  reason={documentTabItem.reason}
+                                />
+                              </li>
                             );
                         }
                       }
