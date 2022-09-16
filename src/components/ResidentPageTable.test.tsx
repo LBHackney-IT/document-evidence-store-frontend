@@ -1,25 +1,17 @@
 import React from 'react';
 import { cleanup, render } from '@testing-library/react';
-import { Resident } from '../domain/resident';
 import ResidentPageTable from './ResidentPageTable';
 
 describe('ResidentPageTable', () => {
   afterEach(cleanup);
-  const resident: Resident = {
-    id: '123',
-    name: 'Frodo',
-    email: 'frodo@bagend.com',
-    phoneNumber: '0123',
-  };
-
-  const residentTwo: Resident = {
-    id: '124',
-    name: 'Fred',
-    email: '',
-    phoneNumber: '',
-  };
 
   test('it renders correctly', async () => {
+    const resident = {
+      id: '123',
+      name: 'Frodo',
+      email: 'frodo@bagend.com',
+      phoneNumber: '0123',
+    };
     const componentTestOne = render(<ResidentPageTable resident={resident} />);
     expect(componentTestOne.getByTestId('name-cell')).toHaveTextContent(
       'Frodo'
@@ -32,20 +24,43 @@ describe('ResidentPageTable', () => {
     );
   });
 
-  test("displays '-' as value if either email or mobile is missing", () => {
-    const componentTestTwo = render(
-      <ResidentPageTable resident={residentTwo} />
-    );
-    expect(componentTestTwo.getByTestId('name-cell')).toHaveTextContent('Fred');
-    expect(
-      componentTestTwo.getByTestId('blankNumber-cell')
-    ).toBeInTheDocument();
-    expect(componentTestTwo.getByTestId('blankNumber-cell')).toHaveTextContent(
-      '-'
-    );
-    expect(componentTestTwo.getByTestId('blankEmail-cell')).toBeInTheDocument();
-    expect(componentTestTwo.getByTestId('blankEmail-cell')).toHaveTextContent(
-      '-'
-    );
-  });
+  for (const { testName, email, phoneNumber } of [
+    {
+      testName: 'displays placeholder when email or phoneNumber are empty',
+      email: '',
+      phoneNumber: '',
+    },
+    {
+      testName: 'displays placeholder when email or phoneNumber are null',
+      email: null,
+      phoneNumber: null,
+    },
+  ]) {
+    test(testName, () => {
+      const resident = {
+        id: '123',
+        name: 'Frodo',
+        email,
+        phoneNumber,
+      };
+      const componentTestTwo = render(
+        <ResidentPageTable resident={resident} />
+      );
+      expect(componentTestTwo.getByTestId('name-cell')).toHaveTextContent(
+        resident.name
+      );
+      expect(
+        componentTestTwo.getByTestId('blankNumber-cell')
+      ).toBeInTheDocument();
+      expect(
+        componentTestTwo.getByTestId('blankNumber-cell')
+      ).toHaveTextContent('-');
+      expect(
+        componentTestTwo.getByTestId('blankEmail-cell')
+      ).toBeInTheDocument();
+      expect(componentTestTwo.getByTestId('blankEmail-cell')).toHaveTextContent(
+        '-'
+      );
+    });
+  }
 });

@@ -1,15 +1,15 @@
 export interface IResident {
   name: string;
-  email: string;
-  phoneNumber: string;
+  email: string | null;
+  phoneNumber: string | null;
   id: string;
   referenceId?: string;
 }
 
 export class Resident implements IResident {
   name: string;
-  email: string;
-  phoneNumber: string;
+  email: string | null;
+  phoneNumber: string | null;
   id: string;
   referenceId?: string;
 
