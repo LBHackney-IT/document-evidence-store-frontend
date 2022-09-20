@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 const ResidentDetailsTable: FunctionComponent<Props> = (props) => {
   const { resident } = props;
+
   return (
     <table className="govuk-table lbh-table">
       <tbody className="govuk-table__body">
@@ -18,7 +19,7 @@ const ResidentDetailsTable: FunctionComponent<Props> = (props) => {
           <th scope="row" className="govuk-table__header">
             Mobile number
           </th>
-          {resident.phoneNumber.length ? (
+          {resident.phoneNumber?.length ? (
             <td className="govuk-table__cell" data-testid="number-cell">
               {resident.phoneNumber}
             </td>
@@ -32,7 +33,7 @@ const ResidentDetailsTable: FunctionComponent<Props> = (props) => {
           <th scope="row" className="govuk-table__header">
             Email address
           </th>
-          {resident.email.length ? (
+          {resident.email?.length ? (
             <td className="govuk-table__cell" data-testid="email-cell">
               {resident.email}
             </td>
