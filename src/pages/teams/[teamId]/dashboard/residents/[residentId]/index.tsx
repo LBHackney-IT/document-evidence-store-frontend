@@ -23,11 +23,6 @@ type ResidentPageProps = {
   feedbackUrl: string;
 };
 
-const router = useRouter();
-const { residentId } = router.query as {
-  residentId: string;
-};
-
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
   documentSubmissions,
@@ -35,6 +30,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   teamId,
   feedbackUrl,
 }) => {
+  const router = useRouter();
+  const { residentId } = router.query as {
+    residentId: string;
+  };
+
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
