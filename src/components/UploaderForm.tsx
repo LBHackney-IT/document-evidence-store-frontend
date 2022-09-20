@@ -77,6 +77,7 @@ const UploaderForm: FunctionComponent<Props> = ({
               className="govuk-button lbh-button"
               type="submit"
               disabled={!dirty || submission}
+              title="Your documents are being uploaded. Please do not close or refresh this page."
             >
               Continue
             </button>
