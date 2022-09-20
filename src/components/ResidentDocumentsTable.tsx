@@ -173,7 +173,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
         <ul className="govuk-tabs__list">
           {DocumentTabs.map((documentTab) => {
             return (
-              <li className={selectTab(documentTab.id)}>
+              <li
+                className={selectTab(documentTab.id)}
+                data-testid={`${documentTab.id}-tab`}
+              >
                 <a
                   className="govuk-tabs__tab"
                   onClick={() => handleTabClick(documentTab.id)}
@@ -189,7 +192,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
         </ul>
         {DocumentTabs.map((documentTab) => {
           return (
-            <section className={showPanel(documentTab.id)} id={documentTab.id}>
+            <section
+              className={showPanel(documentTab.id)}
+              id={documentTab.id}
+              data-testid={`${documentTab.id}-section`}
+            >
               <article
                 className={documentTab.className}
                 style={{ borderLeftColor: documentTab.style }}
@@ -201,7 +208,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
                             return (
-                              <li className={styles.item}>
+                              <li
+                                className={styles.item}
+                                data-testid={`${documentTab.id}-evidence-tile`}
+                              >
                                 <EvidenceTile
                                   teamId={teamId}
                                   residentId={residentId}
@@ -238,7 +248,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                             );
                           case 'EvidenceAwaitingSubmission':
                             return (
-                              <li className={styles.item}>
+                              <li
+                                className={styles.item}
+                                data-testid={`${documentTab.id}-evidence-awaiting-tile`}
+                              >
                                 <EvidenceAwaitingSubmissionTile
                                   id={index}
                                   documentType={documentTabItem.documentType}
