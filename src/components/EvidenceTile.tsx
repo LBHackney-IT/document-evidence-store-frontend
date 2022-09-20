@@ -35,22 +35,29 @@ export const EvidenceTile: FunctionComponent<Props> = ({
                   >
                     <a className="lbh-link">{title}</a>
                   </Link>
-                  <p
-                    className={`lbh-body-s ${styles.title}`}
-                    style={{ display: 'inline', marginLeft: '8px' }}
-                  >
-                    {`(${format?.toUpperCase()} ${humanFileSize(
-                      fileSizeInBytes
-                    )})`}
-                  </p>
+                  {format && (
+                    <p
+                      className={`lbh-body-s ${styles.title}`}
+                      style={{ display: 'inline', marginLeft: '8px' }}
+                      data-testid="format"
+                    >
+                      {`(${format?.toUpperCase()} ${humanFileSize(
+                        fileSizeInBytes
+                      )})`}
+                    </p>
+                  )}
                 </h3>
                 <p className={`lbh-body-s ${styles.meta}`}>
                   Date uploaded: {createdAt}
                 </p>
-                <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
-                <p className={`lbh-body-s ${styles.meta}`}>
-                  Requested by {requestedBy}
-                </p>
+                {reason && (
+                  <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
+                )}
+                {requestedBy && (
+                  <p className={`lbh-body-s ${styles.meta}`}>
+                    Requested by {requestedBy}
+                  </p>
+                )}
                 {state === 'APPROVED' && (
                   <p className={`lbh-body-s ${styles.meta}`}>
                     Approved by {userUpdatedBy}

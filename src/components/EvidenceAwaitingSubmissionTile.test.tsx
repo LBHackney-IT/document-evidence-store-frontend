@@ -13,7 +13,7 @@ describe('EvidenceAwaitingSubmissionTile', () => {
         dateRequested={date}
         requestedBy={'example@example.com'}
         reason={'this is a reason'}
-      ></EvidenceAwaitingSubmissionTile>
+      />
     );
     expect(screen.getByText('Proof of ID'));
     expect(
@@ -37,5 +37,21 @@ describe('EvidenceAwaitingSubmissionTile', () => {
     expect(screen.queryByText('Date requested:')).toBeNull();
     expect(screen.queryByText('Requested by')).toBeNull();
     expect(screen.queryByTestId('reason')).toBeNull();
+  });
+
+  it('displays correct tag color for AWAITING SUBMISSION', () => {
+    const date = DateTime.local(2022, 8, 25, 11, 28).setLocale('en-gb');
+    render(
+      <EvidenceAwaitingSubmissionTile
+        id={123}
+        documentType={'Proof of ID'}
+        dateRequested={date}
+        requestedBy={'example@example.com'}
+        reason={'this is a reason'}
+      />
+    );
+    expect(screen.getByText('AWAITING SUBMISSION')).toHaveClass(
+      'lbh-tag--yellow'
+    );
   });
 });
