@@ -20,6 +20,12 @@ export const EvidenceRequestsFixture = [
         description: 'A valid document that can be used to prove identity',
         enabled: true,
       },
+      {
+        id: 'proof-of-address',
+        title: 'Proof of Address',
+        description: 'A valid document that can be used to prove address',
+        enabled: true,
+      },
     ],
     team: 'Development Housing Team',
     reason: 'Proof of ID reason',
