@@ -107,10 +107,9 @@ describe('EvidenceTile', () => {
       />
     );
     expect(screen.getByText('APPROVED')).toHaveClass('lbh-tag--green');
-    expect(screen.getByText('APPROVED')).not.toHaveClass('lbh-tag--yellow');
   });
 
-  it('displays correct tag color for PENDING REVIEW ', async () => {
+  it('displays correct tag color for PENDING REVIEW and translates UPLOADED state to PENDING REVIEW', async () => {
     render(
       <EvidenceTile
         teamId="123"
@@ -127,5 +126,6 @@ describe('EvidenceTile', () => {
       />
     );
     expect(screen.getByText('PENDING REVIEW')).toHaveClass('lbh-tag--blue');
+    expect(screen.queryByText('UPLOADED')).toBeNull();
   });
 });
