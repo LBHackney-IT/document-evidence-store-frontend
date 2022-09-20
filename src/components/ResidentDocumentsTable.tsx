@@ -9,7 +9,6 @@ import {
   IDocumentSubmission,
 } from '../domain/document-submission';
 import { DocumentType } from '../domain/document-type';
-import { useRouter } from 'next/router';
 import styles from '../styles/EvidenceTile.module.scss';
 
 type EvidenceAwaitingSubmission = {
@@ -38,6 +37,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   documentSubmissions,
   teamId,
+  residentId,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -53,11 +53,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     if (selectedTab === tabName) {
       return 'govuk-tabs__panel';
     } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
-  };
-
-  const router = useRouter();
-  const { residentId } = router.query as {
-    residentId: string;
   };
 
   const toReviewDocumentSubmissions = documentSubmissions
@@ -273,4 +268,5 @@ interface Props {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
   teamId: string;
+  residentId: string;
 }

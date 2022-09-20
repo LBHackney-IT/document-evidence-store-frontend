@@ -13,6 +13,7 @@ import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
+import { useRouter } from 'next/router';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -20,6 +21,11 @@ type ResidentPageProps = {
   resident: Resident;
   teamId: string;
   feedbackUrl: string;
+};
+
+const router = useRouter();
+const { residentId } = router.query as {
+  residentId: string;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
@@ -50,6 +56,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         evidenceRequests={evidenceRequests}
         documentSubmissions={documentSubmissions}
         teamId={teamId}
+        residentId={residentId}
       />
     </Layout>
   );
