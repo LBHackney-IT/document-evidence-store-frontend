@@ -59,7 +59,16 @@ const UploaderForm: FunctionComponent<Props> = ({
               There was an error. Please try again later
             </span>
           )}
-
+          {submission && (
+            <section className="lbh-page-announcement lbh-page-announcement--warning">
+              <h3 className="lbh-page-announcement__title">
+                Your documents are being uploaded.{' '}
+              </h3>
+              <div className="lbh-page-announcement__content">
+                Please do not close or refresh this page.
+              </div>
+            </section>
+          )}
           {documentTypes.map((documentType) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
@@ -77,7 +86,6 @@ const UploaderForm: FunctionComponent<Props> = ({
               className="govuk-button lbh-button"
               type="submit"
               disabled={!dirty || submission}
-              title="Your documents are being uploaded. Please do not close or refresh this page."
             >
               Continue
             </button>

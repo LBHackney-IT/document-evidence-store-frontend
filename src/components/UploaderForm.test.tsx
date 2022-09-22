@@ -63,6 +63,15 @@ describe('UploaderForm', () => {
     });
   });
 
+  it('displays a message to discourage closing the window when submitting', async () => {
+    attachFile('Proof of ID');
+    submitForm();
+
+    await waitFor(() => {
+      expect(screen.getByText('Your documents are being uploaded.'));
+    });
+  });
+
   // See DOC-964 for more details about this commented section.
   // it('validates at least one file is attached to each UploaderPanel', async () => {
   //   submitForm();
