@@ -9,6 +9,7 @@ import UploaderPanel from './UploaderPanel';
 import { UploadFormModel } from '../services/upload-form-model';
 import { DocumentType } from '../domain/document-type';
 import { LoadingBox } from 'govuk-react';
+import PageWarning from 'src/components/PageWarning';
 
 const getError = (
   id: string,
@@ -60,14 +61,10 @@ const UploaderForm: FunctionComponent<Props> = ({
             </span>
           )}
           {submission && (
-            <section className="lbh-page-announcement lbh-page-announcement--warning">
-              <h3 className="lbh-page-announcement__title">
-                Your documents are being uploaded.{' '}
-              </h3>
-              <div className="lbh-page-announcement__content">
-                Please do not close or refresh this page.
-              </div>
-            </section>
+            <PageWarning
+              title="Your documents are being uploaded."
+              content="Please do not close or refresh this page."
+            />
           )}
           {documentTypes.map((documentType) => (
             <UploaderPanel
