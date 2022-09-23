@@ -34,10 +34,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   teamId,
   feedbackUrl,
 }) => {
-  // const router = useRouter();
-  // const { residentId } = router.query as {
-  //   residentId: string;
-  // };
   const contextToPass: UserContextInterface = {
     residentIdContext: resident.id,
     teamIdContext: teamId,
