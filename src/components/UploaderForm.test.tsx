@@ -68,7 +68,7 @@ describe('UploaderForm', () => {
     submitForm();
 
     await waitFor(() => {
-      expect(screen.getByText('Your documents are being uploaded.'));
+      expect(screen.getByText('Your documents are being uploaded'));
     });
   });
 
