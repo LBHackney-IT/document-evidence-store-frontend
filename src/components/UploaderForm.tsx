@@ -62,8 +62,8 @@ const UploaderForm: FunctionComponent<Props> = ({
           )}
           {submission && (
             <PageWarning
-              title="Your documents are being uploaded."
-              content="Please do not close or refresh this page."
+              title="Your documents are being uploaded"
+              content="Please do not close or refresh this page"
             />
           )}
           {documentTypes.map((documentType) => (
