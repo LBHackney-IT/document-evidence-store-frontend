@@ -36,8 +36,6 @@ type DocumentTab = {
 export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   documentSubmissions,
-  teamId,
-  residentId,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -213,8 +211,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                 data-testid={`${documentTab.id}-evidence-tile`}
                               >
                                 <EvidenceTile
-                                  teamId={teamId}
-                                  residentId={residentId}
                                   key={documentTabItem.id}
                                   id={documentTabItem.id}
                                   title={
@@ -253,7 +249,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                 data-testid={`${documentTab.id}-evidence-awaiting-tile`}
                               >
                                 <EvidenceAwaitingSubmissionTile
-                                  id={index}
+                                  key={index}
                                   documentType={documentTabItem.documentType}
                                   dateRequested={documentTabItem.dateRequested}
                                   requestedBy={documentTabItem.requestedBy}
@@ -280,6 +276,4 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
 interface Props {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
-  teamId: string;
-  residentId: string;
 }

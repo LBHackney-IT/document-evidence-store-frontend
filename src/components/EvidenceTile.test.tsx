@@ -7,8 +7,6 @@ describe('EvidenceTile', () => {
   it('renders all the data expected', async () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"
@@ -31,8 +29,6 @@ describe('EvidenceTile', () => {
   it('renders without actions if document has already been reviewed', async () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"
@@ -51,8 +47,6 @@ describe('EvidenceTile', () => {
   it('renders with undefined values', () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"
@@ -74,8 +68,6 @@ describe('EvidenceTile', () => {
   it('displays correct tag color for REJECTED', async () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"
@@ -93,8 +85,6 @@ describe('EvidenceTile', () => {
   it('displays correct tag color for APPROVED ', async () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"
@@ -112,8 +102,6 @@ describe('EvidenceTile', () => {
   it('displays correct tag color for PENDING REVIEW and translates UPLOADED state to PENDING REVIEW', async () => {
     render(
       <EvidenceTile
-        teamId="123"
-        residentId="123"
         id="123"
         title="Foo"
         createdAt="1 day ago"

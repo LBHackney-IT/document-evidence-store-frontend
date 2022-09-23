@@ -25,7 +25,6 @@ describe('Can view and manage evidence', () => {
   });
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
-
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y({
       exclude: ['table'],
@@ -139,6 +138,17 @@ describe('Can view and manage evidence', () => {
   it('can view all awaiting submission documents', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
     cy.get('section[id="awaiting-submission"] table').should('have.length', 3);
+  });
+
+  it('can check the url contains residentId and teamId', () => {
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+    cy.url()
+      .should('include', '/teams/2')
+      .and('include', 'residents/3fa85f64-5717-4562-b3fc-2c963f66afb6');
   });
 
   it('can view pending review documents', () => {

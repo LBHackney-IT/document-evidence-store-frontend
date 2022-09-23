@@ -5,16 +5,11 @@ import { EvidenceRequestsFixture } from './fixtures/evidence-requests';
 import { DocumentSubmissionsFixture } from './fixtures/document-submissions';
 
 describe('ResidentDocumentsTable', () => {
-  const teamId = '1';
-  const residentId = '3fa85f64-5717-4562-b3fc-2c963f66afr0';
-
   it('renders the expected component with tabs', () => {
     render(
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        teamId={teamId}
-        residentId={residentId}
       />
     );
 
@@ -36,8 +31,6 @@ describe('ResidentDocumentsTable', () => {
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        teamId={teamId}
-        residentId={residentId}
       />
     );
     expect(screen.getByTestId('all-documents-section')).toContainElement(
@@ -54,8 +47,6 @@ describe('ResidentDocumentsTable', () => {
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        teamId={teamId}
-        residentId={residentId}
       />
     );
 
@@ -76,5 +67,3 @@ describe('ResidentDocumentsTable', () => {
     );
   });
 });
-
-//render

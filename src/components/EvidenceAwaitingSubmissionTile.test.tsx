@@ -8,7 +8,6 @@ describe('EvidenceAwaitingSubmissionTile', () => {
     const date = DateTime.local(2022, 8, 25, 11, 28).setLocale('en-gb');
     render(
       <EvidenceAwaitingSubmissionTile
-        id={123}
         documentType={'Proof of ID'}
         dateRequested={date}
         requestedBy={'example@example.com'}
@@ -26,7 +25,6 @@ describe('EvidenceAwaitingSubmissionTile', () => {
   it('renders with undefined values', () => {
     render(
       <EvidenceAwaitingSubmissionTile
-        id={123}
         documentType={'Proof of ID'}
         dateRequested={undefined}
         requestedBy={undefined}
@@ -43,7 +41,6 @@ describe('EvidenceAwaitingSubmissionTile', () => {
     const date = DateTime.local(2022, 8, 25, 11, 28).setLocale('en-gb');
     render(
       <EvidenceAwaitingSubmissionTile
-        id={123}
         documentType={'Proof of ID'}
         dateRequested={date}
         requestedBy={'example@example.com'}

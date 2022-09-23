@@ -47,7 +47,6 @@ export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
 );
 
 interface Props {
-  id: number;
   documentType: string;
   dateRequested: DateTime | undefined;
   requestedBy: string | undefined;

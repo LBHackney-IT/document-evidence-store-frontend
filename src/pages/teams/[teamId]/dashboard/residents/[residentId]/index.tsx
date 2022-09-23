@@ -13,7 +13,11 @@ import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
+import {
+  ResidentPageContext,
+  UserContextInterface,
+} from '../../../../../../contexts/ResidentPageContext';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -30,9 +34,13 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   teamId,
   feedbackUrl,
 }) => {
-  const router = useRouter();
-  const { residentId } = router.query as {
-    residentId: string;
+  // const router = useRouter();
+  // const { residentId } = router.query as {
+  //   residentId: string;
+  // };
+  const contextToPass: UserContextInterface = {
+    residentIdContext: resident.id,
+    teamIdContext: teamId,
   };
 
   return (
@@ -52,12 +60,12 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         {resident.name}
       </h1>
       <ResidentDetailsTable resident={resident} />
-      <ResidentDocumentsTable
-        evidenceRequests={evidenceRequests}
-        documentSubmissions={documentSubmissions}
-        teamId={teamId}
-        residentId={residentId}
-      />
+      <ResidentPageContext.Provider value={contextToPass}>
+        <ResidentDocumentsTable
+          evidenceRequests={evidenceRequests}
+          documentSubmissions={documentSubmissions}
+        />
+      </ResidentPageContext.Provider>
     </Layout>
   );
 };

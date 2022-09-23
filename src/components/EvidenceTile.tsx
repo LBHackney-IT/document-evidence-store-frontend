@@ -1,12 +1,11 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode, useContext } from 'react';
 import Link from 'next/link';
 import styles from '../styles/EvidenceTile.module.scss';
 import { humanFileSize } from '../helpers/formatters';
 import { DocumentState } from '../domain/document-submission';
+import { ResidentPageContext } from '../contexts/ResidentPageContext';
 
 export const EvidenceTile: FunctionComponent<Props> = ({
-  teamId,
-  residentId,
   id,
   format,
   fileSizeInBytes,
@@ -22,6 +21,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
     APPROVED = 'lbh-tag lbh-tag--green',
     REJECTED = 'lbh-tag lbh-tag--red',
   }
+  const residentPageContext = useContext(ResidentPageContext);
   return (
     <table>
       <tbody>
@@ -31,7 +31,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
               <div className="govuk-summary-list lbh-summary-list">
                 <h3 className={`${styles.title} lbh-heading-h3`}>
                   <Link
-                    href={`/teams/${teamId}/dashboard/residents/${residentId}/document/${id}`}
+                    href={`/teams/${residentPageContext?.teamIdContext}/dashboard/residents/${residentPageContext?.residentIdContext}/document/${id}`}
                   >
                     <a className="lbh-link">{title}</a>
                   </Link>
@@ -90,8 +90,6 @@ interface ListProps {
 }
 
 interface Props {
-  teamId: string;
-  residentId: string;
   id: string;
   format: string | undefined;
   fileSizeInBytes: number;
