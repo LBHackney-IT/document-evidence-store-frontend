@@ -9,6 +9,7 @@ import UploaderPanel from './UploaderPanel';
 import { UploadFormModel } from '../services/upload-form-model';
 import { DocumentType } from '../domain/document-type';
 import { LoadingBox } from 'govuk-react';
+import PageWarning from 'src/components/PageWarning';
 
 const getError = (
   id: string,
@@ -59,7 +60,12 @@ const UploaderForm: FunctionComponent<Props> = ({
               There was an error. Please try again later
             </span>
           )}
-
+          {submission && (
+            <PageWarning
+              title="Your documents are being uploaded"
+              content="Please do not close or refresh this page"
+            />
+          )}
           {documentTypes.map((documentType) => (
             <UploaderPanel
               setFieldValue={setFieldValue}
