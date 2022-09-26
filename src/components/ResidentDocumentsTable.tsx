@@ -10,7 +10,6 @@ import {
 } from '../domain/document-submission';
 import { DocumentType } from '../domain/document-type';
 import styles from '../styles/EvidenceTile.module.scss';
-import { v4 } from 'uuid';
 
 type EvidenceAwaitingSubmission = {
   documentType: string;
@@ -175,7 +174,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
               <li
                 className={selectTab(documentTab.id)}
                 data-testid={`${documentTab.id}-tab`}
-                key={v4()}
+                key={`${documentTab.id}-tab`}
               >
                 <a
                   className="govuk-tabs__tab"
@@ -196,7 +195,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
               className={showPanel(documentTab.id)}
               id={documentTab.id}
               data-testid={`${documentTab.id}-section`}
-              key={v4()}
+              key={`${documentTab.id}-section`}
             >
               <article
                 className={documentTab.className}
@@ -212,10 +211,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                               <li
                                 className={styles.item}
                                 data-testid={`${documentTab.id}-evidence-tile`}
-                                key={v4()}
+                                key={index}
                               >
                                 <EvidenceTile
-                                  key={documentTabItem.id}
                                   id={documentTabItem.id}
                                   title={
                                     documentTabItem.staffSelectedDocumentType
@@ -251,10 +249,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                               <li
                                 className={styles.item}
                                 data-testid={`${documentTab.id}-evidence-awaiting-tile`}
-                                key={v4()}
+                                key={index}
                               >
                                 <EvidenceAwaitingSubmissionTile
-                                  key={index}
                                   documentType={documentTabItem.documentType}
                                   dateRequested={documentTabItem.dateRequested}
                                   requestedBy={documentTabItem.requestedBy}
