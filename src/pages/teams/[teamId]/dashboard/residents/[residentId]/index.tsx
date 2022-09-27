@@ -1,25 +1,23 @@
-import { useMemo } from 'react';
 import { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import Layout from 'src/components/DashboardLayout';
 import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
-import { EvidenceList, EvidenceTile } from 'src/components/EvidenceTile';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import { formatDate } from '../../../../../../helpers/formatters';
-import SVGSymbol from 'src/components/SVGSymbol';
 import React from 'react';
-import ResidentPageTable from '../../../../../../components/ResidentPageTable';
+import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
-import { DocumentType } from 'src/domain/document-type';
-import { DateTime } from 'luxon';
-import { EvidenceAwaitingSubmissionTile } from 'src/components/EvidenceAwaitingSubmissionTile';
+import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
+// import { useRouter } from 'next/router';
+import {
+  ResidentPageContext,
+  UserContextInterface,
+} from '../../../../../../contexts/ResidentPageContext';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -36,56 +34,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   teamId,
   feedbackUrl,
 }) => {
-  const router = useRouter();
-  const { residentId } = router.query as {
-    residentId: string;
+  const contextToPass: UserContextInterface = {
+    residentIdContext: resident.id,
+    teamIdContext: teamId,
   };
-  const toReviewDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'UPLOADED' && ds.document?.fileType
-  );
-  const reviewedDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'APPROVED'
-  );
-  const rejectedDocumentSubmissions = documentSubmissions.filter(
-    (ds) => ds.state == 'REJECTED'
-  );
-
-  interface EvidenceAwaitingSubmission {
-    documentType: string;
-    dateRequested: DateTime | undefined;
-    requestedBy: string | undefined;
-  }
-  const evidenceAwaitingSubmissions = useMemo(() => {
-    const documentTypesMap = new Map<string, Set<DocumentType>>();
-    evidenceRequests.forEach((er) =>
-      documentTypesMap.set(er.id, new Set(er.documentTypes))
-    );
-    documentSubmissions.forEach((ds) => {
-      const currentDocumentTypesSet = documentTypesMap.get(
-        ds.evidenceRequestId
-      );
-
-      currentDocumentTypesSet?.forEach((dt) => {
-        if (dt.id === ds.documentType.id) {
-          currentDocumentTypesSet.delete(dt);
-        }
-      });
-    });
-    const awaitingSubmissions: EvidenceAwaitingSubmission[] = [];
-    documentTypesMap.forEach((value, key) => {
-      value.forEach((dt) => {
-        const evidenceRequestFromKey = evidenceRequests.find(
-          (er) => er.id == key
-        );
-        awaitingSubmissions.push({
-          documentType: dt.title,
-          dateRequested: evidenceRequestFromKey?.createdAt,
-          requestedBy: evidenceRequestFromKey?.userRequestedBy,
-        });
-      });
-    });
-    return awaitingSubmissions;
-  }, [evidenceRequests, documentSubmissions]);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -103,116 +55,13 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {resident.name}
       </h1>
-      <ResidentPageTable resident={resident} />
-
-      <div className="awaitingSubmission evidence-list">
-        <h2 className="lbh-heading-h3">Awaiting submission</h2>
-        <EvidenceList>
-          {evidenceAwaitingSubmissions &&
-          evidenceAwaitingSubmissions.length > 0 ? (
-            evidenceAwaitingSubmissions.map((item) => (
-              <EvidenceAwaitingSubmissionTile
-                key={item.documentType}
-                id={item.documentType}
-                documentType={item.documentType}
-                dateRequested={formatDate(item.dateRequested)}
-                requestedBy={item.requestedBy}
-              />
-            ))
-          ) : (
-            <h3>There are no documents awaiting submission</h3>
-          )}
-        </EvidenceList>
-      </div>
-
-      <div
-        className="toReview govuk-form-group--error"
-        style={{
-          borderLeftColor: '#F0D232',
-          backgroundColor: '#FFFBF4',
-          paddingTop: '1.5em',
-        }}
-      >
-        <h2 className="lbh-heading-h3">
-          <SVGSymbol status="toReview" />
-          Pending review
-        </h2>
-
-        <EvidenceList>
-          {toReviewDocumentSubmissions &&
-          toReviewDocumentSubmissions.length > 0 ? (
-            toReviewDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-                toReview
-              />
-            ))
-          ) : (
-            <h3>There are no documents to review</h3>
-          )}
-        </EvidenceList>
-      </div>
-
-      <div className="reviewed evidence-list">
-        <h2 className="lbh-heading-h3">
-          <SVGSymbol status="reviewed" />
-          Reviewed
-        </h2>
-
-        <EvidenceList twoColumns>
-          {reviewedDocumentSubmissions &&
-          reviewedDocumentSubmissions.length > 0 ? (
-            reviewedDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.staffSelectedDocumentType?.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-              />
-            ))
-          ) : (
-            <h3>There are no reviewed documents</h3>
-          )}
-        </EvidenceList>
-      </div>
-
-      {rejectedDocumentSubmissions && rejectedDocumentSubmissions.length > 0 && (
-        <div className="rejected evidence-list">
-          <h2 className="lbh-heading-h3">
-            <SVGSymbol status="rejected" />
-            Rejected
-          </h2>
-
-          <EvidenceList twoColumns>
-            {rejectedDocumentSubmissions.map((ds) => (
-              <EvidenceTile
-                teamId={teamId}
-                residentId={residentId}
-                key={ds.id}
-                id={ds.id}
-                title={String(ds.documentType.title)}
-                createdAt={formatDate(ds.createdAt)}
-                fileSizeInBytes={ds.document ? ds.document.fileSizeInBytes : 0}
-                format={ds.document ? ds.document.extension : 'unknown'}
-                // purpose="Example form"
-              />
-            ))}
-          </EvidenceList>
-        </div>
-      )}
+      <ResidentDetailsTable resident={resident} />
+      <ResidentPageContext.Provider value={contextToPass}>
+        <ResidentDocumentsTable
+          evidenceRequests={evidenceRequests}
+          documentSubmissions={documentSubmissions}
+        />
+      </ResidentPageContext.Provider>
     </Layout>
   );
 };

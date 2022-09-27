@@ -1,7 +1,7 @@
 import { Resident } from 'src/domain/resident';
 import React, { FunctionComponent } from 'react';
 
-const ResidentPageTable: FunctionComponent<Props> = (props) => {
+const ResidentDetailsTable: FunctionComponent<Props> = (props) => {
   const { resident } = props;
 
   return (
@@ -51,4 +51,4 @@ export interface Props {
   resident: Resident;
 }
 
-export default ResidentPageTable;
+export default ResidentDetailsTable;

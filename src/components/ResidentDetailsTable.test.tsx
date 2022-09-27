@@ -1,8 +1,8 @@
 import React from 'react';
 import { cleanup, render } from '@testing-library/react';
-import ResidentPageTable from './ResidentPageTable';
+import ResidentDetailsTable from './ResidentDetailsTable';
 
-describe('ResidentPageTable', () => {
+describe('ResidentDetailsTable', () => {
   afterEach(cleanup);
 
   test('it renders correctly', async () => {
@@ -12,7 +12,9 @@ describe('ResidentPageTable', () => {
       email: 'frodo@bagend.com',
       phoneNumber: '0123',
     };
-    const componentTestOne = render(<ResidentPageTable resident={resident} />);
+    const componentTestOne = render(
+      <ResidentDetailsTable resident={resident} />
+    );
     expect(componentTestOne.getByTestId('name-cell')).toHaveTextContent(
       'Frodo'
     );
@@ -44,7 +46,7 @@ describe('ResidentPageTable', () => {
         phoneNumber,
       };
       const componentTestTwo = render(
-        <ResidentPageTable resident={resident} />
+        <ResidentDetailsTable resident={resident} />
       );
       expect(componentTestTwo.getByTestId('name-cell')).toHaveTextContent(
         resident.name
