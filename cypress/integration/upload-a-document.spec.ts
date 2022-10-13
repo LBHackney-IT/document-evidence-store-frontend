@@ -77,7 +77,7 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       // View confirmation
-      cy.get('h1').should('contain', "We've received your documents");
+      cy.get('h1').should('contain', 'We’re checking your documents');
       cy.get('p').should(
         'contain',
         `Your reference number: ${residentReferenceId}`
@@ -128,7 +128,7 @@ describe('Can upload a document', () => {
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
 
       // View confirmation
-      cy.get('h1').should('contain', "We've received your documents");
+      cy.get('h1').should('contain', 'We’re checking your documents');
       cy.get('p').should(
         'contain',
         `Your reference number: ${residentReferenceId}`
