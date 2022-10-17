@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 
 describe('EvidenceAwaitingSubmissionTile', () => {
   it('renders the expected data', () => {
+    Date.now = jest.fn(() => new Date(Date.UTC(2022, 8, 1)).valueOf()); //added this as the descriptive part after the date meant the test kept failing as more than a month had passed
     const date = DateTime.local(2022, 8, 25, 11, 28).setLocale('en-gb');
     render(
       <EvidenceAwaitingSubmissionTile
