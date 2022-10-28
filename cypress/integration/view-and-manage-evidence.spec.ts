@@ -462,5 +462,57 @@ describe('Can view and manage evidence', () => {
       cy.get('svg[class="icon-loading]').should('not.exist');
     });
   });
+
+  describe('Can rotate a document', () => {
+    beforeEach(() => {
+      cy.login();
+
+      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+        const body = {
+          ...dsFixture,
+          id: 123,
+          state: req.body.state,
+          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+        };
+        console.log(body);
+        req.reply((res) => {
+          res.send(200, body);
+        });
+      }).as('updateDocumentState');
+
+      cy.visit(`http://localhost:3000/teams/2/dashboard`);
+      cy.injectAxe();
+
+      cy.get('a').contains('Namey McName').click();
+      cy.contains('h1', 'Namey McName');
+    });
+
+    it('allows image rotation', () => {
+      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+      cy.get('section[id="pending-review"]')
+        .eq(0)
+        .contains('Proof of ID')
+        .click();
+      cy.get('[data-testid="rotate-button"]').click({ force: true });
+      cy.get('[data-testid="default-image"]')
+        .should('have.attr', 'class')
+        .and('contains', 'rotated90');
+
+      cy.get('[data-testid="rotate-button"]').click({ force: true });
+      cy.get('[data-testid="default-image"]')
+        .should('have.attr', 'class')
+        .and('contains', 'rotated180');
+
+      cy.get('[data-testid="rotate-button"]').click({ force: true });
+      cy.get('[data-testid="default-image"]')
+        .should('have.attr', 'class')
+        .and('contains', 'rotated270');
+
+      cy.get('[data-testid="rotate-button"]').click({ force: true });
+      cy.get('[data-testid="default-image"]')
+        .should('have.attr', 'class')
+        .and('contains', 'rotated360');
+    });
+  });
 });
 export {};
