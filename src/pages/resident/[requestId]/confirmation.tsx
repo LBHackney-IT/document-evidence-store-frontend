@@ -29,7 +29,7 @@ const Confirmation: NextPage<ConfirmationProps> = ({
       <div className="govuk-grid-row">
         <div className="govuk-grid-column-two-thirds">
           <Panel>
-            <h1 className="lbh-heading-h1">We've received your documents</h1>
+            <h1 className="lbh-heading-h1">We’re checking your documents</h1>
             <p className="lbh-body">
               Your reference number: {residentReferenceId}
             </p>
@@ -40,8 +40,8 @@ const Confirmation: NextPage<ConfirmationProps> = ({
           <h2 className="lbh-heading-h2">What happens next</h2>
           <p className="lbh-body">{team.slaMessage}</p>
           <p className="lbh-body">
-            We’ve sent your evidence to the service that requested it. They will
-            be in touch about the next steps.
+            We’re checking your evidence. It’ll be sent to the service that
+            requested it if it meets our requirements.
           </p>
           <p className="lbh-body">
             <a href={`${feedbackUrl}`} className="govuk-link lbh-link">
