@@ -11,7 +11,7 @@ describe('Can view and manage evidence', () => {
         state: req.body.state,
         staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
       };
-      console.log(body);
+
       req.reply((res) => {
         res.send(200, body);
       });
@@ -474,7 +474,7 @@ describe('Can view and manage evidence', () => {
           state: req.body.state,
           staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
         };
-        console.log(body);
+
         req.reply((res) => {
           res.send(200, body);
         });
