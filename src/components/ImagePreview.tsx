@@ -3,10 +3,15 @@ import { DocumentSubmission } from '../domain/document-submission';
 import styles from '../styles/Document.module.scss';
 import LoadingBox from '@govuk-react/loading-box';
 import { humanFileSize } from '../helpers/formatters';
+import rotated from '../styles/RotateImage.module.scss';
+import RotateDocument from 'src/components/RotateDocument';
 
 const ImagePreview = (props: Props): JSX.Element | null => {
   const [conversionImage, setConversionImage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [rotation, setRotation] = useState('');
+  const [currentRotation, setCurrentRotation] = useState(0);
+  const [imageWidth, setImageWidth] = useState(0);
 
   const { documentSubmission, downloadUrl } = props;
   const { document } = documentSubmission;
@@ -15,6 +20,28 @@ const ImagePreview = (props: Props): JSX.Element | null => {
   const documentExtension = document?.extension;
   const toConvertDocumentExtensions = ['heic', 'heif'];
   const documentExtensions = ['png', 'jpeg'];
+
+  const rotate = (currentRotation: number) => {
+    switch (currentRotation) {
+      case 0:
+        setRotation(`${rotated.rotated90}`);
+        setCurrentRotation(90);
+        break;
+      case 90:
+        setRotation(`${rotated.rotated180}`);
+        setCurrentRotation(180);
+        break;
+      case 180:
+        setRotation(`${rotated.rotated270}`);
+        setCurrentRotation(270);
+        break;
+      case 270:
+        setRotation(`${rotated.rotated360}`);
+        setCurrentRotation(0);
+        break;
+    }
+  };
+
   if (toConvertDocumentExtensions.includes(documentExtension as string)) {
     useEffect(() => {
       if (typeof window !== 'undefined') {
@@ -38,11 +65,34 @@ const ImagePreview = (props: Props): JSX.Element | null => {
       }
     }, []);
   }
+
+  const getImageWidth = () => {
+    const img = new Image();
+    img.src = downloadUrl;
+    return (img.onload = function () {
+      const width = img.width;
+      setImageWidth(width);
+      return width;
+    });
+  };
+
+  useEffect(() => {
+    setImageWidth(getImageWidth());
+  }, []);
+
   return (
     <div>
       <figure className={styles.preview}>
         {documentExtensions.includes(documentExtension as string) ? (
-          <img src={downloadUrl} alt={documentSubmission.documentType.title} />
+          <RotateDocument
+            currentRotation={currentRotation}
+            imageWidth={imageWidth}
+            documentSource={downloadUrl}
+            rotate={() => rotate(currentRotation)}
+            rotation={rotation}
+            documentTitle={documentSubmission.documentType.title}
+            dataTestId={'default-image'}
+          />
         ) : toConvertDocumentExtensions.includes(
             documentExtension as string
           ) ? (
@@ -50,16 +100,19 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             loading={loading}
             title={documentSubmission.documentType.title}
           >
-            <img
-              src={conversionImage}
-              alt={documentSubmission.documentType.title}
-              data-testid="conversion-image"
+            <RotateDocument
+              currentRotation={currentRotation}
+              imageWidth={imageWidth}
+              documentSource={conversionImage}
+              rotate={() => rotate(currentRotation)}
+              rotation={rotation}
+              documentTitle={documentSubmission.documentType.title}
+              dataTestId={'conversion-image'}
             />
           </LoadingBox>
         ) : (
           <iframe src={downloadUrl} height="1000px" width="800px" />
         )}
-
         <figcaption className="lbh-body-s">
           <strong>{document.extension?.toUpperCase()}</strong>{' '}
           {humanFileSize(document.fileSizeInBytes)}{' '}

@@ -1,0 +1,42 @@
+.rotated90 {
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg) translate(0, -100%);
+  transform-origin: 0 0;
+}
+
+.rotated180 {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+  translate: (0, -100%);
+}
+
+.rotated270 {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg) translate(-100%, 0);
+  transform-origin: 0 0;
+}
+
+.rotated360 {
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+}
+
+.rotateButton {
+  img {
+    height: 40px;
+    width: 40px;
+  }
+  visibility: hidden;
+}
+
+img:hover + .rotateButton,
+.rotateButton:hover {
+  visibility: visible;
+}
+
+.showRotateButtonOnHover:hover {
+  .rotateButton,
+  .rotateButton:hover {
+    visibility: visible;
+  }
+}
