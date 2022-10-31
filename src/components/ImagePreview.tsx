@@ -70,7 +70,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
     const img = new Image();
     img.src = downloadUrl;
     return (img.onload = function () {
-      const width = img.width;
+      const width = img.naturalWidth;
       setImageWidth(width);
       return width;
     });
