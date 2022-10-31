@@ -77,8 +77,8 @@ const ImagePreview = (props: Props): JSX.Element | null => {
   };
 
   useEffect(() => {
-    setImageWidth(getImageWidth());
-  }, []);
+    getImageWidth();
+  }, [downloadUrl]);
 
   return (
     <div>
