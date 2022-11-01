@@ -3,7 +3,6 @@ import rotated from '../styles/RotateImage.module.scss';
 
 const RotateDocument: FunctionComponent<Props> = ({
   currentRotation,
-  imageWidth,
   documentSource,
   rotate,
   rotation,
@@ -18,7 +17,9 @@ const RotateDocument: FunctionComponent<Props> = ({
           ? {
               display: 'inline-block',
               position: 'relative',
-              height: `${imageWidth}px`,
+              aspectRatio: '1 / 1',
+              height: '100%',
+              width: '100%',
             }
           : { display: 'inline-block', position: 'relative' }
       }
@@ -50,7 +51,6 @@ const RotateDocument: FunctionComponent<Props> = ({
 
 type Props = {
   currentRotation: number;
-  imageWidth: number;
   documentSource: string;
   rotate: (currentRotation: number) => void;
   rotation: string;

@@ -11,7 +11,6 @@ const ImagePreview = (props: Props): JSX.Element | null => {
   const [loading, setLoading] = useState(true);
   const [rotation, setRotation] = useState('');
   const [currentRotation, setCurrentRotation] = useState(0);
-  const [imageWidth, setImageWidth] = useState(0);
 
   const { documentSubmission, downloadUrl } = props;
   const { document } = documentSubmission;
@@ -65,28 +64,12 @@ const ImagePreview = (props: Props): JSX.Element | null => {
       }
     }, []);
   }
-
-  const getImageWidth = () => {
-    const img = new Image();
-    img.src = downloadUrl;
-    return (img.onload = function () {
-      const width = img.naturalWidth;
-      setImageWidth(width);
-      return width;
-    });
-  };
-
-  useEffect(() => {
-    getImageWidth();
-  }, [downloadUrl]);
-
   return (
     <div>
       <figure className={styles.preview}>
         {documentExtensions.includes(documentExtension as string) ? (
           <RotateDocument
             currentRotation={currentRotation}
-            imageWidth={imageWidth}
             documentSource={downloadUrl}
             rotate={() => rotate(currentRotation)}
             rotation={rotation}
@@ -102,7 +85,6 @@ const ImagePreview = (props: Props): JSX.Element | null => {
           >
             <RotateDocument
               currentRotation={currentRotation}
-              imageWidth={imageWidth}
               documentSource={conversionImage}
               rotate={() => rotate(currentRotation)}
               rotation={rotation}
