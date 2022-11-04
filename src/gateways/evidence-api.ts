@@ -162,7 +162,9 @@ export class EvidenceApiGateway {
   async getDocumentSubmissionsForResident(
     userEmail: string,
     team: string,
-    residentId: string
+    residentId: string,
+    page: number,
+    pageSize: number
   ): Promise<DocumentSubmission[]> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponse[]>(
@@ -175,6 +177,8 @@ export class EvidenceApiGateway {
           params: {
             team: team,
             residentId: residentId,
+            page: page,
+            pageSize: pageSize,
           },
         }
       );

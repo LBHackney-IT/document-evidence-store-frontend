@@ -77,6 +77,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       documentTypesMap.set(er.id, new Set(er.documentTypes))
     );
     documentSubmissions.forEach((ds) => {
+      if (!ds.evidenceRequestId) {
+        return;
+      }
       const currentDocumentTypesSet = documentTypesMap.get(
         ds.evidenceRequestId
       );
@@ -234,12 +237,16 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                       : 'unknown'
                                   }
                                   state={documentTabItem.state}
-                                  reason={getReason(
-                                    documentTabItem.evidenceRequestId
-                                  )}
-                                  requestedBy={getUserRequestedBy(
-                                    documentTabItem.evidenceRequestId
-                                  )}
+                                  reason={
+                                    documentTabItem.evidenceRequestId &&
+                                    getReason(documentTabItem.evidenceRequestId)
+                                  }
+                                  requestedBy={
+                                    documentTabItem.evidenceRequestId &&
+                                    getUserRequestedBy(
+                                      documentTabItem.evidenceRequestId
+                                    )
+                                  }
                                   userUpdatedBy={documentTabItem.userUpdatedBy}
                                 />
                               </li>
