@@ -95,7 +95,9 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const documentSubmissionsPromise = gateway.getDocumentSubmissionsForResident(
     user.email,
     team.name,
-    residentId
+    residentId,
+    1,
+    10
   );
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
     user.email,
