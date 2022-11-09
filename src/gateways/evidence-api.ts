@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance, Method } from 'axios';
 import {
   DocumentSubmissionResponse,
+  DocumentSubmissionQueryResponse,
   EvidenceRequestResponse,
   ResidentResponse,
   TokenDictionary,
@@ -8,7 +9,7 @@ import {
 import { InternalServerError } from './internal-api';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import { DocumentSubmission, DocumentSubmissionsObject } from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
@@ -165,9 +166,9 @@ export class EvidenceApiGateway {
     residentId: string,
     page: number,
     pageSize: number
-  ): Promise<DocumentSubmission[]> {
+  ): Promise<DocumentSubmissionsObject> {
     try {
-      const { data } = await this.client.get<DocumentSubmissionResponse[]>(
+      const { data } = await this.client.get<DocumentSubmissionQueryResponse>(
         '/api/v1/document_submissions',
         {
           headers: {
@@ -182,7 +183,10 @@ export class EvidenceApiGateway {
           },
         }
       );
-      return data.map((ds) => ResponseMapper.mapDocumentSubmission(ds));
+      return {
+        total : data.total,
+        documentSubmissions: data.documentSubmissions.map((ds) => ResponseMapper.mapDocumentSubmission(ds))
+      }      
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

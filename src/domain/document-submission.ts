@@ -31,6 +31,12 @@ export interface IDocumentSubmission {
   document?: Document;
 }
 
+export interface DocumentSubmissionsObject {
+  documentSubmissions: DocumentSubmission[];
+  total: Number
+
+}
+
 export class DocumentSubmission implements IDocumentSubmission {
   id: string;
   createdAt: DateTime;

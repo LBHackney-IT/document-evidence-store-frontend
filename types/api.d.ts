@@ -22,6 +22,11 @@ export interface EvidenceRequestResponse
   noteToResident: string;
 }
 
+export interface DocumentSubmissionQueryResponse {
+  documentSubmissions: DocumentSubmissionResponse[]
+  total: number
+}
+
 export interface DocumentSubmissionResponse
   extends Omit<
     IDocumentSubmission,
