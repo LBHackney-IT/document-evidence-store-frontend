@@ -211,45 +211,52 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
                             return (
-                              <li
-                                className={styles.item}
-                                data-testid={`${documentTab.id}-evidence-tile`}
-                                key={index}
-                              >
-                                <EvidenceTile
-                                  id={documentTabItem.id}
-                                  title={
-                                    documentTabItem.staffSelectedDocumentType
-                                      ?.title ||
-                                    documentTabItem.documentType.title
-                                  }
-                                  createdAt={formatDate(
-                                    documentTabItem.createdAt
-                                  )}
-                                  fileSizeInBytes={
-                                    documentTabItem.document
-                                      ? documentTabItem.document.fileSizeInBytes
-                                      : 0
-                                  }
-                                  format={
-                                    documentTabItem.document
-                                      ? documentTabItem.document.extension
-                                      : 'unknown'
-                                  }
-                                  state={documentTabItem.state}
-                                  reason={
-                                    documentTabItem.evidenceRequestId &&
-                                    getReason(documentTabItem.evidenceRequestId)
-                                  }
-                                  requestedBy={
-                                    documentTabItem.evidenceRequestId &&
-                                    getUserRequestedBy(
-                                      documentTabItem.evidenceRequestId
-                                    )
-                                  }
-                                  userUpdatedBy={documentTabItem.userUpdatedBy}
-                                />
-                              </li>
+                              <>
+                                <li
+                                  className={styles.item}
+                                  data-testid={`${documentTab.id}-evidence-tile`}
+                                  key={index}
+                                >
+                                  <EvidenceTile
+                                    id={documentTabItem.id}
+                                    title={
+                                      documentTabItem.staffSelectedDocumentType
+                                        ?.title ||
+                                      documentTabItem.documentType.title
+                                    }
+                                    createdAt={formatDate(
+                                      documentTabItem.createdAt
+                                    )}
+                                    fileSizeInBytes={
+                                      documentTabItem.document
+                                        ? documentTabItem.document
+                                            .fileSizeInBytes
+                                        : 0
+                                    }
+                                    format={
+                                      documentTabItem.document
+                                        ? documentTabItem.document.extension
+                                        : 'unknown'
+                                    }
+                                    state={documentTabItem.state}
+                                    reason={
+                                      documentTabItem.evidenceRequestId &&
+                                      getReason(
+                                        documentTabItem.evidenceRequestId
+                                      )
+                                    }
+                                    requestedBy={
+                                      documentTabItem.evidenceRequestId &&
+                                      getUserRequestedBy(
+                                        documentTabItem.evidenceRequestId
+                                      )
+                                    }
+                                    userUpdatedBy={
+                                      documentTabItem.userUpdatedBy
+                                    }
+                                  />
+                                </li>
+                              </>
                             );
                           case 'EvidenceAwaitingSubmission':
                             return (

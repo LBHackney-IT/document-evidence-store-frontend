@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Layout from 'src/components/DashboardLayout';
+import { Pagination } from 'src/components/Pagination';
 import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
@@ -39,6 +40,14 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     teamIdContext: teamId,
   };
 
+  const onPageChange = async () => {
+    // commenting out pageNumber: number to push up
+    //await documentSubmissionsPromise();
+    //update the promise value with the target page
+
+    return null;
+  };
+
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
       <Head>
@@ -60,6 +69,12 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}
           documentSubmissions={documentSubmissions}
+        />
+        <Pagination
+          currentPageNumber={1}
+          pageSize={10}
+          total={700}
+          onPageChange={onPageChange}
         />
       </ResidentPageContext.Provider>
     </Layout>
@@ -96,6 +111,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     user.email,
     team.name,
     residentId,
+    //to be updated
     1,
     10
   );
