@@ -120,6 +120,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     1,
     10
   );
+
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
     user.email,
     team.name,
@@ -135,7 +136,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const residentPromise = gateway.getResident(user.email, residentId);
 
   const [
-    documentSubmissions,
+    documentSubmissionsObject,
     pendingEvidenceRequests,
     forReviewEvidenceRequests,
     resident,
@@ -152,8 +153,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   return {
     props: {
       evidenceRequests,
-      documentSubmissions: documentSubmissions.documentSubmissions,
-      total: documentSubmissions.total,
+      documentSubmissions: documentSubmissionsObject.documentSubmissions,
+      total: documentSubmissionsObject.total,
       resident,
       teamId,
       feedbackUrl,

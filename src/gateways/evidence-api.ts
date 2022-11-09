@@ -186,7 +186,6 @@ export class EvidenceApiGateway {
           },
         }
       );
-      console.log('total documents returned are' + JSON.stringify(data));
       return {
         total: data.total,
         documentSubmissions: data.documentSubmissions.map((ds) =>

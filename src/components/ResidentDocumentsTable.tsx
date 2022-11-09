@@ -59,6 +59,12 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
+
+  console.log(
+    `to review doc submissions are ${JSON.stringify(
+      toReviewDocumentSubmissions
+    )}`
+  );
   const reviewedDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'APPROVED')
     .map<DocumentSubmissionWithKind>((ds) => ({
@@ -108,6 +114,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     });
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
+
   const allDocumentSubmissions = [
     ...toReviewDocumentSubmissions,
     ...reviewedDocumentSubmissions,

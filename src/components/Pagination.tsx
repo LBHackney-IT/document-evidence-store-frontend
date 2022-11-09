@@ -18,6 +18,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
           <a
             className="lbh-pagination__link"
             href="#"
+            key={page}
             aria-label={`page ${page}`}
             onClick={() => handlePaginate(page)}
           >
