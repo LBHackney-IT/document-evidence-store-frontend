@@ -33,8 +33,7 @@ export interface IDocumentSubmission {
 
 export interface DocumentSubmissionsObject {
   documentSubmissions: DocumentSubmission[];
-  total: Number
-
+  total: number;
 }
 
 export class DocumentSubmission implements IDocumentSubmission {

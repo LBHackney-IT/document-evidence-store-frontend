@@ -23,8 +23,8 @@ export interface EvidenceRequestResponse
 }
 
 export interface DocumentSubmissionQueryResponse {
-  documentSubmissions: DocumentSubmissionResponse[]
-  total: number
+  documentSubmissions: DocumentSubmissionResponse[];
+  total: number;
 }
 
 export interface DocumentSubmissionResponse

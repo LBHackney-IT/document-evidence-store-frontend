@@ -7,14 +7,13 @@ import { Resident } from 'src/domain/resident';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
-// import { useRouter } from 'next/router';
 import {
   ResidentPageContext,
   UserContextInterface,
@@ -23,6 +22,7 @@ import {
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
+  total: number;
   resident: Resident;
   teamId: string;
   feedbackUrl: string;
@@ -31,6 +31,7 @@ type ResidentPageProps = {
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
   documentSubmissions,
+  total,
   resident,
   teamId,
   feedbackUrl,
@@ -40,13 +41,17 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     teamIdContext: teamId,
   };
 
-  const onPageChange = async () => {
-    // commenting out pageNumber: number to push up
-    //await documentSubmissionsPromise();
-    //update the promise value with the target page
+  const [currentPage, setCurrentPage] = useState(1);
 
+  //pass current page to pagination component
+  const onPageChange = async (targetPage: number) => {
+    setCurrentPage(targetPage);
+
+    //how do we call the getServerSideProps function with the updated value?
     return null;
   };
+
+  //useEffect(() => {}, [currentPage]);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -71,9 +76,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           documentSubmissions={documentSubmissions}
         />
         <Pagination
-          currentPageNumber={1}
+          currentPageNumber={currentPage}
           pageSize={10}
-          total={700}
+          total={total}
           onPageChange={onPageChange}
         />
       </ResidentPageContext.Provider>
@@ -111,7 +116,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     user.email,
     team.name,
     residentId,
-    //to be updated
+    //to be updated - page and pageSize
     1,
     10
   );
@@ -147,7 +152,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   return {
     props: {
       evidenceRequests,
-      documentSubmissions,
+      documentSubmissions: documentSubmissions.documentSubmissions,
+      total: documentSubmissions.total,
       resident,
       teamId,
       feedbackUrl,

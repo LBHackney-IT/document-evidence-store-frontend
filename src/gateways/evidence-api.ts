@@ -9,7 +9,10 @@ import {
 import { InternalServerError } from './internal-api';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import { DocumentSubmission, DocumentSubmissionsObject } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  DocumentSubmissionsObject,
+} from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
@@ -183,10 +186,13 @@ export class EvidenceApiGateway {
           },
         }
       );
+      console.log('total documents returned are' + JSON.stringify(data));
       return {
-        total : data.total,
-        documentSubmissions: data.documentSubmissions.map((ds) => ResponseMapper.mapDocumentSubmission(ds))
-      }      
+        total: data.total,
+        documentSubmissions: data.documentSubmissions.map((ds) =>
+          ResponseMapper.mapDocumentSubmission(ds)
+        ),
+      };
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

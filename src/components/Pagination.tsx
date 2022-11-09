@@ -1,38 +1,38 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 
-const [currentPage, setCurrentPage] = useState(1);
-const [totalPages, setTotalPages] = useState(0);
-
 export const Pagination: FunctionComponent<Props> = (props: Props) => {
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     setTotalPages(Math.ceil(props.total / props.pageSize));
   }, []);
 
-  const handlePaginate = (nextPageNumber: number) => {
-    setCurrentPage(nextPageNumber);
-    props.onPageChange(nextPageNumber);
+  const handlePaginate = (targetPage: number) => {
+    props.onPageChange(targetPage);
   };
 
   const generatePaginationLinks = () => {
-    for (let page = 1; page <= props.total; page++) {
-      return (
-        <li className="govuk-pagination__item">
+    const pages = [];
+    for (let page = 1; page <= totalPages; page++) {
+      pages.push(
+        <li className="lbh-pagination__item">
           <a
-            className="govuk-link govuk-pagination__link"
+            className="lbh-pagination__link"
             href="#"
             aria-label={`page ${page}`}
+            onClick={() => handlePaginate(page)}
           >
             {page}
           </a>
         </li>
       );
     }
+    return pages;
   };
 
   return (
     <nav className="lbh-pagination">
       <ul className="lbh-pagination">
-        {currentPage != 1 && (
+        {props.currentPageNumber != 1 && (
           <li className="lbh-pagination__item">
             <a
               className="lbh-pagination__link"
@@ -48,7 +48,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
           </li>
         )}
         <>{generatePaginationLinks()}</>
-        {currentPage != totalPages && (
+        {props.currentPageNumber != totalPages && (
           <li className="lbh-pagination__item">
             <a
               className="lbh-pagination__link"
