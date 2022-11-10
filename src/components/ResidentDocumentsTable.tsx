@@ -54,17 +54,12 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   };
 
   const toReviewDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
+    .filter((ds) => ds.state == 'UPLOADED' /*&& ds.document?.fileType */) //TODO: REMOVE THIS COMMENT!!
     .map<DocumentSubmissionWithKind>((ds) => ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
 
-  console.log(
-    `to review doc submissions are ${JSON.stringify(
-      toReviewDocumentSubmissions
-    )}`
-  );
   const reviewedDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'APPROVED')
     .map<DocumentSubmissionWithKind>((ds) => ({

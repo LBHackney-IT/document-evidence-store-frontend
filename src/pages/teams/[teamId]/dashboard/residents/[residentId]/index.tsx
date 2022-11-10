@@ -7,7 +7,7 @@ import { Resident } from 'src/domain/resident';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -18,9 +18,7 @@ import {
   ResidentPageContext,
   UserContextInterface,
 } from '../../../../../../contexts/ResidentPageContext';
-
-let teamName: string | undefined;
-let userEmail: string | undefined;
+import { DocumentSubmissionsModel } from 'src/services/get-document-submissions-model';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
@@ -29,11 +27,13 @@ type ResidentPageProps = {
   resident: Resident;
   teamId: string;
   feedbackUrl: string;
+  userEmail: string;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
   documentSubmissions,
+  userEmail,
   total,
   resident,
   teamId,
@@ -52,20 +52,26 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   const onPageChange = async (targetPage: number) => {
     setCurrentPage(targetPage);
-    const gateway = new EvidenceApiGateway();
     const pageSize = 10;
 
-    const documentSubmissionPromise = await gateway.getDocumentSubmissionsForResident(
-      userEmail ?? '',
-      teamName ?? '',
-      resident.id,
-      targetPage,
-      pageSize
-    );
+    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
 
-    setDisplayedDocumentSubmissions(
-      documentSubmissionPromise.documentSubmissions
-    );
+    const model = new DocumentSubmissionsModel();
+
+    try {
+      const documentSubmissionPromise = await model.handleSubmit(
+        userEmail,
+        resident.id,
+        team?.name ?? '',
+        targetPage.toString(),
+        pageSize.toString()
+      );
+      setDisplayedDocumentSubmissions(
+        documentSubmissionPromise.documentSubmissions
+      );
+    } catch (e) {
+      console.log(`ERROR - ERROR UPDATING DOC SUBMISSIONS ${e}`);
+    }
 
     return null;
   };
@@ -113,9 +119,6 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
 
-  //hoist email into global scope
-  userEmail = user?.email;
-
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
@@ -123,9 +126,6 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-
-  //hoist teamname into global scope
-  teamName = team?.name;
 
   if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
@@ -145,8 +145,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     user.email,
     team.name,
     residentId,
-    initialPage,
-    pageLimit
+    initialPage.toString(),
+    pageLimit.toString()
   );
 
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
@@ -162,6 +162,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     EvidenceRequestState.FOR_REVIEW
   );
   const residentPromise = gateway.getResident(user.email, residentId);
+
+  const userEmail = user.email;
 
   const [
     documentSubmissionsObject,
@@ -187,6 +189,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
       resident,
       teamId,
       feedbackUrl,
+      userEmail,
     },
   };
 });

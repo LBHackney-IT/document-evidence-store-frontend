@@ -167,8 +167,8 @@ export class EvidenceApiGateway {
     userEmail: string,
     team: string,
     residentId: string,
-    page: number,
-    pageSize: number
+    page: string,
+    pageSize: string
   ): Promise<DocumentSubmissionsObject> {
     try {
       const { data } = await this.client.get<DocumentSubmissionQueryResponse>(
