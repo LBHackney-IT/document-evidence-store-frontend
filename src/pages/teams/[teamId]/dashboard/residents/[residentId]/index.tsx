@@ -19,6 +19,9 @@ import {
   UserContextInterface,
 } from '../../../../../../contexts/ResidentPageContext';
 
+let teamName: string | undefined;
+let userEmail: string | undefined;
+
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
@@ -48,14 +51,13 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   ] = useState<DocumentSubmission[]>(documentSubmissions);
 
   const onPageChange = async (targetPage: number) => {
+    setCurrentPage(targetPage);
     const gateway = new EvidenceApiGateway();
     const pageSize = 10;
 
-    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-
     const documentSubmissionPromise = await gateway.getDocumentSubmissionsForResident(
-      'email', //how do we get these parameters? //user email
-      'team', //team name
+      userEmail ?? '',
+      teamName ?? '',
       resident.id,
       targetPage,
       pageSize
@@ -110,6 +112,10 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+
+  //hoist email into global scope
+  userEmail = user?.email;
+
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
@@ -117,6 +123,10 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+
+  //hoist teamname into global scope
+  teamName = team?.name;
+
   if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
