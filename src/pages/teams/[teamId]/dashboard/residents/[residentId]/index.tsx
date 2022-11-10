@@ -42,16 +42,29 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   };
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [
+    displayedDocumentSubmissions,
+    setDisplayedDocumentSubmissions,
+  ] = useState<DocumentSubmission[]>(documentSubmissions);
 
-  //pass current page to pagination component
   const onPageChange = async (targetPage: number) => {
-    setCurrentPage(targetPage);
+    const gateway = new EvidenceApiGateway();
+    const pageSize = 10;
 
-    //how do we call the getServerSideProps function with the updated value?
+    const documentSubmissionPromise = await gateway.getDocumentSubmissionsForResident(
+      'email',
+      'team',
+      'id',
+      targetPage,
+      pageSize
+    );
+
+    setDisplayedDocumentSubmissions(
+      documentSubmissionPromise.documentSubmissions
+    );
+
     return null;
   };
-
-  //useEffect(() => {}, [currentPage]);
 
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -73,7 +86,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <ResidentPageContext.Provider value={contextToPass}>
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}
-          documentSubmissions={documentSubmissions}
+          documentSubmissions={displayedDocumentSubmissions}
         />
         <Pagination
           currentPageNumber={currentPage}
@@ -112,13 +125,16 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   }
 
   const gateway = new EvidenceApiGateway();
+
+  const initialPage = 1;
+  const pageLimit = 10;
+
   const documentSubmissionsPromise = gateway.getDocumentSubmissionsForResident(
     user.email,
     team.name,
     residentId,
-    //to be updated - page and pageSize
-    1,
-    10
+    initialPage,
+    pageLimit
   );
 
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
@@ -150,6 +166,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const evidenceRequests = pendingEvidenceRequests.concat(
     forReviewEvidenceRequests
   );
+
   return {
     props: {
       evidenceRequests,
