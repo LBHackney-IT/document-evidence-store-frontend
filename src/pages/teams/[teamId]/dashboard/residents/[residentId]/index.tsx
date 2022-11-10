@@ -51,10 +51,12 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     const gateway = new EvidenceApiGateway();
     const pageSize = 10;
 
+    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+
     const documentSubmissionPromise = await gateway.getDocumentSubmissionsForResident(
-      'email',
-      'team',
-      'id',
+      'email', //how do we get these parameters? //user email
+      'team', //team name
+      resident.id,
       targetPage,
       pageSize
     );
