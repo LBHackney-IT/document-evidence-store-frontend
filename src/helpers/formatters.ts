@@ -14,12 +14,12 @@ export const humanFileSize = (bytes: number): string => {
 export const formatDate = (dateTime: DateTime | undefined): string => {
   if (!dateTime) {
     return '';
-  }  
-  if (!dateTime.isValid) {
-    console.log(`Invalid dateTime: ${dateTime.toLocaleString()}`)
-    return ''
   }
-  return (    
+  if (!dateTime.isValid) {
+    console.log(`Invalid dateTime: ${dateTime.toLocaleString()}`);
+    return '';
+  }
+  return (
     dateTime.setLocale('en-gb').toFormat('h:mm a d LLLL y') +
     ' (' +
     dateTime.toRelativeCalendar() +

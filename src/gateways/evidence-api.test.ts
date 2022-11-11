@@ -614,8 +614,8 @@ describe('Evidence api gateway', () => {
   describe('getDocumentSubmissionsByResidentId', () => {
     const residentId = 'id';
     const team = 'service';
-    const page = "1";
-    const pageSize = "10";
+    const page = '1';
+    const pageSize = '10';
     describe('returns the correct response', () => {
       const expectedData = DocumentSubmissionsResponseObjectFixture;
       const mappedData = expectedData.documentSubmissions.map((ds) =>
@@ -652,7 +652,7 @@ describe('Evidence api gateway', () => {
               team: team,
               residentId: residentId,
               page,
-              pageSize
+              pageSize,
             },
           }
         );
