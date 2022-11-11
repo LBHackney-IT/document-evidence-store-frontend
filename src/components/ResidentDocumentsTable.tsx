@@ -229,6 +229,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                     createdAt={formatDate(
                                       documentTabItem.createdAt
                                     )}
+                                    key={documentTabItem.id}
                                     fileSizeInBytes={
                                       documentTabItem.document
                                         ? documentTabItem.document

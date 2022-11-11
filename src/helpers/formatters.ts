@@ -12,16 +12,19 @@ export const humanFileSize = (bytes: number): string => {
 
 // For example: 10:15 am 5 Jun 2020 (2 days ago)
 export const formatDate = (dateTime: DateTime | undefined): string => {
-  if (dateTime instanceof DateTime) {
-    return (    
+  if (!dateTime) {
+    return '';
+  }  
+  if (!dateTime.isValid) {
+    console.log(`Invalid dateTime: ${dateTime.toLocaleString()}`)
+    return ''
+  }
+  return (    
     dateTime.setLocale('en-gb').toFormat('h:mm a d LLLL y') +
     ' (' +
     dateTime.toRelativeCalendar() +
     ')'
-  ); 
-  }
-  return '';
-  
+  );
 };
 
 export const formatDateWithoutTime = (dateTime: DateTime): string => {

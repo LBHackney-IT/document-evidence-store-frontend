@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
+import styles from '../styles/Pagination.module.scss';
 
 export const Pagination: FunctionComponent<Props> = (props: Props) => {
   const [totalPages, setTotalPages] = useState(0);
@@ -18,7 +19,8 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
           <a
             className="lbh-pagination__link"
             href="#"
-            key={page}
+            id={page == 1 ? 'focus-default' : ''}
+            key={`pagination-${page}`}
             aria-label={`page ${page}`}
             onClick={() => handlePaginate(page)}
           >
@@ -31,39 +33,10 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <nav className="lbh-pagination">
+    <nav className={styles.pagination_nav}>
       <ul className="lbh-pagination">
-        {props.currentPageNumber != 1 && (
-          <li className="lbh-pagination__item">
-            <a
-              className="lbh-pagination__link"
-              href="#"
-              aria-label="Previous page"
-              onClick={() => handlePaginate(props.currentPageNumber - 1)}
-            >
-              <span aria-hidden="true" role="presentation">
-                &laquo;
-              </span>
-              Previous
-            </a>
-          </li>
-        )}
+        <div className={styles.pagination_page}>Page</div>
         <>{generatePaginationLinks()}</>
-        {props.currentPageNumber != totalPages && (
-          <li className="lbh-pagination__item">
-            <a
-              className="lbh-pagination__link"
-              href="#"
-              aria-label="Next page"
-              onClick={() => handlePaginate(props.currentPageNumber + 1)}
-            >
-              Next
-              <span aria-hidden="true" role="presentation">
-                &raquo;
-              </span>
-            </a>
-          </li>
-        )}
       </ul>
     </nav>
   );

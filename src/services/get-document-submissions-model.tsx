@@ -18,11 +18,6 @@ export class DocumentSubmissionsModel {
       currentPage,
       pageSize
     );
-    console.log(
-      `the document submission object looks like this : ${JSON.stringify(
-        docSubmissionObject
-      )}`
-    );
     return docSubmissionObject;
   }
 }
