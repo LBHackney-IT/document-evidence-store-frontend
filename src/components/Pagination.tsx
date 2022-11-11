@@ -20,7 +20,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
             className="lbh-pagination__link"
             href="#"
             key={`pagination-${page}`}
-            aria-label={`page ${page}`}
+            aria-label={`page-${page}`}
             onClick={() => handlePaginate(page)}
           >
             {page}
@@ -32,7 +32,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
   };
 
   return (
-    <nav className={styles.pagination_nav}>
+    <nav aria-label="pagination-nav" className={styles.pagination_nav}>
       <ul className="lbh-pagination">
         <div className={styles.pagination_page}>Page</div>
         <>{generatePaginationLinks()}</>

@@ -104,7 +104,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           documentSubmissions={displayedDocumentSubmissions}
           hidePaginationFunction={hidePaginationComponent}
         />
-        {!hidePagination && (
+        {!hidePagination && total > 10 && (
           <Pagination
             currentPageNumber={currentPage}
             pageSize={10}

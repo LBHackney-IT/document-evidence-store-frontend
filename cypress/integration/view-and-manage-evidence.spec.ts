@@ -104,9 +104,7 @@ describe('Can view and manage evidence', () => {
         'Date requested: 3:34 pm 30 November 2020 (2 years ago)'
       )
       .and('contain.text', 'reason number 1')
-      .and('contain.text', 'Requested by test1@hackney.gov.uk');
-
-    cy.get('section[id="all-documents"] table').should('have.length', 6);
+      .and('contain.text', 'Requested by test1@hackney.gov.uk');    
   });
 
   it('clicks through to the tab and shows the correct date format', () => {
