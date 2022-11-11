@@ -15,12 +15,12 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
     const pages = [];
     for (let page = 1; page <= totalPages; page++) {
       pages.push(
-        <li className="lbh-pagination__item">
+        <li className="lbh-pagination__item" aria-label="pagination-item">
           <a
             className="lbh-pagination__link"
             href="#"
             key={`pagination-${page}`}
-            aria-label={`page-${page}`}
+            aria-label={`page-${page}-link`}
             onClick={() => handlePaginate(page)}
           >
             {page}
@@ -33,7 +33,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <nav aria-label="pagination-nav" className={styles.pagination_nav}>
-      <ul className="lbh-pagination">
+      <ul className="lbh-pagination" aria-label="pagination-list">
         <div className={styles.pagination_page}>Page</div>
         <>{generatePaginationLinks()}</>
       </ul>
