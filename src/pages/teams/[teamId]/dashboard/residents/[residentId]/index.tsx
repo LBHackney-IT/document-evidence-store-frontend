@@ -45,10 +45,15 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   };
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [hidePagination, setHidePagination] = useState(false);
   const [
     displayedDocumentSubmissions,
     setDisplayedDocumentSubmissions,
   ] = useState<DocumentSubmission[]>(documentSubmissions);
+
+  const hidePaginationComponent = (hidePagination: boolean) => {
+    setHidePagination(hidePagination);
+  };
 
   const onPageChange = async (targetPage: number) => {
     setCurrentPage(targetPage);
@@ -97,13 +102,16 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}
           documentSubmissions={displayedDocumentSubmissions}
+          hidePaginationFunction={hidePaginationComponent}
         />
-        <Pagination
-          currentPageNumber={currentPage}
-          pageSize={10}
-          total={total}
-          onPageChange={onPageChange}
-        />
+        {!hidePagination && (
+          <Pagination
+            currentPageNumber={currentPage}
+            pageSize={10}
+            total={total}
+            onPageChange={onPageChange}
+          />
+        )}
       </ResidentPageContext.Provider>
     </Layout>
   );

@@ -11,6 +11,12 @@ import {
 import { DocumentType } from '../domain/document-type';
 import styles from '../styles/EvidenceTile.module.scss';
 
+interface Props {
+  evidenceRequests: EvidenceRequest[];
+  documentSubmissions: DocumentSubmission[];
+  hidePaginationFunction: (hidePaginate: boolean) => void;
+}
+
 type EvidenceAwaitingSubmission = {
   documentType: string;
   dateRequested: DateTime | undefined;
@@ -36,6 +42,7 @@ type DocumentTab = {
 export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   documentSubmissions,
+  hidePaginationFunction,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -45,6 +52,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   };
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
+    if (tab == 'awaiting-submission') {
+      hidePaginationFunction(true);
+    } else {
+      hidePaginationFunction(false);
+    }
   };
 
   const showPanel = (tabName: string) => {
@@ -114,7 +126,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     ...toReviewDocumentSubmissions,
     ...reviewedDocumentSubmissions,
     ...rejectedDocumentSubmissions,
-    ...evidenceAwaitingSubmissions,
   ];
 
   const DocumentTabs: DocumentTab[] = [
@@ -291,8 +302,3 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     </div>
   );
 };
-
-interface Props {
-  evidenceRequests: EvidenceRequest[];
-  documentSubmissions: DocumentSubmission[];
-}
