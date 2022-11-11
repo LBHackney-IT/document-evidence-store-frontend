@@ -1,7 +1,7 @@
 import Axios, { AxiosInstance, Method } from 'axios';
 import {
   DocumentSubmissionResponse,
-  DocumentSubmissionQueryResponse,
+  DocumentSubmissionResponseObject,
   EvidenceRequestResponse,
   ResidentResponse,
   TokenDictionary,
@@ -171,7 +171,7 @@ export class EvidenceApiGateway {
     pageSize: string
   ): Promise<DocumentSubmissionsObject> {
     try {
-      const { data } = await this.client.get<DocumentSubmissionQueryResponse>(
+      const { data } = await this.client.get<DocumentSubmissionResponseObject>(
         '/api/v1/document_submissions',
         {
           headers: {

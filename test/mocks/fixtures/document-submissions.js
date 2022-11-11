@@ -3,7 +3,7 @@ const documentSubmissionPdf = require('../../../cypress/fixtures/document_submis
 const documentSubmissionHeic = require('../../../cypress/fixtures/document_submissions/get-heic.json');
 const approvedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-approved.json');
 const rejectedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-rejected.json');
-const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many.json');
+const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many-response-object.json');
 const documentSubmissionExpiredClaim = require('../../../cypress/fixtures/document_submissions/get-expired.json');
 
 // There may be a neater way of doing this with MocksServer variants but I couldn't get it to work.

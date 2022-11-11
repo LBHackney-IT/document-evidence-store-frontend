@@ -53,6 +53,11 @@ export interface DocumentSubmissionResponse
   document?: DocumentResponse;
 }
 
+export interface DocumentSubmissionResponseObject {
+  documentSubmissions: DocumentSubmissionResponse[];
+  total: number;
+}
+
 export interface DocumentResponse {
   id: string;
   fileSize: number;
