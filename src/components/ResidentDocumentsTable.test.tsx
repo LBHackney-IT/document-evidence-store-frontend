@@ -5,6 +5,8 @@ import { EvidenceRequestsFixture } from './fixtures/evidence-requests';
 import { DocumentSubmissionsFixture } from './fixtures/document-submissions';
 
 const mockPaginationFunction = (_testBool: boolean) => {
+  _testBool = true;
+  console.log(`need to log ${_testBool}`);
   return;
 };
 
