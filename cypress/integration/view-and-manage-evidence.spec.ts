@@ -151,7 +151,7 @@ describe('Can view and manage evidence', () => {
 
   it('can view approved documents', () => {
     cy.get('a.govuk-tabs__tab[href*="approved"]').click();
-    cy.get('section[id="approved"] table').should('have.length', 2);
+    cy.get('section[id="approved"] table').should('have.length', 6);
     cy.get('section[id="approved"]').eq(0).contains('Passport').click();
   });
 
