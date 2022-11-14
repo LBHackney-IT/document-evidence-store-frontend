@@ -98,10 +98,6 @@ describe('Can view and manage evidence', () => {
     cy.get('section[id="all-documents"] table').should('have.length', 6);
   });
 
-  it('allows user to paginate through to more records', () => {
-    cy.get('pagination-item').last().click();
-  });
-
   it('clicks through to the tab and shows the correct date format', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
     cy.get('section[id="awaiting-submission"] p').should(
