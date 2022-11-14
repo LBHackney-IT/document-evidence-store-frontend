@@ -106,7 +106,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
 
-    cy.get('section[id="all-documents"] table').should('have.length', 5);
+    cy.get('section[id="all-documents"] table').should('have.length', 8);
   });
 
   it('clicks through to the tab and shows the correct date format', () => {
