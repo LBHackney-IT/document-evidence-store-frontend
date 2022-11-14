@@ -4,7 +4,7 @@ import { ResidentDocumentsTable } from './ResidentDocumentsTable';
 import { EvidenceRequestsFixture } from './fixtures/evidence-requests';
 import { DocumentSubmissionsFixture } from './fixtures/document-submissions';
 
-const mockPaginationFunction = (testBool: boolean) => {
+const mockPaginationFunction = (_testBool: boolean) => {
   return;
 };
 
