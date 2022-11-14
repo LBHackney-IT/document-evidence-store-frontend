@@ -77,8 +77,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     } catch (e) {
       console.log(`ERROR - ERROR UPDATING DOC SUBMISSIONS ${e}`);
     }
-
-    return null;
   };
 
   return (
