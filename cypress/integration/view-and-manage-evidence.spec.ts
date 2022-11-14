@@ -99,7 +99,7 @@ describe('Can view and manage evidence', () => {
   });
 
   it('allows user to paginate through to more records', () => {
-    cy.get('a.pagination-item').last().click();
+    cy.get('pagination-item').last().click();
   });
 
   it('clicks through to the tab and shows the correct date format', () => {
