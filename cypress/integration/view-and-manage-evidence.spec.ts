@@ -95,18 +95,18 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'reason number 2')
       .and('contain.text', 'Requested by test2@hackney.gov.uk');
 
-    // cy.get('section[id="all-documents"] table')
-    //   .eq(6)
-    //   .should('contain', 'AWAITING SUBMISSION')
-    //   .and('contain.text', 'Passport')
-    //   .and(
-    //     'contain.text',
-    //     'Date requested: 3:34 pm 30 November 2020 (2 years ago)'
-    //   )
-    //   .and('contain.text', 'reason number 1')
-    //   .and('contain.text', 'Requested by test1@hackney.gov.uk');
+    cy.get('section[id="all-documents"] table')
+      .eq(6)
+      .should('contain', 'AWAITING SUBMISSION')
+      .and('contain.text', 'Passport')
+      .and(
+        'contain.text',
+        'Date requested: 3:34 pm 30 November 2020 (2 years ago)'
+      )
+      .and('contain.text', 'reason number 1')
+      .and('contain.text', 'Requested by test1@hackney.gov.uk');
 
-    // cy.get('section[id="all-documents"] table').should('have.length', 6);
+    cy.get('section[id="all-documents"] table').should('have.length', 5);
   });
 
   it('clicks through to the tab and shows the correct date format', () => {
