@@ -44,6 +44,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     teamIdContext: teamId,
   };
 
+  const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [hidePagination, setHidePagination] = useState(false);
   const [
@@ -57,8 +58,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   const onPageChange = async (targetPage: number) => {
     setCurrentPage(targetPage);
-    const pageSize = 10;
-
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
 
     const model = new DocumentSubmissionsModel();
@@ -102,10 +101,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           documentSubmissions={displayedDocumentSubmissions}
           hidePaginationFunction={hidePaginationComponent}
         />
-        {!hidePagination && total > 10 && (
+        {!hidePagination && total > pageSize && (
           <Pagination
             currentPageNumber={currentPage}
-            pageSize={10}
+            pageSize={pageSize}
             total={total}
             onPageChange={onPageChange}
           />

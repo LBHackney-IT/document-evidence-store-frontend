@@ -66,7 +66,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   };
 
   const toReviewDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'UPLOADED' /*&& ds.document?.fileType */) //TODO: REMOVE THIS COMMENT!!
+    .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
     .map<DocumentSubmissionWithKind>((ds) => ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
