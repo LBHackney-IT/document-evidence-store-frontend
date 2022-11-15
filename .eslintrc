@@ -19,7 +19,8 @@
     }
   },
   "rules": {
-    "linebreak-style": ["error", "unix"]
+    "linebreak-style": ["error", "unix"],
+    "require-atomic-updates": "off"
   },
   "overrides": [
     {
