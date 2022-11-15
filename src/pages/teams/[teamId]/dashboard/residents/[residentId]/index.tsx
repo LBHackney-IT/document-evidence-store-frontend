@@ -1,35 +1,40 @@
 import { NextPage } from 'next';
 import Layout from 'src/components/DashboardLayout';
+import { Pagination } from 'src/components/Pagination';
 import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
-import React from 'react';
+import React, { useState } from 'react';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
-// import { useRouter } from 'next/router';
 import {
   ResidentPageContext,
   UserContextInterface,
 } from '../../../../../../contexts/ResidentPageContext';
+import { DocumentSubmissionsModel } from 'src/services/get-document-submissions-model';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
+  total: number;
   resident: Resident;
   teamId: string;
   feedbackUrl: string;
+  userEmail: string;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
   documentSubmissions,
+  userEmail,
+  total,
   resident,
   teamId,
   feedbackUrl,
@@ -37,6 +42,40 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   const contextToPass: UserContextInterface = {
     residentIdContext: resident.id,
     teamIdContext: teamId,
+  };
+
+  const pageSize = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hidePagination, setHidePagination] = useState(false);
+  const [
+    displayedDocumentSubmissions,
+    setDisplayedDocumentSubmissions,
+  ] = useState<DocumentSubmission[]>(documentSubmissions);
+
+  const hidePaginationComponent = (hidePagination: boolean) => {
+    setHidePagination(hidePagination);
+  };
+
+  const onPageChange = async (targetPage: number) => {
+    setCurrentPage(targetPage);
+    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+
+    const model = new DocumentSubmissionsModel();
+
+    try {
+      const documentSubmissionPromise = await model.handleSubmit(
+        userEmail,
+        resident.id,
+        team?.name ?? '',
+        targetPage.toString(),
+        pageSize.toString()
+      );
+      setDisplayedDocumentSubmissions(
+        documentSubmissionPromise.documentSubmissions
+      );
+    } catch (e) {
+      console.log(`ERROR - ERROR UPDATING DOC SUBMISSIONS ${e}`);
+    }
   };
 
   return (
@@ -59,8 +98,17 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <ResidentPageContext.Provider value={contextToPass}>
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}
-          documentSubmissions={documentSubmissions}
+          documentSubmissions={displayedDocumentSubmissions}
+          hidePaginationFunction={hidePaginationComponent}
         />
+        {!hidePagination && total > pageSize && (
+          <Pagination
+            currentPageNumber={currentPage}
+            pageSize={pageSize}
+            total={total}
+            onPageChange={onPageChange}
+          />
+        )}
       </ResidentPageContext.Provider>
     </Layout>
   );
@@ -75,6 +123,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
   const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
@@ -82,6 +131,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+
   if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
@@ -92,11 +142,18 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   }
 
   const gateway = new EvidenceApiGateway();
+
+  const initialPage = 1;
+  const pageLimit = 10;
+
   const documentSubmissionsPromise = gateway.getDocumentSubmissionsForResident(
     user.email,
     team.name,
-    residentId
+    residentId,
+    initialPage.toString(),
+    pageLimit.toString()
   );
+
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
     user.email,
     team.name,
@@ -111,8 +168,10 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   );
   const residentPromise = gateway.getResident(user.email, residentId);
 
+  const userEmail = user.email;
+
   const [
-    documentSubmissions,
+    documentSubmissionsObject,
     pendingEvidenceRequests,
     forReviewEvidenceRequests,
     resident,
@@ -126,13 +185,16 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const evidenceRequests = pendingEvidenceRequests.concat(
     forReviewEvidenceRequests
   );
+
   return {
     props: {
       evidenceRequests,
-      documentSubmissions,
+      documentSubmissions: documentSubmissionsObject.documentSubmissions,
+      total: documentSubmissionsObject.total,
       resident,
       teamId,
       feedbackUrl,
+      userEmail,
     },
   };
 });

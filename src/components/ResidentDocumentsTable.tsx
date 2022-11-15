@@ -11,6 +11,12 @@ import {
 import { DocumentType } from '../domain/document-type';
 import styles from '../styles/EvidenceTile.module.scss';
 
+interface Props {
+  evidenceRequests: EvidenceRequest[];
+  documentSubmissions: DocumentSubmission[];
+  hidePaginationFunction: (hidePaginate: boolean) => void;
+}
+
 type EvidenceAwaitingSubmission = {
   documentType: string;
   dateRequested: DateTime | undefined;
@@ -36,6 +42,7 @@ type DocumentTab = {
 export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   documentSubmissions,
+  hidePaginationFunction,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -45,6 +52,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   };
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
+    if (tab == 'awaiting-submission') {
+      hidePaginationFunction(true);
+    } else {
+      hidePaginationFunction(false);
+    }
   };
 
   const showPanel = (tabName: string) => {
@@ -59,6 +71,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       ...ds,
       kind: 'DocumentSubmissionWithKind',
     }));
+
   const reviewedDocumentSubmissions = documentSubmissions
     .filter((ds) => ds.state == 'APPROVED')
     .map<DocumentSubmissionWithKind>((ds) => ({
@@ -77,6 +90,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       documentTypesMap.set(er.id, new Set(er.documentTypes))
     );
     documentSubmissions.forEach((ds) => {
+      if (!ds.evidenceRequestId) {
+        return;
+      }
       const currentDocumentTypesSet = documentTypesMap.get(
         ds.evidenceRequestId
       );
@@ -105,11 +121,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     });
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
+
   const allDocumentSubmissions = [
     ...toReviewDocumentSubmissions,
     ...reviewedDocumentSubmissions,
     ...rejectedDocumentSubmissions,
-    ...evidenceAwaitingSubmissions,
   ];
 
   const DocumentTabs: DocumentTab[] = [
@@ -208,41 +224,53 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
                             return (
-                              <li
-                                className={styles.item}
-                                data-testid={`${documentTab.id}-evidence-tile`}
-                                key={index}
-                              >
-                                <EvidenceTile
-                                  id={documentTabItem.id}
-                                  title={
-                                    documentTabItem.staffSelectedDocumentType
-                                      ?.title ||
-                                    documentTabItem.documentType.title
-                                  }
-                                  createdAt={formatDate(
-                                    documentTabItem.createdAt
-                                  )}
-                                  fileSizeInBytes={
-                                    documentTabItem.document
-                                      ? documentTabItem.document.fileSizeInBytes
-                                      : 0
-                                  }
-                                  format={
-                                    documentTabItem.document
-                                      ? documentTabItem.document.extension
-                                      : 'unknown'
-                                  }
-                                  state={documentTabItem.state}
-                                  reason={getReason(
-                                    documentTabItem.evidenceRequestId
-                                  )}
-                                  requestedBy={getUserRequestedBy(
-                                    documentTabItem.evidenceRequestId
-                                  )}
-                                  userUpdatedBy={documentTabItem.userUpdatedBy}
-                                />
-                              </li>
+                              <>
+                                <li
+                                  className={styles.item}
+                                  data-testid={`${documentTab.id}-evidence-tile`}
+                                  key={index}
+                                >
+                                  <EvidenceTile
+                                    id={documentTabItem.id}
+                                    title={
+                                      documentTabItem.staffSelectedDocumentType
+                                        ?.title ||
+                                      documentTabItem.documentType.title
+                                    }
+                                    createdAt={formatDate(
+                                      documentTabItem.createdAt
+                                    )}
+                                    key={documentTabItem.id}
+                                    fileSizeInBytes={
+                                      documentTabItem.document
+                                        ? documentTabItem.document
+                                            .fileSizeInBytes
+                                        : 0
+                                    }
+                                    format={
+                                      documentTabItem.document
+                                        ? documentTabItem.document.extension
+                                        : 'unknown'
+                                    }
+                                    state={documentTabItem.state}
+                                    reason={
+                                      documentTabItem.evidenceRequestId &&
+                                      getReason(
+                                        documentTabItem.evidenceRequestId
+                                      )
+                                    }
+                                    requestedBy={
+                                      documentTabItem.evidenceRequestId &&
+                                      getUserRequestedBy(
+                                        documentTabItem.evidenceRequestId
+                                      )
+                                    }
+                                    userUpdatedBy={
+                                      documentTabItem.userUpdatedBy
+                                    }
+                                  />
+                                </li>
+                              </>
                             );
                           case 'EvidenceAwaitingSubmission':
                             return (
@@ -274,8 +302,3 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     </div>
   );
 };
-
-interface Props {
-  evidenceRequests: EvidenceRequest[];
-  documentSubmissions: DocumentSubmission[];
-}

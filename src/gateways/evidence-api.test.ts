@@ -614,6 +614,8 @@ describe('Evidence api gateway', () => {
   describe('getDocumentSubmissionsByResidentId', () => {
     const residentId = 'id';
     const team = 'service';
+    const page = '1';
+    const pageSize = '10';
     describe('returns the correct response', () => {
       const expectedData = DocumentSubmissionsResponseObjectFixture;
       const mappedData = expectedData.documentSubmissions.map((ds) =>
@@ -634,7 +636,9 @@ describe('Evidence api gateway', () => {
         await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
           team,
-          residentId
+          residentId,
+          page,
+          pageSize
         );
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/document_submissions',
@@ -647,6 +651,8 @@ describe('Evidence api gateway', () => {
             params: {
               team: team,
               residentId: residentId,
+              page,
+              pageSize,
             },
           }
         );
@@ -656,7 +662,9 @@ describe('Evidence api gateway', () => {
         await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
           team,
-          residentId
+          residentId,
+          page,
+          pageSize
         );
 
         expectedData.documentSubmissions.map((ds) =>
@@ -670,9 +678,11 @@ describe('Evidence api gateway', () => {
         const result = await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
           team,
-          residentId
+          residentId,
+          page,
+          pageSize
         );
-        expect(result).toEqual(mappedData);
+        expect(result.documentSubmissions).toEqual(mappedData);
       });
     });
 
@@ -683,7 +693,9 @@ describe('Evidence api gateway', () => {
           gateway.getDocumentSubmissionsForResident(
             Constants.DUMMY_EMAIL,
             team,
-            residentId
+            residentId,
+            page,
+            pageSize
           );
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
