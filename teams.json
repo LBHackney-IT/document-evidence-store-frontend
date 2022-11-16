@@ -117,16 +117,16 @@
   },
   {
     "name": "Leasehold and Right to Buy",
-    "googleGroup": "Leasehold and Right to Buy",
+    "googleGroup": "development-team-staging",
     "id": "8",
     "reasons": [
       {
-        "name": "This is a holding reason",
+        "name": "RTB1 supporting information - Tenants",
         "id": "1"
       }
     ],
-    "landingMessage": "This is the Leasehold and Right to Buy's landing message",
-    "slaMessage": "This is the Leasehold and Right to Buy's SLA message."
+    "landingMessage": "Thank you for your Right to Buy application.\nWe are currently undertaking some initial checks to confirm if you are eligible to purchase under the Scheme. The Council is required to send you our response within the next four weeks (or eight weeks if you have not been a Hackney Council tenant for the minimum number of qualifying years).\nIn order to make our decision, we need to see the documents requested no later than 5 working days from the date of this communication.  If you will require further time please contact us at your earliest convenience.\nIf you are unable to provide the information required your Right to Buy will be denied at this time.\nAn application pack from Hackney Council will also have contained booklets and information about the Right to Buy scheme and how it works.\nIf you did not obtain the pack application from the council the booklets can be found on the Hackney website at any time https://hackney.gov.uk/buying-your-council-home",
+    "slaMessage": "Thank you for providing the requested information to the Property Sales Team.\n We will aim to respond to your enquiry within 3 working days, if you have not received a response within 10 working days please contact us further.\n Yours Sincerely, The Property Sales Team"
   },
   {
     "name": "Admission and Pupil Benefits",
