@@ -4,12 +4,17 @@ import { ResidentDocumentsTable } from './ResidentDocumentsTable';
 import { EvidenceRequestsFixture } from './fixtures/evidence-requests';
 import { DocumentSubmissionsFixture } from './fixtures/document-submissions';
 
+const mockPaginationFunction = (_testBool: boolean) => {
+  return;
+};
+
 describe('ResidentDocumentsTable', () => {
   it('renders the expected component with tabs', () => {
     render(
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
+        hidePaginationFunction={mockPaginationFunction}
       />
     );
 
@@ -31,10 +36,8 @@ describe('ResidentDocumentsTable', () => {
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
+        hidePaginationFunction={mockPaginationFunction}
       />
-    );
-    expect(screen.getByTestId('all-documents-section')).toContainElement(
-      screen.getByTestId('all-documents-evidence-awaiting-tile')
     );
     const evidenceTiles = screen.getAllByTestId('all-documents-evidence-tile');
     expect(screen.getByTestId('all-documents-section')).toContainElement(
@@ -47,14 +50,12 @@ describe('ResidentDocumentsTable', () => {
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
         documentSubmissions={DocumentSubmissionsFixture}
+        hidePaginationFunction={mockPaginationFunction}
       />
     );
 
     expect(screen.getByTestId('all-documents-section')).toHaveTextContent(
       'Proof of ID'
-    );
-    expect(screen.getByTestId('all-documents-section')).toHaveTextContent(
-      'Proof of Address'
     );
     expect(screen.getByTestId('awaiting-submission-section')).toHaveTextContent(
       'Proof of Address'

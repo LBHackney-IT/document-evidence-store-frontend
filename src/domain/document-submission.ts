@@ -16,7 +16,7 @@ export interface UploadPolicy {
 export interface IDocumentSubmission {
   id: string;
   createdAt: DateTime;
-  evidenceRequestId: string;
+  evidenceRequestId?: string;
   claimValidUntil: DateTime;
   retentionExpiresAt: DateTime;
   claimId: string;
@@ -31,10 +31,15 @@ export interface IDocumentSubmission {
   document?: Document;
 }
 
+export interface DocumentSubmissionsObject {
+  documentSubmissions: DocumentSubmission[];
+  total: number;
+}
+
 export class DocumentSubmission implements IDocumentSubmission {
   id: string;
   createdAt: DateTime;
-  evidenceRequestId: string;
+  evidenceRequestId?: string;
   claimValidUntil: DateTime;
   retentionExpiresAt: DateTime;
   claimId: string;

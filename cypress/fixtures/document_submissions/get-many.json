@@ -146,5 +146,115 @@
       "fileSize": 25300,
       "fileType": "image/png"
     }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
+    },
+    "id": "2a220753-9a7c-428d-98cd-73999d733bfh",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 55300,
+      "fileType": "application/pdf"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
+    },
+    "id": "2a220753-9a7c-428d-98cd-73999d733bfg",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 55300,
+      "fileType": "application/pdf"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
+    },
+    "id": "2a220753-9a7c-428d-98cd-73999d733bfe",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 55300,
+      "fileType": "application/pdf"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
+    },
+    "id": "2a220753-9a7c-428d-98cd-73999d733bfd",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 55300,
+      "fileType": "application/pdf"
+    }
+  },
+  {
+    "documentType": {
+      "id": "proof-of-id",
+      "title": "Proof of ID",
+      "description": "A valid document that can be used to prove identity",
+      "enabled": true
+    },
+    "id": "2a220753-9a7c-428d-98cd-73999d733bfc",
+    "createdAt": "2021-01-14T10:23:42.958Z",
+    "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+    "claimId": "2a220753-9a7c-428d-98cd-73999d733bfb",
+    "claimValidUntil": "2121-01-29T16:28:11.326Z",
+    "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+    "rejectionReason": "string",
+    "state": "UPLOADED",
+    "document": {
+      "id": "2a220753-9a7c-428d-98cd-73999d733bfb",
+      "createdAt": "2021-01-29T16:28:11.326Z",
+      "fileSize": 55300,
+      "fileType": "application/pdf"
+    }
   }
 ]

@@ -1,5 +1,8 @@
 import Axios, { AxiosInstance } from 'axios';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  DocumentSubmissionsObject,
+} from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { IResident, Resident } from 'src/domain/resident';
 import {
@@ -148,6 +151,34 @@ export class InternalApiGateway {
         console.error(err);
         throw err.response.data;
       }
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async getDocumentSubmissions(
+    userEmail: string,
+    residentId: string,
+    team: string,
+    currentPage: string,
+    pageSize: string
+  ): Promise<DocumentSubmissionsObject> {
+    try {
+      const { data } = await this.client.get<DocumentSubmissionsObject>(
+        `/api/document_submissions/${residentId}`,
+        {
+          params: {
+            team,
+            currentPage,
+            pageSize,
+          },
+          headers: {
+            userEmail: userEmail,
+          },
+        }
+      );
+      return data;
+    } catch (err) {
+      console.error(err);
       throw new InternalServerError('Internal server error');
     }
   }

@@ -9,7 +9,10 @@ import {
 import { InternalServerError } from './internal-api';
 import { IDocumentType } from 'src/domain/document-type';
 import { ResponseMapper } from 'src/boundary/response-mapper';
-import { DocumentSubmission } from 'src/domain/document-submission';
+import {
+  DocumentSubmission,
+  DocumentSubmissionsObject,
+} from 'src/domain/document-submission';
 import { EvidenceRequest } from 'src/domain/evidence-request';
 import { DocumentType } from 'src/domain/document-type';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
@@ -163,8 +166,10 @@ export class EvidenceApiGateway {
   async getDocumentSubmissionsForResident(
     userEmail: string,
     team: string,
-    residentId: string
-  ): Promise<DocumentSubmission[]> {
+    residentId: string,
+    page: string,
+    pageSize: string
+  ): Promise<DocumentSubmissionsObject> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponseObject>(
         '/api/v1/document_submissions',
@@ -176,12 +181,17 @@ export class EvidenceApiGateway {
           params: {
             team: team,
             residentId: residentId,
+            page: page,
+            pageSize: pageSize,
           },
         }
       );
-      return data.documentSubmissions.map((ds) =>
-        ResponseMapper.mapDocumentSubmission(ds)
-      );
+      return {
+        total: data.total,
+        documentSubmissions: data.documentSubmissions.map((ds) =>
+          ResponseMapper.mapDocumentSubmission(ds)
+        ),
+      };
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');

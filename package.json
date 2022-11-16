@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "start:ci": "concurrently -k \"npm:start\" \"npm:mock\"",
-    "lint": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint . --max-warnings 1 --ext .js,.jsx,.ts,.tsx",
     "prettier:test": "npx prettier -c .",
     "prettier:fix": "npx prettier --write .",
     "test:unit": "jest",
