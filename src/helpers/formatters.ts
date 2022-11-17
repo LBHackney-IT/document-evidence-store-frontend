@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export const stringToMarkup = (string: string): { __html: string; }=> {
+export const stringToMarkup = (string: string): { __html: string } => {
   return { __html: string };
 };
 
