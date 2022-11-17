@@ -14,6 +14,10 @@ type IndexProps = {
   team: Team;
 };
 
+const setMarkup = (textToSet: string) => {
+  return { __html: textToSet };
+};
+
 const Index: NextPage<IndexProps> = ({ requestId, team }) => {
   return (
     <Layout feedbackUrl={process.env.FEEDBACK_FORM_RESIDENT_URL as string}>
@@ -25,7 +29,10 @@ const Index: NextPage<IndexProps> = ({ requestId, team }) => {
       </Head>
       <InterruptionCard>
         <h1 className="lbh-heading-h1">Please have your documents ready</h1>
-        <p className="lbh-body">{team.landingMessage}</p>
+        <p
+          className="lbh-body"
+          dangerouslySetInnerHTML={setMarkup(team.landingMessage)}
+        ></p>
         <Link href={`/resident/${requestId}/upload`}>
           <a className="govuk-button lbh-button">Continue</a>
         </Link>
