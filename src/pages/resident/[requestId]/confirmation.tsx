@@ -6,16 +6,13 @@ import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { withAuth } from 'src/helpers/authed-server-side-props';
 import { TeamHelper } from '../../../services/team-helper';
 import { Team } from 'src/domain/team';
+import { stringToMarkup } from 'src/helpers/formatters';
 import { Constants } from '../../../helpers/Constants';
 
 type ConfirmationProps = {
   residentReferenceId: string;
   team: Team;
   feedbackUrl: string;
-};
-
-const setMarkup = (textToSet: string) => {
-  return { __html: textToSet };
 };
 
 const Confirmation: NextPage<ConfirmationProps> = ({
@@ -44,7 +41,7 @@ const Confirmation: NextPage<ConfirmationProps> = ({
           <h2 className="lbh-heading-h2">What happens next</h2>
           <p
             className="lbh-body"
-            dangerouslySetInnerHTML={setMarkup(team.slaMessage)}
+            dangerouslySetInnerHTML={stringToMarkup(team.slaMessage)}
           ></p>
           <p className="lbh-body">
             We’re checking your evidence. It’ll be sent to the service that
