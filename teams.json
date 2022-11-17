@@ -26,7 +26,7 @@
         "id": "1011"
       }
     ],
-    "landingMessage": "Thank you for providing the requested information to the Property Sales Team. <br> <br> We will aim to respond to your enquiry within 3 working days, if you have not received a response within 10 working days please contact us further. <br> <br> Yours Sincerely, The Property Sales Team",
+    "landingMessage": "This is the Development Housing Team Landing message",
     "slaMessage": "This is the Development Housing Team SLA message"
   },
   {
@@ -56,7 +56,7 @@
         "id": "1011"
       }
     ],
-    "landingMessage": "<div>This is the <b>Development Housing Team</b> landing message</div>",
+    "landingMessage": "This is the Development Housing Team Landing message",
     "slaMessage": "This is the Development Housing Team SLA message"
   },
   {
