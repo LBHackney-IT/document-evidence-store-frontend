@@ -1,5 +1,9 @@
 import { DateTime } from 'luxon';
 
+export const stringToMarkup = (string: string): { __html: string; }=> {
+  return { __html: string };
+};
+
 export const humanFileSize = (bytes: number): string => {
   if (bytes == 0) {
     return '0.0 B';
