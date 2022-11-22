@@ -1,4 +1,9 @@
 import { DateTime } from 'luxon';
+import DOMPurify from 'isomorphic-dompurify';
+
+export const stringToMarkup = (string: string): { __html: string } => {
+  return { __html: DOMPurify.sanitize(string) };
+};
 
 export const humanFileSize = (bytes: number): string => {
   if (bytes == 0) {
