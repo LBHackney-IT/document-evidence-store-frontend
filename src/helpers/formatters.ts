@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon';
+import DOMPurify from 'dompurify';
 
 export const stringToMarkup = (string: string): { __html: string } => {
-  return { __html: string };
+  return { __html: DOMPurify.sanitize(string) };
 };
 
 export const humanFileSize = (bytes: number): string => {
