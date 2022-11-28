@@ -26,7 +26,7 @@ export interface IDocumentSubmission {
   userUpdatedBy: string | null;
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
-  documentType: DocumentType;
+  documentType?: DocumentType;
   staffSelectedDocumentType?: DocumentType;
   document?: Document;
 }
@@ -49,7 +49,7 @@ export class DocumentSubmission implements IDocumentSubmission {
   userUpdatedBy: string | null;
   state: DocumentState;
   uploadPolicy?: UploadPolicy;
-  documentType: DocumentType;
+  documentType?: DocumentType;
   staffSelectedDocumentType?: DocumentType;
   document?: Document;
 

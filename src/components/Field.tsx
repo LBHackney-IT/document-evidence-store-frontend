@@ -40,6 +40,7 @@ const Field = (props: Props): JSX.Element => (
         className={`govuk-input  lbh-input ${
           props.error ? 'govuk-input--error' : null
         }`}
+        style={props.style}
       />
     )}
   </div>
@@ -51,6 +52,7 @@ export interface Props {
   textarea?: boolean;
   hint?: string;
   error?: string | null;
+  style?: { marginTop: string };
 }
 
 export default Field;

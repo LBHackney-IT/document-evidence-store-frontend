@@ -1,17 +1,13 @@
 import { InternalApiGateway } from '../gateways/internal-api';
 import { DocumentType } from '../domain/document-type';
-import { Constants } from '../helpers/Constants';
 import { S3Gateway } from '../gateways/s3-gateway';
 import { DocumentSubmission } from 'src/domain/document-submission';
-
-export type FormValues = {
-  [documentTypeId: string]: File[];
-};
+import { StaffUploadFormValues } from 'src/components/StaffUploaderForm';
 
 export class StaffUploadFormModel {
   private gateway = new InternalApiGateway();
   private s3Gateway = new S3Gateway();
-  constructor(private documentTypes: DocumentType[]) {}
+  constructor(private staffSelectedDocumentTypes: DocumentType[]) {}
 
   // See DOC-964 for more details about this commented section.
   // get schema(): Yup.ObjectSchema {
@@ -26,37 +22,32 @@ export class StaffUploadFormModel {
   //   );
   // }
 
-  get initialValues(): FormValues {
-    return this.documentTypes.reduce(
-      (others, key) => ({
-        ...others,
-        [key.id]: null,
-      }),
-      {}
-    );
-  }
-
   async handleSubmit(
-    formValues: FormValues,
-    residentId: string
+    userEmail: string,
+    residentId: string,
+    teamName: string,
+    formValues: StaffUploadFormValues
   ): Promise<void> {
-    const createDocumentSubmissionAndUploadForEachFile = Object.entries(
-      formValues
-    ).map(async ([staffSelectedDocumentTypeId, files]) => {
-      if (files) {
-        for (const file of files) {
-          const documentSubmission = await this.gateway.createDocumentSubmissionWithoutEvidenceRequest(
-            // need to implement this function
-            Constants.DUMMY_EMAIL,
-            residentId,
-            {
-              staffSelectedDocumentType: staffSelectedDocumentTypeId,
-            }
-          );
-          await this.uploadFile(file, documentSubmission);
+    const createDocumentSubmissionAndUploadForEachFile = formValues.staffUploaderPanel.map(
+      async (uploaderPanel) => {
+        if (uploaderPanel.files) {
+          for (const file of uploaderPanel.files) {
+            const documentSubmission = await this.gateway.createDocumentSubmissionWithoutEvidenceRequest(
+              userEmail,
+              {
+                residentId,
+                team: teamName,
+                userCreatedBy: userEmail,
+                staffSelectedDocumentTypeId:
+                  uploaderPanel.staffSelectedDocumentType,
+                documentDescription: uploaderPanel.description,
+              }
+            );
+            await this.uploadFile(file, documentSubmission);
+          }
         }
       }
-    });
+    );
 
     await Promise.all(createDocumentSubmissionAndUploadForEachFile);
   }

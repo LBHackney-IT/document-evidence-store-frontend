@@ -6,23 +6,31 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import StaffUploaderForm from 'src/components/StaffUploaderForm';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
+import { TeamHelper } from 'src/services/team-helper';
+import { EvidenceApiGateway } from 'src/gateways/evidence-api';
+import { RequestAuthorizer } from 'src/services/request-authorizer';
+import { Team } from 'src/domain/team';
 
 type UploadPageProps = {
+  userEmail: string;
   teamId: string;
+  team: Team;
   residentId: string;
   feedbackUrl: string;
   staffSelectedDocumentTypes: DocumentType[];
 };
 
 const UploadPage: NextPage<WithUser<UploadPageProps>> = ({
+  userEmail,
   teamId,
+  team,
   residentId,
   feedbackUrl,
   staffSelectedDocumentTypes,
 }) => {
   const router = useRouter();
   const onSuccess = useCallback(() => {
-    router.push(`teams/${teamId}/dashboard/residents/${residentId}`);
+    router.push(`/teams/${teamId}/dashboard/residents/${residentId}`);
   }, []);
   return (
     <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
@@ -32,19 +40,13 @@ const UploadPage: NextPage<WithUser<UploadPageProps>> = ({
       <h1 data-testid="upload-documents-h1" className="lbh-heading-h2">
         Upload documents
       </h1>
-      <StaffUploaderForm // need to create a new component similar to this one that accepts the correct arguments for ds
+      <StaffUploaderForm
+        userEmail={userEmail}
         residentId={residentId}
+        team={team}
         staffSelectedDocumentTypes={staffSelectedDocumentTypes}
         onSuccess={onSuccess}
       />
-      <button
-        className="govuk-button lbh-button"
-        onClick={() => {
-          alert('Click!');
-        }}
-      >
-        Submit
-      </button>
     </Layout>
   );
 };
@@ -55,16 +57,38 @@ export const getServerSideProps = withAuth<UploadPageProps>(async (ctx) => {
     residentId: string;
   };
   const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
-  const staffSelectedDocumentTypes: DocumentType[] = [
-    {
-      id: 'passport-scan',
-      title: 'Passport Scan',
-      description: 'A valid passport open at the photo page',
-      enabled: true,
-    },
-  ];
+  const evidenceApiGateway = new EvidenceApiGateway();
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
+
+  const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
+    return {
+      redirect: {
+        destination: '/teams',
+        permanent: false,
+      },
+    };
+  }
+  const userEmail = user.email;
+  const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
+    userEmail,
+    team.name,
+    true
+  );
   return {
-    props: { teamId, residentId, feedbackUrl, staffSelectedDocumentTypes },
+    props: {
+      userEmail,
+      teamId,
+      team,
+      residentId,
+      feedbackUrl,
+      staffSelectedDocumentTypes,
+    },
   };
 });
 

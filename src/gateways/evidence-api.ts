@@ -29,6 +29,7 @@ const tokens: TokenDictionary = {
   document_submissions: {
     GET: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
     PATCH: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
+    POST: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_POST,
   },
   residents: {
     GET: process.env.EVIDENCE_API_TOKEN_RESIDENTS_GET,
