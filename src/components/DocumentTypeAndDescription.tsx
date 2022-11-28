@@ -3,6 +3,7 @@ import SelectOption from './SelectOption';
 import { DocumentType } from '../domain/document-type';
 import Field from './Field';
 import { UploaderPanelError } from './StaffUploaderForm';
+import documentStyles from '../styles/DocumentTypeAndDescription.module.scss';
 
 const DocumentTypeAndDescription: FunctionComponent<Props> = ({
   name,
@@ -11,20 +12,16 @@ const DocumentTypeAndDescription: FunctionComponent<Props> = ({
 }) => {
   return (
     <div
-      className="govuk-form-group lbh-form-group"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr', // extract this in a css module
-      }}
+      className={`govuk-form-group lbh-form-group ${documentStyles.formWrapper}`}
     >
-      <div style={{ display: 'inline-block' }}>
+      <div className={documentStyles.documentOptions}>
         <SelectOption
           name={`${name}.staffSelectedDocumentType`}
           label="Document type"
           values={['Please select', ...documentTypes.map((dt) => dt.title)]}
         />
       </div>
-      <div style={{ display: 'inline-block', marginTop: '0px' }}>
+      <div className={documentStyles.documentDescription}>
         <Field
           label="Description"
           name={`${name}.description`}
