@@ -4,7 +4,10 @@ import {
   ResidentResponse,
   EvidenceRequestResponse,
 } from 'types/api';
-import { DocumentSubmissionRequest, DocumentSubmissionWithoutEvidenceRequestRequest } from '../gateways/internal-api';
+import {
+  DocumentSubmissionRequest,
+  DocumentSubmissionWithoutEvidenceRequestRequest,
+} from '../gateways/internal-api';
 import { ResponseMapper } from '../boundary/response-mapper';
 import {
   DocumentState,
@@ -182,22 +185,22 @@ describe('Internal API Gateway', () => {
 
       it('makes the api request', async () => {
         await gateway.createDocumentSubmissionWithoutEvidenceRequest(
-          Constants.DUMMY_EMAIL,          
+          Constants.DUMMY_EMAIL,
           request
         );
 
-        expect(
-          client.post
-        ).toHaveBeenCalledWith(
+        expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/document_submissions`,
           request,
-          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+          {
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
+          }
         );
       });
 
       it('returns the updated model', async () => {
         const result = await gateway.createDocumentSubmissionWithoutEvidenceRequest(
-          Constants.DUMMY_EMAIL,          
+          Constants.DUMMY_EMAIL,
           request
         );
 
@@ -210,7 +213,7 @@ describe('Internal API Gateway', () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
           gateway.createDocumentSubmissionWithoutEvidenceRequest(
-            Constants.DUMMY_EMAIL,            
+            Constants.DUMMY_EMAIL,
             request
           );
         await expect(functionCall).rejects.toEqual(
@@ -218,7 +221,7 @@ describe('Internal API Gateway', () => {
         );
       });
     });
-  })
+  });
 
   describe('createEvidenceRequest', () => {
     const baseRequest: EvidenceRequestRequest = {

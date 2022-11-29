@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import SelectOption from './SelectOption';
 import { DocumentType } from '../domain/document-type';
 import Field from './Field';
