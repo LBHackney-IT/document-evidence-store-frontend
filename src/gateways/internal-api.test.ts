@@ -4,7 +4,7 @@ import {
   ResidentResponse,
   EvidenceRequestResponse,
 } from 'types/api';
-import { DocumentSubmissionRequest } from '../gateways/internal-api';
+import { DocumentSubmissionRequest, DocumentSubmissionWithoutEvidenceRequestRequest } from '../gateways/internal-api';
 import { ResponseMapper } from '../boundary/response-mapper';
 import {
   DocumentState,
@@ -163,6 +163,62 @@ describe('Internal API Gateway', () => {
       });
     });
   });
+
+  describe('createDocumentSubmissionWithoutEvidenceRequest', () => {
+    const request = {} as DocumentSubmissionWithoutEvidenceRequestRequest;
+    const apiResponse = {} as DocumentSubmission;
+    const expectedResult = {} as DocumentSubmission;
+
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.post.mockResolvedValue({
+          data: apiResponse,
+        });
+
+        mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
+          expectedResult
+        );
+      });
+
+      it('makes the api request', async () => {
+        await gateway.createDocumentSubmissionWithoutEvidenceRequest(
+          Constants.DUMMY_EMAIL,          
+          request
+        );
+
+        expect(
+          client.post
+        ).toHaveBeenCalledWith(
+          `/api/evidence/document_submissions`,
+          request,
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+        );
+      });
+
+      it('returns the updated model', async () => {
+        const result = await gateway.createDocumentSubmissionWithoutEvidenceRequest(
+          Constants.DUMMY_EMAIL,          
+          request
+        );
+
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.post.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () =>
+          gateway.createDocumentSubmissionWithoutEvidenceRequest(
+            Constants.DUMMY_EMAIL,            
+            request
+          );
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  })
 
   describe('createEvidenceRequest', () => {
     const baseRequest: EvidenceRequestRequest = {
