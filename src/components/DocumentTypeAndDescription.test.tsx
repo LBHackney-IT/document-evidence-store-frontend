@@ -23,7 +23,7 @@ describe('DocumentTypeAndDescription', () => {
     expect(descriptionField).toHaveTextContent('test description');
   });
   it('renders an expected error', () => {
-    var error: UploaderPanelError = {
+    const error: UploaderPanelError = {
       staffSelectedDocumentType: ' test',
       description: 'this is a test error',
       files: [],
