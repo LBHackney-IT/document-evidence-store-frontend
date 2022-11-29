@@ -3,6 +3,7 @@ import documentSubmissionFixture from '../../cypress/fixtures/document_submissio
 import evidenceRequestFixture from '../../cypress/fixtures/evidence_requests/index.json';
 import { ResponseMapper } from '../boundary/response-mapper';
 import { Constants } from 'src/helpers/Constants';
+import { DocumentType } from 'src/domain/document-type';
 import { DocumentSubmissionRequest } from 'src/gateways/internal-api';
 import * as S3Gateway from '../gateways/s3-gateway';
 import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
@@ -10,9 +11,9 @@ import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
 const documentSubmission = documentSubmissionFixture.map((ds) =>
   ResponseMapper.mapDocumentSubmission(ds)
 )[0];
-const documentTypes = documentSubmissionFixture.map(
+const documentTypes = (documentSubmissionFixture.map(
   (ds) => ResponseMapper.mapDocumentSubmission(ds).documentType
-);
+) as unknown) as DocumentType[];
 const evidenceRequest = ResponseMapper.mapEvidenceRequest(
   evidenceRequestFixture[0]
 );

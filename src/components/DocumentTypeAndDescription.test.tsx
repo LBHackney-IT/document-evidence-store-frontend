@@ -1,8 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 import DocumentTypeAndDescription from './DocumentTypeAndDescription';
 import { DocumentType } from '../domain/document-type';
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
 import { UploaderPanelError } from './StaffUploaderForm';
 
 describe('DocumentTypeAndDescription', () => {
@@ -21,12 +21,10 @@ describe('DocumentTypeAndDescription', () => {
       </Formik>
     );
     const descriptionField = screen.getByLabelText('Description');
-    fireEvent.change(descriptionField, {
-      target: { value: 'test description' },
-    });
+    const docField = screen.getByLabelText('Document type');
 
-    expect(screen.getByLabelText('Document type')).toHaveValue();
-    expect(descriptionField).toHaveTextContent('test description');
+    expect(docField).toBeInTheDocument();
+    expect(descriptionField).toBeInTheDocument();
   });
   it('renders an expected error', () => {
     const error: UploaderPanelError = {
@@ -34,6 +32,7 @@ describe('DocumentTypeAndDescription', () => {
       description: 'this is a test error',
       files: [],
     };
+
     render(
       <Formik
         initialValues={{ exampleName: false }}
@@ -46,9 +45,6 @@ describe('DocumentTypeAndDescription', () => {
         />
       </Formik>
     );
-    expect(screen.getByLabelText('Description')).toHaveProperty(
-      'error',
-      'this is a test error'
-    );
+    expect(screen.getByText('this is a test error'));
   });
 });

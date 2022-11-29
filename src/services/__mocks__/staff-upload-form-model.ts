@@ -1,4 +1,4 @@
-import { DocumentSubmission } from "src/domain/document-submission";
+import { DocumentSubmission } from 'src/domain/document-submission';
 
 const { StaffUploadFormModel: ActualFormModel } = jest.requireActual(
   '../staff-upload-form-model'

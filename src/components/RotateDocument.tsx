@@ -54,7 +54,7 @@ type Props = {
   documentSource: string;
   rotate: (currentRotation: number) => void;
   rotation: string;
-  documentTitle: string;
+  documentTitle: string | undefined;
   dataTestId: string;
 };
 
