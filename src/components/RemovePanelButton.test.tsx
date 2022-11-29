@@ -16,10 +16,10 @@ describe.only('remove panel button', () => {
     expect(screen.getByRole('button')).not.toBeNull();
   });
   it('calls the removePanel function when it is clicked', () => {
-    var testFormValues: FormikValues = {
+    const testFormValues: FormikValues = {
       staffUploaderPanel: [{}, {}, {}],
     };
-    var removePanelHandler = jest.fn();
+    const removePanelHandler = jest.fn();
     render(
       <RemovePanelButton
         removePanel={removePanelHandler}
