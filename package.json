@@ -21,6 +21,7 @@
     "@reach/alert": "^0.12.1",
     "@reach/dialog": "^0.12.1",
     "@reach/tabs": "^0.12.1",
+    "@testing-library/user-event": "^14.4.3",
     "@types/gtag.js": "0.0.8",
     "@types/styled-components": "^5.1.26",
     "axios": "^0.21.2",
