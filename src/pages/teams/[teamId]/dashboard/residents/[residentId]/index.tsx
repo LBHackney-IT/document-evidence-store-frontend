@@ -99,7 +99,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         <Link
           href={`/teams/${teamId}/dashboard/residents/${resident.id}/upload`}
         >
-          <a className="lbh-link" data-testid="search-page">
+          <a className="lbh-link" data-testid="upload-documents">
             Upload documents
           </a>
         </Link>

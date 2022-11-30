@@ -29,6 +29,7 @@ const DocumentDescription = (props: Props): JSX.Element => {
         name={props.name}
         id={props.name}
         aria-describedby={props.hint ? `${props.name}-hint` : null}
+        data-testid={`document-description-${props.panelIndex}`}
         className={`govuk-input  lbh-input ${
           errors.staffUploaderPanel &&
           touched.staffUploaderPanel &&
