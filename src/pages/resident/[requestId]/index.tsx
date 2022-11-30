@@ -8,6 +8,7 @@ import { TeamHelper } from '../../../services/team-helper';
 import { Team } from '../../../domain/team';
 import { NextPage } from 'next';
 import { Constants } from '../../../helpers/Constants';
+import { stringToMarkup } from '../../../helpers/formatters';
 
 type IndexProps = {
   requestId: string;
@@ -25,7 +26,10 @@ const Index: NextPage<IndexProps> = ({ requestId, team }) => {
       </Head>
       <InterruptionCard>
         <h1 className="lbh-heading-h1">Please have your documents ready</h1>
-        <p className="lbh-body">{team.landingMessage}</p>
+        <p
+          className="lbh-body"
+          dangerouslySetInnerHTML={stringToMarkup(team.landingMessage)}
+        ></p>
         <Link href={`/resident/${requestId}/upload`}>
           <a className="govuk-button lbh-button">Continue</a>
         </Link>

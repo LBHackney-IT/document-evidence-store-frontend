@@ -73,7 +73,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             documentSource={downloadUrl}
             rotate={() => rotate(currentRotation)}
             rotation={rotation}
-            documentTitle={documentSubmission.documentType.title}
+            documentTitle={documentSubmission.documentType?.title}
             dataTestId={'default-image'}
           />
         ) : toConvertDocumentExtensions.includes(
@@ -81,14 +81,14 @@ const ImagePreview = (props: Props): JSX.Element | null => {
           ) ? (
           <LoadingBox
             loading={loading}
-            title={documentSubmission.documentType.title}
+            title={documentSubmission.documentType?.title}
           >
             <RotateDocument
               currentRotation={currentRotation}
               documentSource={conversionImage}
               rotate={() => rotate(currentRotation)}
               rotation={rotation}
-              documentTitle={documentSubmission.documentType.title}
+              documentTitle={documentSubmission.documentType?.title}
               dataTestId={'conversion-image'}
             />
           </LoadingBox>

@@ -2,6 +2,7 @@ import { FunctionComponent } from 'react';
 import { DocumentType } from '../domain/document-type';
 import SelectDocumentType from './SelectDocumentType';
 import DocumentDescription from './DocumentDescription';
+import documentStyles from '../styles/DocumentTypeAndDescription.module.scss';
 
 const DocumentTypeAndDescription: FunctionComponent<Props> = ({
   name,
@@ -10,13 +11,9 @@ const DocumentTypeAndDescription: FunctionComponent<Props> = ({
 }) => {
   return (
     <div
-      className="govuk-form-group lbh-form-group"
-      style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-      }}
+      className={`govuk-form-group lbh-form-group ${documentStyles.formWrapper}`}
     >
-      <div style={{ display: 'inline-block' }}>
+      <div className={documentStyles.documentOptions}>
         <SelectDocumentType
           name={`${name}.staffSelectedDocumentType`}
           label="Document type"
@@ -24,7 +21,7 @@ const DocumentTypeAndDescription: FunctionComponent<Props> = ({
           panelIndex={panelIndex}
         />
       </div>
-      <div style={{ display: 'inline-block', marginTop: '0px' }}>
+      <div className={documentStyles.documentDescription}>
         <DocumentDescription
           label="Description"
           name={`${name}.description`}
