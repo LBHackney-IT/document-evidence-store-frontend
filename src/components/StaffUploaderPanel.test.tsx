@@ -2,7 +2,6 @@ import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
 import StaffUploaderPanel from './StaffUploaderPanel';
 import { Formik } from 'formik';
-import { UploaderPanelError } from './StaffUploaderForm';
 
 test('is properly named', async () => {
   render(
@@ -16,7 +15,6 @@ test('is properly named', async () => {
         setFieldValue={jest.fn()}
         removePanel={jest.fn()}
         panelIndex={1}
-        formValues={[]}
       />
     </Formik>
   );
@@ -39,7 +37,6 @@ test('accepts jpeg files', async () => {
         setFieldValue={mockHandler}
         removePanel={jest.fn()}
         panelIndex={1}
-        formValues={[]}
       />
     </Formik>
   );
@@ -68,7 +65,6 @@ test('accepts pdf files', async () => {
         setFieldValue={mockHandler}
         removePanel={jest.fn()}
         panelIndex={1}
-        formValues={[]}
       />
     </Formik>
   );
@@ -81,11 +77,6 @@ test('accepts pdf files', async () => {
 });
 
 test('displays errors', async () => {
-  const mockError: UploaderPanelError = {
-    staffSelectedDocumentType: 'mock',
-    description: 'mockError',
-    files: [],
-  };
   const { container } = render(
     <Formik
       initialValues={{ exampleName: false }}
@@ -97,8 +88,6 @@ test('displays errors', async () => {
         setFieldValue={jest.fn()}
         removePanel={jest.fn()}
         panelIndex={0}
-        formValues={[]}
-        error={mockError}
       />
     </Formik>
   );

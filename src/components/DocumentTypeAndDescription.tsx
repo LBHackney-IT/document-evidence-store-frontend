@@ -1,8 +1,9 @@
+import React from 'react';
 import { FunctionComponent } from 'react';
 import { DocumentType } from '../domain/document-type';
-import SelectDocumentType from './SelectDocumentType';
-import DocumentDescription from './DocumentDescription';
 import documentStyles from '../styles/DocumentTypeAndDescription.module.scss';
+import DocumentDescription from './DocumentDescription';
+import SelectDocumentType from './SelectDocumentType';
 
 const DocumentTypeAndDescription: FunctionComponent<Props> = ({
   name,
