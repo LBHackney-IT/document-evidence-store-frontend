@@ -1,18 +1,12 @@
-import { FormikValues } from 'formik';
+import { useFormikContext } from 'formik';
 import React, { FunctionComponent, useRef } from 'react';
 import { DocumentType } from 'src/domain/document-type';
 import styles from '../styles/UploaderPanel.module.scss';
 import DocumentTypeAndDescription from './DocumentTypeAndDescription';
 import RemovePanelButton from './RemovePanelButton';
-import { UploaderPanelError } from './StaffUploaderForm';
+import { StaffUploadFormValues } from './StaffUploaderForm';
+import { getIn } from 'formik';
 
-const classNameFromProps = (props: Props) => {
-  let className = `${styles.panel}`;
-  if (props.error) className += ` ${styles.errorPanel}`;
-  return className;
-};
-
-// this needs to be extracted outside of this component so it can be accessed by UploaderPanel component also
 const acceptedMimeTypes = (): string => {
   const acceptedMimeTypes = [
     'application/msword', //.doc
@@ -39,26 +33,49 @@ const acceptedMimeTypes = (): string => {
 
 const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
-
+  const { errors, touched } = useFormikContext<StaffUploadFormValues>();
+  const classNameFromProps = (props: Props) => {
+    let className = `${styles.panel}`;
+    if (
+      errors.staffUploaderPanel &&
+      touched.staffUploaderPanel &&
+      ((getIn(
+        touched.staffUploaderPanel[props.panelIndex],
+        'staffSelectedDocumentType'
+      ) &&
+        getIn(
+          errors.staffUploaderPanel[props.panelIndex],
+          'staffSelectedDocumentType'
+        )) ||
+        (getIn(touched.staffUploaderPanel[props.panelIndex], 'description') &&
+          getIn(errors.staffUploaderPanel[props.panelIndex], 'description')) ||
+        (getIn(touched.staffUploaderPanel[props.panelIndex], 'files') &&
+          getIn(errors.staffUploaderPanel[props.panelIndex], 'files')))
+    ) {
+      className += ` ${styles.errorPanel}`;
+    }
+    return className;
+  };
   return (
     <div className={classNameFromProps(props)}>
       <RemovePanelButton
         removePanel={props.removePanel}
         panelIndex={props.panelIndex}
-        formValues={props.formValues}
-        error={props.error}
       />
       <DocumentTypeAndDescription
         name={props.name}
         documentTypes={props.staffSelectedDocumentTypes}
-        error={props.error}
+        panelIndex={props.panelIndex}
       />
-      {props.error?.files && (
-        <span className="govuk-error-message lbh-error-message">
-          <span className="govuk-visually-hidden">Error:</span>{' '}
-          {props.error.files}
-        </span>
-      )}
+      {errors.staffUploaderPanel &&
+        getIn(errors.staffUploaderPanel[props.panelIndex], 'files') &&
+        touched.staffUploaderPanel &&
+        getIn(touched.staffUploaderPanel[props.panelIndex], 'files') && (
+          <span className="govuk-error-message lbh-error-message">
+            <span className="govuk-visually-hidden">Error:</span>{' '}
+            {getIn(errors.staffUploaderPanel[props.panelIndex], 'files')}
+          </span>
+        )}
       <input
         ref={inputRef}
         type="file"
@@ -75,7 +92,6 @@ const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
             );
           }
         }}
-        // aria-describedby={props.hint && `${props.name}-hint`}
         multiple={true}
       />
       <div>
@@ -84,7 +100,10 @@ const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
           data-testid="clear-selection-button"
           type="button"
           onClick={() => {
-            props.setFieldValue(props.name, null);
+            props.setFieldValue(
+              `staffUploaderPanel[${props.panelIndex}].files`,
+              []
+            );
             if (inputRef.current) {
               inputRef.current.value = '';
             }
@@ -101,10 +120,8 @@ interface Props {
   staffSelectedDocumentTypes: DocumentType[];
   setFieldValue(key: string, value: File[] | null): void;
   name: string;
-  error?: UploaderPanelError | null;
   removePanel(panelIndex: number): void;
   panelIndex: number;
-  formValues: FormikValues;
 }
 
 export default StaffUploaderPanel;

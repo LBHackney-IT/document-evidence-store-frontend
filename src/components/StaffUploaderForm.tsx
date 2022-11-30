@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useCallback,
 } from 'react';
-import { Formik, Form, FormikTouched, FormikErrors } from 'formik';
+import { Formik, Form } from 'formik';
 import { StaffUploadFormModel } from '../services/staff-upload-form-model';
 import { DocumentType } from '../domain/document-type';
 import { LoadingBox } from 'govuk-react';
@@ -24,42 +24,33 @@ export type StaffUploadFormValues = {
 export const validationSchema = Yup.object().shape({
   staffUploaderPanel: Yup.array().of(
     Yup.object().shape({
-      staffSelectedDocumentType: Yup.string(),
+      staffSelectedDocumentType: Yup.string().test(
+        'select-a-value',
+        'Please select a document type',
+        (value) => {
+          return value !== 'Please select';
+        }
+      ),
       description: Yup.string().required('Please enter a description'),
-      files: Yup.mixed().required('Please select a file'),
+      files: Yup.mixed().test(
+        'at-least-one-file',
+        'Please select a file',
+        (value) => {
+          return value.length > 0;
+        }
+      ),
     })
   ),
 });
 
+const createInitialPanelValues = () => ({
+  staffSelectedDocumentType: 'Please select',
+  description: '',
+  files: [],
+});
+
 const initialValues: StaffUploadFormValues = {
-  staffUploaderPanel: [
-    {
-      staffSelectedDocumentType: 'Select',
-      description: '',
-      files: [],
-    },
-  ],
-};
-
-export type UploaderPanelError = {
-  staffSelectedDocumentType: string;
-  description: string;
-  files: File[];
-};
-
-const getError = (
-  index: number,
-  touched: FormikTouched<StaffUploadFormValues>,
-  errors: FormikErrors<StaffUploadFormValues>
-) => {
-  const dirty = touched.staffUploaderPanel && touched.staffUploaderPanel[index];
-  if (!dirty) return null;
-  return errors.staffUploaderPanel &&
-    errors.staffUploaderPanel[index] &&
-    touched.staffUploaderPanel &&
-    touched.staffUploaderPanel[index]
-    ? ((errors.staffUploaderPanel[index] as unknown) as UploaderPanelError)
-    : null;
+  staffUploaderPanel: [createInitialPanelValues()],
 };
 
 const StaffUploaderForm: FunctionComponent<Props> = ({
@@ -116,7 +107,7 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ values, errors, touched, setFieldValue }) => (
+      {({ values, setFieldValue }) => (
         <Form>
           {submitError && (
             <span className="govuk-error-message lbh-error-message">
@@ -137,32 +128,22 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
                   setFieldValue={setFieldValue}
                   key={`staffUploaderPanel.${index}`}
                   name={`staffUploaderPanel.${index}`}
-                  error={getError(index, touched, errors)}
                   removePanel={removePanel}
                   panelIndex={index}
-                  formValues={values}
                 />
               )
           )}
-          {console.log('VALUES', values)}
-          {console.log('ERRORS', errors)}
           <button
             type="button"
             onClick={() => {
               addPanel();
-              values.staffUploaderPanel.push(
-                initialValues.staffUploaderPanel[0]
-              );
+              values.staffUploaderPanel.push(createInitialPanelValues());
             }}
           >
             Add
           </button>
           <LoadingBox loading={submission}>
-            <button
-              className="govuk-button lbh-button"
-              type="submit"
-              //   disabled={!dirty || submission}
-            >
+            <button className="govuk-button lbh-button" type="submit">
               Submit
             </button>
           </LoadingBox>

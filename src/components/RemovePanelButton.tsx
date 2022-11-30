@@ -1,9 +1,14 @@
-import { FormikValues } from 'formik';
+import { useFormikContext } from 'formik';
 import React, { FunctionComponent } from 'react';
 import styles from 'src/styles/RemoveBoxButton.module.scss';
-import { UploaderPanelError } from './StaffUploaderForm';
+import { StaffUploadFormValues } from './StaffUploaderForm';
 
 const RemovePanelButton: FunctionComponent<Props> = (props) => {
+  const {
+    values,
+    errors,
+    setFieldError,
+  } = useFormikContext<StaffUploadFormValues>();
   return (
     <div>
       <button
@@ -11,11 +16,12 @@ const RemovePanelButton: FunctionComponent<Props> = (props) => {
         type="button"
         onClick={() => {
           props.removePanel(props.panelIndex);
-          props.formValues.staffUploaderPanel.splice(props.panelIndex, 1);
-          if (props.error) {
-            props.error.description = '';
-            props.error.staffSelectedDocumentType = '';
-            props.error.files = [];
+          values.staffUploaderPanel.splice(props.panelIndex, 1);
+          if (
+            errors.staffUploaderPanel &&
+            errors.staffUploaderPanel[props.panelIndex]
+          ) {
+            setFieldError(`staffUploaderPanel.${props.panelIndex}`, '');
           }
         }}
       >
@@ -32,8 +38,6 @@ const RemovePanelButton: FunctionComponent<Props> = (props) => {
 interface Props {
   removePanel(panelIndex: number): void;
   panelIndex: number;
-  formValues: FormikValues;
-  error: UploaderPanelError | null | undefined;
 }
 
 export default RemovePanelButton;
