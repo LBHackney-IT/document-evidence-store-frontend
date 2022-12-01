@@ -40,7 +40,7 @@ export interface DocumentSubmissionResponse
   evidenceRequestId: string;
   retentionExpiresAt: string;
   state: string;
-  documentType: IDocumentType;
+  documentType?: IDocumentType;
   rejectedAt?: string;
   acceptedAt?: string;
   userUpdatedBy?: string;
