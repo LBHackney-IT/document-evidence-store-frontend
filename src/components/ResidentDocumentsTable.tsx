@@ -239,7 +239,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                       (documentTabItem.staffSelectedDocumentType
                                         ?.title ||
                                         documentTabItem.documentType?.title) ??
-                                      ''
+                                      'No title'
                                     }
                                     createdAt={formatDate(
                                       documentTabItem.createdAt
