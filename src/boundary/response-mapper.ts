@@ -48,7 +48,9 @@ export class ResponseMapper {
       zone: 'utc',
     });
     const state = DocumentState[attrs.state as keyof typeof DocumentState];
-    const documentType = new DocumentType(attrs.documentType);
+    const documentType = attrs.documentType
+      ? new DocumentType(attrs.documentType)
+      : undefined;
     const staffSelectedDocumentType = attrs.staffSelectedDocumentType
       ? new DocumentType(attrs.staffSelectedDocumentType)
       : undefined;

@@ -98,7 +98,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       );
 
       currentDocumentTypesSet?.forEach((dt) => {
-        if (dt.id === ds.documentType.id) {
+        if (
+          dt.id === ds.documentType?.id ||
+          dt.id === ds.staffSelectedDocumentType?.id
+        ) {
           currentDocumentTypesSet.delete(dt);
         }
       });
@@ -233,9 +236,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                   <EvidenceTile
                                     id={documentTabItem.id}
                                     title={
-                                      documentTabItem.staffSelectedDocumentType
+                                      (documentTabItem.staffSelectedDocumentType
                                         ?.title ||
-                                      documentTabItem.documentType.title
+                                        documentTabItem.documentType?.title) ??
+                                      ''
                                     }
                                     createdAt={formatDate(
                                       documentTabItem.createdAt

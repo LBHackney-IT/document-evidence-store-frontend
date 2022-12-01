@@ -1,5 +1,6 @@
 import dsFixture from '../../cypress/fixtures/document_submissions/get-png.json';
 import dsFixtureHeic from '../../cypress/fixtures/document_submissions/get-heic.json';
+import createDsFixture from '../../cypress/fixtures/document_submissions/create.json';
 describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
@@ -102,7 +103,7 @@ describe('Can view and manage evidence', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
     cy.get('section[id="awaiting-submission"] p').should(
       'contain',
-      '3:34 pm 30 November 2020 (2 years ago)'
+      '3:34 pm 29 December 2020 (2 years ago)'
     );
 
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
@@ -126,7 +127,7 @@ describe('Can view and manage evidence', () => {
 
   it('can view all awaiting submission documents', () => {
     cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
-    cy.get('section[id="awaiting-submission"] table').should('have.length', 3);
+    cy.get('section[id="awaiting-submission"] table').should('have.length', 1);
   });
 
   it('can check the url contains residentId and teamId', () => {
@@ -302,7 +303,7 @@ describe('Can view and manage evidence', () => {
       cy.get('label').contains('Month').next('input').clear();
       cy.get('label').contains('Year').next('input').clear();
 
-      cy.get('[data-testid="error-invalid-date"]').should('not.contain.text');
+      cy.get('[data-testid="error-invalid-date"]').should('to.be.hidden');
 
       cy.get('button').contains('Yes, accept').click();
       cy.wait('@updateDocumentState');
@@ -501,6 +502,79 @@ describe('Can view and manage evidence', () => {
       cy.get('[data-testid="default-image"]')
         .should('have.attr', 'class')
         .and('contains', 'rotated360');
+    });
+  });
+
+  describe('Staff can upload document', () => {
+    beforeEach(() => {
+      cy.login();
+
+      cy.intercept('POST', createDsFixture.uploadPolicy.url, {
+        statusCode: 201,
+        delayMs: 2500,
+      }).as('s3Upload');
+
+      cy.intercept('POST', '/api/evidence/document_submissions', (req) => {
+        const body = {
+          residentId: req.body.residentId,
+          team: req.body.team,
+          userCreatedBy: req.body.userCreatedBy,
+          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentType,
+          documentDescription: req.body.documentDescription,
+        };
+
+        req.reply((res) => {
+          res.send(201, body);
+        });
+      }).as('staffUploadDocument');
+
+      cy.visit(`http://localhost:3000/teams/2/dashboard`);
+      cy.injectAxe();
+
+      cy.get('a').contains('Namey McName').click();
+      cy.contains('h1', 'Namey McName');
+    });
+
+    it('can upload a document', () => {
+      cy.get('[data-testid="upload-documents"]').click();
+      cy.get('h1').should('contain', 'Upload documents');
+      cy.get('select').select('Passport');
+      cy.get('[data-testid="document-description-0"]').type(
+        'here is a description of this document'
+      );
+      cy.get('input[type=file]').attachFile('example.png');
+      cy.get('button').contains('Submit').click();
+      cy.contains('h1', 'Namey McName');
+    });
+
+    it('has validation errors when form input is incorrect', () => {
+      cy.get('[data-testid="upload-documents"]').click();
+      cy.get('h1').should('contain', 'Upload documents');
+      cy.get('button').contains('Submit').click();
+      cy.get('span').contains('Please select a document type');
+      cy.get('span').contains('Please enter a description');
+      cy.get('span').contains('Please select a file');
+    });
+
+    it('can upload documents of different types', () => {
+      cy.get('[data-testid="upload-documents"]').click();
+      cy.get('h1').should('contain', 'Upload documents');
+      cy.get('select').eq(0).select('Passport');
+      cy.get('[data-testid="document-description-0"]').type(
+        'here is a description of this document'
+      );
+      cy.get('input[type=file]').eq(0).attachFile('example.png');
+
+      cy.get('button').contains('Add').click();
+
+      cy.get('select').eq(1).select('Driving license');
+      cy.get('[data-testid="document-description-1"]').type(
+        'here is another description'
+      );
+      cy.get('input[type=file]').eq(1).attachFile('example.png');
+
+      cy.get('button').contains('Submit').click();
+      cy.contains('h1', 'Namey McName');
     });
   });
 });

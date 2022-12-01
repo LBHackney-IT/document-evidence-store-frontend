@@ -1,0 +1,13 @@
+.formWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.documentOptions {
+  display: inline-block;
+}
+
+.documentDescription {
+  display: inline-block;
+  margin-top: 0px;
+}
