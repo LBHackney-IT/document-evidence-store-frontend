@@ -34,7 +34,7 @@ describe('SelectDocumentType', () => {
         />
       </Formik>
     );
-    expect(screen.getAllByRole('option').length).toBe(2);
+    expect(screen.getAllByRole('option').length).toBe(3);
 
     userEvent.selectOptions(
       screen.getByRole('combobox'),

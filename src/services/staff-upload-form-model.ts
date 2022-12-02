@@ -9,19 +9,6 @@ export class StaffUploadFormModel {
   private s3Gateway = new S3Gateway();
   constructor(private staffSelectedDocumentTypes: DocumentType[]) {}
 
-  // See DOC-964 for more details about this commented section.
-  // get schema(): Yup.ObjectSchema {
-  //   return Yup.object(
-  //     this.documentTypes.reduce(
-  //       (others, key) => ({
-  //         ...others,
-  //         [key.id]: Yup.mixed().required('Please select a file'),
-  //       }),
-  //       {}
-  //     )
-  //   );
-  // }
-
   async handleSubmit(
     userEmail: string,
     residentId: string,
