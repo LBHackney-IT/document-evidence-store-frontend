@@ -18,7 +18,7 @@ const DocumentTypeAndDescription: FunctionComponent<Props> = ({
         <SelectDocumentType
           name={`${name}.staffSelectedDocumentType`}
           label="Document type"
-          values={['Please select', ...documentTypes.map((dt) => dt.title)]}
+          documentTypes={documentTypes}
           panelIndex={panelIndex}
         />
       </div>
