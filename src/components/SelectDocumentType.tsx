@@ -37,6 +37,13 @@ const SelectDocumentType = (props: Props): JSX.Element => {
         as="select"
         className="govuk-select lbh-select"
       >
+        <option
+          value={'Please select'}
+          key={'Please select'}
+          data-testid="select-option"
+        >
+          {'Please select'}
+        </option>
         {props.documentTypes.map((option) => (
           <option value={option.id} key={option.id} data-testid="select-option">
             {option.title}
