@@ -10,7 +10,7 @@ interface placeHolderResident {
   phoneNumber: string;
 }
 
-const emailOrPhoneNumberMessage =
+export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
 
 export const schemaCreateResidentForm = Yup.object().shape(
