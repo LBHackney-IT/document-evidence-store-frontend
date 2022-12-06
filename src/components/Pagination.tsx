@@ -45,5 +45,5 @@ export interface Props {
   currentPageNumber: number;
   pageSize: number;
   total: number;
-  onPageChange: (pageNumber: number) => void;
+  onPageChange: (page: number) => void;
 }

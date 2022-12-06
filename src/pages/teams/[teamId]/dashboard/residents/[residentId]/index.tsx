@@ -25,6 +25,7 @@ type ResidentPageProps = {
   documentSubmissions: DocumentSubmission[];
   total: number;
   resident: Resident;
+  state?: string;
   teamId: string;
   feedbackUrl: string;
   userEmail: string;
@@ -36,6 +37,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   userEmail,
   total,
   resident,
+  state,
   teamId,
   feedbackUrl,
 }) => {
@@ -56,7 +58,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
     setHidePagination(hidePagination);
   };
 
-  const onPageChange = async (targetPage: number) => {
+  const onPageOrTabChange = async (state: string, targetPage: number) => {
     setCurrentPage(targetPage);
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
 
@@ -67,8 +69,9 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         userEmail,
         resident.id,
         team?.name ?? '',
-        targetPage.toString(),
-        pageSize.toString()
+        currentPage.toString(),
+        pageSize.toString(),
+        state
       );
       setDisplayedDocumentSubmissions(
         documentSubmissionPromise.documentSubmissions
@@ -100,15 +103,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           evidenceRequests={evidenceRequests}
           documentSubmissions={displayedDocumentSubmissions}
           hidePaginationFunction={hidePaginationComponent}
+          total={total}
+          pageSize={pageSize}
+          onPageOrTabChange={onPageOrTabChange}
         />
-        {!hidePagination && total > pageSize && (
-          <Pagination
-            currentPageNumber={currentPage}
-            pageSize={pageSize}
-            total={total}
-            onPageChange={onPageChange}
-          />
-        )}
       </ResidentPageContext.Provider>
     </Layout>
   );
@@ -148,8 +146,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const documentSubmissionsPromise = gateway.getDocumentSubmissionsForResident(
     user.email,
-    team.name,
     residentId,
+    team.name,
     initialPage.toString(),
     pageLimit.toString()
   );

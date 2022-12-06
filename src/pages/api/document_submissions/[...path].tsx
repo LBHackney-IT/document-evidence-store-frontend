@@ -6,13 +6,14 @@ const evidenceApiGateway = new EvidenceApiGateway();
 const endpoint: NextApiHandler = async (req, res) => {
   const query = req.query;
 
-  const { path, currentPage, pageSize, team } = query;
+  const { path, currentPage, pageSize, team, state } = query;
 
   try {
     const data = await evidenceApiGateway.getDocumentSubmissionsForResident(
       req.headers.userEmail?.toString() ?? '',
-      team.toString(),
       path[0].toString(),
+      team.toString(),
+      state.toString(),
       currentPage.toString(),
       pageSize.toString()
     );

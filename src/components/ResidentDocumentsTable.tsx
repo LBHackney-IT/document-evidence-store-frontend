@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { EvidenceList, EvidenceTile } from './EvidenceTile';
 import { formatDate } from '../helpers/formatters';
+import { Pagination } from 'src/components/Pagination';
 import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
@@ -15,6 +16,9 @@ interface Props {
   evidenceRequests: EvidenceRequest[];
   documentSubmissions: DocumentSubmission[];
   hidePaginationFunction: (hidePaginate: boolean) => void;
+  total: number;
+  pageSize: number;
+  onPageOrTabChange: (state: string, page: number) => Promise<void>;
 }
 
 type EvidenceAwaitingSubmission = {
@@ -34,6 +38,7 @@ type DocumentTabItem = DocumentSubmissionWithKind | EvidenceAwaitingSubmission;
 type DocumentTab = {
   id: string;
   humanReadableName: string;
+  state?: string;
   documents: DocumentTabItem[];
   className: 'govuk-form-group--error' | undefined;
   style: '#FFF6BB' | '#8EB6DC' | '#B2DFDB' | '#F8D1CD' | undefined;
@@ -43,6 +48,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   documentSubmissions,
   hidePaginationFunction,
+  total,
+  pageSize,
+  onPageOrTabChange,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -132,6 +140,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     {
       id: 'all-documents',
       humanReadableName: 'All documents',
+      state: undefined,
       documents: allDocumentSubmissions,
       className: undefined,
       style: undefined,
@@ -146,6 +155,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     {
       id: 'pending-review',
       humanReadableName: 'Pending review',
+      state: 'Uploaded',
       documents: toReviewDocumentSubmissions,
       className: 'govuk-form-group--error',
       style: '#8EB6DC',
@@ -153,6 +163,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     {
       id: 'approved',
       humanReadableName: 'Approved',
+      state: 'Approved',
       documents: reviewedDocumentSubmissions,
       className: 'govuk-form-group--error',
       style: '#B2DFDB',
@@ -160,6 +171,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     {
       id: 'rejected',
       humanReadableName: 'Rejected',
+      state: 'Rejected',
       documents: rejectedDocumentSubmissions,
       className: 'govuk-form-group--error',
       style: '#F8D1CD',
@@ -175,6 +187,12 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     const evidenceRequest = evidenceRequests.find((er) => er.id === id);
     return evidenceRequest?.userRequestedBy;
   };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hidePagination, setHidePagination] = useState(false);
+
+  const onPageChange = (targetPage: number) =>
+    onPageOrTabChange(selectedTab, targetPage);
 
   return (
     <div
@@ -299,6 +317,14 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
           );
         })}
       </div>
+      {!hidePagination && total > pageSize && (
+        <Pagination
+          currentPageNumber={currentPage}
+          pageSize={pageSize}
+          total={total}
+          onPageChange={onPageChange}
+        />
+      )}
     </div>
   );
 };

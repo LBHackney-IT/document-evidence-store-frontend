@@ -160,14 +160,17 @@ export class InternalApiGateway {
     residentId: string,
     team: string,
     currentPage: string,
-    pageSize: string
+    pageSize: string,
+    state?: string
   ): Promise<DocumentSubmissionsObject> {
     try {
       const { data } = await this.client.get<DocumentSubmissionsObject>(
         `/api/document_submissions/${residentId}`,
         {
           params: {
+            residentId,
             team,
+            state,
             currentPage,
             pageSize,
           },
