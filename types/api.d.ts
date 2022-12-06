@@ -57,6 +57,7 @@ export interface DocumentResponse {
   id: string;
   fileSize: number;
   fileType: string;
+  description?: string;
 }
 
 export interface ResidentResponse {

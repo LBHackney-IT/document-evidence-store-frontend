@@ -16,6 +16,7 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver1@email.com'}
+        documentDescription={'This is the description'}
       />
     );
     expect(screen.getByText('Foo'));
@@ -24,6 +25,7 @@ describe('EvidenceTile', () => {
     expect(screen.getByText('APPROVED'));
     expect(screen.getByText('Approved by approver1@email.com'));
     expect(screen.getByText('housing reason'));
+    expect(screen.getByText('Description: This is the description'));
   });
 
   it('renders without actions if document has already been reviewed', async () => {
@@ -56,6 +58,7 @@ describe('EvidenceTile', () => {
         reason={undefined}
         requestedBy={undefined}
         userUpdatedBy={null}
+        documentDescription={undefined}
       />
     );
 

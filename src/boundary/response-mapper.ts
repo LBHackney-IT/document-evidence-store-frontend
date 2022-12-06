@@ -91,6 +91,10 @@ export class ResponseMapper {
   }
 
   private static mapDocument(attrs: DocumentResponse): Document {
-    return new Document({ ...attrs, fileSizeInBytes: attrs.fileSize });
+    return new Document({
+      ...attrs,
+      fileSizeInBytes: attrs.fileSize,
+      description: attrs.description,
+    });
   }
 }

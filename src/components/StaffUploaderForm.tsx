@@ -31,7 +31,10 @@ export const validationSchema = Yup.object().shape({
           return value !== 'Please select';
         }
       ),
-      description: Yup.string().required('Please enter a description'),
+      description: Yup.string().max(
+        255,
+        'Description must be between 0 and 255 characters'
+      ),
       files: Yup.mixed().test(
         'at-least-one-file',
         'Please select a file',
