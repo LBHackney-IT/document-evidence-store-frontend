@@ -1,44 +1,35 @@
 import React from 'react';
 import Field from './Field';
 import { useFormikContext } from 'formik';
-//import { EvidenceRequestForm } from 'src/gateways/internal-api';
+import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
-
-interface placeHolderResident {
-  name: string;
-  email: string;
-  phoneNumber: string;
-}
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
 
-export const schemaCreateResidentForm = Yup.object().shape(
-  {
-    resident: Yup.object().shape(
-      {
-        name: Yup.string().required("Please enter the resident's name"),
-        email: Yup.string().when(['phoneNumber'], {
-          is: (phoneNumber) => !phoneNumber,
-          then: Yup.string()
-            .required(emailOrPhoneNumberMessage)
-            .email('Please provide a valid email address'),
-        }),
-        phoneNumber: Yup.string().when(['email'], {
-          is: (email) => !email,
-          then: Yup.string()
-            .required(emailOrPhoneNumberMessage)
-            .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
-        }),
-      },
-      [['email', 'phoneNumber']]
-    ),
-  },
-  [['emailCheckbox', 'phoneNumberCheckbox']]
-);
+export const schemaCreateResidentForm = Yup.object().shape({
+  resident: Yup.object().shape(
+    {
+      name: Yup.string().required("Please enter the resident's name"),
+      email: Yup.string().when(['phoneNumber'], {
+        is: (phoneNumber) => !phoneNumber,
+        then: Yup.string()
+          .required(emailOrPhoneNumberMessage)
+          .email('Please provide a valid email address'),
+      }),
+      phoneNumber: Yup.string().when(['email'], {
+        is: (email) => !email,
+        then: Yup.string()
+          .required(emailOrPhoneNumberMessage)
+          .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
+      }),
+    },
+    [['email', 'phoneNumber']]
+  ),
+});
 
 const CreateResidentForm = (): JSX.Element => {
-  const { errors, touched } = useFormikContext<placeHolderResident>(); //create resident request //replace values
+  const { errors, touched } = useFormikContext<CreateResidentRequest>(); //create resident request //replace values
 
   return (
     <>

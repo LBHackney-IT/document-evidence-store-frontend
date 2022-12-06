@@ -21,3 +21,5 @@ export class Resident implements IResident {
     this.referenceId = params.referenceId;
   }
 }
+
+
