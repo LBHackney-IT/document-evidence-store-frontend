@@ -32,7 +32,7 @@ const tokens: TokenDictionary = {
   },
   residents: {
     GET: process.env.EVIDENCE_API_TOKEN_RESIDENTS_GET,
-    POST: process.env.EVIDENCE_API_TOKEN_RESIDENTS_POST
+    POST: process.env.EVIDENCE_API_TOKEN_RESIDENTS_POST,
   },
 };
 
@@ -53,21 +53,25 @@ export class EvidenceApiGateway {
     this.client = client;
   }
 
-  async createResident(name: string, userEmail: string, email?: string, phoneNumber?: string): Promise<boolean> {
-      try {
-        const { data } = await this.client.post<Resident>('/api/v1/residents', {
-          headers: {
-            Authorization: tokens?.residents?.POST,
-            UserEmail: userEmail
-          },
-          body: { name, email, phoneNumber}
-        });
-        return data != null;
-      }
-      catch(err) {
-        console.error(err)
-        throw new InternalServerError('Internal server error');
-      }
+  async createResident(
+    name: string,
+    userEmail: string,
+    email?: string,
+    phoneNumber?: string
+  ): Promise<boolean> {
+    try {
+      const { data } = await this.client.post<Resident>('/api/v1/residents', {
+        headers: {
+          Authorization: tokens?.residents?.POST,
+          UserEmail: userEmail,
+        },
+        body: { name, email, phoneNumber },
+      });
+      return data != null;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
   }
 
   async getEvidenceRequests(

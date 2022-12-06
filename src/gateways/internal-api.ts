@@ -32,9 +32,9 @@ export interface EvidenceRequestRequest {
 }
 
 export interface CreateResidentRequest {
-  name: string,
-  email : string | null,
-  phoneNumber: string | null
+  name: string;
+  email: string | null;
+  phoneNumber: string | null;
 }
 
 export interface EvidenceRequestForm {
@@ -71,9 +71,9 @@ export interface DocumentSubmissionUpdateForm {
 }
 
 export interface CreateResidentRequest {
-  name: string,
-  email: string | null,
-  phoneNumber: string | null
+  name: string;
+  email: string | null;
+  phoneNumber: string | null;
 }
 
 export interface ResidentRequest {
@@ -95,23 +95,26 @@ export class InternalApiGateway {
     this.client = client;
   }
 
-  async createResident(userEmail: string, payload: CreateResidentRequest): Promise<boolean> {
+  async createResident(
+    userEmail: string,
+    payload: CreateResidentRequest
+  ): Promise<boolean> {
     try {
       const { data } = await this.client.post<Resident>(
         '/api/evidence/residents',
         payload,
-         {
+        {
           headers: {
             UserEmail: userEmail,
           },
-        });        
-        return data != null;
-      } catch (err) {
-        console.error(err)
-        throw new InternalServerError('Internal server error')
-      }      
+        }
+      );
+      return data != null;
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
     }
-  
+  }
 
   async createEvidenceRequest(
     userEmail: string,
