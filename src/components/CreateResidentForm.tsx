@@ -1,6 +1,6 @@
 import React from 'react';
 import Field from './Field';
-import { useFormikContext } from 'formik';
+import { useFormikContext, Formik } from 'formik';
 import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 
@@ -28,30 +28,42 @@ export const schemaCreateResidentForm = Yup.object().shape({
   ),
 });
 
-const CreateResidentForm = (): JSX.Element => {
-  const { errors, touched } = useFormikContext<CreateResidentRequest>(); //create resident request //replace values
+const CreateResidentForm = (props: Props): JSX.Element => {
+  const { errors, touched } = useFormikContext<CreateResidentRequest>();
 
   return (
     <>
       <h1 className="lbh-heading-h2">Create A New Resident</h1>
-
-      <Field
-        label="Name"
-        name="name"
-        error={touched.name ? errors.name : null}
-      />
-      <Field
-        label="Email"
-        name="email"
-        error={touched.email ? errors.email : null}
-      />
-      <Field
-        label="Mobile phone number"
-        name="phoneNumber"
-        error={touched.phoneNumber ? errors.phoneNumber : null}
-      />
+      <Formik
+        initialValues={{}}
+        onSubmit={() => {
+          props.createResident;
+        }}
+        validationScheme={schemaCreateResidentForm}
+      >
+        <Field
+          label="Name"
+          name="name"
+          error={touched.name ? errors.name : null}
+        />
+        <Field
+          label="Email"
+          name="email"
+          error={touched.email ? errors.email : null}
+        />
+        <Field
+          label="Mobile phone number"
+          name="phoneNumber"
+          error={touched.phoneNumber ? errors.phoneNumber : null}
+        />
+        <button className="govuk-button lbh-button">Search</button>
+      </Formik>
     </>
   );
 };
+
+interface Props {
+  createResident(resident: CreateResidentRequest): boolean;
+}
 
 export default CreateResidentForm;
