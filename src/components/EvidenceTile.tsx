@@ -15,6 +15,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
   reason,
   requestedBy,
   userUpdatedBy,
+  documentDescription,
 }) => {
   enum tagColour {
     UPLOADED = 'lbh-tag lbh-tag--blue',
@@ -50,6 +51,11 @@ export const EvidenceTile: FunctionComponent<Props> = ({
                 <p className={`lbh-body-s ${styles.meta}`}>
                   Date uploaded: {createdAt}
                 </p>
+                {documentDescription && (
+                  <p className={`lbh-body-s ${styles.meta}`}>
+                    Description: {documentDescription}
+                  </p>
+                )}
                 {reason && (
                   <p className={`lbh-body-s ${styles.meta}`}>{reason}</p>
                 )}
@@ -99,4 +105,5 @@ interface Props {
   reason: string | undefined;
   requestedBy: string | undefined;
   userUpdatedBy: string | null;
+  documentDescription?: string | undefined;
 }

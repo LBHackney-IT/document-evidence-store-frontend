@@ -272,6 +272,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                                     userUpdatedBy={
                                       documentTabItem.userUpdatedBy
                                     }
+                                    documentDescription={
+                                      documentTabItem.document?.description
+                                    }
                                   />
                                 </li>
                               </>

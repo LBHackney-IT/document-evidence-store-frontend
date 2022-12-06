@@ -552,7 +552,6 @@ describe('Can view and manage evidence', () => {
       cy.get('h1').should('contain', 'Upload documents');
       cy.get('button').contains('Submit').click();
       cy.get('span').contains('Please select a document type');
-      cy.get('span').contains('Please enter a description');
       cy.get('span').contains('Please select a file');
     });
 
