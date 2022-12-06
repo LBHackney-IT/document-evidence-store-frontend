@@ -32,7 +32,7 @@ export const validationSchema = Yup.object().shape({
         }
       ),
       description: Yup.string().max(
-        5,
+        255,
         'Description must be between 0 and 255 characters'
       ),
       files: Yup.mixed().test(
