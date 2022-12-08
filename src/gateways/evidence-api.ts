@@ -74,8 +74,7 @@ export class EvidenceApiGateway {
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
       console.error(err);
-      throw new Error(`${err}`)
-      
+      throw new Error(`${err}`);
     }
   }
 
