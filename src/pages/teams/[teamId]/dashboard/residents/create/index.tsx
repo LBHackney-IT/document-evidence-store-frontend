@@ -2,16 +2,12 @@ import React from 'react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import CreateResidentForm from 'src/components/CreateResidentForm';
-import {
-  CreateResidentRequest,
-  InternalApiGateway,
-} from 'src/gateways/internal-api';
-import { Constants } from 'src/helpers/Constants';
 import Layout from 'src/components/DashboardLayout';
 import Head from 'next/head';
 import { RequestAuthorizer } from 'src/services/request-authorizer';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { TeamHelper } from 'src/services/team-helper';
+import { Resident } from 'src/domain/resident';
 
 type CreatePageProps = {
   teamId: string;
@@ -24,14 +20,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
 }) => {
   const router = useRouter();
 
-  const createResident = async (resident: CreateResidentRequest) => {
-    const gateway = new InternalApiGateway();
-    //happy path - add try catch here.
-    const newResident = await gateway.createResident(
-      Constants.DUMMY_EMAIL,
-      resident
-    );
-
+  const onSuccess = (newResident: Resident): void => {
     router.push(`/teams/${teamId}/dashboard/residents/${newResident.id}`);
   };
 
@@ -43,7 +32,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
             Create A Resident | Document Evidence Service | Hackney Council
           </title>
         </Head>
-        <CreateResidentForm createResident={createResident} />;
+        <CreateResidentForm onSuccess={onSuccess} />
       </Layout>
     </>
   );

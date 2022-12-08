@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import Field from './Field';
 import { Formik, Form } from 'formik';
-import { CreateResidentRequest } from 'src/gateways/internal-api';
+import {
+  CreateResidentRequest,
+  InternalApiGateway,
+} from 'src/gateways/internal-api';
 import * as Yup from 'yup';
+import { Resident } from 'src/domain/resident';
+import { Constants } from 'src/helpers/Constants';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -28,7 +33,28 @@ export const schemaCreateResidentForm = Yup.object().shape({
   ),
 });
 
-const CreateResidentForm = (props: Props): JSX.Element => {
+const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
+  const [submitError, setSubmitError] = useState(false);
+
+  const handleSubmit = useCallback(
+    async (resident: CreateResidentRequest) => {
+      const gateway = new InternalApiGateway();
+
+      try {
+        const newResident = await gateway.createResident(
+          Constants.DUMMY_EMAIL,
+          resident
+        );
+
+        onSuccess(newResident);
+      } catch (err) {
+        console.log(err);
+        setSubmitError(true);
+      }
+    },
+    [submitError]
+  );
+
   return (
     <>
       <h1 className="lbh-heading-h1">Create Contact</h1>
@@ -42,9 +68,7 @@ const CreateResidentForm = (props: Props): JSX.Element => {
           email: '',
           phoneNumber: '',
         }}
-        onSubmit={(values: CreateResidentRequest) => {
-          props.createResident(values);
-        }}
+        onSubmit={handleSubmit}
         validationScheme={schemaCreateResidentForm}
       >
         {({ errors, touched }) => (
@@ -77,7 +101,7 @@ const CreateResidentForm = (props: Props): JSX.Element => {
 };
 
 interface Props {
-  createResident(resident: CreateResidentRequest): void;
+  onSuccess(resident: Resident): void;
 }
 
 export default CreateResidentForm;
