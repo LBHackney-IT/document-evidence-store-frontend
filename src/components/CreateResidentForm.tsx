@@ -12,26 +12,24 @@ import { Constants } from 'src/helpers/Constants';
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
 
-export const schemaCreateResidentForm = Yup.object().shape({
-  resident: Yup.object().shape(
-    {
-      name: Yup.string().required("Please enter the resident's name"),
-      email: Yup.string().when(['phoneNumber'], {
-        is: (phoneNumber) => !phoneNumber,
-        then: Yup.string()
-          .required(emailOrPhoneNumberMessage)
-          .email('Please provide a valid email address'),
-      }),
-      phoneNumber: Yup.string().when(['email'], {
-        is: (email) => !email,
-        then: Yup.string()
-          .required(emailOrPhoneNumberMessage)
-          .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
-      }),
-    },
-    [['email', 'phoneNumber']]
-  ),
-});
+export const createResidentSchema = Yup.object().shape(
+  {
+    name: Yup.string().required("Please enter the resident's name"),
+    email: Yup.string().when('phoneNumber', {
+      is: (phoneNumber) => !phoneNumber,
+      then: Yup.string()
+        .required(emailOrPhoneNumberMessage)
+        .email('Please provide a valid email address'),
+    }),
+    phoneNumber: Yup.string().when('email', {
+      is: (email) => !email,
+      then: Yup.string()
+        .required(emailOrPhoneNumberMessage)
+        .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
+    }),
+  },
+  [['email', 'phoneNumber']]
+);
 
 const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
   const [submitError, setSubmitError] = useState(false);
@@ -69,7 +67,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
           phoneNumber: '',
         }}
         onSubmit={handleSubmit}
-        validationScheme={schemaCreateResidentForm}
+        validationSchema={createResidentSchema}
       >
         {({ errors, touched }) => (
           <>
