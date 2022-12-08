@@ -8,6 +8,7 @@ import {
 import * as Yup from 'yup';
 import { Resident } from 'src/domain/resident';
 import { Constants } from 'src/helpers/Constants';
+import PageWarning from './PageWarning';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -34,12 +35,15 @@ export const createResidentSchema = Yup.object().shape(
 
 const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
   const [submitError, setSubmitError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = useCallback(
     async (resident: CreateResidentRequest) => {
       const gateway = new InternalApiGateway();
 
       try {
+        setSubmitError(false);
+        setErrorMessage('');
         const newResident = await gateway.createResident(
           Constants.DUMMY_EMAIL,
           resident
@@ -48,6 +52,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
         onSuccess(newResident);
       } catch (err) {
         console.log(err);
+        setErrorMessage(String(err));
         setSubmitError(true);
       }
     },
@@ -61,6 +66,12 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
         Please enter the details for contact information in the text boxes
         below.
       </div>
+      {submitError && (
+        <PageWarning
+          title="Error creating resident"
+          content={`${errorMessage}`}
+        />
+      )}
       <Formik
         initialValues={{
           name: '',
