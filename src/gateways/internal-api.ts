@@ -101,7 +101,7 @@ export class InternalApiGateway {
   ): Promise<Resident> {
     try {
       const { data } = await this.client.post<ResidentResponse>(
-        '/api/evidence/residents',
+        '/api/residents',
         payload,
         {
           headers: {

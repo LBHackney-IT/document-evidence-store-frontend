@@ -24,6 +24,13 @@ const createResident = async (
   console.log(`new resident created: ${JSON.stringify(newResident)}`);
   return newResident;
 
+  /* routing -  return {
+      redirect: {
+        destination: `/teams/${userTeams[0].id}/dashboard`,
+        permanent: false,
+      },
+    };  - can get query from url to populate team */
+
   //add error handling
 };
 

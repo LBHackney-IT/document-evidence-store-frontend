@@ -59,16 +59,16 @@ export class EvidenceApiGateway {
     email?: string | null,
     phoneNumber?: string | null
   ): Promise<Resident> {
-    try {
+    try {      
       const { data } = await this.client.post<ResidentResponse>(
         '/api/v1/residents',
-        {
-          headers: {
-            Authorization: tokens?.residents?.POST,
-            UserEmail: userEmail,
-          },
-          body: { name, email, phoneNumber },
-        }
+        { name, email, phoneNumber },
+  {
+    headers: {
+      Authorization: tokens?.residents?.POST,
+      UserEmail: userEmail,
+    }
+  }
       );
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {

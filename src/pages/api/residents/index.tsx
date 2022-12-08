@@ -11,7 +11,7 @@ const endpoint: NextApiHandler = async (req, res) => {
   try {
     const data = await evidenceApiGateway.createResident(
       name,
-      req.headers.userEmail?.toString() ?? '',
+      req.headers.useremail?.toString() ?? '',
       email,
       phoneNumber
     );
