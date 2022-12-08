@@ -12,6 +12,7 @@ import { Constants } from 'src/helpers/Constants';
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
 
+//validation
 export const createResidentSchema = Yup.object().shape(
   {
     name: Yup.string().required("Please enter the resident's name"),
