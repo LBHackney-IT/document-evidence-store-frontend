@@ -28,4 +28,6 @@ describe('CreateResidentForm', () => {
     expect(getByLabelText('Email Address')).toBeInTheDocument();
     expect(getByLabelText('Phone Number')).toBeInTheDocument();
   });
+
+  //TODO: add more tests
 });
