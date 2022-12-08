@@ -16,9 +16,9 @@ const endpoint: NextApiHandler = async (req, res) => {
       phoneNumber
     );
     res.send(data);
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
-    res.status(500).json(err);
+    res.status(err.response.status).json({ err });
   }
 };
 

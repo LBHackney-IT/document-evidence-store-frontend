@@ -118,9 +118,9 @@ export class InternalApiGateway {
         }
       );
       return ResponseMapper.mapResidentResponse(data);
-    } catch (err) {
-      console.error(err);
-      throw new Error(`${err}`);
+    } catch (err: any) {
+      console.error(err.response);
+      throw err;
     }
   }
 
@@ -141,10 +141,6 @@ export class InternalApiGateway {
 
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
-      if (err.response) {
-        console.error(err);
-        throw err.response.data;
-      }
       throw new InternalServerError('Internal server error');
     }
   }

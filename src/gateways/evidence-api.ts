@@ -59,9 +59,9 @@ export class EvidenceApiGateway {
     userEmail: string,
     email?: string | null,
     phoneNumber?: string | null
-  ): Promise<Resident> {
+  ): Promise<any> {
     try {
-      const { data } = await this.client.post<ResidentResponse>(
+      const response = await this.client.post<ResidentResponse>(
         '/api/v1/residents',
         { name, email, phoneNumber },
         {
@@ -71,10 +71,11 @@ export class EvidenceApiGateway {
           },
         }
       );
-      return ResponseMapper.mapResidentResponse(data);
-    } catch (err) {
+
+      return ResponseMapper.mapResidentResponse(response.data);
+    } catch (err: any) {
       console.error(err);
-      throw new Error(`${err}`);
+      throw err;
     }
   }
 
