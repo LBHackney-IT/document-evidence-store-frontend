@@ -68,6 +68,13 @@ const Layout: FunctionComponent<Props> = (props, { children }) => {
           <nav className={styles['layout__sidebar']}>
             <ul className="lbh-list">
               <li>
+                <NavLink
+                  href={`/teams/${props.teamId}/dashboard/residents/create`}
+                >
+                  Create New Resident
+                </NavLink>
+              </li>
+              <li>
                 <NavLink href={`/teams/${props.teamId}/dashboard`}>
                   Residents
                 </NavLink>
