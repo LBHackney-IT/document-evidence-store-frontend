@@ -31,7 +31,11 @@ export const schemaCreateResidentForm = Yup.object().shape({
 const CreateResidentForm = (props: Props): JSX.Element => {
   return (
     <>
-      <h1 className="lbh-heading-h2">Create A New Resident</h1>
+      <h1 className="lbh-heading-h1">Create Contact</h1>
+      <div className="lbh-heading-h6">
+        Please enter the details for contact information in the text boxes
+        below.
+      </div>
       <Formik
         initialValues={{
           name: '',
@@ -39,7 +43,6 @@ const CreateResidentForm = (props: Props): JSX.Element => {
           phoneNumber: '',
         }}
         onSubmit={(values: CreateResidentRequest) => {
-          console.log('calling onSubmit with these values: ' + values);
           props.createResident(values);
         }}
         validationScheme={schemaCreateResidentForm}
@@ -53,12 +56,12 @@ const CreateResidentForm = (props: Props): JSX.Element => {
                 error={touched.name ? errors.name : null}
               />
               <Field
-                label="Email"
+                label="Email Address"
                 name="email"
                 error={touched.email ? errors.email : null}
               />
               <Field
-                label="Mobile phone number"
+                label="Phone Number"
                 name="phoneNumber"
                 error={touched.phoneNumber ? errors.phoneNumber : null}
               />
