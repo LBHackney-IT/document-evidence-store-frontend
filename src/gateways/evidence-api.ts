@@ -56,8 +56,8 @@ export class EvidenceApiGateway {
   async createResident(
     name: string,
     userEmail: string,
-    email?: string,
-    phoneNumber?: string
+    email?: string | null,
+    phoneNumber?: string | null
   ): Promise<Resident> {
     try {
       const { data } = await this.client.post<ResidentResponse>(

@@ -3,6 +3,7 @@ import Field from './Field';
 import { useFormikContext, Formik } from 'formik';
 import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
+import { Resident } from 'src/domain/resident';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -63,7 +64,7 @@ const CreateResidentForm = (props: Props): JSX.Element => {
 };
 
 interface Props {
-  createResident(resident: CreateResidentRequest): boolean;
+  createResident(resident: CreateResidentRequest): Promise<Resident>;
 }
 
 export default CreateResidentForm;
