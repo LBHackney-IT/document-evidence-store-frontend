@@ -18,10 +18,11 @@ type CreatePageProps = {
   feedbackUrl: string;
 };
 
-const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = () => {
+const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
+  feedbackUrl,
+  teamId,
+}) => {
   const router = useRouter();
-  const { teamId } = router.query;
-  const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
   const createResident = async (resident: CreateResidentRequest) => {
     const gateway = new InternalApiGateway();
@@ -36,7 +37,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = () => {
 
   return (
     <>
-      <Layout teamId={teamId?.toString() || ''} feedbackUrl={feedbackUrl}>
+      <Layout teamId={teamId} feedbackUrl={feedbackUrl}>
         <Head>
           <title>
             Create A Resident | Document Evidence Service | Hackney Council

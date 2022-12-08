@@ -13,8 +13,6 @@ const Layout: FunctionComponent<Props> = (props) => {
   const { children } = props;
   const { user } = useContext(UserContext);
 
-  console.log(`user provided is: ${user}`);
-
   if (!user)
     return (
       <ResidentLayout
