@@ -47,7 +47,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   };
 
   const pageSize = 10;
-  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(total);
   const [hidePagination, setHidePagination] = useState(false);
   const [
     displayedDocumentSubmissions,
@@ -59,23 +59,22 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   };
 
   const onPageOrTabChange = async (state: string, targetPage: number) => {
-    setCurrentPage(targetPage);
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
 
     const model = new DocumentSubmissionsModel();
-
     try {
       const documentSubmissionPromise = await model.handleSubmit(
         userEmail,
         resident.id,
         team?.name ?? '',
-        currentPage.toString(),
+        targetPage.toString(),
         pageSize.toString(),
-        state
+        state !== 'all-documents' ? state : undefined
       );
       setDisplayedDocumentSubmissions(
         documentSubmissionPromise.documentSubmissions
       );
+      setTotalPages(documentSubmissionPromise.total);
     } catch (e) {
       console.log(`ERROR - ERROR UPDATING DOC SUBMISSIONS ${e}`);
     }
@@ -103,7 +102,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           evidenceRequests={evidenceRequests}
           documentSubmissions={displayedDocumentSubmissions}
           hidePaginationFunction={hidePaginationComponent}
-          total={total}
+          total={totalPages}
           pageSize={pageSize}
           onPageOrTabChange={onPageOrTabChange}
         />

@@ -38,8 +38,7 @@ type DocumentTabItem = DocumentSubmissionWithKind | EvidenceAwaitingSubmission;
 type DocumentTab = {
   id: string;
   humanReadableName: string;
-  state?: string;
-  documents: DocumentTabItem[];
+  documentState?: string;
   className: 'govuk-form-group--error' | undefined;
   style: '#FFF6BB' | '#8EB6DC' | '#B2DFDB' | '#F8D1CD' | undefined;
 };
@@ -65,6 +64,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     } else {
       hidePaginationFunction(false);
     }
+    onPageOrTabChange(tab, 1);
   };
 
   const showPanel = (tabName: string) => {
@@ -73,25 +73,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
   };
 
-  const toReviewDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
-
-  const reviewedDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'APPROVED')
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
-  const rejectedDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'REJECTED')
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
   const evidenceAwaitingSubmissions = useMemo(() => {
     const documentTypesMap = new Map<string, Set<DocumentType>>();
     evidenceRequests.forEach((er) =>
@@ -130,49 +111,45 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     return awaitingSubmissions;
   }, [evidenceRequests, documentSubmissions]);
 
-  const allDocumentSubmissions = [
-    ...toReviewDocumentSubmissions,
-    ...reviewedDocumentSubmissions,
-    ...rejectedDocumentSubmissions,
-  ];
+  const documentTabItems = documentSubmissions.map<DocumentSubmissionWithKind>(
+    (x) => ({
+      ...x,
+      kind: 'DocumentSubmissionWithKind',
+    })
+  );
 
   const DocumentTabs: DocumentTab[] = [
     {
       id: 'all-documents',
       humanReadableName: 'All documents',
-      state: undefined,
-      documents: allDocumentSubmissions,
+      documentState: undefined,
       className: undefined,
       style: undefined,
     },
     {
       id: 'awaiting-submission',
       humanReadableName: 'Awaiting submission',
-      documents: evidenceAwaitingSubmissions,
       className: 'govuk-form-group--error',
       style: '#FFF6BB',
     },
     {
       id: 'pending-review',
       humanReadableName: 'Pending review',
-      state: 'Uploaded',
-      documents: toReviewDocumentSubmissions,
+      documentState: 'Uploaded',
       className: 'govuk-form-group--error',
       style: '#8EB6DC',
     },
     {
       id: 'approved',
       humanReadableName: 'Approved',
-      state: 'Approved',
-      documents: reviewedDocumentSubmissions,
+      documentState: 'Approved',
       className: 'govuk-form-group--error',
       style: '#B2DFDB',
     },
     {
       id: 'rejected',
       humanReadableName: 'Rejected',
-      state: 'Rejected',
-      documents: rejectedDocumentSubmissions,
+      documentState: 'Rejected',
       className: 'govuk-form-group--error',
       style: '#F8D1CD',
     },
@@ -193,7 +170,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
 
   const onPageChange = (targetPage: number) =>
     onPageOrTabChange(selectedTab, targetPage);
-
+  console.log(total, pageSize);
   return (
     <div
       className="js-enabled"
@@ -236,8 +213,8 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                 style={{ borderLeftColor: documentTab.style }}
               >
                 <EvidenceList>
-                  {documentTab.documents && documentTab.documents.length > 0 ? (
-                    documentTab.documents.map(
+                  {documentTabItems && documentTabItems.length > 0 ? (
+                    documentTabItems.map(
                       (documentTabItem: DocumentTabItem, index) => {
                         switch (documentTabItem.kind) {
                           case 'DocumentSubmissionWithKind':
@@ -322,7 +299,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
           currentPageNumber={currentPage}
           pageSize={pageSize}
           total={total}
-          onPageChange={onPageChange}
+          onPageOrTabChange={onPageChange}
         />
       )}
     </div>

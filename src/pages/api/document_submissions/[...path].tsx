@@ -13,9 +13,9 @@ const endpoint: NextApiHandler = async (req, res) => {
       req.headers.userEmail?.toString() ?? '',
       path[0].toString(),
       team.toString(),
-      state.toString(),
       currentPage.toString(),
-      pageSize.toString()
+      pageSize.toString(),
+      state ? state.toString() : undefined
     );
     res.send(data);
   } catch (err) {

@@ -8,22 +8,24 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
   }, []);
 
   const handlePaginate = (targetPage: number) => {
-    props.onPageChange(targetPage);
+    console.log('targetPage', targetPage);
+    props.onPageOrTabChange(targetPage);
   };
 
   const generatePaginationLinks = () => {
     const pages = [];
     for (let page = 1; page <= totalPages; page++) {
+      const current = page;
       pages.push(
         <li className="lbh-pagination__item" aria-label="pagination-item">
           <a
             className="lbh-pagination__link"
             href="#"
-            key={`pagination-${page}`}
-            aria-label={`page-${page}-link`}
-            onClick={() => handlePaginate(page)}
+            key={`pagination-${current}`}
+            aria-label={`page-${current}-link`}
+            onClick={() => handlePaginate(current)}
           >
-            {page}
+            {current}
           </a>
         </li>
       );
@@ -45,5 +47,5 @@ export interface Props {
   currentPageNumber: number;
   pageSize: number;
   total: number;
-  onPageChange: (page: number) => void;
+  onPageOrTabChange: (page: number) => void;
 }
