@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import Layout from 'src/components/DashboardLayout';
-import { Pagination } from 'src/components/Pagination';
 import { DocumentSubmission } from 'src/domain/document-submission';
 import { EvidenceApiGateway } from 'src/gateways/evidence-api';
 import { Resident } from 'src/domain/resident';
@@ -13,15 +12,21 @@ import Link from 'next/link';
 import Head from 'next/head';
 import { EvidenceRequestState } from 'src/domain/enums/EvidenceRequestState';
 import { EvidenceRequest } from 'src/domain/evidence-request';
-import { ResidentDocumentsTable } from '../../../../../../components/ResidentDocumentsTable';
+import {
+  ResidentDocumentsTable,
+  EvidenceAwaitingSubmission,
+} from '../../../../../../components/ResidentDocumentsTable';
+
 import {
   ResidentPageContext,
   UserContextInterface,
 } from '../../../../../../contexts/ResidentPageContext';
 import { DocumentSubmissionsModel } from 'src/services/get-document-submissions-model';
+import { DocumentType } from 'src/domain/document-type';
 
 type ResidentPageProps = {
   evidenceRequests: EvidenceRequest[];
+  awaitingSubmissions: EvidenceAwaitingSubmission[];
   documentSubmissions: DocumentSubmission[];
   total: number;
   resident: Resident;
@@ -33,6 +38,7 @@ type ResidentPageProps = {
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   evidenceRequests,
+  awaitingSubmissions,
   documentSubmissions,
   userEmail,
   total,
@@ -55,10 +61,11 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   ] = useState<DocumentSubmission[]>(documentSubmissions);
 
   const hidePaginationComponent = (hidePagination: boolean) => {
+    console.log(hidePagination);
     setHidePagination(hidePagination);
   };
 
-  const onPageOrTabChange = async (state: string, targetPage: number) => {
+  const onPageOrTabChange = async (targetPage: number, state?: string) => {
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
 
     const model = new DocumentSubmissionsModel();
@@ -100,6 +107,7 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <ResidentPageContext.Provider value={contextToPass}>
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}
+          awaitingSubmissions={awaitingSubmissions}
           documentSubmissions={displayedDocumentSubmissions}
           hidePaginationFunction={hidePaginationComponent}
           total={totalPages}
@@ -183,9 +191,43 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     forReviewEvidenceRequests
   );
 
+  const documentTypesMap = new Map<string, Set<DocumentType>>();
+  evidenceRequests.forEach((er) =>
+    documentTypesMap.set(er.id, new Set(er.documentTypes))
+  );
+  documentSubmissionsObject.documentSubmissions.forEach((ds) => {
+    if (!ds.evidenceRequestId) {
+      return;
+    }
+    const currentDocumentTypesSet = documentTypesMap.get(ds.evidenceRequestId);
+
+    currentDocumentTypesSet?.forEach((dt) => {
+      if (dt.id === ds.documentType.id) {
+        currentDocumentTypesSet.delete(dt);
+      }
+    });
+  });
+
+  const awaitingSubmissions: EvidenceAwaitingSubmission[] = [];
+  documentTypesMap.forEach((value, key) => {
+    value.forEach((dt) => {
+      const evidenceRequestFromKey = evidenceRequests.find(
+        (er) => er.id == key
+      );
+      awaitingSubmissions.push({
+        documentType: dt.title,
+        dateRequested: evidenceRequestFromKey?.createdAt,
+        requestedBy: evidenceRequestFromKey?.userRequestedBy,
+        reason: evidenceRequestFromKey?.reason,
+        kind: 'EvidenceAwaitingSubmission',
+      });
+    });
+  });
+
   return {
     props: {
       evidenceRequests,
+      awaitingSubmissions,
       documentSubmissions: documentSubmissionsObject.documentSubmissions,
       total: documentSubmissionsObject.total,
       resident,
