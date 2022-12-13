@@ -51,7 +51,6 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
 
         onSuccess(newResident);
       } catch (err) {
-        console.log(err);
         setErrorMessage(String(err));
         setSubmitError(true);
       }
@@ -67,10 +66,9 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
         below.
       </div>
       {submitError && (
-        <PageWarning
-          title="Error creating resident"
-          content={`${errorMessage}`}
-        />
+        <span className="govuk-error-message lbh-error-message">
+          {errorMessage}
+        </span>
       )}
       <Formik
         initialValues={{
