@@ -7,8 +7,6 @@ import {
 } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import { Resident } from 'src/domain/resident';
-import { Constants } from 'src/helpers/Constants';
-import PageWarning from './PageWarning';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -33,7 +31,10 @@ export const createResidentSchema = Yup.object().shape(
   [['email', 'phoneNumber']]
 );
 
-const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
+const CreateResidentForm: FunctionComponent<Props> = ({
+  onSuccess,
+  userEmail,
+}) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -43,11 +44,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
 
       try {
         setSubmitError(false);
-        setErrorMessage('');
-        const newResident = await gateway.createResident(
-          Constants.DUMMY_EMAIL,
-          resident
-        );
+        const newResident = await gateway.createResident(userEmail, resident);
 
         onSuccess(newResident);
       } catch (err) {
@@ -60,7 +57,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
 
   return (
     <>
-      <h1 className="lbh-heading-h1">Create Contact</h1>
+      <h1 className="lbh-heading-h2">Create Contact</h1>
       <div className="lbh-heading-h6">
         Please enter the details for contact information in the text boxes
         below.
@@ -110,6 +107,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ onSuccess }) => {
 
 interface Props {
   onSuccess(resident: Resident): void;
+  userEmail: string;
 }
 
 export default CreateResidentForm;

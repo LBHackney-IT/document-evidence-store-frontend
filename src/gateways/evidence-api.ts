@@ -54,31 +54,6 @@ export class EvidenceApiGateway {
     this.client = client;
   }
 
-  async createResident(
-    name: string,
-    userEmail: string,
-    email?: string | null,
-    phoneNumber?: string | null
-  ): Promise<any> {
-    try {
-      const response = await this.client.post<ResidentResponse>(
-        '/api/v1/residents',
-        { name, email, phoneNumber },
-        {
-          headers: {
-            Authorization: tokens?.residents?.POST,
-            UserEmail: userEmail,
-          },
-        }
-      );
-
-      return ResponseMapper.mapResidentResponse(response.data);
-    } catch (err: any) {
-      console.error(err);
-      throw err;
-    }
-  }
-
   async getEvidenceRequests(
     userEmail: string,
     teamName: string,

@@ -8,15 +8,18 @@ import { RequestAuthorizer } from 'src/services/request-authorizer';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { TeamHelper } from 'src/services/team-helper';
 import { Resident } from 'src/domain/resident';
+import { User } from '../../../../../../domain/user';
 
 type CreatePageProps = {
   teamId: string;
   feedbackUrl: string;
+  user: User;
 };
 
 const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   feedbackUrl,
   teamId,
+  user,
 }) => {
   const router = useRouter();
 
@@ -32,7 +35,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
             Create A Resident | Document Evidence Service | Hackney Council
           </title>
         </Head>
-        <CreateResidentForm onSuccess={onSuccess} />
+        <CreateResidentForm onSuccess={onSuccess} userEmail={user.email} />
       </Layout>
     </>
   );
@@ -63,7 +66,7 @@ export const getServerSideProps = withAuth<CreatePageProps>(async (ctx) => {
   }
 
   return {
-    props: { teamId, feedbackUrl },
+    props: { teamId, feedbackUrl, user },
   };
 });
 

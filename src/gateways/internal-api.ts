@@ -109,7 +109,7 @@ export class InternalApiGateway {
   ): Promise<Resident> {
     try {
       const { data } = await this.client.post<ResidentResponse>(
-        '/api/residents',
+        '/api/evidence/residents',
         payload,
         {
           headers: {
@@ -118,9 +118,8 @@ export class InternalApiGateway {
         }
       );
       return ResponseMapper.mapResidentResponse(data);
-    } catch (err: any) {
-      console.error(err.response);
-      throw err;
+    } catch (err) {
+      throw new InternalServerError('Internal server error');
     }
   }
 
