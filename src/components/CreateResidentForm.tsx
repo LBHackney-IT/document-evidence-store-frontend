@@ -1,18 +1,13 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import Field from './Field';
 import { Formik, Form } from 'formik';
-import {
-  CreateResidentRequest,
-  InternalApiGateway,
-} from 'src/gateways/internal-api';
+import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
-import { Resident } from 'src/domain/resident';
 import styles from '../styles/CreateResidentForm.module.css';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
 
-//validation
 export const createResidentSchema = Yup.object().shape(
   {
     name: Yup.string().required("Please enter the resident's name"),
@@ -32,29 +27,19 @@ export const createResidentSchema = Yup.object().shape(
   [['email', 'phoneNumber']]
 );
 
-const CreateResidentForm: FunctionComponent<Props> = ({
-  onSuccess,
-  userEmail,
-}) => {
+const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = useCallback(
-    async (resident: CreateResidentRequest) => {
-      const gateway = new InternalApiGateway();
-
-      try {
-        setSubmitError(false);
-        const newResident = await gateway.createResident(userEmail, resident);
-
-        onSuccess(newResident);
-      } catch (err) {
-        setErrorMessage(String(err));
-        setSubmitError(true);
-      }
-    },
-    [submitError]
-  );
+  const handleSubmit = (resident: CreateResidentRequest) => {
+    try {
+      setSubmitError(false);
+      createResident(resident);
+    } catch (err) {
+      setErrorMessage(String(err));
+      setSubmitError(true);
+    }
+  };
 
   return (
     <>
@@ -113,8 +98,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
 };
 
 interface Props {
-  onSuccess(resident: Resident): void;
-  userEmail: string;
+  createResident(resident: CreateResidentRequest): Promise<void>;
 }
 
 export default CreateResidentForm;

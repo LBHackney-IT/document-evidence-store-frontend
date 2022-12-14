@@ -20,7 +20,7 @@ describe('CreateResidentForm', () => {
         onSubmit={jest.fn()}
       >
         <Form>
-          <CreateResidentForm onSuccess={jest.fn()} userEmail={'user@email'} />
+          <CreateResidentForm createResident={jest.fn()} />
           <button type="submit">Continue</button>
         </Form>
       </Formik>
@@ -31,21 +31,10 @@ describe('CreateResidentForm', () => {
     expect(getByLabelText('Phone Number')).toBeInTheDocument();
   });
 
-  xit('calls the submit handler with the right values', async () => {
-    const successHandler = jest.fn();
-    jest.mock('./CreateResidentForm', () => {
-      const original = jest.requireActual('./CreateResidentForm');
-      return {
-        ...original,
-        handleSubmit: successHandler,
-      };
-    });
+  it('calls the submit handler with the right values', async () => {
+    const createResident = jest.fn();
 
-    const testCall = jest.fn();
-
-    render(
-      <CreateResidentForm onSuccess={successHandler} userEmail={'user@email'} />
-    );
+    render(<CreateResidentForm createResident={createResident} />);
 
     const user = userEvent.setup();
 
@@ -53,9 +42,13 @@ describe('CreateResidentForm', () => {
     await user.type(screen.getByLabelText(/Email Address/i), 'resident@email');
     await user.type(screen.getByLabelText(/Phone Number/i), '0700000');
 
-    await user.click(screen.getByRole('button', { name: /Create/i }));
+    await user.click(
+      screen.getByRole('button', {
+        name: /Create/i,
+      })
+    );
 
-    await waitFor(() => expect(testCall).toHaveBeenCalled());
+    await waitFor(() => expect(createResident).toHaveBeenCalled());
     // expect(screen.getByDisplayValue('resident@email')).toBeInTheDocument();
 
     // expect(mockHandler).toHaveBeenCalled();
