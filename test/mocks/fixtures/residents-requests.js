@@ -21,7 +21,18 @@ const getResident = {
   },
 };
 
+const createResident = {
+  id: 'create-resident',
+  url: '/api/v1/residents',
+  method: 'POST',
+  response: {
+    status: 201,
+    body: residentFixture,
+  },
+};
+
 module.exports = {
   getResidents,
   getResident,
+  createResident,
 };
