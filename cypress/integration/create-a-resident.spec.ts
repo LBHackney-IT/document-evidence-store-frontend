@@ -51,7 +51,7 @@ describe('Can add a resident to the DES database', () => {
 
       cy.get('span').should(
         'contain',
-        'InternalServerError: Internal server error'
+        'The resident already exists in the system'
       );
     });
   });

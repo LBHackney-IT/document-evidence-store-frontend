@@ -70,7 +70,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
         <span
           className={`govuk-error-message lbh-error-message ${styles.submitError}`}
         >
-          {errorMessage}
+          {`Error: ${errorMessage}`}
         </span>
       )}
       <Formik
