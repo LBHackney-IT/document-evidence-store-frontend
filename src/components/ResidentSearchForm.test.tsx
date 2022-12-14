@@ -4,14 +4,14 @@ import ResidentSearchForm from './ResidentSearchForm';
 
 describe('ResidentSearchForm', () => {
   it('renders an input and button', async () => {
-    render(<ResidentSearchForm handleSearch={jest.fn()} teamId={''} />);
+    render(<ResidentSearchForm handleSearch={jest.fn()} />);
     expect(screen.getByPlaceholderText('Search by name or contact detail'));
     expect(screen.getByText('Search'));
   });
 
   it('submits successfully', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} teamId={'2'} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {
@@ -26,7 +26,7 @@ describe('ResidentSearchForm', () => {
 
   it('does not submit if search query is white space', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} teamId={'2'} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {

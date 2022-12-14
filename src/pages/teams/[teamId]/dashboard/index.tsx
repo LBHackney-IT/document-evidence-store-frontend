@@ -83,7 +83,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">Browse residents</h1>
-      <ResidentSearchForm handleSearch={handleSearch} teamId={team.id} />
+      <ResidentSearchForm handleSearch={handleSearch} />
       {(loading || results) && (
         <h2 className="lbh-heading-h3">
           Search results for: {formSearchQuery}

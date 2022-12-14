@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from '../styles/ResidentSearch.module.scss';
-import NavLink from './NavLink';
 
 const ResidentSearchForm = (props: Props): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,9 +29,6 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
         <button className={`govuk-button lbh-button ${styles.searchButton}`}>
           Search
         </button>
-        <NavLink href={`/teams/${props.teamId}/dashboard/residents/create`}>
-          Create new
-        </NavLink>
       </form>
     </div>
   );
@@ -40,7 +36,6 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
 
 interface Props {
   handleSearch(searchQuery: string): void;
-  teamId: string;
 }
 
 export default ResidentSearchForm;
