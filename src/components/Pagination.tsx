@@ -8,7 +8,6 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
   }, []);
 
   const handlePaginate = (targetPage: number) => {
-    console.log('targetPage', targetPage);
     props.onPageOrTabChange(targetPage);
   };
 

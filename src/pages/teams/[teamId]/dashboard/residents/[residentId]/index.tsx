@@ -109,7 +109,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           evidenceRequests={evidenceRequests}
           awaitingSubmissions={awaitingSubmissions}
           documentSubmissions={displayedDocumentSubmissions}
-          hidePaginationFunction={hidePaginationComponent}
           total={totalPages}
           pageSize={pageSize}
           onPageOrTabChange={onPageOrTabChange}
@@ -219,7 +218,6 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
         dateRequested: evidenceRequestFromKey?.createdAt,
         requestedBy: evidenceRequestFromKey?.userRequestedBy,
         reason: evidenceRequestFromKey?.reason,
-        kind: 'EvidenceAwaitingSubmission',
       });
     });
   });

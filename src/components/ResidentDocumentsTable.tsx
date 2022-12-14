@@ -15,7 +15,6 @@ interface Props {
   evidenceRequests: EvidenceRequest[];
   awaitingSubmissions: EvidenceAwaitingSubmission[];
   documentSubmissions: DocumentSubmission[];
-  hidePaginationFunction: (hidePaginate: boolean) => void;
   total: number;
   pageSize: number;
   onPageOrTabChange: (page: number, state?: string) => Promise<void>;
@@ -26,14 +25,7 @@ export type EvidenceAwaitingSubmission = {
   dateRequested: DateTime | undefined;
   requestedBy: string | undefined;
   reason: string | undefined;
-  kind: 'EvidenceAwaitingSubmission';
 };
-
-type DocumentSubmissionWithKind = IDocumentSubmission & {
-  kind: 'DocumentSubmissionWithKind';
-};
-
-type DocumentTabItem = DocumentSubmissionWithKind | EvidenceAwaitingSubmission;
 
 type DocumentTab = {
   id: string;
@@ -47,7 +39,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
   awaitingSubmissions,
   documentSubmissions,
-  hidePaginationFunction,
   total,
   pageSize,
   onPageOrTabChange,
@@ -73,51 +64,6 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       return 'govuk-tabs__panel';
     } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
   };
-
-  // const evidenceAwaitingSubmissions = useMemo(() => {
-  //   const documentTypesMap = new Map<string, Set<DocumentType>>();
-  //   evidenceRequests.forEach((er) =>
-  //     documentTypesMap.set(er.id, new Set(er.documentTypes))
-  //   );
-  //   documentSubmissions.forEach((ds) => {
-  //     if (!ds.evidenceRequestId) {
-  //       return;
-  //     }
-  //     const currentDocumentTypesSet = documentTypesMap.get(
-  //       ds.evidenceRequestId
-  //     );
-
-  //     currentDocumentTypesSet?.forEach((dt) => {
-  //       if (dt.id === ds.documentType.id) {
-  //         currentDocumentTypesSet.delete(dt);
-  //       }
-  //     });
-  //   });
-
-  //   const awaitingSubmissions: EvidenceAwaitingSubmission[] = [];
-  //   documentTypesMap.forEach((value, key) => {
-  //     value.forEach((dt) => {
-  //       const evidenceRequestFromKey = evidenceRequests.find(
-  //         (er) => er.id == key
-  //       );
-  //       awaitingSubmissions.push({
-  //         documentType: dt.title,
-  //         dateRequested: evidenceRequestFromKey?.createdAt,
-  //         requestedBy: evidenceRequestFromKey?.userRequestedBy,
-  //         reason: evidenceRequestFromKey?.reason,
-  //         kind: 'EvidenceAwaitingSubmission',
-  //       });
-  //     });
-  //   });
-  //   return awaitingSubmissions;
-  // }, [evidenceRequests, documentSubmissions]);
-
-  const documentTabItems = documentSubmissions.map<DocumentSubmissionWithKind>(
-    (x) => ({
-      ...x,
-      kind: 'DocumentSubmissionWithKind',
-    })
-  );
 
   const DocumentTabs: DocumentTab[] = [
     {
@@ -230,8 +176,8 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         />
                       </li>
                     ))
-                  ) : documentTabItems && documentTabItems.length > 0 ? (
-                    documentTabItems.map((documentTabItem, index) => (
+                  ) : documentSubmissions && documentSubmissions.length > 0 ? (
+                    documentSubmissions.map((documentSubmission, index) => (
                       <>
                         <li
                           className={styles.item}
@@ -239,35 +185,35 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                           key={index}
                         >
                           <EvidenceTile
-                            id={documentTabItem.id}
+                            id={documentSubmission.id}
                             title={
-                              documentTabItem.staffSelectedDocumentType
-                                ?.title || documentTabItem.documentType.title
+                              documentSubmission.staffSelectedDocumentType
+                                ?.title || documentSubmission.documentType.title
                             }
-                            createdAt={formatDate(documentTabItem.createdAt)}
-                            key={documentTabItem.id}
+                            createdAt={formatDate(documentSubmission.createdAt)}
+                            key={documentSubmission.id}
                             fileSizeInBytes={
-                              documentTabItem.document
-                                ? documentTabItem.document.fileSizeInBytes
+                              documentSubmission.document
+                                ? documentSubmission.document.fileSizeInBytes
                                 : 0
                             }
                             format={
-                              documentTabItem.document
-                                ? documentTabItem.document.extension
+                              documentSubmission.document
+                                ? documentSubmission.document.extension
                                 : 'unknown'
                             }
-                            state={documentTabItem.state}
+                            state={documentSubmission.state}
                             reason={
-                              documentTabItem.evidenceRequestId &&
-                              getReason(documentTabItem.evidenceRequestId)
+                              documentSubmission.evidenceRequestId &&
+                              getReason(documentSubmission.evidenceRequestId)
                             }
                             requestedBy={
-                              documentTabItem.evidenceRequestId &&
+                              documentSubmission.evidenceRequestId &&
                               getUserRequestedBy(
-                                documentTabItem.evidenceRequestId
+                                documentSubmission.evidenceRequestId
                               )
                             }
-                            userUpdatedBy={documentTabItem.userUpdatedBy}
+                            userUpdatedBy={documentSubmission.userUpdatedBy}
                           />
                         </li>
                       </>
