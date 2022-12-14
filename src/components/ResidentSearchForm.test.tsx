@@ -11,7 +11,7 @@ describe('ResidentSearchForm', () => {
 
   it('submits successfully', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} teamId={''} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} teamId={'2'} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {
@@ -26,7 +26,7 @@ describe('ResidentSearchForm', () => {
 
   it('does not submit if search query is white space', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} teamId={''} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} teamId={'2'} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {

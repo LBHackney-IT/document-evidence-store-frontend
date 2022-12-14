@@ -105,6 +105,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
               </button>
               <button
                 className={`govuk-button govuk-secondary lbh-button lbh-button--secondary ${styles.cancelButton}`}
+                type="button"
                 onClick={() => {
                   clearForm(resetForm);
                 }}
