@@ -12,7 +12,7 @@ const initialValues = {
 };
 
 describe('CreateResidentForm', () => {
-  it('should render the form', () => {
+  it('renders the form', () => {
     const { getByLabelText } = render(
       <Formik
         initialValues={initialValues}
@@ -48,17 +48,35 @@ describe('CreateResidentForm', () => {
       })
     );
 
-    await waitFor(() => expect(createResident).toHaveBeenCalled());
-    // expect(screen.getByDisplayValue('resident@email')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(createResident).toHaveBeenCalledWith({
+        name: 'Test Resident',
+        email: 'resident@email',
+        phoneNumber: '0700000',
+      })
+    );
+  });
+  it('displays an error message if there is an error in submission', async () => {
+    const createResidentFailure = jest.fn().mockImplementation(() => {
+      throw new Error('User already exists');
+    });
 
-    // expect(mockHandler).toHaveBeenCalled();
-    // expect(mockHandler.mock.calls[0]).toEqual(
-    //   expect.arrayContaining([{ name: 'Test Resident' }])
-    // );
-    // expect(mockHandler).toHaveBeenCalledWith({
-    //   name: 'Test Resident',
-    //   email: 'resident@email',
-    //   phoneNumber: '0700000',
-    // });
+    render(<CreateResidentForm createResident={createResidentFailure} />);
+
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText(/Name/i), 'Test Resident');
+    await user.type(screen.getByLabelText(/Email Address/i), 'resident@email');
+    await user.type(screen.getByLabelText(/Phone Number/i), '0700000');
+
+    await user.click(
+      screen.getByRole('button', {
+        name: /Create/i,
+      })
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText(/User already exists/gi)).toBeInTheDocument();
+    });
   });
 });

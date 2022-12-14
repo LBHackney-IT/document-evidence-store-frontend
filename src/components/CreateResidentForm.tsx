@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useState } from 'react';
 import Field from './Field';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikState } from 'formik';
 import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
-import styles from '../styles/CreateResidentForm.module.css';
+import styles from '../styles/CreateResidentForm.module.scss';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -31,14 +31,32 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (resident: CreateResidentRequest) => {
+  const handleSubmit = async (resident: CreateResidentRequest) => {
     try {
       setSubmitError(false);
-      createResident(resident);
+      await createResident(resident);
     } catch (err) {
       setErrorMessage(String(err));
       setSubmitError(true);
     }
+  };
+
+  const clearForm = (
+    resetForm: (
+      nextState?:
+        | Partial<
+            FormikState<{
+              name: string;
+              email: string;
+              phoneNumber: string;
+            }>
+          >
+        | undefined
+    ) => void
+  ) => {
+    setSubmitError(false);
+    setErrorMessage('');
+    resetForm();
   };
 
   return (
@@ -49,7 +67,9 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
         below.
       </div>
       {submitError && (
-        <span className="govuk-error-message lbh-error-message">
+        <span
+          className={`govuk-error-message lbh-error-message ${styles.submitError}`}
+        >
           {errorMessage}
         </span>
       )}
@@ -85,7 +105,9 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
               </button>
               <button
                 className={`govuk-button govuk-secondary lbh-button lbh-button--secondary ${styles.cancelButton}`}
-                onClick={() => resetForm()}
+                onClick={() => {
+                  clearForm(resetForm);
+                }}
               >
                 Clear
               </button>
