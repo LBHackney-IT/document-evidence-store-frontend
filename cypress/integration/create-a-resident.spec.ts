@@ -19,7 +19,7 @@ describe('Can add a resident to the DES database', () => {
     cy.get('#email').type('test@test.com');
     cy.get('#phoneNumber').type('1-800-543-2342');
 
-    cy.get('.govuk-button').click();
+    cy.get('.govuk-button').first().click();
 
     //assert here?
   });
@@ -38,7 +38,7 @@ describe('Can add a resident to the DES database', () => {
       cy.get('#email').type('test@test.com');
       cy.get('#phoneNumber').type('1-800-543-2342');
 
-      cy.get('.govuk-button').click();
+      cy.get('.govuk-button').first().click();
 
       cy.get('span').should(
         'contain',

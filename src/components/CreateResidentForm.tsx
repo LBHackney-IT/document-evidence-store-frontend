@@ -7,6 +7,7 @@ import {
 } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import { Resident } from 'src/domain/resident';
+import styles from '../styles/CreateResidentForm.module.css';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -76,7 +77,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, resetForm }) => (
           <>
             <Form>
               <Field
@@ -96,6 +97,12 @@ const CreateResidentForm: FunctionComponent<Props> = ({
               />
               <button className="govuk-button lbh-button" type="submit">
                 Create
+              </button>
+              <button
+                className={`govuk-button govuk-secondary lbh-button lbh-button--secondary ${styles.cancelButton}`}
+                onClick={() => resetForm()}
+              >
+                Clear
               </button>
             </Form>
           </>
