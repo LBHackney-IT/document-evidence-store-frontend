@@ -20,6 +20,8 @@ describe('Can add a resident to the DES database', () => {
     cy.get('#phoneNumber').type('1-800-543-2342');
 
     cy.get('.govuk-button').click();
+
+    //assert here?
   });
 
   context('when resident already exists', () => {
@@ -40,7 +42,7 @@ describe('Can add a resident to the DES database', () => {
 
       cy.get('span').should(
         'contain',
-        'There was an error. Please try again later'
+        'There was an error. Please try again later' //what is the error message?
       );
     });
   });
