@@ -119,7 +119,11 @@ export class InternalApiGateway {
       );
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
-      throw new InternalServerError('Internal server error');
+      if (err.response) {
+        console.error(err);
+        throw err.response.data;
+      }
+      throw new InternalServerError('Internal server error');    
     }
   }
 
