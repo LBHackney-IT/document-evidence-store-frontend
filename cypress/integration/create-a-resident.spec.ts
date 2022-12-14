@@ -2,7 +2,7 @@ describe('Can add a resident to the DES database', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('POST', '/api/residents', {
+    cy.intercept('POST', '/api/evidence/residents', {
       fixture: 'residents/create',
     }).as('createResident');
 
@@ -24,7 +24,7 @@ describe('Can add a resident to the DES database', () => {
 
   context('when resident already exists', () => {
     beforeEach(() => {
-      cy.intercept('POST', '/api/residents', (req) => {
+      cy.intercept('POST', '/api/evidence/residents', (req) => {
         req.reply((res) => {
           res.send(400, 'The resident already exists in the system');
         });
