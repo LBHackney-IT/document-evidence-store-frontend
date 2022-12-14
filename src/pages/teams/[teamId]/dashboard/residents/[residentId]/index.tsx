@@ -43,7 +43,6 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   userEmail,
   total,
   resident,
-  state,
   teamId,
   feedbackUrl,
 }) => {
@@ -54,16 +53,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   const pageSize = 10;
   const [totalPages, setTotalPages] = useState(total);
-  const [hidePagination, setHidePagination] = useState(false);
   const [
     displayedDocumentSubmissions,
     setDisplayedDocumentSubmissions,
   ] = useState<DocumentSubmission[]>(documentSubmissions);
-
-  const hidePaginationComponent = (hidePagination: boolean) => {
-    console.log(hidePagination);
-    setHidePagination(hidePagination);
-  };
 
   const onPageOrTabChange = async (targetPage: number, state?: string) => {
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);

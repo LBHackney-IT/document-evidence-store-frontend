@@ -1,14 +1,11 @@
-import React, { FunctionComponent, useMemo, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { EvidenceList, EvidenceTile } from './EvidenceTile';
 import { formatDate } from '../helpers/formatters';
 import { Pagination } from 'src/components/Pagination';
 import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
-import {
-  DocumentSubmission,
-  IDocumentSubmission,
-} from '../domain/document-submission';
+import { DocumentSubmission } from '../domain/document-submission';
 import styles from '../styles/EvidenceTile.module.scss';
 
 interface Props {
@@ -112,7 +109,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     return evidenceRequest?.userRequestedBy;
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage] = useState(1);
   const [hidePagination, setHidePagination] = useState(false);
 
   const onPageChange = (targetPage: number) =>
