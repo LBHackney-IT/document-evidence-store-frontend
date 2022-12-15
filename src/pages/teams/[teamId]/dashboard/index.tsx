@@ -105,19 +105,19 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
             setFilterToReview(!filterToReview);
           }}
         />
-        <label
+        {/* <label
           htmlFor="filter-ready-to-review"
           className="govuk-label govuk-checkboxes__label"
           style={{ margin: '0' }}
         >
           Display only residents with documents pending review
-        </label>
+        </label> */}
       </div>
       {/* <Tabs
         tabTitles={['To review (3)', 'All (3)']}
         children={[ */}
-      <div key="1">
-        {/* <Heading level={HeadingLevels.H3}>To review</Heading> */}
+      {/*<div key="1">
+        {/* <Heading level={HeadingLevels.H3}>To review</Heading> }
         {!filterToReview ? (
           <ResidentTable residents={evidenceRequests} teamId={team.id} />
         ) : (
@@ -125,7 +125,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
             <ResidentTable residents={resultFilterToReview} teamId={team.id} />
           )
         )}
-      </div>
+      </div> }
       {/* <div key="2">
             <Heading level={HeadingLevels.H3}>All residents</Heading>
             <ResidentTable residents={evidenceRequests} teamId={teamId} />
