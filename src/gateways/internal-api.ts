@@ -45,6 +45,14 @@ export interface EvidenceRequestForm {
   noteToResident: string;
 }
 
+export interface DocumentSubmissionWithoutEvidenceRequestRequest {
+  residentId: string;
+  team: string;
+  userCreatedBy: string;
+  staffSelectedDocumentTypeId: string;
+  documentDescription: string;
+}
+
 export interface DocumentSubmissionRequest {
   documentType: string;
 }
@@ -116,6 +124,27 @@ export class InternalApiGateway {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
         `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
+        params,
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
+      );
+      return ResponseMapper.mapDocumentSubmission(data);
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
+  async createDocumentSubmissionWithoutEvidenceRequest(
+    userEmail: string,
+    params: DocumentSubmissionWithoutEvidenceRequestRequest
+  ): Promise<DocumentSubmission> {
+    try {
+      const { data } = await this.client.post<DocumentSubmissionResponse>(
+        `/api/evidence/document_submissions`,
         params,
         {
           headers: {

@@ -16,7 +16,11 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
     for (let page = 1; page <= totalPages; page++) {
       const current = page;
       pages.push(
-        <li className="lbh-pagination__item" aria-label="pagination-item">
+        <li
+          className="lbh-pagination__item"
+          aria-label="pagination-item"
+          key={`pagination-${page}`}
+        >
           <a
             className="lbh-pagination__link"
             href="#"

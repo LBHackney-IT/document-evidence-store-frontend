@@ -60,7 +60,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
   const documentTypeTitle = documentSubmission.staffSelectedDocumentType
     ? documentSubmission.staffSelectedDocumentType.title
-    : documentSubmission.documentType.title;
+    : documentSubmission.documentType?.title ?? 'No title';
 
   async function copyPageUrl() {
     try {
