@@ -203,7 +203,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     const currentDocumentTypesSet = documentTypesMap.get(ds.evidenceRequestId);
 
     currentDocumentTypesSet?.forEach((dt) => {
-      if (dt.id === ds.documentType.id) {
+      if (dt.id === ds.documentType?.id) {
         currentDocumentTypesSet.delete(dt);
       }
     });

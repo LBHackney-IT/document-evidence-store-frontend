@@ -99,11 +99,11 @@ interface Props {
   id: string;
   format: string | undefined;
   fileSizeInBytes: number;
-  title: string;
   createdAt: string;
   state: DocumentState;
   reason: string | undefined;
   requestedBy: string | undefined;
   userUpdatedBy: string | null;
   documentDescription?: string | undefined;
+  title?: string;
 }
