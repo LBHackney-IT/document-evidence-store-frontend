@@ -616,6 +616,7 @@ describe('Evidence api gateway', () => {
     const team = 'service';
     const page = '1';
     const pageSize = '10';
+    const state = 'APPROVED';
     describe('returns the correct response', () => {
       const expectedData = DocumentSubmissionsResponseObjectFixture;
       const mappedData = expectedData.documentSubmissions.map((ds) =>
@@ -638,7 +639,8 @@ describe('Evidence api gateway', () => {
           team,
           residentId,
           page,
-          pageSize
+          pageSize,
+          state
         );
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/document_submissions',
@@ -664,7 +666,8 @@ describe('Evidence api gateway', () => {
           team,
           residentId,
           page,
-          pageSize
+          pageSize,
+          state
         );
 
         expectedData.documentSubmissions.map((ds) =>
@@ -680,7 +683,8 @@ describe('Evidence api gateway', () => {
           team,
           residentId,
           page,
-          pageSize
+          pageSize,
+          state
         );
         expect(result.documentSubmissions).toEqual(mappedData);
       });
@@ -695,7 +699,8 @@ describe('Evidence api gateway', () => {
             team,
             residentId,
             page,
-            pageSize
+            pageSize,
+            state
           );
         expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
