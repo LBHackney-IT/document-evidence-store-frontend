@@ -14,7 +14,6 @@ const EvidenceAwaitingSubmissionFixture = [
   },
 ];
 
-
 describe('ResidentDocumentsTable', () => {
   it('renders the expected component with tabs', () => {
     render(
