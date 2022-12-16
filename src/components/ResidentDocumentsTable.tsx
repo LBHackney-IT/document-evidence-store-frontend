@@ -185,7 +185,8 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                             id={documentSubmission.id}
                             title={
                               documentSubmission.staffSelectedDocumentType
-                                ?.title || documentSubmission.documentType.title
+                                ?.title ||
+                              documentSubmission.documentType?.title
                             }
                             createdAt={formatDate(documentSubmission.createdAt)}
                             key={documentSubmission.id}
