@@ -636,8 +636,8 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getDocumentSubmissionsForResident(
           Constants.DUMMY_EMAIL,
-          team,
           residentId,
+          team,
           page,
           pageSize,
           state
@@ -651,10 +651,11 @@ describe('Evidence api gateway', () => {
               UserEmail: Constants.DUMMY_EMAIL,
             },
             params: {
-              team: team,
               residentId: residentId,
-              page,
-              pageSize,
+              team: team,
+              state: state,
+              page: page,
+              pageSize: pageSize,
             },
           }
         );
