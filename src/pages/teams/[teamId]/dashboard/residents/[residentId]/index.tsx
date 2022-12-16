@@ -97,6 +97,15 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         {resident.name}
       </h1>
       <ResidentDetailsTable resident={resident} />
+      <div>
+        <Link
+          href={`/teams/${teamId}/dashboard/residents/${resident.id}/upload`}
+        >
+          <a className="lbh-link" data-testid="upload-documents">
+            Upload documents
+          </a>
+        </Link>
+      </div>
       <ResidentPageContext.Provider value={contextToPass}>
         <ResidentDocumentsTable
           evidenceRequests={evidenceRequests}

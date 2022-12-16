@@ -1,0 +1,19 @@
+.removeButton {
+  height: 24px;
+  width: 24px;
+  position: relative;
+  float: right;
+  right: -20px;
+  top: -20px;
+  padding: 0;
+  background-color: white;
+  border: hidden;
+}
+
+.removeButtonImage {
+  position: relative;
+}
+
+.removeButton:hover {
+  background-color: lightgray;
+}
