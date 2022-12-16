@@ -61,7 +61,7 @@ const getDocumentSubmissionHeic = {
 const getDocumentSubmissionWithResident = {
   id: 'get-document-submissions-with-resident',
   url:
-    '/api/v1/document_submissions?team=Development+Housing+Team&residentId=:residentId',
+    '/api/v1/document_submissions?residentId=:residentId&team=Development+Housing+Team&page=1&pageSize=10',
   method: 'GET',
   response: {
     status: 200,

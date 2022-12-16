@@ -16,7 +16,7 @@ describe('Pagination', () => {
         currentPageNumber={currentPageNumber}
         pageSize={pageSize}
         total={total}
-        onPageChange={onPageChange}
+        onPageOrTabChange={onPageChange}
       />
     );
 

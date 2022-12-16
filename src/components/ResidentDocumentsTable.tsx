@@ -1,48 +1,44 @@
-import React, { FunctionComponent, useMemo, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { EvidenceList, EvidenceTile } from './EvidenceTile';
 import { formatDate } from '../helpers/formatters';
+import { Pagination } from 'src/components/Pagination';
 import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile';
 import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
-import {
-  DocumentSubmission,
-  IDocumentSubmission,
-} from '../domain/document-submission';
-import { DocumentType } from '../domain/document-type';
+import { DocumentSubmission } from '../domain/document-submission';
 import styles from '../styles/EvidenceTile.module.scss';
 
 interface Props {
   evidenceRequests: EvidenceRequest[];
+  awaitingSubmissions: EvidenceAwaitingSubmission[];
   documentSubmissions: DocumentSubmission[];
-  hidePaginationFunction: (hidePaginate: boolean) => void;
+  total: number;
+  pageSize: number;
+  onPageOrTabChange: (page: number, state?: string) => Promise<void>;
 }
 
-type EvidenceAwaitingSubmission = {
+export type EvidenceAwaitingSubmission = {
   documentType: string;
   dateRequested: DateTime | undefined;
   requestedBy: string | undefined;
   reason: string | undefined;
-  kind: 'EvidenceAwaitingSubmission';
 };
-
-type DocumentSubmissionWithKind = IDocumentSubmission & {
-  kind: 'DocumentSubmissionWithKind';
-};
-
-type DocumentTabItem = DocumentSubmissionWithKind | EvidenceAwaitingSubmission;
 
 type DocumentTab = {
   id: string;
   humanReadableName: string;
-  documents: DocumentTabItem[];
+  documentState?: string;
   className: 'govuk-form-group--error' | undefined;
   style: '#FFF6BB' | '#8EB6DC' | '#B2DFDB' | '#F8D1CD' | undefined;
 };
 
 export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   evidenceRequests,
+  awaitingSubmissions,
   documentSubmissions,
-  hidePaginationFunction,
+  total,
+  pageSize,
+  onPageOrTabChange,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
   const selectTab = (tabName: string) => {
@@ -50,12 +46,13 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
       return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
     } else return 'govuk-tabs__list-item';
   };
-  const handleTabClick = (tab: string) => {
+  const handleTabClick = (tab: string, state?: string) => {
     setSelectedTab(tab);
     if (tab == 'awaiting-submission') {
-      hidePaginationFunction(true);
+      setHidePagination(true);
     } else {
-      hidePaginationFunction(false);
+      setHidePagination(false);
+      onPageOrTabChange(1, state);
     }
   };
 
@@ -65,105 +62,38 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     } else return 'govuk-tabs__panel govuk-tabs__panel--hidden';
   };
 
-  const toReviewDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'UPLOADED' && ds.document?.fileType)
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
-
-  const reviewedDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'APPROVED')
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
-  const rejectedDocumentSubmissions = documentSubmissions
-    .filter((ds) => ds.state == 'REJECTED')
-    .map<DocumentSubmissionWithKind>((ds) => ({
-      ...ds,
-      kind: 'DocumentSubmissionWithKind',
-    }));
-  const evidenceAwaitingSubmissions = useMemo(() => {
-    const documentTypesMap = new Map<string, Set<DocumentType>>();
-    evidenceRequests.forEach((er) =>
-      documentTypesMap.set(er.id, new Set(er.documentTypes))
-    );
-    documentSubmissions.forEach((ds) => {
-      if (!ds.evidenceRequestId) {
-        return;
-      }
-      const currentDocumentTypesSet = documentTypesMap.get(
-        ds.evidenceRequestId
-      );
-
-      currentDocumentTypesSet?.forEach((dt) => {
-        if (
-          dt.id === ds.documentType?.id ||
-          dt.id === ds.staffSelectedDocumentType?.id
-        ) {
-          currentDocumentTypesSet.delete(dt);
-        }
-      });
-    });
-
-    const awaitingSubmissions: EvidenceAwaitingSubmission[] = [];
-    documentTypesMap.forEach((value, key) => {
-      value.forEach((dt) => {
-        const evidenceRequestFromKey = evidenceRequests.find(
-          (er) => er.id == key
-        );
-        awaitingSubmissions.push({
-          documentType: dt.title,
-          dateRequested: evidenceRequestFromKey?.createdAt,
-          requestedBy: evidenceRequestFromKey?.userRequestedBy,
-          reason: evidenceRequestFromKey?.reason,
-          kind: 'EvidenceAwaitingSubmission',
-        });
-      });
-    });
-    return awaitingSubmissions;
-  }, [evidenceRequests, documentSubmissions]);
-
-  const allDocumentSubmissions = [
-    ...toReviewDocumentSubmissions,
-    ...reviewedDocumentSubmissions,
-    ...rejectedDocumentSubmissions,
-  ];
-
   const DocumentTabs: DocumentTab[] = [
     {
       id: 'all-documents',
       humanReadableName: 'All documents',
-      documents: allDocumentSubmissions,
+      documentState: undefined,
       className: undefined,
       style: undefined,
     },
     {
       id: 'awaiting-submission',
       humanReadableName: 'Awaiting submission',
-      documents: evidenceAwaitingSubmissions,
       className: 'govuk-form-group--error',
       style: '#FFF6BB',
     },
     {
       id: 'pending-review',
       humanReadableName: 'Pending review',
-      documents: toReviewDocumentSubmissions,
+      documentState: 'Uploaded',
       className: 'govuk-form-group--error',
       style: '#8EB6DC',
     },
     {
       id: 'approved',
       humanReadableName: 'Approved',
-      documents: reviewedDocumentSubmissions,
+      documentState: 'Approved',
       className: 'govuk-form-group--error',
       style: '#B2DFDB',
     },
     {
       id: 'rejected',
       humanReadableName: 'Rejected',
-      documents: rejectedDocumentSubmissions,
+      documentState: 'Rejected',
       className: 'govuk-form-group--error',
       style: '#F8D1CD',
     },
@@ -179,6 +109,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
     return evidenceRequest?.userRequestedBy;
   };
 
+  const [currentPage] = useState(1);
+  const [hidePagination, setHidePagination] = useState(false);
+
+  const onPageChange = (targetPage: number) =>
+    onPageOrTabChange(targetPage, selectedTab);
   return (
     <div
       className="js-enabled"
@@ -197,7 +132,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
               >
                 <a
                   className="govuk-tabs__tab"
-                  onClick={() => handleTabClick(documentTab.id)}
+                  onClick={() =>
+                    handleTabClick(documentTab.id, documentTab.documentState)
+                  }
                   href={'#' + documentTab.id}
                 >
                   <h2 className="govuk-body">
@@ -221,82 +158,64 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                 style={{ borderLeftColor: documentTab.style }}
               >
                 <EvidenceList>
-                  {documentTab.documents && documentTab.documents.length > 0 ? (
-                    documentTab.documents.map(
-                      (documentTabItem: DocumentTabItem, index) => {
-                        switch (documentTabItem.kind) {
-                          case 'DocumentSubmissionWithKind':
-                            return (
-                              <>
-                                <li
-                                  className={styles.item}
-                                  data-testid={`${documentTab.id}-evidence-tile`}
-                                  key={index}
-                                >
-                                  <EvidenceTile
-                                    id={documentTabItem.id}
-                                    title={
-                                      (documentTabItem.staffSelectedDocumentType
-                                        ?.title ||
-                                        documentTabItem.documentType?.title) ??
-                                      'No title'
-                                    }
-                                    createdAt={formatDate(
-                                      documentTabItem.createdAt
-                                    )}
-                                    key={documentTabItem.id}
-                                    fileSizeInBytes={
-                                      documentTabItem.document
-                                        ? documentTabItem.document
-                                            .fileSizeInBytes
-                                        : 0
-                                    }
-                                    format={
-                                      documentTabItem.document
-                                        ? documentTabItem.document.extension
-                                        : 'unknown'
-                                    }
-                                    state={documentTabItem.state}
-                                    reason={
-                                      documentTabItem.evidenceRequestId &&
-                                      getReason(
-                                        documentTabItem.evidenceRequestId
-                                      )
-                                    }
-                                    requestedBy={
-                                      documentTabItem.evidenceRequestId &&
-                                      getUserRequestedBy(
-                                        documentTabItem.evidenceRequestId
-                                      )
-                                    }
-                                    userUpdatedBy={
-                                      documentTabItem.userUpdatedBy
-                                    }
-                                    documentDescription={
-                                      documentTabItem.document?.description
-                                    }
-                                  />
-                                </li>
-                              </>
-                            );
-                          case 'EvidenceAwaitingSubmission':
-                            return (
-                              <li
-                                className={styles.item}
-                                data-testid={`${documentTab.id}-evidence-awaiting-tile`}
-                                key={index}
-                              >
-                                <EvidenceAwaitingSubmissionTile
-                                  documentType={documentTabItem.documentType}
-                                  dateRequested={documentTabItem.dateRequested}
-                                  requestedBy={documentTabItem.requestedBy}
-                                  reason={documentTabItem.reason}
-                                />
-                              </li>
-                            );
-                        }
-                      }
-                    )
+                  {documentTab.id === 'awaiting-submission' ? (
+                    awaitingSubmissions.map((x, i) => (
+                      <li
+                        className={styles.item}
+                        data-testid={`${documentTab.id}-evidence-awaiting-tile`}
+                        key={i}
+                      >
+                        <EvidenceAwaitingSubmissionTile
+                          documentType={x.documentType}
+                          dateRequested={x.dateRequested}
+                          requestedBy={x.requestedBy}
+                          reason={x.reason}
+                        />
+                      </li>
+                    ))
+                  ) : documentSubmissions && documentSubmissions.length > 0 ? (
+                    documentSubmissions.map((documentSubmission, index) => (
+                      <>
+                        <li
+                          className={styles.item}
+                          data-testid={`${documentTab.id}-evidence-tile`}
+                          key={index}
+                        >
+                          <EvidenceTile
+                            id={documentSubmission.id}
+                            title={
+                              documentSubmission.staffSelectedDocumentType
+                                ?.title ||
+                              documentSubmission.documentType?.title
+                            }
+                            createdAt={formatDate(documentSubmission.createdAt)}
+                            key={documentSubmission.id}
+                            fileSizeInBytes={
+                              documentSubmission.document
+                                ? documentSubmission.document.fileSizeInBytes
+                                : 0
+                            }
+                            format={
+                              documentSubmission.document
+                                ? documentSubmission.document.extension
+                                : 'unknown'
+                            }
+                            state={documentSubmission.state}
+                            reason={
+                              documentSubmission.evidenceRequestId &&
+                              getReason(documentSubmission.evidenceRequestId)
+                            }
+                            requestedBy={
+                              documentSubmission.evidenceRequestId &&
+                              getUserRequestedBy(
+                                documentSubmission.evidenceRequestId
+                              )
+                            }
+                            userUpdatedBy={documentSubmission.userUpdatedBy}
+                          />
+                        </li>
+                      </>
+                    ))
                   ) : (
                     <h3>There are no documents to review</h3>
                   )}
@@ -306,6 +225,14 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
           );
         })}
       </div>
+      {!hidePagination && total > pageSize && (
+        <Pagination
+          currentPageNumber={currentPage}
+          pageSize={pageSize}
+          total={total}
+          onPageOrTabChange={onPageChange}
+        />
+      )}
     </div>
   );
 };

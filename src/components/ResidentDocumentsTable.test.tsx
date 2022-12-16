@@ -3,18 +3,27 @@ import React from 'react';
 import { ResidentDocumentsTable } from './ResidentDocumentsTable';
 import { EvidenceRequestsFixture } from './fixtures/evidence-requests';
 import { DocumentSubmissionsFixture } from './fixtures/document-submissions';
+import { DateTime } from 'luxon';
 
-const mockPaginationFunction = () => {
-  return;
-};
+const EvidenceAwaitingSubmissionFixture = [
+  {
+    documentType: 'passport',
+    dateRequested: DateTime.fromISO('2022-09-19T15:34:12.299Z'),
+    requestedBy: 'test0@hackney.gov.uk',
+    reason: 'Awaiting submission reason',
+  },
+];
 
 describe('ResidentDocumentsTable', () => {
   it('renders the expected component with tabs', () => {
     render(
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
+        awaitingSubmissions={EvidenceAwaitingSubmissionFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        hidePaginationFunction={mockPaginationFunction}
+        total={10}
+        pageSize={10}
+        onPageOrTabChange={() => Promise.resolve()}
       />
     );
 
@@ -35,8 +44,11 @@ describe('ResidentDocumentsTable', () => {
     render(
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
+        awaitingSubmissions={EvidenceAwaitingSubmissionFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        hidePaginationFunction={mockPaginationFunction}
+        total={10}
+        pageSize={10}
+        onPageOrTabChange={() => Promise.resolve()}
       />
     );
     const evidenceTiles = screen.getAllByTestId('all-documents-evidence-tile');
@@ -49,17 +61,20 @@ describe('ResidentDocumentsTable', () => {
     render(
       <ResidentDocumentsTable
         evidenceRequests={EvidenceRequestsFixture}
+        awaitingSubmissions={EvidenceAwaitingSubmissionFixture}
         documentSubmissions={DocumentSubmissionsFixture}
-        hidePaginationFunction={mockPaginationFunction}
+        total={10}
+        pageSize={10}
+        onPageOrTabChange={() => Promise.resolve()}
       />
     );
 
     expect(screen.getByTestId('all-documents-section')).toHaveTextContent(
       'Proof of ID'
     );
-    expect(screen.getByTestId('awaiting-submission-section')).toHaveTextContent(
-      'Proof of Address'
-    );
+    // expect(screen.getByTestId('awaiting-submission-section')).toHaveTextContent(
+    //   'Proof of Address'
+    // );
     expect(screen.getByTestId('approved-section')).toHaveTextContent(
       'Proof of ID'
     );
