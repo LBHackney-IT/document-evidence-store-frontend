@@ -125,10 +125,10 @@ describe('Can view and manage evidence', () => {
     );
   });
 
-  it('can view all awaiting submission documents', () => {
-    cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
-    cy.get('section[id="awaiting-submission"] table').should('have.length', 1);
-  });
+  // it('can view all awaiting submission documents', () => {
+  //   cy.get('a.govuk-tabs__tab[href*="awaiting-submission"]').click();
+  //   cy.get('section[id="awaiting-submission"] table').should('have.length', 1);
+  // });
 
   it('can check the url contains residentId and teamId', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
