@@ -69,17 +69,6 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         />
       )}
       {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
-      <div className="govuk-checkboxes__item">
-        <input
-          type="checkbox"
-          name="filterReadyToReview"
-          id="filter-ready-to-review"
-          className="govuk-checkboxes__input"
-          onClick={() => {
-            setFilterToReview(!filterToReview);
-          }}
-        />
-      </div>
     </Layout>
   );
 };
