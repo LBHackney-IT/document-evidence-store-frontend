@@ -158,7 +158,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                 style={{ borderLeftColor: documentTab.style }}
               >
                 <EvidenceList>
-                  {documentTab.id === 'awaiting-submission' ? (
+                  {documentTab.id === 'awaiting-submission' &&
+                  awaitingSubmissions &&
+                  awaitingSubmissions.length > 0 ? (
                     awaitingSubmissions.map((x, i) => (
                       <li
                         className={styles.item}
@@ -173,7 +175,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         />
                       </li>
                     ))
-                  ) : documentSubmissions && documentSubmissions.length > 0 ? (
+                  ) : documentTab.id != 'awaiting-submission' &&
+                    documentSubmissions &&
+                    documentSubmissions.length > 0 ? (
                     documentSubmissions.map((documentSubmission, index) => (
                       <>
                         <li
