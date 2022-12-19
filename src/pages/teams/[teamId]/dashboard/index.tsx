@@ -31,7 +31,6 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [filterToReview, setFilterToReview] = useState(false);
 
   const handleSearch = useCallback(async (searchQuery: string) => {
     try {
