@@ -20,9 +20,6 @@ describe('Can view and manage evidence', () => {
 
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
-
-    cy.get('a').contains('Namey McName').click();
-    cy.contains('h1', 'Namey McName');
   });
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
@@ -35,27 +32,9 @@ describe('Can view and manage evidence', () => {
     cy.checkA11y();
   });
 
-  it('checks if resident information is displayed correctly in a table', () => {
-    cy.get('tbody').within(() => {
-      cy.get('tr')
-        .eq(0)
-        .should('contain.text', 'Name')
-        .and('contain.text', 'Namey McName');
-      cy.get('tr')
-        .eq(1)
-        .should('contain.text', 'Mobile number')
-        .and('contain.text', '+447123456780');
-      cy.get('tr')
-        .eq(2)
-        .should('contain.text', 'Email address')
-        .and('contain.text', 'frodo@bagend.com');
-    });
-  });
-
   it('has breadcrumbs on resident page', () => {
     cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
     cy.get('[data-testid="search-page"]').click();
-    cy.get('a').contains('Namey McName');
     cy.get('h1').contains('Browse residents');
   });
 
