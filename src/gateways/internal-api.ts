@@ -31,6 +31,12 @@ export interface EvidenceRequestRequest {
   noteToResident: string;
 }
 
+export interface CreateResidentRequest {
+  name: string;
+  email: string | null;
+  phoneNumber: string | null;
+}
+
 export interface EvidenceRequestForm {
   resident: {
     name: string;
@@ -72,6 +78,12 @@ export interface DocumentSubmissionUpdateForm {
   validUntilDates?: string[];
 }
 
+export interface CreateResidentRequest {
+  name: string;
+  email: string | null;
+  phoneNumber: string | null;
+}
+
 export interface ResidentRequest {
   team: string;
   searchQuery: string;
@@ -89,6 +101,30 @@ export class InternalApiGateway {
     { client }: InternalApiDependencies = { client: Axios.create() }
   ) {
     this.client = client;
+  }
+
+  async createResident(
+    userEmail: string,
+    payload: CreateResidentRequest
+  ): Promise<Resident> {
+    try {
+      const { data } = await this.client.post<ResidentResponse>(
+        '/api/evidence/residents',
+        payload,
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
+      );
+      return ResponseMapper.mapResidentResponse(data);
+    } catch (err) {
+      if (err.response) {
+        console.error(err);
+        throw err.response.data;
+      }
+      throw new InternalServerError('Internal server error');
+    }
   }
 
   async createEvidenceRequest(

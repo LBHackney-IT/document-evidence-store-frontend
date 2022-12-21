@@ -17,7 +17,7 @@ describe('Can search for a resident', () => {
   it('User can search for a resident', () => {
     cy.get('#search-query').type('Namey');
 
-    cy.get('.govuk-button').click();
+    cy.get('.govuk-button').first().click();
 
     cy.get('h2').should('contain', 'Search results');
 

@@ -3,15 +3,17 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import ResidentSearchForm from './ResidentSearchForm';
 
 describe('ResidentSearchForm', () => {
+  const teamId = '2';
+
   it('renders an input and button', async () => {
-    render(<ResidentSearchForm handleSearch={jest.fn()} />);
+    render(<ResidentSearchForm handleSearch={jest.fn()} teamId={teamId} />);
     expect(screen.getByPlaceholderText('Search by name or contact detail'));
     expect(screen.getByText('Search'));
   });
 
   it('submits successfully', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} teamId={teamId} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {
@@ -26,7 +28,7 @@ describe('ResidentSearchForm', () => {
 
   it('does not submit if search query is white space', async () => {
     const mockHandler = jest.fn();
-    render(<ResidentSearchForm handleSearch={mockHandler} />);
+    render(<ResidentSearchForm handleSearch={mockHandler} teamId={teamId} />);
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
       {

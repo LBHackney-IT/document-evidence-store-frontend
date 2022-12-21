@@ -33,6 +33,7 @@ const tokens: TokenDictionary = {
   },
   residents: {
     GET: process.env.EVIDENCE_API_TOKEN_RESIDENTS_GET,
+    POST: process.env.EVIDENCE_API_TOKEN_RESIDENTS_POST,
   },
 };
 

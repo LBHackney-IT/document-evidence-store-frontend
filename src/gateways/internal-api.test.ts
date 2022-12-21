@@ -5,6 +5,7 @@ import {
   EvidenceRequestResponse,
 } from 'types/api';
 import {
+  CreateResidentRequest,
   DocumentSubmissionRequest,
   DocumentSubmissionWithoutEvidenceRequestRequest,
 } from '../gateways/internal-api';
@@ -442,6 +443,56 @@ describe('Internal API Gateway', () => {
             Constants.DUMMY_EMAIL,
             evidenceRequestId
           );
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
+
+  describe('createResident', () => {
+    const request = {} as CreateResidentRequest;
+    const apiResponse = {} as ResidentResponse;
+    const expectedResult = {} as Resident;
+
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.post.mockResolvedValue({
+          data: apiResponse,
+        });
+
+        mockedResponseMapper.mapResidentResponse.mockReturnValue(
+          expectedResult
+        );
+      });
+
+      it('makes the api request', async () => {
+        await gateway.createResident(Constants.DUMMY_EMAIL, request);
+
+        expect(client.post).toHaveBeenCalledWith(
+          `/api/evidence/residents`,
+          request,
+          {
+            headers: { UserEmail: Constants.DUMMY_EMAIL },
+          }
+        );
+      });
+
+      it('returns the updated model', async () => {
+        const result = await gateway.createResident(
+          Constants.DUMMY_EMAIL,
+          request
+        );
+
+        expect(result).toBe(expectedResult);
+      });
+    });
+
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.post.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () =>
+          gateway.createResident(Constants.DUMMY_EMAIL, request);
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );

@@ -67,3 +67,8 @@ export interface ResidentResponse {
   id: string;
   referenceId?: string;
 }
+
+export interface ResidentErrorResponse {
+  statusCode: string;
+  body: string;
+}

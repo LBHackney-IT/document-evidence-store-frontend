@@ -9,7 +9,8 @@ import Link from 'next/link';
 import ResidentLayout from './ResidentLayout';
 import PhaseBanner from './PhaseBanner';
 
-const Layout: FunctionComponent<Props> = (props, { children }) => {
+const Layout: FunctionComponent<Props> = (props) => {
+  const { children } = props;
   const { user } = useContext(UserContext);
 
   if (!user)

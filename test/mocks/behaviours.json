@@ -15,6 +15,7 @@
       "get-rejected-document-submission-png",
       "update-document-submission",
       "get-residents",
+      "create-resident",
       "get-document-submissions-with-resident",
       "get-approved-document-submissions-with-resident",
       "get-rejected-submissions-with-resident",
