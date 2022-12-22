@@ -31,7 +31,7 @@
     "govuk-react": "^0.10.1",
     "heic2any": "0.0.3",
     "isomorphic-dompurify": "0.19.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lbh-frontend": "^3.5.3",
     "luxon": "^1.25.0",
     "mime-types": "^2.1.28",
