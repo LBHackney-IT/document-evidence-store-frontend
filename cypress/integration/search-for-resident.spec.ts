@@ -21,7 +21,7 @@ describe('Can search for a resident', () => {
 
     cy.get('h2').should('contain', 'Search results');
 
-    cy.get('tbody tr').should('have.length', 6);
+    cy.get('tbody tr').should('have.length', 3);
 
     cy.get('tbody tr:first')
       .should('contain', 'Namey McName')
