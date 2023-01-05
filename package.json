@@ -26,7 +26,7 @@
     "@types/styled-components": "^5.1.26",
     "axios": "^0.21.2",
     "babel-plugin-superjson-next": "^0.2.1",
-    "file-type": "^16.2.0",
+    "file-type": "^16.5.4",
     "formik": "^2.2.5",
     "govuk-react": "^0.10.1",
     "heic2any": "0.0.3",
