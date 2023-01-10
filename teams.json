@@ -157,5 +157,18 @@
     ],
     "landingMessage": "Please note, by providing the supporting documents, you are declaring that to the best of your knowledge and belief the information given is correct in every detail. You understand it is an offence to give false or misleading information or to hold back relevant information. You also understand that we will check this information and if any information is found to be false, you may be prosecuted and we may repossess your home. If you are prosecuted and found guilty, you understand that you could be ordered to pay a fine of up to £5000. It is your duty to make sure that your application form is honest. You hereby give your consent for Housing Services to carry out a credit reference check and obtain relevant information from the Council and other external agencies. If you have further questions, please contact us.",
     "slaMessage": "Thank you very much, our Housing Officer will be in touch shortly once we have reviewed your supporting documents."
+  },
+  {
+    "name": "Hackney Parking Services",
+    "googleGroup": "Hackney Parking Services - Evidence Drop Box",
+    "id": "11",
+    "reasons": [
+      {
+        "name": "Hackney Parking Services - Cloned Vehicles",
+        "id": "1"
+      }
+    ],
+    "landingMessage": "Please make sure you have the evidence requested by the Parking Services Team saved on your device and ready for upload.",
+    "slaMessage": "Hackney Parking Services will review your evidence and get in touch with an outcome."
   }
 ]
