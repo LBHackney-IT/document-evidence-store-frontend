@@ -187,6 +187,9 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                         >
                           <EvidenceTile
                             id={documentSubmission.id}
+                            documentDescription={
+                              documentSubmission.document?.description
+                            }
                             title={
                               documentSubmission.staffSelectedDocumentType
                                 ?.title ||
