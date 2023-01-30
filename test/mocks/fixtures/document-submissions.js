@@ -4,6 +4,9 @@ const documentSubmissionHeic = require('../../../cypress/fixtures/document_submi
 const approvedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-approved.json');
 const rejectedDocumentSubmission = require('../../../cypress/fixtures/document_submissions/get-rejected.json');
 const documentSubmissionsWithResident = require('../../../cypress/fixtures/document_submissions/get-many-response-object.json');
+const approvedDocumentSubmissionWithResident = require('../../../cypress/fixtures/document_submissions/get-approved-response-object.json');
+const rejecteddDocumentSubmissionWithResident = require('../../../cypress/fixtures/document_submissions/get-rejected-response-object.json');
+const pendingdDocumentSubmissionWithResident = require('../../../cypress/fixtures/document_submissions/get-pending-response-object.json');
 const documentSubmissionExpiredClaim = require('../../../cypress/fixtures/document_submissions/get-expired.json');
 
 // There may be a neater way of doing this with MocksServer variants but I couldn't get it to work.
@@ -69,6 +72,39 @@ const getDocumentSubmissionWithResident = {
   },
 };
 
+const getApprovedDocumentSubmissionWithResident = {
+  id: 'get-approved-document-submissions-with-resident',
+  url:
+    '/api/v1/document_submissions?residentId=:residentId&team=Development+Housing+Team&state=Approved&page=1&pageSize=10',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: approvedDocumentSubmissionWithResident,
+  },
+};
+
+const geRejectedDocumentSubmissionWithResident = {
+  id: 'get-rejected-document-submissions-with-resident',
+  url:
+    '/api/v1/document_submissions?residentId=:residentId&team=Development+Housing+Team&state=Rejected&page=1&pageSize=10',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: rejecteddDocumentSubmissionWithResident,
+  },
+};
+
+const getPendingDocumentSubmissionWithResident = {
+  id: 'get-pending-document-submissions-with-resident',
+  url:
+    '/api/v1/document_submissions?residentId=:residentId&team=Development+Housing+Team&state=Uploaded&page=1&pageSize=10',
+  method: 'GET',
+  response: {
+    status: 200,
+    body: pendingdDocumentSubmissionWithResident,
+  },
+};
+
 const updateDocumentSubmission = {
   id: 'update-document-submission',
   url: '/api/v1/document_submissions/:id',
@@ -96,6 +132,9 @@ module.exports = {
   getDocumentSubmissionPdf,
   getDocumentSubmissionHeic,
   getDocumentSubmissionWithResident,
+  getApprovedDocumentSubmissionWithResident,
+  geRejectedDocumentSubmissionWithResident,
+  getPendingDocumentSubmissionWithResident,
   getApprovedDocumentSubmissionPng,
   getRejectedDocumentSubmissionPng,
   getDocumentSubmissionExpiredClaim,

@@ -1,0 +1,29 @@
+{
+  "documentSubmissions": [
+    {
+      "documentType": {
+        "id": "proof-of-id",
+        "title": "Proof of ID",
+        "description": "A valid document that can be used to prove identity",
+        "enabled": true
+      },
+      "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+      "createdAt": "2020-12-30T10:23:42.958Z",
+      "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+      "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+      "claimValidUntil": "2121-01-29T16:28:11.326Z",
+      "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+      "rejectionReason": "some rejection reason",
+      "rejectedAt": "2021-01-14T10:23:42.958Z",
+      "state": "REJECTED",
+      "userUpdatedBy": "rejecter@email.com",
+      "document": {
+        "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773447",
+        "createdAt": "2021-01-29T16:28:11.326Z",
+        "fileSize": 25300,
+        "fileType": "image/png"
+      }
+    }
+  ],
+  "total": 1
+}
