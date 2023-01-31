@@ -37,9 +37,6 @@ describe('Can view and manage evidence', () => {
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
   it('pages have no detectable accessibility issues', () => {
-    cy.checkA11y({
-      exclude: ['table'],
-    });
     cy.checkA11y();
   });
 
@@ -99,7 +96,7 @@ describe('Can view and manage evidence', () => {
 
   it('can load pending documents tab', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
-    cy.get('section[id="pending-review"] table').should('have.length', 6);
+    cy.get('section[id="pending-review"] table').should('have.length', 3);
     cy.get('section[id="pending-review"]')
       .eq(0)
       .contains('Proof of ID')
@@ -132,7 +129,7 @@ describe('Can view and manage evidence', () => {
       .and('include', 'residents/3fa85f64-5717-4562-b3fc-2c963f66afb6');
   });
 
-  it('lets you see an image document detail page with actions and information', () => {
+  it('lets staff see an image document detail page with actions and information', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]')
       .should('contain', 'Pending review')
       .click();
@@ -160,7 +157,7 @@ describe('Can view and manage evidence', () => {
       .and('contain', '14 April 2021');
   });
 
-  it('lets you see a PDF document detail page with actions and information', () => {
+  it('lets staff see a PDF document detail page with actions and information', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"] a')
       .eq(1)
@@ -286,7 +283,7 @@ describe('Can view and manage evidence', () => {
     cy.contains('button', 'Request new file').should('not.exist');
   });
 
-  it('can reject the document', () => {
+  it('can reject a document', () => {
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -394,7 +391,7 @@ describe('Can view and manage evidence', () => {
       cy.contains('h1', 'Namey McName');
     });
 
-    it('lets you see an heic document detail page with actions and information', () => {
+    it('lets staff see an heic document detail page with actions and information', () => {
       cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
       cy.get('section[id="pending-review"] a')
         .eq(2)
@@ -511,9 +508,17 @@ describe('Can view and manage evidence', () => {
       cy.contains('h1', 'Namey McName');
     });
 
-    it('can let staff upload a document', () => {
+    it('returns validation errors when form input is incorrect', () => {
       cy.get('[data-testid="upload-documents"]').click();
-      cy.get('hdata-test1').should('contain', 'Upload documents');
+      cy.get('h1').should('contain', 'Upload documents');
+      cy.get('button').contains('Submit').click();
+      cy.get('span').contains('Please select a document type');
+      cy.get('span').contains('Please select a file');
+    });
+
+    it('lets staff upload a document', () => {
+      cy.get('[data-testid="upload-documents"]').click();
+      cy.get('h1').should('contain', 'Upload documents');
       cy.get('select').select('Passport');
       cy.get('[data-testid="document-description-0"]').type(
         'here is a description of this document'
@@ -523,15 +528,7 @@ describe('Can view and manage evidence', () => {
       cy.contains('h1', 'Namey McName');
     });
 
-    it('has validation errors when form input is incorrect', () => {
-      cy.get('[data-testid="upload-documents"]').click();
-      cy.get('h1').should('contain', 'Upload documents');
-      cy.get('button').contains('Submit').click();
-      cy.get('span').contains('Please select a document type');
-      cy.get('span').contains('Please select a file');
-    });
-
-    it('can upload documents of different types', () => {
+    it('lets staff upload more than one document', () => {
       cy.get('[data-testid="upload-documents"]').click();
       cy.get('h1').should('contain', 'Upload documents');
       cy.get('select').eq(0).select('Passport');
