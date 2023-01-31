@@ -32,16 +32,13 @@ describe('Can view and manage evidence', () => {
     cy.get('tbody tr:first')
       .should('contain', 'Namey McName')
       .and('contain', 'frodo');
+    cy.get('a').contains('Namey McName').first().click();
   });
 
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
   it('pages have no detectable accessibility issues', () => {
     cy.checkA11y();
-  });
-
-  beforeEach(() => {
-    cy.get('a').contains('Namey McName').first().click();
   });
 
   it('has breadcrumbs on resident page', () => {
