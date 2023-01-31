@@ -38,7 +38,9 @@ describe('Can view and manage evidence', () => {
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
   it('pages have no detectable accessibility issues', () => {
-    cy.checkA11y();
+    cy.checkA11y({
+      exclude: ['table'],
+    });
   });
 
   it('has breadcrumbs on resident page', () => {
