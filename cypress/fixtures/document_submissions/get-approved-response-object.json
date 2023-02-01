@@ -1,0 +1,63 @@
+{
+  "documentSubmissions": [
+    {
+      "documentType": {
+        "id": "proof-of-id",
+        "title": "Proof of ID",
+        "description": "A valid document that can be used to prove identity",
+        "enabled": true
+      },
+      "staffSelectedDocumentType": {
+        "id": "passport-scan",
+        "title": "Passport",
+        "description": "A valid passport open at the photo page",
+        "enabled": true
+      },
+      "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+      "createdAt": "2020-12-25T10:23:42.958Z",
+      "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+      "claimValidUntil": "2121-01-29T16:28:11.326Z",
+      "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+      "rejectionReason": "string",
+      "state": "APPROVED",
+      "userUpdatedBy": "approver1@email.com",
+      "document": {
+        "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+        "createdAt": "2021-01-29T16:28:11.326Z",
+        "fileSize": 25300,
+        "fileType": "image/png"
+      }
+    },
+    {
+      "documentType": {
+        "id": "proof-of-id",
+        "title": "Proof of ID",
+        "description": "A valid document that can be used to prove identity",
+        "enabled": true
+      },
+      "staffSelectedDocumentType": {
+        "id": "passport-scan",
+        "title": "Passport",
+        "description": "A valid passport open at the photo page",
+        "enabled": true
+      },
+      "id": "c82120d2-0a5c-4f40-bdcd-5a18d877344v",
+      "createdAt": "2020-12-25T10:23:42.958Z",
+      "evidenceRequestId": "3fa85f64-5717-4562-b3fc-2c963f66afa8",
+      "claimId": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+      "claimValidUntil": "2000-01-29T16:28:11.326Z",
+      "retentionExpiresAt": "2021-04-14T10:23:42.958Z",
+      "rejectionReason": "string",
+      "state": "APPROVED",
+      "userUpdatedBy": "approver2@email.com",
+      "document": {
+        "id": "c82120d2-0a5c-4f40-bdcd-5a18d8773446",
+        "createdAt": "2021-01-29T16:28:11.326Z",
+        "fileSize": 25300,
+        "fileType": "image/png"
+      }
+    }
+  ],
+  "total": 2
+}
