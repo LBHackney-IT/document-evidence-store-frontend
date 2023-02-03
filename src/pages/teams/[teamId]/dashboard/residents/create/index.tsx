@@ -70,7 +70,7 @@ export const getServerSideProps = withAuth<CreatePageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-  const teamName = team?.name;
+  const teamName = team?.name ? team.name : '';
   if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
