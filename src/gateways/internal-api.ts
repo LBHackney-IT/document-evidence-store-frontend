@@ -105,12 +105,13 @@ export class InternalApiGateway {
 
   async createResident(
     userEmail: string,
+    team: string,
     payload: CreateResidentRequest
   ): Promise<Resident> {
     try {
       const { data } = await this.client.post<ResidentResponse>(
         '/api/evidence/residents',
-        payload,
+        { ...payload, team },
         {
           headers: {
             UserEmail: userEmail,
@@ -141,7 +142,6 @@ export class InternalApiGateway {
           },
         }
       );
-
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
       if (err.response) {

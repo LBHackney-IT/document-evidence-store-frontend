@@ -15,6 +15,7 @@ import {
 
 type CreatePageProps = {
   teamId: string;
+  teamName: string;
   feedbackUrl: string;
   user: User;
 };
@@ -22,6 +23,7 @@ type CreatePageProps = {
 const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   feedbackUrl,
   teamId,
+  teamName,
   user,
 }) => {
   const router = useRouter();
@@ -29,7 +31,11 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   const createResident = useCallback(
     async (resident: CreateResidentRequest): Promise<void> => {
       const gateway = new InternalApiGateway();
-      const newResident = await gateway.createResident(user.email, resident);
+      const newResident = await gateway.createResident(
+        user.email,
+        teamName,
+        resident
+      );
       router.push(`/teams/${teamId}/dashboard/residents/${newResident.id}`);
     },
     []
@@ -64,6 +70,7 @@ export const getServerSideProps = withAuth<CreatePageProps>(async (ctx) => {
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  const teamName = team?.name;
   if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
       redirect: {
@@ -74,7 +81,7 @@ export const getServerSideProps = withAuth<CreatePageProps>(async (ctx) => {
   }
 
   return {
-    props: { teamId, feedbackUrl, user },
+    props: { teamId, teamName, feedbackUrl, user },
   };
 });
 
