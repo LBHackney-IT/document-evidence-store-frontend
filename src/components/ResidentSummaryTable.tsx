@@ -1,6 +1,7 @@
-import React, { FunctionComponent, useMemo } from 'react';
+import React, { FunctionComponent, useMemo, useState } from 'react';
 import { Resident } from '../domain/resident';
 import Link from 'next/link';
+import styles from '../styles/ResidentSummaryTable.module.scss';
 
 export const ResidentSummaryTable: FunctionComponent<Props> = ({
   residents,
@@ -20,7 +21,23 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
     [residents]
   );
 
-  return (
+  const [loading, setIsLoading] = useState(false);
+
+  return loading ? (
+    <div className={styles.spinner}>
+      <svg viewBox="0 0 42 42" stroke="#00703c" width="50" height="50">
+        <g fill="none" fill-rule="evenodd">
+          <g transform="translate(3 3)" stroke-width="5">
+            <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
+            <path
+              d="M36 18c0-9.94-8.06-18-18-18"
+              transform="rotate(112.708 18 18)"
+            />
+          </g>
+        </g>
+      </svg>
+    </div>
+  ) : (
     <table className="govuk-table  lbh-table">
       <thead className="govuk-table__head">
         <tr className="govuk-table__row">
@@ -41,14 +58,20 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
           </th>
         </tr>
       </thead>
-
       <tbody className="govuk-table__body">
         {rows.map((row) => (
           <tr className="govuk-table__row" key={row.id}>
             <td className="govuk-table__cell">{row.referenceId}</td>
             <td className="govuk-table__cell">
               <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
-                <a className="lbh-link">{row.name}</a>
+                <a
+                  className="lbh-link"
+                  onClick={() => {
+                    setIsLoading(!loading);
+                  }}
+                >
+                  {row.name}
+                </a>
               </Link>
             </td>
             <td className="govuk-table__cell">{row.email}</td>
