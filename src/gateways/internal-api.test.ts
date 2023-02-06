@@ -454,6 +454,7 @@ describe('Internal API Gateway', () => {
     const request = {} as CreateResidentRequest;
     const apiResponse = {} as ResidentResponse;
     const expectedResult = {} as Resident;
+    const team = 'some team';
 
     describe('when successful', () => {
       beforeEach(() => {
@@ -467,11 +468,11 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.createResident(Constants.DUMMY_EMAIL, request);
+        await gateway.createResident(Constants.DUMMY_EMAIL, team, request);
 
         expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/residents`,
-          request,
+          { ...request, team },
           {
             headers: { UserEmail: Constants.DUMMY_EMAIL },
           }
@@ -481,6 +482,7 @@ describe('Internal API Gateway', () => {
       it('returns the updated model', async () => {
         const result = await gateway.createResident(
           Constants.DUMMY_EMAIL,
+          team,
           request
         );
 
@@ -492,7 +494,7 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.createResident(Constants.DUMMY_EMAIL, request);
+          gateway.createResident(Constants.DUMMY_EMAIL, team, request);
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')
         );
