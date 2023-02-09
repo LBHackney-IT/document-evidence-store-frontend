@@ -17,7 +17,7 @@ describe('Can search for a resident', () => {
   });
 
   it('Automatically performs resident search from deeplink search term', () => {
-    cy.get('h2').should('contain', 'Search results');
+    cy.get('h2').should('contain', 'Found results');
 
     cy.get('tbody tr').should('have.length', 3);
 

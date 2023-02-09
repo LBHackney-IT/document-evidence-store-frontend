@@ -59,15 +59,13 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
         <title>
-          Browse residents | Document Evidence Service | Hackney Council
+          Link Resident | Document Evidence Service | Hackney Council
         </title>
       </Head>
-      <h1 className="lbh-heading-h2">Browse residents</h1>
+      <h1 className="lbh-heading-h2">Link Resident</h1>
       <ResidentSearchForm handleSearch={handleSearch} teamId={team.id} />
       {(loading || results) && (
-        <h2 className="lbh-heading-h3">
-          Search results for: {formSearchQuery}
-        </h2>
+        <h2 className="lbh-heading-h3">Found results for: {formSearchQuery}</h2>
       )}
       {loading && (
         <TableSkeleton
