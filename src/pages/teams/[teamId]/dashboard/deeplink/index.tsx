@@ -16,14 +16,14 @@ import { Team } from '../../../../../domain/team';
 import { User } from '../../../../../domain/user';
 import { useRouter } from 'next/router';
 
-type BrowseResidentsProps = {
+type DeeplinkSearchProps = {
   evidenceRequests: EvidenceRequest[];
   team: Team;
   user: User;
   feedbackUrl: string;
 };
 
-const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
+const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   team,
   user,
   feedbackUrl,
@@ -79,45 +79,43 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
   );
 };
 
-export const getServerSideProps = withAuth<BrowseResidentsProps>(
-  async (ctx) => {
-    const { teamId } = ctx.query as {
-      teamId: string;
-    };
+export const getServerSideProps = withAuth<DeeplinkSearchProps>(async (ctx) => {
+  const { teamId } = ctx.query as {
+    teamId: string;
+  };
 
-    const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
+  const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
-    const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
-    const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
-      TeamHelper.getTeamsJson(),
-      user,
-      teamId
-    );
+  const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
+  const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
+    TeamHelper.getTeamsJson(),
+    user,
+    teamId
+  );
 
-    const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
-    if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
-      return {
-        redirect: {
-          destination: '/teams',
-          permanent: false,
-        },
-      };
-    }
-
-    const gateway = new EvidenceApiGateway();
-    const evidenceRequests = await gateway.getEvidenceRequests(
-      user.email,
-      team.name
-    );
+  const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
+  if (!userAuthorizedToViewTeam || team === undefined || user === undefined) {
     return {
-      props: {
-        evidenceRequests,
-        team,
-        user,
-        feedbackUrl,
+      redirect: {
+        destination: '/teams',
+        permanent: false,
       },
     };
   }
-);
 
-export default BrowseResidents;
+  const gateway = new EvidenceApiGateway();
+  const evidenceRequests = await gateway.getEvidenceRequests(
+    user.email,
+    team.name
+  );
+  return {
+    props: {
+      evidenceRequests,
+      team,
+      user,
+      feedbackUrl,
+    },
+  };
+});
+
+export default DeeplinkSearch;
