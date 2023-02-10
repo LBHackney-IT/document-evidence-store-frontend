@@ -45,9 +45,6 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
       router.push(
         `/teams/${team.id}/dashboard/residents/${linkedResident[0].id}`
       );
-      return true;
-    } else {
-      return false;
     }
   };
 
@@ -68,10 +65,9 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   }, []);
 
   useEffect(() => {
-    if (!checkForExistingLinkByGroupId(groupId)) {
-      setFormSearchQuery(searchTerm);
-      handleSearch(searchTerm);
-    }
+    checkForExistingLinkByGroupId(groupId);
+    setFormSearchQuery(searchTerm);
+    handleSearch(searchTerm);
   }, []);
 
   return (
