@@ -36,10 +36,8 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   const [loading, setLoading] = useState(false);
   const gateway = new InternalApiGateway();
 
-  const checkForExistingLink = async () => {
+  const checkForExistingLinkByGroupId = async () => {
     const linkedResident = await gateway.searchResidents(user.email, {
-      team: team.name,
-      searchQuery: searchTerm,
       groupId: integrationId,
     });
 
@@ -55,7 +53,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
       setFormSearchQuery(searchQuery);
       setLoading(true);
 
-      checkForExistingLink();
+      checkForExistingLinkByGroupId();
 
       const data = await gateway.searchResidents(user.email, {
         team: team.name,
