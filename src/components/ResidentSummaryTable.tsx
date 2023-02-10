@@ -1,13 +1,11 @@
-import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useMemo, useState } from 'react';
 import { Resident } from '../domain/resident';
 import Link from 'next/link';
 import styles from '../styles/ResidentSummaryTable.module.scss';
-import router from 'next/router';
 
 export const ResidentSummaryTable: FunctionComponent<Props> = ({
   residents,
   teamId,
-  isFromDeeplink,
 }) => {
   const rows = useMemo(
     () =>
@@ -24,23 +22,6 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
   );
 
   const [loading, setIsLoading] = useState(false);
-
-  //function to check residents results for groupId
-  const checkForGroupId = (residentId: string) => {
-    return residentId;
-  };
-
-  //on page load, check for groupId. If found, redirect to resident. Definitely refactor this to not be awful
-  useEffect(() => {
-    if (isFromDeeplink) {
-      residents.forEach((resident) => {
-        const groupId = checkForGroupId(resident.id);
-        if (groupId != null) {
-          router.push(`/teams/${teamId}/dashboard/residents/${resident.id}`);
-        }
-      });
-    }
-  }, []);
 
   return loading ? (
     <div className={styles.spinner}>
@@ -107,7 +88,6 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
 interface Props {
   residents: Array<Resident>;
   teamId: string;
-  isFromDeeplink: boolean;
 }
 
 export default ResidentSummaryTable;

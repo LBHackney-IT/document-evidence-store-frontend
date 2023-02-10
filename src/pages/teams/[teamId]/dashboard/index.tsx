@@ -67,13 +67,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && (
-        <ResidentSummaryTable
-          isFromDeeplink={false}
-          residents={results}
-          teamId={team.id}
-        />
-      )}
+      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
     </Layout>
   );
 };

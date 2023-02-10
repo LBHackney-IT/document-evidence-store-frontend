@@ -30,15 +30,33 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
 }) => {
   const router = useRouter();
   const searchTerm = String(router.query['searchTerm']);
+  const integrationId = String(router.query['id']);
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const gateway = new InternalApiGateway();
+
+  const checkForExistingLink = async () => {
+    const linkedResident = await gateway.searchResidents(user.email, {
+      team: team.name,
+      searchQuery: searchTerm,
+      groupId: integrationId,
+    });
+
+    if (linkedResident.length == 1) {
+      router.push(
+        `/teams/${team.id}/dashboard/residents/${linkedResident[0].id}`
+      );
+    }
+  };
 
   const handleSearch = useCallback(async (searchQuery: string) => {
     try {
       setFormSearchQuery(searchQuery);
       setLoading(true);
-      const gateway = new InternalApiGateway();
+
+      checkForExistingLink();
+
       const data = await gateway.searchResidents(user.email, {
         team: team.name,
         searchQuery: searchQuery,
@@ -72,13 +90,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && (
-        <ResidentSummaryTable
-          isFromDeeplink={true}
-          residents={results}
-          teamId={team.id}
-        />
-      )}
+      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
     </Layout>
   );
 };
