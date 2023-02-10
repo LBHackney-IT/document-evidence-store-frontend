@@ -30,15 +30,15 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
 }) => {
   const router = useRouter();
   const searchTerm = String(router.query['searchTerm']);
-  const integrationId = String(router.query['id']);
+  const groupId = String(router.query['groupId']);
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const gateway = new InternalApiGateway();
 
-  const checkForExistingLinkByGroupId = async (id: string) => {
+  const checkForExistingLinkByGroupId = async (groupId: string) => {
     const linkedResident = await gateway.searchResidents(user.email, {
-      groupId: id,
+      groupId: groupId,
     });
 
     if (linkedResident.length == 1) {
@@ -65,7 +65,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   }, []);
 
   useEffect(() => {
-    checkForExistingLinkByGroupId(integrationId);
+    checkForExistingLinkByGroupId(groupId);
     setFormSearchQuery(searchTerm);
     handleSearch(searchTerm);
   }, []);

@@ -6,7 +6,7 @@ describe('Can search for a resident', () => {
       fixture: 'residents/linkedResident',
     });
     cy.visit(
-      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=test&id=527f152e-4f40-4c5a-bcc2-a78d9eb5cd8a`
+      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=test&groupId=527f152e-4f40-4c5a-bcc2-a78d9eb5cd8a`
     );
     cy.injectAxe();
   });
