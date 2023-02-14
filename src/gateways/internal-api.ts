@@ -85,8 +85,9 @@ export interface CreateResidentRequest {
 }
 
 export interface ResidentRequest {
-  team: string;
-  searchQuery: string;
+  team?: string | null;
+  searchQuery?: string | null;
+  groupId?: string | null;
 }
 
 type InternalApiDependencies = {

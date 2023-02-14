@@ -29,16 +29,35 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   feedbackUrl,
 }) => {
   const router = useRouter();
-  const searchTerm = String(router.query['searchTerm']);
+  const searchTermQuery = String(router.query['searchTerm']);
+  const groupIdQuery = router.query['groupId'];
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const gateway = new InternalApiGateway();
+
+  const checkForExistingLinkByGroupId = async (
+    groupId: string
+  ): Promise<boolean> => {
+    if (!groupIdQuery) {
+      return false;
+    }
+    const linkedResident = await gateway.searchResidents(user.email, {
+      groupId: groupId,
+    });
+    if (linkedResident.length == 1) {
+      router.push(
+        `/teams/${team.id}/dashboard/residents/${linkedResident[0].id}`
+      );
+      return true;
+    }
+    return false;
+  };
 
   const handleSearch = useCallback(async (searchQuery: string) => {
     try {
       setFormSearchQuery(searchQuery);
       setLoading(true);
-      const gateway = new InternalApiGateway();
       const data = await gateway.searchResidents(user.email, {
         team: team.name,
         searchQuery: searchQuery,
@@ -51,8 +70,11 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   }, []);
 
   useEffect(() => {
-    setFormSearchQuery(searchTerm);
-    handleSearch(searchTerm);
+    checkForExistingLinkByGroupId(String(groupIdQuery)).then((isFound) => {
+      if (!isFound) {
+        handleSearch(searchTermQuery);
+      }
+    });
   }, []);
 
   return (

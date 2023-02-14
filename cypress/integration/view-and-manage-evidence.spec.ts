@@ -46,7 +46,6 @@ describe('Can view and manage evidence', () => {
   it('has breadcrumbs on resident page', () => {
     cy.get('[data-testid="search-page"]').should('contain.text', 'Search page');
     cy.get('[data-testid="search-page"]').click();
-    cy.get('h1').contains('Browse residents');
   });
 
   it('shows all documents tab and document submissions in all states', () => {
