@@ -52,7 +52,6 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
     try {
       setFormSearchQuery(searchQuery);
       setLoading(true);
-
       const data = await gateway.searchResidents(user.email, {
         team: team.name,
         searchQuery: searchQuery,
@@ -66,7 +65,6 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
 
   useEffect(() => {
     checkForExistingLinkByGroupId(groupId);
-    setFormSearchQuery(searchTerm);
     handleSearch(searchTerm);
   }, []);
 
