@@ -15,7 +15,7 @@ describe('Can search for a resident', () => {
     cy.checkA11y();
   });
 
-  it('Deeplinks directly to resident page', () => {
+  it('Deeplinks directly to resident page if group id found', () => {
     cy.get('h1').should('contain', 'Namey McName');
     cy.get('h2').should('contain', 'All documents');
     cy.get('section[id="all-documents"] table')
