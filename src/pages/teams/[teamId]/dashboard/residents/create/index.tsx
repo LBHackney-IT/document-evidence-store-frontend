@@ -49,7 +49,10 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
             Create A Resident | Document Evidence Service | Hackney Council
           </title>
         </Head>
-        <CreateResidentForm createResident={createResident} />
+        <CreateResidentForm
+          createResident={createResident}
+          initialValues={{ name: '', phone: '', email: '' }}
+        />
       </Layout>
     </>
   );

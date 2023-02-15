@@ -27,6 +27,11 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   user,
 }) => {
   const router = useRouter();
+  const createResidentQueryValues = {
+    name: router.query['name'] ? String(router.query['name']) : null,
+    phone: router.query['phone'] ? String(router.query['phone']) : null,
+    email: router.query['phone'] ? String(router.query['phone']) : null,
+  };
 
   const createResident = useCallback(
     async (resident: CreateResidentRequest): Promise<void> => {
@@ -49,7 +54,10 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
             Create A Resident | Document Evidence Service | Hackney Council
           </title>
         </Head>
-        <CreateResidentForm createResident={createResident} />
+        <CreateResidentForm
+          createResident={createResident}
+          initialValues={createResidentQueryValues}
+        />
       </Layout>
     </>
   );

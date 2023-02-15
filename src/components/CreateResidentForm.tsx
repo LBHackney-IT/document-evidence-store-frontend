@@ -27,7 +27,10 @@ export const createResidentSchema = Yup.object().shape(
   [['email', 'phoneNumber']]
 );
 
-const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
+const CreateResidentForm: FunctionComponent<Props> = ({
+  createResident,
+  initialValues,
+}) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -75,9 +78,9 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
       )}
       <Formik
         initialValues={{
-          name: '',
-          email: '',
-          phoneNumber: '',
+          name: initialValues.name ? initialValues.name : '',
+          email: initialValues.email ? initialValues.email : '',
+          phoneNumber: initialValues.phone ? initialValues.phone : '',
         }}
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}
@@ -122,6 +125,11 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
 
 interface Props {
   createResident(resident: CreateResidentRequest): Promise<void>;
+  initialValues: {
+    name: string | null;
+    phone: string | null;
+    email: string | null;
+  };
 }
 
 export default CreateResidentForm;
