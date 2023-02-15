@@ -60,6 +60,10 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         handleSearch={handleSearch}
         teamId={team.id}
         isFromDeeplink={false}
+        name={''}
+        phone={''}
+        groupId={''}
+        email={''}
       />
       {(loading || results) && (
         <h2 className="lbh-heading-h3">
