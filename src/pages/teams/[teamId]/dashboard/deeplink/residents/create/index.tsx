@@ -30,7 +30,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   const createResidentQueryValues = {
     name: router.query['name'] ? String(router.query['name']) : null,
     phone: router.query['phone'] ? String(router.query['phone']) : null,
-    email: router.query['phone'] ? String(router.query['phone']) : null,
+    email: router.query['email'] ? String(router.query['email']) : null,
   };
 
   const createResident = useCallback(

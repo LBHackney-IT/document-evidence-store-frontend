@@ -127,8 +127,8 @@ interface Props {
   createResident(resident: CreateResidentRequest): Promise<void>;
   initialValues: {
     name: string | null;
-    phone: string | null;
     email: string | null;
+    phone: string | null;
   };
 }
 
