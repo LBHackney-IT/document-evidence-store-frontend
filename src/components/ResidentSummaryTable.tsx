@@ -88,7 +88,6 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
 interface Props {
   residents: Array<Resident>;
   teamId: string;
-  isFromDeeplink: boolean;
 }
 
 export default ResidentSummaryTable;

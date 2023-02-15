@@ -5,9 +5,28 @@ import styles from '../styles/ResidentSearch.module.scss';
 const ResidentSearchForm = (props: Props): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
+  const name = props.name;
+  const email = props.email;
+  const phone = props.phone;
 
   const navigateToCreateResident = () => {
-    router.push(`/teams/${props.teamId}/dashboard/residents/create`);
+    if (!props.isFromDeeplink) {
+      router.push(`/teams/${props.teamId}/dashboard/residents/create`);
+      return;
+    }
+
+    const queryParams = [
+      name && `name=${String(name)}`,
+      email && `email=${String(email)}`,
+      phone && `phone=${String(phone)}`,
+    ]
+      .filter(Boolean)
+      .join('&');
+
+    const route = `/teams/${props.teamId}/dashboard/deeplink/residents/create${
+      queryParams ? `?${queryParams}` : ''
+    }`;
+    router.push(route);
   };
 
   return (
@@ -45,6 +64,10 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
 interface Props {
   handleSearch(searchQuery: string): void;
   teamId: string;
+  isFromDeeplink: boolean;
+  name: string | string[] | undefined;
+  email: string | string[] | undefined;
+  phone: string | string[] | undefined;
 }
 
 export default ResidentSearchForm;

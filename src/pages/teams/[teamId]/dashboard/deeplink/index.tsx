@@ -31,6 +31,9 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   const router = useRouter();
   const searchTermQuery = String(router.query['searchTerm']);
   const groupIdQuery = router.query['groupId'];
+  const nameQuery = router.query['name'];
+  const phoneQuery = router.query['phone'];
+  const emailQuery = router.query['email'];
   const [results, setResults] = useState<Resident[]>();
   const [formSearchQuery, setFormSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
@@ -85,7 +88,14 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">Link Resident</h1>
-      <ResidentSearchForm handleSearch={handleSearch} teamId={team.id} />
+      <ResidentSearchForm
+        handleSearch={handleSearch}
+        teamId={team.id}
+        isFromDeeplink={true}
+        name={nameQuery}
+        phone={phoneQuery}
+        email={emailQuery}
+      />
       {(loading || results) && (
         <h2 className="lbh-heading-h3">Found results for: {formSearchQuery}</h2>
       )}
@@ -94,13 +104,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && (
-        <ResidentSummaryTable
-          residents={results}
-          teamId={team.id}
-          isFromDeeplink={true}
-        />
-      )}
+      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
     </Layout>
   );
 };

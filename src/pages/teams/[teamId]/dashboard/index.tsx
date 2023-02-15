@@ -56,7 +56,11 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">Browse residents</h1>
-      <ResidentSearchForm handleSearch={handleSearch} teamId={team.id} />
+      <ResidentSearchForm
+        handleSearch={handleSearch}
+        teamId={team.id}
+        isFromDeeplink={false}
+      />
       {(loading || results) && (
         <h2 className="lbh-heading-h3">
           Search results for: {formSearchQuery}
@@ -67,13 +71,7 @@ const BrowseResidents: NextPage<WithUser<BrowseResidentsProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && (
-        <ResidentSummaryTable
-          residents={results}
-          teamId={team.id}
-          isFromDeeplink={false}
-        />
-      )}
+      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
     </Layout>
   );
 };
