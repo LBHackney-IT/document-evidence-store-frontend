@@ -52,6 +52,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
               name: string;
               email: string;
               phoneNumber: string;
+              groupId: string;
             }>
           >
         | undefined
@@ -84,6 +85,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
           name: initialValues.name ? initialValues.name : '',
           email: initialValues.email ? initialValues.email : '',
           phoneNumber: initialValues.phone ? initialValues.phone : '',
+          groupId: initialValues.groupId ? initialValues.groupId : '',
         }}
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}

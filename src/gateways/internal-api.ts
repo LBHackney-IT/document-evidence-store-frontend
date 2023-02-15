@@ -35,6 +35,7 @@ export interface CreateResidentRequest {
   name: string;
   email: string | null;
   phoneNumber: string | null;
+  groupId: string | null;
 }
 
 export interface EvidenceRequestForm {
