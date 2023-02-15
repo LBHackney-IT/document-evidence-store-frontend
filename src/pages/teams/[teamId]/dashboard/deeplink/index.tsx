@@ -94,7 +94,13 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
+      {results && (
+        <ResidentSummaryTable
+          residents={results}
+          teamId={team.id}
+          isFromDeeplink={true}
+        />
+      )}
     </Layout>
   );
 };
