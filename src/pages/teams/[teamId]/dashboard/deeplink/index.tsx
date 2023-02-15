@@ -95,6 +95,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
         name={nameQuery}
         phone={phoneQuery}
         email={emailQuery}
+        groupId={groupIdQuery}
       />
       {(loading || results) && (
         <h2 className="lbh-heading-h3">Found results for: {formSearchQuery}</h2>

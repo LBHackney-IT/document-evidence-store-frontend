@@ -51,7 +51,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
         </Head>
         <CreateResidentForm
           createResident={createResident}
-          initialValues={{ name: '', phone: '', email: '' }}
+          initialValues={{ name: '', phone: '', email: '', groupId: '' }}
         />
       </Layout>
     </>

@@ -5,9 +5,7 @@ import styles from '../styles/ResidentSearch.module.scss';
 const ResidentSearchForm = (props: Props): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState('');
   const router = useRouter();
-  const name = props.name;
-  const email = props.email;
-  const phone = props.phone;
+  const { name, email, groupId, phone } = props;
 
   const navigateToCreateResident = () => {
     if (!props.isFromDeeplink) {
@@ -17,6 +15,7 @@ const ResidentSearchForm = (props: Props): JSX.Element => {
 
     const queryParams = [
       name && `name=${String(name)}`,
+      groupId && `groupId=${String(groupId)}`,
       email && `email=${String(email)}`,
       phone && `phone=${String(phone)}`,
     ]
@@ -68,6 +67,7 @@ interface Props {
   name: string | string[] | undefined;
   email: string | string[] | undefined;
   phone: string | string[] | undefined;
+  groupId: string | string[] | undefined;
 }
 
 export default ResidentSearchForm;
