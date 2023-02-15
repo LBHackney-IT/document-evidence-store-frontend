@@ -66,8 +66,11 @@ const CreateResidentForm: FunctionComponent<Props> = ({
     <>
       <h1 className="lbh-heading-h2">Create Contact</h1>
       <div className="lbh-heading-h6">
-        Please enter the details for contact information in the text boxes
-        below.
+        {initialValues.name
+          ? `Please confirm the contact information in the text
+        boxes below`
+          : `Please enter the details for contact information in the
+        text boxes below.`}
       </div>
       {submitError && (
         <span
