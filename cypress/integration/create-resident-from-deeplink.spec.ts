@@ -18,6 +18,7 @@ describe('Can allow a user to create a resident from the deeplink, prefilling th
 
   it('User can navigate to the create resident page, and the data is prefilled', () => {
     cy.get('.govuk-button').last().click();
+    cy.wait(1000);
     cy.get('#name').should('contain', 'Test User');
     cy.get('#phoneNumber').should('contain', '07975493012');
   });
