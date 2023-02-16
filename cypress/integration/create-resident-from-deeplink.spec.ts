@@ -7,7 +7,7 @@ describe('Can allow a user to create a resident from the deeplink, prefilling th
     });
 
     cy.visit(
-      `http://localdev.hackney.gov.uk:3000/teams/2/dashboard/deeplink?searchTerm=testUser&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&name=Test%20User&phone=07975493012`
+      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=testUser&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&name=Test%20User&phone=07975493012`
     );
     cy.injectAxe();
   });
