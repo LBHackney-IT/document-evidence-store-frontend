@@ -7,7 +7,7 @@ describe('Can add a resident to the DES database, prefilling the data from the d
     }).as('createResident');
 
     cy.visit(
-      `http://localhost:3000/teams/2/dashboard/residents/create??name=Test%20User&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&phone=07975493012`
+      `http://localhost:3000/teams/2/dashboard/residents/create?name=Test%20User&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&phone=07975493012`
     );
     cy.injectAxe();
   });
