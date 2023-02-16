@@ -1,13 +1,13 @@
-describe('Can add a resident to the DES database, prefilling the data from the deeplink', () => {
+describe('Can allow a user to create a resident from the deeplink, prefilling the information', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('POST', '/api/evidence/residents', {
-      fixture: 'residents/create',
-    }).as('createResident');
+    cy.intercept('/api/evidence/residents/search', {
+      fixture: 'residents/emptySearch',
+    });
 
     cy.visit(
-      `http://localhost:3000/teams/2/dashboard/residents/create?name=Test%20User&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&phone=07975493012`
+      `http://localdev.hackney.gov.uk:3000/teams/2/dashboard/deeplink?searchTerm=testUser&groupId=b4700106-f415-4209-9fd7-f707d9ba5432&name=Test%20User&phone=07975493012`
     );
     cy.injectAxe();
   });
@@ -16,10 +16,10 @@ describe('Can add a resident to the DES database, prefilling the data from the d
     cy.checkA11y();
   });
 
-  it('User can add a resident, with the data already prefilled', () => {
+  it('User can navigate to the create resident page, and the data is prefilled', () => {
+    cy.get('.govuk-button').last().click();
     cy.get('#name').should('contain', 'Test User');
     cy.get('#phoneNumber').should('contain', '07975493012');
-    cy.get('.govuk-button').first().click();
   });
 });
 
