@@ -27,7 +27,10 @@ export const createResidentSchema = Yup.object().shape(
   [['email', 'phoneNumber']]
 );
 
-const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
+const CreateResidentForm: FunctionComponent<Props> = ({
+  createResident,
+  initialValues,
+}) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -49,6 +52,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
               name: string;
               email: string;
               phoneNumber: string;
+              groupId: string;
             }>
           >
         | undefined
@@ -63,8 +67,11 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
     <>
       <h1 className="lbh-heading-h2">Create Contact</h1>
       <div className="lbh-heading-h6">
-        Please enter the details for contact information in the text boxes
-        below.
+        {initialValues.name
+          ? `Please confirm the contact information in the text
+        boxes below`
+          : `Please enter the details for contact information in the
+        text boxes below.`}
       </div>
       {submitError && (
         <span
@@ -75,9 +82,10 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
       )}
       <Formik
         initialValues={{
-          name: '',
-          email: '',
-          phoneNumber: '',
+          name: initialValues.name ? initialValues.name : '',
+          email: initialValues.email ? initialValues.email : '',
+          phoneNumber: initialValues.phone ? initialValues.phone : '',
+          groupId: initialValues.groupId ? initialValues.groupId : '',
         }}
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}
@@ -122,6 +130,12 @@ const CreateResidentForm: FunctionComponent<Props> = ({ createResident }) => {
 
 interface Props {
   createResident(resident: CreateResidentRequest): Promise<void>;
+  initialValues: {
+    name: string | null;
+    email: string | null;
+    phone: string | null;
+    groupId: string | null;
+  };
 }
 
 export default CreateResidentForm;

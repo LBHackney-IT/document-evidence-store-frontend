@@ -7,7 +7,7 @@ import Head from 'next/head';
 import { RequestAuthorizer } from 'src/services/request-authorizer';
 import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { TeamHelper } from 'src/services/team-helper';
-import { User } from '../../../../../../domain/user';
+import { User } from '../../../../../../../domain/user';
 import {
   CreateResidentRequest,
   InternalApiGateway,
@@ -27,6 +27,12 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
   user,
 }) => {
   const router = useRouter();
+  const createResidentQueryValues = {
+    name: router.query['name'] ? String(router.query['name']) : null,
+    phone: router.query['phone'] ? String(router.query['phone']) : null,
+    email: router.query['email'] ? String(router.query['email']) : null,
+    groupId: router.query['groupId'] ? String(router.query['groupId']) : null,
+  };
 
   const createResident = useCallback(
     async (resident: CreateResidentRequest): Promise<void> => {
@@ -51,7 +57,7 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
         </Head>
         <CreateResidentForm
           createResident={createResident}
-          initialValues={{ name: '', phone: '', email: '', groupId: '' }}
+          initialValues={createResidentQueryValues}
         />
       </Layout>
     </>

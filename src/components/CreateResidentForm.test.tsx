@@ -8,7 +8,8 @@ import userEvent from '@testing-library/user-event';
 const initialValues = {
   name: '',
   email: '',
-  phoneNumber: '',
+  phone: '',
+  groupId: '',
 };
 
 describe('CreateResidentForm', () => {
@@ -20,7 +21,10 @@ describe('CreateResidentForm', () => {
         onSubmit={jest.fn()}
       >
         <Form>
-          <CreateResidentForm createResident={jest.fn()} />
+          <CreateResidentForm
+            createResident={jest.fn()}
+            initialValues={initialValues}
+          />
           <button type="submit">Continue</button>
         </Form>
       </Formik>
@@ -34,7 +38,12 @@ describe('CreateResidentForm', () => {
   it('calls the submit handler with the right values', async () => {
     const createResident = jest.fn();
 
-    render(<CreateResidentForm createResident={createResident} />);
+    render(
+      <CreateResidentForm
+        createResident={createResident}
+        initialValues={initialValues}
+      />
+    );
 
     const user = userEvent.setup();
 
@@ -53,6 +62,7 @@ describe('CreateResidentForm', () => {
         name: 'Test Resident',
         email: 'resident@email',
         phoneNumber: '0700000',
+        groupId: '',
       })
     );
   });
@@ -61,7 +71,12 @@ describe('CreateResidentForm', () => {
       throw new Error('User already exists');
     });
 
-    render(<CreateResidentForm createResident={createResidentFailure} />);
+    render(
+      <CreateResidentForm
+        createResident={createResidentFailure}
+        initialValues={initialValues}
+      />
+    );
 
     const user = userEvent.setup();
 
@@ -78,5 +93,34 @@ describe('CreateResidentForm', () => {
     await waitFor(() => {
       expect(screen.getByText(/User already exists/gi)).toBeInTheDocument();
     });
+  });
+
+  it('prefills the values in the submission field when they are passed in', () => {
+    const prefilledValues = {
+      name: 'Test Resident',
+      email: 'test@test.com',
+      phone: '079154254',
+      groupId: '',
+    };
+
+    const { getByLabelText } = render(
+      <Formik
+        initialValues={initialValues}
+        validationSchema={createResidentSchema}
+        onSubmit={jest.fn()}
+      >
+        <Form>
+          <CreateResidentForm
+            createResident={jest.fn()}
+            initialValues={prefilledValues}
+          />
+          <button type="submit">Continue</button>
+        </Form>
+      </Formik>
+    );
+
+    expect(getByLabelText('Name')).toHaveValue('Test Resident');
+    expect(getByLabelText('Email Address')).toHaveValue('test@test.com');
+    expect(getByLabelText('Phone Number')).toHaveValue('079154254');
   });
 });

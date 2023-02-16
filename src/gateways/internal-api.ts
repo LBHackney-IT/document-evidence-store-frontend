@@ -31,12 +31,6 @@ export interface EvidenceRequestRequest {
   noteToResident: string;
 }
 
-export interface CreateResidentRequest {
-  name: string;
-  email: string | null;
-  phoneNumber: string | null;
-}
-
 export interface EvidenceRequestForm {
   resident: {
     name: string;
@@ -82,6 +76,7 @@ export interface CreateResidentRequest {
   name: string;
   email: string | null;
   phoneNumber: string | null;
+  groupId: string | null;
 }
 
 export interface ResidentRequest {
