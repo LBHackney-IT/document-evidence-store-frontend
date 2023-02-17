@@ -103,8 +103,8 @@ export class InternalApiGateway {
     userEmail: string,
     team: string,
     payload: CreateResidentRequest
-  ): Promise<Resident> {    
-    try {      
+  ): Promise<Resident> {
+    try {
       const { data } = await this.client.post<ResidentResponse>(
         '/api/evidence/residents',
         { ...payload, team },
@@ -117,7 +117,7 @@ export class InternalApiGateway {
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
       if (err.response) {
-        console.error(err);        
+        console.error(err);
         throw err.response.data;
       }
       throw new InternalServerError('Internal server error');
