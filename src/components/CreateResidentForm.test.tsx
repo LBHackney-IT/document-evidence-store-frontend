@@ -62,7 +62,7 @@ describe('CreateResidentForm', () => {
         name: 'Test Resident',
         email: 'resident@email',
         phoneNumber: '0700000',
-        groupId: '',
+        groupId: null,
       })
     );
   });
