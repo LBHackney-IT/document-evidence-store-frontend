@@ -4,7 +4,7 @@ import { Formik, Form, FormikState } from 'formik';
 import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import styles from '../styles/CreateResidentForm.module.scss';
-import { LoadingSpinner } from './LoadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
