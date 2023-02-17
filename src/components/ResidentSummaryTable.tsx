@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { Resident } from '../domain/resident';
 import Link from 'next/link';
-import styles from '../styles/ResidentSummaryTable.module.scss';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export const ResidentSummaryTable: FunctionComponent<Props> = ({
   residents,
@@ -24,19 +24,7 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
   const [loading, setIsLoading] = useState(false);
 
   return loading ? (
-    <div className={styles.spinner}>
-      <svg viewBox="0 0 42 42" stroke="#00703c" width="75" height="75">
-        <g fill="none" fill-rule="evenodd">
-          <g transform="translate(3 3)" stroke-width="5">
-            <circle stroke-opacity=".5" cx="18" cy="18" r="18" />
-            <path
-              d="M36 18c0-9.94-8.06-18-18-18"
-              transform="rotate(112.708 18 18)"
-            />
-          </g>
-        </g>
-      </svg>
-    </div>
+    <LoadingSpinner />
   ) : (
     <table className="govuk-table  lbh-table">
       <thead className="govuk-table__head">
