@@ -4,6 +4,7 @@ import { Formik, Form, FormikState } from 'formik';
 import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import styles from '../styles/CreateResidentForm.module.scss';
+import { LoadingSpinner } from './LoadingSpinner';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -33,14 +34,18 @@ const CreateResidentForm: FunctionComponent<Props> = ({
 }) => {
   const [submitError, setSubmitError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (resident: CreateResidentRequest) => {
     try {
+      setIsLoading(true);
       setSubmitError(false);
       await createResident(resident);
+      setIsLoading(false);
     } catch (err) {
       setErrorMessage(String(err));
       setSubmitError(true);
+      setIsLoading(false);
     }
   };
 
@@ -58,6 +63,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
         | undefined
     ) => void
   ) => {
+    setIsLoading(false);
     setSubmitError(false);
     setErrorMessage('');
     resetForm();
@@ -85,7 +91,7 @@ const CreateResidentForm: FunctionComponent<Props> = ({
           name: initialValues.name ? initialValues.name : '',
           email: initialValues.email ? initialValues.email : '',
           phoneNumber: initialValues.phone ? initialValues.phone : '',
-          groupId: initialValues.groupId ? initialValues.groupId : '',
+          groupId: initialValues.groupId ? initialValues.groupId : null,
         }}
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}
@@ -108,18 +114,25 @@ const CreateResidentForm: FunctionComponent<Props> = ({
                 name="phoneNumber"
                 error={touched.phoneNumber ? errors.phoneNumber : null}
               />
-              <button className="govuk-button lbh-button" type="submit">
-                Create
-              </button>
-              <button
-                className={`govuk-button govuk-secondary lbh-button lbh-button--secondary ${styles.cancelButton}`}
-                type="button"
-                onClick={() => {
-                  clearForm(resetForm);
-                }}
-              >
-                Clear
-              </button>
+              {isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <>
+                  <button className="govuk-button lbh-button" type="submit">
+                    Create
+                  </button>
+
+                  <button
+                    className={`govuk-button govuk-secondary lbh-button lbh-button--secondary ${styles.cancelButton}`}
+                    type="button"
+                    onClick={() => {
+                      clearForm(resetForm);
+                    }}
+                  >
+                    Clear
+                  </button>
+                </>
+              )}
             </Form>
           </>
         )}
