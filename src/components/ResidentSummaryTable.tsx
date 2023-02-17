@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo, useState } from 'react';
 import { Resident } from '../domain/resident';
 import Link from 'next/link';
-import { LoadingSpinner } from './LoadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 
 export const ResidentSummaryTable: FunctionComponent<Props> = ({
   residents,
