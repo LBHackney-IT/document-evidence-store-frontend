@@ -1,6 +1,7 @@
+import React, { FunctionComponent } from 'react';
 import styles from '../styles/LoadingSpinner.module.scss';
 
-export const LoadingSpinner = (): JSX.Element => {
+const LoadingSpinner: FunctionComponent = (): JSX.Element => {
   return (
     <div className={styles.spinner}>
       <svg viewBox="0 0 42 42" stroke="#00703c" width="75" height="75">
@@ -17,3 +18,5 @@ export const LoadingSpinner = (): JSX.Element => {
     </div>
   );
 };
+
+export default LoadingSpinner;
