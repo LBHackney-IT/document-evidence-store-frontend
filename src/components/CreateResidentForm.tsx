@@ -41,7 +41,6 @@ const CreateResidentForm: FunctionComponent<Props> = ({
       setIsLoading(true);
       setSubmitError(false);
       await createResident(resident);
-      setIsLoading(false);
     } catch (err) {
       setErrorMessage(String(err));
       setSubmitError(true);
