@@ -124,7 +124,7 @@ workflows:
           executor: cypress/base-12
           attach-workspace: true
           start: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping' #failing here
+          #wait-on: 'http-get://127.0.0.1:3000/api/ping' #failing here
           store_artifacts: true
 
       - assume-role-staging:
