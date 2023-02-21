@@ -110,7 +110,7 @@ workflows:
     jobs:
       - cypress/install: # Use Cypress step to install and cache dependencies
           build: npm run build
-          executor: cypress/base-16.1.0
+          executor: cypress/base-12
           post-checkout:
             - run: cp .env.sample .env
 
@@ -121,7 +121,7 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-          executor: cypress/base-16.1.0
+          executor: cypress/base-12
           attach-workspace: true
           start: npm run start:ci
           wait-on: 'http-get://127.0.0.1:3000/api/ping' #this ensures we wait until the server has started, but the command is failing. Restore with DOC-1360
