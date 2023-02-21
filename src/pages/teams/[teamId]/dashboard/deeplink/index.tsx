@@ -8,7 +8,7 @@ import ResidentSearchForm from '../../../../../components/ResidentSearchForm';
 import { useCallback, useEffect, useState } from 'react';
 import { InternalApiGateway } from '../../../../../gateways/internal-api';
 import { Resident } from '../../../../../domain/resident';
-import { ResidentSummaryTable } from '../../../../../components/ResidentSummaryTable';
+import { LinkResidentSummaryTable } from '../../../../../components/LinkResidentSummaryTable';
 import TableSkeleton from '../../../../../components/TableSkeleton';
 import { RequestAuthorizer } from '../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../services/team-helper';
@@ -94,7 +94,9 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
           columns={['ID', 'Name', 'Email', 'Mobile phone number']}
         />
       )}
-      {results && <ResidentSummaryTable residents={results} teamId={team.id} />}
+      {results && (
+        <LinkResidentSummaryTable residents={results} team={team} user={user} />
+      )}
     </Layout>
   );
 };

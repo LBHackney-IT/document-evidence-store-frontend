@@ -314,4 +314,26 @@ export class InternalApiGateway {
       throw new InternalServerError('Internal server error');
     }
   }
+
+  async linkResident(
+    userEmail: string,
+    residentId: string,
+    team: string,
+    groupId: string
+  ): Promise<void> {
+    try {
+      await this.client.post<void>(
+        '/api/evidence/residents/update-group-id',
+        { residentId, team, groupId },
+        {
+          headers: {
+            UserEmail: userEmail,
+          },
+        }
+      );
+    } catch (err) {
+      console.log(err);
+      throw err.response.data;
+    }
+  }
 }
