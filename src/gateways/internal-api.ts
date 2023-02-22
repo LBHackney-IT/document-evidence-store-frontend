@@ -332,8 +332,8 @@ export class InternalApiGateway {
         }
       );
     } catch (err) {
-      console.log(err);
-      throw err.response.data;
+      console.error(err);
+      throw new InternalServerError('Internal server error');
     }
   }
 }

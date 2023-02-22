@@ -501,4 +501,47 @@ describe('Internal API Gateway', () => {
       });
     });
   });
+
+  describe('linkResident', () => {
+    const residentId = '533a1fca-f970-40e8-853e-0daeff8b4b5d';
+    const team = 'some team';
+    const groupId = 'd62d5f69-7cc6-407e-a8a3-9a136d8070fa';
+    describe('when successful', () => {
+      beforeEach(() => {
+        client.post.mockResolvedValue({
+          data: {},
+        });
+      });
+
+      it('makes the api request', async () => {
+        await gateway.linkResident(
+          Constants.DUMMY_EMAIL,
+          residentId,
+          team,
+          groupId
+        );
+
+        expect(client.post).toHaveBeenCalledWith(
+          `/api/evidence/residents/update-group-id`,
+          { residentId, team, groupId },
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+        );
+      });
+    });
+    describe('when there is an error', () => {
+      it('returns internal server error', async () => {
+        client.post.mockRejectedValue(new Error('Internal server error'));
+        const functionCall = () =>
+          gateway.linkResident(
+            Constants.DUMMY_EMAIL,
+            residentId,
+            team,
+            groupId
+          );
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error')
+        );
+      });
+    });
+  });
 });
