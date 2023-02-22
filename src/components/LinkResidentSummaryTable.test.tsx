@@ -52,7 +52,7 @@ jest.mock('next/router', () => ({
   },
 }));
 
-jest.mock('next/link', () => ({ children }: any) => children);
+jest.mock('next/link', () => ({ children }: HTMLElement) => children);
 
 beforeEach(() => {
   render(
