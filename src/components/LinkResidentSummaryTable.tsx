@@ -60,7 +60,11 @@ export const LinkResidentSummaryTable: FunctionComponent<Props> = ({
         <tbody className="govuk-table__body">
           {rows.map((row: Resident) => (
             <>
-              <tr className="govuk-table__row" key={row.id} data-testid={`${row.id}-section`}>
+              <tr
+                className="govuk-table__row"
+                key={row.id}
+                data-testid={`${row.id}-section`}
+              >
                 <td className="govuk-table__cell">{row.referenceId}</td>
                 <td className="govuk-table__cell">
                   <Link href={'#'}>
