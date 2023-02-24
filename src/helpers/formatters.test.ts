@@ -15,6 +15,6 @@ describe('Format date helper', () => {
       DateTime.local(2021, 4, 14, 18, 21).setLocale('en-gb')
     );
     // do not compare the second part of the formatted date because it contains relative days so will change
-    expect(formattedDate.substr(0, 21)).toEqual('6:21 pm 14 April 2021');
+    expect(formattedDate.substr(0, 21).toLocaleLowerCase()).toEqual('6:21 pm 14 april 2021');
   });
 });

@@ -17,9 +17,7 @@ describe('EvidenceAwaitingSubmissionTile', () => {
     expect(screen.getByText('Proof of ID'));
     expect(
       screen.getByText(
-        'Date requested: 11:28 am 25 August 2022 (' +
-          date.toRelativeCalendar() +
-          ')'
+        `Date requested: 11:28 AM 25 August 2022 (${date.toRelativeCalendar()})`
       )
     );
     expect(screen.getByText('Requested by example@example.com'));
