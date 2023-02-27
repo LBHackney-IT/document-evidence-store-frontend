@@ -26,7 +26,7 @@ MockedNextApp.getInitialProps.mockImplementation(async () => pageProps);
 
 describe('CustomApp', () => {
   const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
-  const appProps = { Component: pageComponent, pageProps } as AppProps;
+  const appProps = { Component: pageComponent, pageProps } as AppProps<any>;
 
   it('renders the component with the right props', () => {
     render(<App {...appProps} />);
