@@ -8,7 +8,10 @@ import * as gtag from '../ga/gtag';
 
 registerDomainModels();
 
-const CustomApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
+const CustomApp = ({
+  Component,
+  pageProps,
+}: AppProps<any>): JSX.Element | null => {
   const router = useRouter();
 
   const handleRouteChange = (url: URL) => {

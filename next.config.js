@@ -1,5 +1,4 @@
 module.exports = {
-  webpack5: false,
   async headers() {
     return [
       {
@@ -20,14 +19,12 @@ module.exports = {
   distDir: 'build/_next',
   target: 'server',
   webpack: (config, { webpack, isServer }) => {
-    config.plugins.push(new webpack.IgnorePlugin(/.*\.test\.ts$/));
+    config.plugins.push(
+      new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
+    );
     // Fixes npm packages that depend on `fs` module
-    // if (!isServer) config.resolve.fallback.fs = false; -> to be used with webpack5
-    if (!isServer) {
-      config.node = {
-        fs: 'empty',
-      };
-    }
+    if (!isServer) config.resolve.fallback.fs = false;
+
     return config;
   },
   async redirects() {
