@@ -83,11 +83,6 @@
     "typescript": "^4.3.2",
     "uuid": "^8.3.2"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint -- --fix && pretty-quick --staged"
-    }
-  },
   "babel": {
     "presets": [
       "next/babel"
