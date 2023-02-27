@@ -17,7 +17,6 @@ module.exports = {
     ];
   },
   distDir: 'build/_next',
-  target: 'server',
   webpack: (config, { webpack, isServer }) => {
     config.plugins.push(
       new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
