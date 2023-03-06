@@ -52,7 +52,10 @@ describe('Can search for a resident', () => {
     cy.get('tbody tr').should('have.length', 3);
     cy.get('tbody').scrollIntoView();
 
-    cy.get('input').eq(1).click().get('input').eq(2).click();
+    cy.get('[data-testid="link-resident-summary-tr-0"]')
+      .click()
+      .get('[data-testid="link-resident-summary-tr-1"]')
+      .click();
 
     cy.get('[data-testid="link-residents-button"]')
       .contains('Link residents')

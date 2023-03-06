@@ -81,12 +81,12 @@ export const LinkResidentSummaryTable: FunctionComponent<Props> = ({
               </tr>
             </thead>
             <tbody className="govuk-table__body">
-              {rows.map((row: Resident) => (
+              {rows.map((row: Resident, index: number) => (
                 <>
                   <tr
                     className="govuk-table__row"
                     key={row.id}
-                    data-testid={`${row.id}-section`}
+                    data-testid={`link-resident-summary-tr-${index}`}
                   >
                     <Checkbox
                       label={''}
