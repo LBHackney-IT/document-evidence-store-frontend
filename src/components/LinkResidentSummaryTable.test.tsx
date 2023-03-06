@@ -66,10 +66,10 @@ beforeEach(() => {
 
 describe('LinkResidentSummaryTable', () => {
   it('renders the expected component, with the expected number of rows', () => {
-    expect(screen.getByTestId('testResidentId-1-section')).toHaveTextContent(
+    expect(screen.getByTestId('link-resident-summary-tr-0')).toHaveTextContent(
       'testResident One'
     );
-    expect(screen.getByTestId('testResidentId-2-section')).toHaveTextContent(
+    expect(screen.getByTestId('link-resident-summary-tr-1')).toHaveTextContent(
       'testResident Two'
     );
   });
