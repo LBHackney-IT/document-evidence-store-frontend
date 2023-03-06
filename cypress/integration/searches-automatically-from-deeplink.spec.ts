@@ -37,7 +37,7 @@ describe('Can search for a resident', () => {
 
     cy.get('tbody tr').should('have.length', 3);
 
-    cy.get('button')
+    cy.get('[data-testid="link-residents-button"]')
       .contains('Link residents')
       .click()
       .get('button')
@@ -50,10 +50,11 @@ describe('Can search for a resident', () => {
     cy.get('h2').should('contain', 'Found results');
 
     cy.get('tbody tr').should('have.length', 3);
+    cy.get('tbody').scrollIntoView();
 
     cy.get('input').eq(1).click().get('input').eq(2).click();
 
-    cy.get('button')
+    cy.get('[data-testid="link-residents-button"]')
       .contains('Link residents')
       .click()
       .get('button')
@@ -67,7 +68,7 @@ describe('Can search for a resident', () => {
 
     cy.get('tbody tr').should('have.length', 3);
 
-    cy.get('button')
+    cy.get('[data-testid="link-residents-button"]')
       .contains('Link residents')
       .click()
       .get('button')

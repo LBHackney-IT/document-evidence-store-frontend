@@ -112,6 +112,7 @@ export const LinkResidentSummaryTable: FunctionComponent<Props> = ({
             onClick={() => {
               handleOpenConfirmationDialog();
             }}
+            data-testid="link-residents-button"
           >
             Link residents
           </button>
