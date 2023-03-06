@@ -73,8 +73,9 @@ describe('LinkResidentSummaryTable', () => {
       'testResident Two'
     );
   });
-  it('opens the confirmation dialog when the selected resident is clicked', () => {
-    fireEvent.click(screen.getByText('testResident One'));
+
+  it('opens the confirmation dialog when the link button is clicked', () => {
+    fireEvent.click(screen.getByText('Link residents'));
     expect(
       screen.getByText(
         'Are you sure you want to link the Housing Register resident with this DES resident?'

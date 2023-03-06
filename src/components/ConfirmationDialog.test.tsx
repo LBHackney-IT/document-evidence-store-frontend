@@ -5,8 +5,7 @@ import { User } from 'src/domain/user';
 import { Team } from 'src/domain/team';
 
 const onDismiss = jest.fn();
-const redirect = '/test';
-const residentId = '1442354';
+const residentIds = ['1442354', '1213124'];
 const testTeam: Team = {
   name: 'test',
   googleGroup: '2',
@@ -46,8 +45,7 @@ describe('Confirm Dialog', () => {
         <ConfirmDialog
           onDismiss={onDismiss}
           open={true}
-          redirect={redirect}
-          residentId={residentId}
+          residentIds={residentIds}
           team={testTeam}
           user={testUser}
         />

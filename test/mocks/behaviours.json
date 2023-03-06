@@ -23,7 +23,8 @@
       "get-document-submissions-with-expired-claim",
       "get-resident",
       "get-download-url",
-      "get-download-url-heic"
+      "get-download-url-heic",
+      "link-and-merge-resident"
     ]
   }
 ]

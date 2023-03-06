@@ -8,20 +8,29 @@ import { useRouter } from 'next/router';
 
 const ConfirmationDialog: FunctionComponent<Props> = (props) => {
   const router = useRouter();
-  const { groupId } = router.query as {
+  const { groupId, name, email, phone } = router.query as {
     groupId: string;
+    name: string;
+    email: string;
+    phone: string;
   };
   const handleSubmit = async () => {
     try {
       const gateway = new InternalApiGateway();
-      await gateway.linkResident(
+      const response = await gateway.mergeAndLinkResident(
         props.user.email,
-        props.residentId,
         props.team.name,
-        groupId
+        groupId,
+        name,
+        email,
+        phone,
+        props.residentIds
       );
-
-      router.push(props.redirect, undefined, { shallow: true });
+      router.push(
+        `/teams/${props.team.id}/dashboard/residents/${response.resident.id}`,
+        undefined,
+        { shallow: true }
+      );
     } catch (err) {
       console.error(err);
     }
@@ -55,10 +64,9 @@ const ConfirmationDialog: FunctionComponent<Props> = (props) => {
 interface Props {
   open: boolean;
   onDismiss(): void;
-  residentId: string;
+  residentIds: string[];
   team: Team;
   user: User;
-  redirect: string;
 }
 
 export default ConfirmationDialog;

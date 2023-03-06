@@ -1,5 +1,6 @@
 const searchResidents = require('../../../cypress/fixtures/residents/search.json');
 const residentFixture = require('../../../cypress/fixtures/residents/getResident.json');
+const mergeAndLink = require('../../../cypress/fixtures/residents/merge-and-link.json');
 
 const getResidents = {
   id: 'get-residents',
@@ -31,8 +32,19 @@ const createResident = {
   },
 };
 
+const linkAndMergeResident = {
+  id: 'link-and-merge-resident',
+  url: 'api/v1/residents/merge-and-link',
+  method: 'POST',
+  response: {
+    status: 200,
+    body: mergeAndLink,
+  },
+};
+
 module.exports = {
   getResidents,
   getResident,
   createResident,
+  linkAndMergeResident,
 };
