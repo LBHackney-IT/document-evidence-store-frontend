@@ -502,10 +502,16 @@ describe('Internal API Gateway', () => {
     });
   });
 
-  describe('linkResident', () => {
-    const residentId = '533a1fca-f970-40e8-853e-0daeff8b4b5d';
+  describe('mergeAndLinkResident', () => {
     const team = 'some team';
-    const groupId = 'd62d5f69-7cc6-407e-a8a3-9a136d8070fa';
+    const groupId = 'f62d5f69-7cc6-407e-a8a3-9a136d8070fb';
+    const residentName = 'TestResident';
+    const residentEmail = 'resident@test';
+    const residentPhone = '070012';
+    const residentsToDelete = [
+      '265b5433-9b67-41ca-ba63-6f1db6fa41aa',
+      '8aeb4add-5497-4571-860c-2acdac9b2153',
+    ];
     describe('when successful', () => {
       beforeEach(() => {
         client.post.mockResolvedValue({
@@ -514,16 +520,28 @@ describe('Internal API Gateway', () => {
       });
 
       it('makes the api request', async () => {
-        await gateway.linkResident(
+        await gateway.mergeAndLinkResident(
           Constants.DUMMY_EMAIL,
-          residentId,
           team,
-          groupId
+          groupId,
+          residentName,
+          residentEmail,
+          residentPhone,
+          residentsToDelete
         );
 
         expect(client.post).toHaveBeenCalledWith(
-          `/api/evidence/residents/update-group-id`,
-          { residentId, team, groupId },
+          `/api/evidence/residents/merge-and-link`,
+          {
+            team,
+            groupId,
+            newResident: {
+              name: residentName,
+              email: residentEmail,
+              phoneNumber: residentPhone,
+            },
+            residentsToDelete,
+          },
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
       });
@@ -532,11 +550,14 @@ describe('Internal API Gateway', () => {
       it('returns internal server error', async () => {
         client.post.mockRejectedValue(new Error('Internal server error'));
         const functionCall = () =>
-          gateway.linkResident(
+          gateway.mergeAndLinkResident(
             Constants.DUMMY_EMAIL,
-            residentId,
             team,
-            groupId
+            groupId,
+            residentName,
+            residentEmail,
+            residentPhone,
+            residentsToDelete
           );
         await expect(functionCall).rejects.toEqual(
           new InternalServerError('Internal server error')

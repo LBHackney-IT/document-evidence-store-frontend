@@ -66,15 +66,16 @@ beforeEach(() => {
 
 describe('LinkResidentSummaryTable', () => {
   it('renders the expected component, with the expected number of rows', () => {
-    expect(screen.getByTestId('testResidentId-1-section')).toHaveTextContent(
+    expect(screen.getByTestId('link-resident-summary-tr-0')).toHaveTextContent(
       'testResident One'
     );
-    expect(screen.getByTestId('testResidentId-2-section')).toHaveTextContent(
+    expect(screen.getByTestId('link-resident-summary-tr-1')).toHaveTextContent(
       'testResident Two'
     );
   });
-  it('opens the confirmation dialog when the selected resident is clicked', () => {
-    fireEvent.click(screen.getByText('testResident One'));
+
+  it('opens the confirmation dialog when the link button is clicked', () => {
+    fireEvent.click(screen.getByText('Link residents'));
     expect(
       screen.getByText(
         'Are you sure you want to link the Housing Register resident with this DES resident?'

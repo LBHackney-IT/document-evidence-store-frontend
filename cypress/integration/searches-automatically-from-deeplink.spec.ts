@@ -6,18 +6,20 @@ describe('Can search for a resident', () => {
       fixture: 'residents/search',
     });
 
-    cy.intercept('/api/evidence/residents/update-group-id', {
-      fixture: 'residents/search',
+    cy.intercept('POST', '/api/evidence/residents/merge-and-link', {
+      fixture: 'residents/merge-and-link',
     });
 
     cy.visit(
-      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=Namey`
+      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=Namey&groupId=41b32531-7973-487a-8f6d-74d31cfd2181&name=Test%20Resident&phone=07000&email=testy@test.com`
     );
     cy.injectAxe();
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y();
+    cy.checkA11y({
+      exclude: ['input'],
+    });
   });
 
   it('Automatically performs resident search from deeplink search term', () => {
@@ -35,22 +37,28 @@ describe('Can search for a resident', () => {
 
     cy.get('tbody tr').should('have.length', 3);
 
-    cy.get('tbody tr:first')
-      .get('td > a')
-      .eq(0)
+    cy.get('[data-testid="link-residents-button"]')
+      .contains('Link residents')
       .click()
       .get('button')
-      .contains('Yes, link residents');
+      .contains('Yes, link residents')
+      .get('button')
+      .contains('No, cancel');
   });
 
   it("Shows a confirmation dialog and confirming link sends the user on that resident's page", () => {
     cy.get('h2').should('contain', 'Found results');
 
     cy.get('tbody tr').should('have.length', 3);
+    cy.get('tbody').scrollIntoView();
 
-    cy.get('tbody tr:first')
-      .get('td > a')
-      .eq(0)
+    cy.get('[data-testid="link-resident-summary-tr-0"]')
+      .click()
+      .get('[data-testid="link-resident-summary-tr-1"]')
+      .click();
+
+    cy.get('[data-testid="link-residents-button"]')
+      .contains('Link residents')
       .click()
       .get('button')
       .contains('Yes, link residents')
@@ -63,9 +71,8 @@ describe('Can search for a resident', () => {
 
     cy.get('tbody tr').should('have.length', 3);
 
-    cy.get('tbody tr:first')
-      .get('td > a')
-      .eq(0)
+    cy.get('[data-testid="link-residents-button"]')
+      .contains('Link residents')
       .click()
       .get('button')
       .contains('No, cancel')

@@ -310,22 +310,36 @@ export class InternalApiGateway {
     }
   }
 
-  async linkResident(
+  async mergeAndLinkResident(
     userEmail: string,
-    residentId: string,
     team: string,
-    groupId: string
-  ): Promise<void> {
+    groupId: string,
+    residentName: string,
+    residentEmail: string,
+    residentPhone: string,
+    residentsToDelete: string[]
+  ): Promise<{ resident: Resident; groupId: string }> {
+    const requestBody = {
+      team: team,
+      groupId: groupId,
+      newResident: {
+        name: residentName,
+        email: residentEmail,
+        phoneNumber: residentPhone,
+      },
+      residentsToDelete: residentsToDelete,
+    };
+
     try {
-      await this.client.post<void>(
-        '/api/evidence/residents/update-group-id',
-        { residentId, team, groupId },
-        {
-          headers: {
-            UserEmail: userEmail,
-          },
-        }
-      );
+      const { data } = await this.client.post<{
+        resident: Resident;
+        groupId: string;
+      }>('/api/evidence/residents/merge-and-link', requestBody, {
+        headers: {
+          UserEmail: userEmail,
+        },
+      });
+      return data;
     } catch (err) {
       console.error(err);
       throw new InternalServerError('Internal server error');
