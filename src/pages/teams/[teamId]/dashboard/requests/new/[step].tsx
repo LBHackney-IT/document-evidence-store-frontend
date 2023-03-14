@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
@@ -25,13 +25,14 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
-import {EvidenceRequest} from "../../../../../../domain/evidence-request";
+import { EvidenceRequest } from '../../../../../../domain/evidence-request';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
   team: Team;
   user: User;
   feedbackUrl: string;
+  baseUrl: string | undefined;
 };
 
 const schema = [
@@ -46,6 +47,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   team,
   user,
   feedbackUrl,
+  baseUrl,
 }) => {
   const { push, query, replace } = useRouter();
   const [complete, setComplete] = useState(false);
@@ -126,8 +128,11 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
         userRequestedBy: user.email,
         notificationEmail: user.email,
       };
-      const response: EvidenceRequest = await gateway.createEvidenceRequest(user.email, requestPayload);
-      
+      const response: EvidenceRequest = await gateway.createEvidenceRequest(
+        user.email,
+        requestPayload
+      );
+
       setComplete(true);
       setEvidenceRequestId(response.id);
     } catch (err) {
@@ -160,9 +165,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     return payload;
   };
 
-  const router = useRouter();
-  const link = router.pathname.substring(0, router.pathname.indexOf("/", 2))+"/residents/"+evidenceRequestId;
-  
+  const residentUploadLink = baseUrl + '/resident/' + evidenceRequestId;
+
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
@@ -176,7 +180,14 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
             An error has occured. Please try again.
           </span>
         ) : (
-            <p className="lbh-body">Thanks!<br />This is the upload link that was also sent to the resident: {link}</p>
+          <p className="lbh-body">
+            Thanks!
+            <br />
+            This is the upload link that was also sent to the resident:{' '}
+            <a href={residentUploadLink} target="blank">
+              {residentUploadLink}
+            </a>
+          </p>
         )
       ) : (
         <Formik
@@ -226,11 +237,12 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
 };
 
 export const getServerSideProps = withAuth<RequestsNewPageProps>(
-  async (ctx) => {
+  async (ctx: GetServerSidePropsContext) => {
     const { teamId } = ctx.query as {
       teamId: string;
     };
-    location.href;
+    const protocol = ctx.req.headers['referer']?.split(':')[0];
+    const baseUrl = protocol + '://' + ctx.req.headers.host;
 
     const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
@@ -257,7 +269,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
       team.name,
       true
     );
-    return { props: { documentTypes, team, user, feedbackUrl } };
+    return { props: { documentTypes, team, user, feedbackUrl, baseUrl } };
   }
 );
 
