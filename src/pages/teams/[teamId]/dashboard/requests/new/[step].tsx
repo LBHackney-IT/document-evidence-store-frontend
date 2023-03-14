@@ -25,6 +25,7 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
+import {EvidenceRequest} from "../../../../../../domain/evidence-request";
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
@@ -48,6 +49,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
 }) => {
   const { push, query, replace } = useRouter();
   const [complete, setComplete] = useState(false);
+  const [evidenceRequestId, setEvidenceRequestId] = useState<string>('');
   const [submitError, setSubmitError] = useState(false);
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>(['']);
   const [previousStepNumber, setPreviousStepNumber] = useState(0);
@@ -124,8 +126,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
         userRequestedBy: user.email,
         notificationEmail: user.email,
       };
-      await gateway.createEvidenceRequest(user.email, requestPayload);
+      const response: EvidenceRequest = await gateway.createEvidenceRequest(user.email, requestPayload);
+      
       setComplete(true);
+      setEvidenceRequestId(response.id);
     } catch (err) {
       setSubmitError(true);
     } finally {
@@ -156,6 +160,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     return payload;
   };
 
+  const router = useRouter();
+  const link = router.pathname.substring(0, router.pathname.indexOf("/", 2))+"/residents/"+evidenceRequestId;
+  
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
       <Head>
@@ -169,7 +176,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
             An error has occured. Please try again.
           </span>
         ) : (
-          <p className="lbh-body">Thanks!</p>
+            <p className="lbh-body">Thanks!<br />This is the upload link that was also sent to the resident: {link}</p>
         )
       ) : (
         <Formik
@@ -223,6 +230,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     const { teamId } = ctx.query as {
       teamId: string;
     };
+    location.href;
 
     const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
