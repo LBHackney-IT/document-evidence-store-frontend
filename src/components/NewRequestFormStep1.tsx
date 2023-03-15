@@ -120,7 +120,7 @@ const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {
             label="View request upload link"
             name="uploadLinkCheckbox"
             id="uploadLinkCheckbox"
-            value={"true"}
+            value={'true'}
           />
         </div>
       </div>

@@ -184,7 +184,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
           <p className="lbh-body">
             Thanks!
             <br />
-            {deliveryMethods.length?"This is the upload link that was also sent to the resident:":""}
+            {deliveryMethods.length
+              ? 'This is the upload link that was also sent to the resident:'
+              : ''}
             <a href={residentUploadLink} target="blank">
               {residentUploadLink}
             </a>
