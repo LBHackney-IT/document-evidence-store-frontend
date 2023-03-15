@@ -42,6 +42,7 @@ export interface EvidenceRequestForm {
   documentTypes: [];
   emailCheckbox: [];
   phoneNumberCheckbox: [];
+  uploadLinkCheckbox: [];
   noteToResident: string;
 }
 

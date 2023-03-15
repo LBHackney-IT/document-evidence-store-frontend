@@ -1,4 +1,4 @@
-import { NextPage } from 'next';
+import { GetServerSidePropsContext, NextPage } from 'next';
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import Layout from 'src/components/DashboardLayout';
@@ -25,12 +25,14 @@ import * as Yup from 'yup';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
 import { sanitiseNoteToResident } from 'src/helpers/sanitisers';
+import { EvidenceRequest } from '../../../../../../domain/evidence-request';
 
 type RequestsNewPageProps = {
   documentTypes: DocumentType[];
   team: Team;
   user: User;
   feedbackUrl: string;
+  baseUrl: string | undefined;
 };
 
 const schema = [
@@ -45,11 +47,14 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   team,
   user,
   feedbackUrl,
+  baseUrl,
 }) => {
   const { push, query, replace } = useRouter();
   const [complete, setComplete] = useState(false);
+  const [evidenceRequestId, setEvidenceRequestId] = useState<string>('');
   const [submitError, setSubmitError] = useState(false);
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>(['']);
+  const [linkDelivery, setLinkDelivery] = useState<boolean>(false);
   const [previousStepNumber, setPreviousStepNumber] = useState(0);
 
   const currentStep: number = Array.isArray(query.step)
@@ -76,6 +81,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     documentTypes: [],
     emailCheckbox: [],
     phoneNumberCheckbox: [],
+    uploadLinkCheckbox: [],
     noteToResident: '',
   };
 
@@ -124,8 +130,13 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
         userRequestedBy: user.email,
         notificationEmail: user.email,
       };
-      await gateway.createEvidenceRequest(user.email, requestPayload);
+      const response: EvidenceRequest = await gateway.createEvidenceRequest(
+        user.email,
+        requestPayload
+      );
+
       setComplete(true);
+      setEvidenceRequestId(response.id);
     } catch (err) {
       setSubmitError(true);
     } finally {
@@ -145,6 +156,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     ) {
       deliveryMethods.push('SMS');
     }
+
+    if (values.uploadLinkCheckbox.length !== 0) {
+      setLinkDelivery(true);
+    }
     setDeliveryMethods(deliveryMethods);
 
     const payload: EvidenceRequestRequest = {
@@ -155,6 +170,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
 
     return payload;
   };
+
+  const residentUploadLink = baseUrl + '/resident/' + evidenceRequestId;
 
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
@@ -169,7 +186,21 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
             An error has occured. Please try again.
           </span>
         ) : (
-          <p className="lbh-body">Thanks!</p>
+          <p className="lbh-body">
+            Thanks!
+            <br />
+            {linkDelivery && deliveryMethods.length
+              ? 'This is the upload link that was also sent to the resident:'
+              : ''}
+            <br />
+            {linkDelivery ? (
+              <a href={residentUploadLink} target="blank">
+                {residentUploadLink}
+              </a>
+            ) : (
+              ''
+            )}
+          </p>
         )
       ) : (
         <Formik
@@ -219,10 +250,12 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
 };
 
 export const getServerSideProps = withAuth<RequestsNewPageProps>(
-  async (ctx) => {
+  async (ctx: GetServerSidePropsContext) => {
     const { teamId } = ctx.query as {
       teamId: string;
     };
+    const protocol = ctx.req.headers['referer']?.split(':')[0];
+    const baseUrl = protocol + '://' + ctx.req.headers.host;
 
     const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
@@ -249,7 +282,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
       team.name,
       true
     );
-    return { props: { documentTypes, team, user, feedbackUrl } };
+    return { props: { documentTypes, team, user, feedbackUrl, baseUrl } };
   }
 );
 
