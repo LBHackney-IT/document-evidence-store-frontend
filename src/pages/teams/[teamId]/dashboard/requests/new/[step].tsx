@@ -190,8 +190,9 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
             Thanks!
             <br />
             {linkDelivery && deliveryMethods.length
-              ? 'This is the upload link that was also sent to the resident:<br />'
+              ? 'This is the upload link that was also sent to the resident:'
               : ''}
+            <br />
             {linkDelivery ? (
               <a href={residentUploadLink} target="blank">
                 {residentUploadLink}
