@@ -34,15 +34,24 @@ export const schemaNewRequestFormStep1 = Yup.object().shape(
     ),
     team: Yup.string(),
     reason: Yup.string(),
-    emailCheckbox: Yup.array().when(['phoneNumberCheckbox'], {
-      is: (phoneNumberCheckbox) =>
-        phoneNumberCheckbox && !phoneNumberCheckbox[0],
-      then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
-    }),
-    phoneNumberCheckbox: Yup.array().when(['emailCheckbox'], {
-      is: (emailCheckbox) => emailCheckbox && !emailCheckbox[0],
-      then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
-    }),
+    emailCheckbox: Yup.array().when(
+      ['phoneNumberCheckbox', 'uploadLinkCheckbox'],
+      {
+        is: (phoneNumberCheckbox, uploadLinkCheckbox) =>
+          phoneNumberCheckbox &&
+          !phoneNumberCheckbox[0] &&
+          !uploadLinkCheckbox[0],
+        then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
+      }
+    ),
+    phoneNumberCheckbox: Yup.array().when(
+      ['emailCheckbox', 'uploadLinkCheckbox'],
+      {
+        is: (emailCheckbox, uploadLinkCheckbox) =>
+          emailCheckbox && !emailCheckbox[0] && !uploadLinkCheckbox[0],
+        then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
+      }
+    ),
     deliveryMethods: Yup.array(),
   },
   [['emailCheckbox', 'phoneNumberCheckbox']]
@@ -106,6 +115,12 @@ const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {
                 ? errors.phoneNumberCheckbox
                 : null
             }
+          />
+          <Checkbox
+            label="View request upload link"
+            name="uploadLinkCheckbox"
+            id="uploadLinkCheckbox"
+            value={"true"}
           />
         </div>
       </div>
