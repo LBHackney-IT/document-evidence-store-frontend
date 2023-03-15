@@ -54,6 +54,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   const [evidenceRequestId, setEvidenceRequestId] = useState<string>('');
   const [submitError, setSubmitError] = useState(false);
   const [deliveryMethods, setDeliveryMethods] = useState<string[]>(['']);
+  const [linkDelivery, setLinkDelivery] = useState<boolean>(false);
   const [previousStepNumber, setPreviousStepNumber] = useState(0);
 
   const currentStep: number = Array.isArray(query.step)
@@ -155,6 +156,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     ) {
       deliveryMethods.push('SMS');
     }
+
+    if (values.uploadLinkCheckbox.length !== 0) {
+      setLinkDelivery(true);
+    }
     setDeliveryMethods(deliveryMethods);
 
     const payload: EvidenceRequestRequest = {
@@ -184,12 +189,16 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
           <p className="lbh-body">
             Thanks!
             <br />
-            {deliveryMethods.length
-              ? 'This is the upload link that was also sent to the resident:'
+            {linkDelivery && deliveryMethods.length
+              ? 'This is the upload link that was also sent to the resident:<br />'
               : ''}
-            <a href={residentUploadLink} target="blank">
-              {residentUploadLink}
-            </a>
+            {linkDelivery ? (
+              <a href={residentUploadLink} target="blank">
+                {residentUploadLink}
+              </a>
+            ) : (
+              ''
+            )}
           </p>
         )
       ) : (
