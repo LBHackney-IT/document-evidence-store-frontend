@@ -54,6 +54,41 @@ describe('Create evidence requests', () => {
     cy.wait('@postEvidenceRequests');
 
     cy.get('body').contains('Thanks!');
+    cy.get('p')
+      .contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6')
+      .should('not.exist');
+  });
+
+  it('User can view upload link', () => {
+    cy.get('nav').contains('Requests').click();
+    cy.get('h1').should('contain', 'Pending requests');
+
+    cy.get('a').contains('Make new request').click();
+
+    cy.get('h1').should('contain', 'Make a new request');
+
+    cy.get('label').contains('Name').next('input').type('Frodo Baggins');
+    cy.get('label').contains('Email').next('input').type('frodo@bagend.com');
+    cy.get('label')
+      .contains('Mobile phone number')
+      .next('input')
+      .type('+447123456780');
+
+    cy.get('label').contains('View request upload link').click();
+
+    cy.get('button').contains('Continue').click();
+    cy.get('[data-testid="proof-of-id"]').contains('Proof of ID').click();
+    cy.get('button').contains('Continue').click();
+
+    cy.get('[data-testid="textarea"]').type(
+      'Not all those who wander are lost'
+    );
+    cy.get('button').contains('Continue').click();
+
+    cy.wait('@postEvidenceRequests');
+
+    cy.get('body').contains('Thanks!');
+    cy.get('p').contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6');
   });
 
   it('shows an error when no delivery method was selected', () => {
