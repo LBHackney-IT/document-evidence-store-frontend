@@ -85,10 +85,14 @@ describe('Create evidence requests', () => {
     );
     cy.get('button').contains('Continue').click();
 
+    cy.get('[role=dialog]').within(() => {
+      cy.get('button').contains('Confirm').click();
+    });
+
     cy.wait('@postEvidenceRequests');
 
     cy.get('body').contains('Thanks!');
-    cy.get('p').contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6');
+    cy.get('a').contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6');
   });
 
   it('shows an error when no delivery method was selected', () => {
