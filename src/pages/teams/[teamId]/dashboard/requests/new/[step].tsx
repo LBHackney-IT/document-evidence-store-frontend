@@ -170,8 +170,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   };
 
   const residentUploadLink =
-    'https://' +
-    (global?.window && global.window.location.host) +
+    (global?.window && global.window.location.origin) +
     '/resident/' +
     evidenceRequestId;
 
