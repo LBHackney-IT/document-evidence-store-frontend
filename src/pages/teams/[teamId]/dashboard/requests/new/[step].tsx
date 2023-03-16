@@ -32,7 +32,6 @@ type RequestsNewPageProps = {
   team: Team;
   user: User;
   feedbackUrl: string;
-  baseUrl: string | undefined;
 };
 
 const schema = [
@@ -47,7 +46,6 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
   team,
   user,
   feedbackUrl,
-  baseUrl,
 }) => {
   const { push, query, replace } = useRouter();
   const [complete, setComplete] = useState(false);
@@ -171,7 +169,10 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
     return payload;
   };
 
-  const residentUploadLink = baseUrl + '/resident/' + evidenceRequestId;
+  const residentUploadLink =
+    (global?.window && global.window.location.origin) +
+    '/resident/' +
+    evidenceRequestId;
 
   return (
     <Layout teamId={team.id} feedbackUrl={feedbackUrl}>
@@ -254,9 +255,6 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     const { teamId } = ctx.query as {
       teamId: string;
     };
-    const protocol = ctx.req.headers['referer']?.split(':')[0];
-    const baseUrl = protocol + '://' + ctx.req.headers.host;
-
     const feedbackUrl = process.env.FEEDBACK_FORM_STAFF_URL as string;
 
     const user = new RequestAuthorizer().authoriseUser(ctx.req?.headers.cookie);
@@ -282,7 +280,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
       team.name,
       true
     );
-    return { props: { documentTypes, team, user, feedbackUrl, baseUrl } };
+    return { props: { documentTypes, team, user, feedbackUrl } };
   }
 );
 
