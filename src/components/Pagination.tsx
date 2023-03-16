@@ -38,7 +38,11 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
 
   return (
     <nav aria-label="pagination-nav" className={styles.pagination_nav}>
-      <ul className="lbh-pagination" aria-label="pagination-list">
+      <ul
+        className="lbh-pagination"
+        aria-label="pagination-list"
+        style={{ maxWidth: '100%' }}
+      >
         <div className={styles.pagination_page}>Page</div>
         <>{generatePaginationLinks()}</>
       </ul>
