@@ -1,5 +1,4 @@
 module.exports = {
-  webpack5: false,
   async headers() {
     return [
       {
@@ -19,15 +18,15 @@ module.exports = {
   },
   distDir: 'build/_next',
   target: 'server',
-  webpack: (config, { webpack, isServer }) => {
-    config.plugins.push(new webpack.IgnorePlugin(/.*\.test\.ts$/));
-    // Fixes npm packages that depend on `fs` module
-    // if (!isServer) config.resolve.fallback.fs = false; -> to be used with webpack5
+  webpack: (config, { isServer }) => {
+    // https://nsikakimoh.com/blog/resolve-the-module-not-found-error-nextjs-webpack
     if (!isServer) {
-      config.node = {
-        fs: 'empty',
+      // don't resolve 'fs' module on the client to prevent this error on build --> Error: Can't resolve 'fs'
+      config.resolve.fallback = {
+        fs: false,
       };
     }
+
     return config;
   },
   async redirects() {
