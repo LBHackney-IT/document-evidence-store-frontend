@@ -36,7 +36,7 @@
     "lbh-frontend": "^3.5.3",
     "luxon": "^1.25.0",
     "mime-types": "^2.1.28",
-    "next": "^12",
+    "next": "^12.3.4",
     "react": "^17.0.1",
     "react-dom": "17.0.1",
     "restana": "^4.8.0",
