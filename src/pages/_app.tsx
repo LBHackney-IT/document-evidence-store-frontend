@@ -15,7 +15,7 @@ interface CustomAppProps {
   };
 }
 
-const CustomApp = (props: AppProps) => {
+const CustomApp = (props: AppProps): JSX.Element | null => {
   const { Component } = props;
   const pageProps = props.pageProps as CustomAppProps;
 
