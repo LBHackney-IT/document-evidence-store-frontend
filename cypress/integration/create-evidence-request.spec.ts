@@ -53,7 +53,7 @@ describe('Create evidence requests', () => {
 
     cy.wait('@postEvidenceRequests');
 
-    cy.get('body').contains('Thanks!');
+    cy.get('body').contains('Thank you!');
     cy.get('p')
       .contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6')
       .should('not.exist');
@@ -91,7 +91,7 @@ describe('Create evidence requests', () => {
 
     cy.wait('@postEvidenceRequests');
 
-    cy.get('body').contains('Thanks!');
+    cy.get('body').contains('Thank you!');
     cy.get('a').contains('/resident/3fa85f64-5717-4562-b3fc-2c963f66afa6');
   });
 
@@ -170,7 +170,7 @@ describe('Create evidence requests', () => {
 
       cy.wait('@postEvidenceRequests');
 
-      cy.get('body').contains('Thanks!');
+      cy.get('body').contains('Thank you!');
     });
   });
 });
