@@ -59,8 +59,10 @@ jobs:
     steps:
       - cypress/install:
           build: npm run build
-      - post-checkout:
-          - run: cp .env.sample .env
+          post-checkout: cp .env.sample .env
+      # - run: 
+      #     name: Post checkout
+      #     command: cp .env.sample .env
 
   test:
     executor: node
