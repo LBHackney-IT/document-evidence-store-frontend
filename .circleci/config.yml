@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3.1.0
+  cypress: cypress-io/cypress@3.1.4
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -12,6 +12,9 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
+  cypress-executor:
+    docker:
+      - image: cypress/base:16.14.2-slim      
 
 references:
   workspace_root: &workspace_root '~'
@@ -51,6 +54,12 @@ commands:
             sls deploy -s <<parameters.stage>>
 
 jobs:
+  cypress-test:
+    executor: cypress-executor
+    steps: 
+      - cypress/run:
+          start-command: npm run start:ci
+
   test:
     executor: node
     environment:
@@ -126,17 +135,19 @@ workflows:
       #     start: npm run start:ci
       #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
       #     store_artifacts: true
-      - cypress/run:
-          start-command: npm run start:ci
+      # - cypress/run:
+      #     start-command: npm run start:ci
+
+      - cypress-test
 
       - test:
           requires:
-            - cypress/run
+            - cypress-test
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
-            - cypress/run
+            - cypress-test
             - test
           filters:
             branches:
