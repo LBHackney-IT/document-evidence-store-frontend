@@ -57,7 +57,7 @@ jobs:
   install-and-persist:
     executor: cypress-executor
     steps:
-      - cypress/install:
+      - cypress/install: {}
       - persist_to_workspace:
           root: *workspace_root
           paths:
