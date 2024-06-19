@@ -140,7 +140,7 @@ workflows:
 
       - cypress-test:
           name: Cypress Test
-          
+
       - test:
           requires:
             - cypress-test
