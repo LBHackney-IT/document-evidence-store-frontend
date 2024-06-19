@@ -132,7 +132,7 @@ workflows:
       - test:
           requires:
             - cypress/run
-          
+
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
