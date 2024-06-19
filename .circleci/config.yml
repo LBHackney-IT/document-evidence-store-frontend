@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   # cypress: cypress-io/cypress@2.2.0
-  cypress: cypress-io/cypress@3.0.0
+  cypress: cypress-io/cypress@3.1.4
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -109,24 +109,26 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - cypress/install: # Use Cypress step to install and cache dependencies
-          build: npm run build
-          executor: cypress/base-16-14-2-slim
+      # - cypress/install: # Use Cypress step to install and cache dependencies
+      #     build: npm run build
+      #     executor: cypress/base-16-14-2-slim
+
+
+      - cypress/run:
+          install-command: npm run build
           post-checkout:
             - run: cp .env.sample .env
+          # requires:
+          #   - cypress/install
+          executor: cypress/base-16-14-2-slim
+          attach-workspace: true
+          post-install: npm run start:ci
+          wait-on: 'http-get://127.0.0.1:3000/api/ping'
+          store_artifacts: true
 
       - test:
           requires:
-            - cypress/install
-
-      - cypress/run:
-          requires:
-            - cypress/install
-          executor: cypress/base-16-14-2-slim
-          attach-workspace: true
-          start: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping'
-          store_artifacts: true
+            - cypress/run
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
