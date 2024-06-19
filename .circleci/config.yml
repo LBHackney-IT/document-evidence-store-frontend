@@ -54,10 +54,15 @@ commands:
             sls deploy -s <<parameters.stage>>
 
 jobs:
-  # - run:
-  #     name: Post checkout
-  #     command: cp .env.sample .env
-
+  install-and-persist:
+    executor: cypress-executor
+    steps:
+      - cypress/install:
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - .cache/Cypress # this caches the Cypress binary for use across multiple jobs
+            - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
   test:
     executor: node
     environment:
@@ -115,15 +120,7 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - install-and-persist:
-          executor: cypress-executor
-          steps:
-            - cypress/install:
-            - persist_to_workspace:
-                root: *workspace_root
-                paths:
-                  - .cache/Cypress # this caches the Cypress binary for use across multiple jobs
-                  - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
+
 
       # - install-cypress:
       #     name: Install & Persist
@@ -133,6 +130,8 @@ workflows:
       #     executor: cypress-executor
       #     post-checkout:
       #       - run: cp .env.sample .env
+      - install-and-persist:
+          name: Install & Persist
 
       - test:
           requires:
@@ -148,8 +147,6 @@ workflows:
       #     store_artifacts: true
       - run-cypress-tests:
           executor: cypress-executor
-          requires:
-            - install-and-persist
           steps:
             - run: echo "This step assumes dependencies were installed using the cypress/install job"
             - attach_workspace:
