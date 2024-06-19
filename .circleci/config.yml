@@ -12,9 +12,9 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
-  # cypress-executor:
-  #   docker:
-  #     - image: cypress/base:16.14.2-slim
+  cypress-executor:
+    docker:
+      - image: cypress/base:14.17.6-slim
 
 references:
   workspace_root: &workspace_root '~'
@@ -55,7 +55,7 @@ commands:
 
 jobs:
   install-and-persist:
-    executor: cypress/default
+    executor: cypress-executor
     steps:
       - cypress/install:
           {}
@@ -67,7 +67,7 @@ jobs:
             - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
 
   run-cypress-tests:
-    executor: cypress/default
+    executor: cypress-executor
     steps:
       - run: echo "This step assumes dependencies were installed using the cypress/install job"
       - attach_workspace:
