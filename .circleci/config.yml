@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  # cypress: cypress-io/cypress@2.2.0
   cypress: cypress-io/cypress@3.1.4
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
@@ -13,9 +12,6 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
-  # cypress-executor:
-  #   docker:
-  #     - image: cypress/base:16.14.2-slim
 
 references:
   workspace_root: &workspace_root '~'
@@ -114,48 +110,29 @@ workflows:
     jobs:
       # - cypress/install: # Use Cypress step to install and cache dependencies
       #     build: npm run build
-      #     executor: cypress-executor
+      #     executor: cypress/base-16-14-2-slim
       #     post-checkout:
       #       - run: cp .env.sample .env
 
+      # - test:
+      #     requires:
+      #       - cypress/run
+
+      # - cypress/run:
+      #     requires:
+      #       - cypress/install
+      #     executor: cypress/base-16-14-2-slim
+      #     attach-workspace: true
+      #     start: npm run start:ci
+      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
+      #     store_artifacts: true
       - cypress/run:
-          steps:
-            - *attach_workspace
-            - run:
-                name: Copy vars
-                command: cp .env.sample .env
-            - run:
-                name: Build the application
-                command: npm run build
-            - run:
-                name: Start the application
-                command: npm run start:ci && npx wait-on@latest http-get://127.0.0.1:3000/api/ping
-            # - run:
-            #   name: Wait for the application to start
-            #   command: npx wait-on@latest http-get://127.0.0.1:3000/api/ping
-            # cypress-command: npx wait-on@latest http-get://127.0.0.1:3000/api/ping
-            # start-command: npm run start:ci
-            # wait-on: 'http-get://127.0.0.1:3000/api/ping'
-            - post-steps:
-                store_artifacts:
-                  - cypress/videos
-                  - cypress/screenshots
-          # pre-install:
-          #   - run: cp .env.sample .env
-          # pre-steps:
-          #   - run: npm run build
-          # install-command: npm run build
-          # node-version: 16.14.2
-          # requires:
-          #   - cypress/install
-          # executor: cypress-executor
-          # attach-workspace:
-          #   at: *attach_workspace
+          start-command: npm run start:ci
 
       - test:
           requires:
             - cypress/run
-
+          
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
