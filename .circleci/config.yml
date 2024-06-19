@@ -14,7 +14,7 @@ executors:
       - image: circleci/python:3.7
   cypress-executor:
     docker:
-      - image: cypress/base:16.14.2-slim      
+      - image: cypress/base:16.14.2-slim
 
 references:
   workspace_root: &workspace_root '~'
@@ -56,7 +56,7 @@ commands:
 jobs:
   cypress-test:
     executor: cypress-executor
-    steps: 
+    steps:
       - cypress/run:
           start-command: npm run start:ci
 
