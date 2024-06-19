@@ -136,7 +136,7 @@ workflows:
       - test:
           requires:
             - install-and-persist
-      - run-cypress-tests:          
+      - run-cypress-tests:
           requires:
             - install-and-persist
 
