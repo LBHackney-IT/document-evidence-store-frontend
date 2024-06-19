@@ -60,7 +60,7 @@ jobs:
       - cypress/install:
           build: npm run build
       - post-checkout:
-          - run: cp .env.sample .env              
+          - run: cp .env.sample .env
 
   test:
     executor: node
@@ -119,7 +119,7 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - install-cypress:          
+      - install-cypress:
           name: Install & Persist
 
       # - cypress/install: # Use Cypress step to install and cache dependencies
