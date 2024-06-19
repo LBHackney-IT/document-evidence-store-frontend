@@ -111,36 +111,29 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      # - cypress/install: # Use Cypress step to install and cache dependencies
-      #     build: npm run build
-      #     executor: cypress/base-16-14-2-slim
-      #     post-checkout:
-      #       - run: cp .env.sample .env
-
-      # - test:
-      #     requires:
-      #       - cypress/run
-
-      # - cypress/run:
-      #     requires:
-      #       - cypress/install
-      #     executor: cypress/base-16-14-2-slim
-      #     attach-workspace: true
-      #     start: npm run start:ci
-      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
-      #     store_artifacts: true
-      - cypress/run:
+      - cypress/install: # Use Cypress step to install and cache dependencies
+          build: npm run build
           executor: cypress-executor
-          start-command: npm run start:ci
+          post-checkout:
+            - run: cp .env.sample .env
 
       - test:
           requires:
-            - cypress/run
+            - cypress/install
+
+      - cypress/run-tests:
+          requires:
+            - cypress/install
+          executor: cypress/base-16-14-2-slim
+          attach-workspace: true
+          start: npm run start:ci
+          wait-on: 'http-get://127.0.0.1:3000/api/ping'
+          store_artifacts: true
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
-            - cypress/run
+            - cypress/run-tests
             - test
           filters:
             branches:
