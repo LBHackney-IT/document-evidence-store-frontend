@@ -113,7 +113,6 @@ workflows:
       #     build: npm run build
       #     executor: cypress/base-16-14-2-slim
 
-
       - cypress/run:
           install-command: npm run build
           post-checkout:
