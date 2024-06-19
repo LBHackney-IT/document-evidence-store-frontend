@@ -57,8 +57,8 @@ jobs:
   install-and-persist:
     executor: cypress-executor
     steps:
-      - cypress/install:
-          command: npm run build
+      - cypress/install: {}
+          # command: npm run build
       - persist_to_workspace:
           root: *workspace_root
           paths:
