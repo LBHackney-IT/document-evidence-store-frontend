@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3.1.4
+  cypress: cypress-io/cypress@2.2.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
@@ -12,9 +12,6 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
-  cypress-executor:
-    docker:
-      - image: cypress/base:14.17.6-slim
 
 references:
   workspace_root: &workspace_root '~'
@@ -54,27 +51,6 @@ commands:
             sls deploy -s <<parameters.stage>>
 
 jobs:
-  install-and-persist:
-    executor: cypress-executor
-    steps:
-      - cypress/install:
-          {}
-          # command: npm run build
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - .cache/Cypress # this caches the Cypress binary for use across multiple jobs
-            - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
-
-  run-cypress-tests:
-    executor: cypress-executor
-    steps:
-      - run: echo "This step assumes dependencies were installed using the cypress/install job"
-      - attach_workspace:
-          at: *workspace_root
-      - cypress/run-tests:
-          start-command: npm run start:ci
-
   test:
     executor: node
     environment:
@@ -132,27 +108,29 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - install-and-persist
+      - cypress/install: # Use Cypress step to install and cache dependencies
+          build: npm run build
+          executor: cypress/base-14-17-6-slim
+          post-checkout:
+            - run: cp .env.sample .env
+
       - test:
           requires:
-            - install-and-persist
-      - run-cypress-tests:
-          requires:
-            - install-and-persist
+            - cypress/install
 
-      # - cypress/run-tests:
-      #     requires:
-      #       - install-cypress
-      #     executor: cypress-executor
-      #     attach-workspace: true
-      #     start: npm run start:ci
-      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
-      #     store_artifacts: true
+      - cypress/run:
+          requires:
+            - cypress/install
+          executor: cypress/base-16-14-2-slim
+          attach-workspace: true
+          start: npm run start:ci
+          wait-on: 'http-get://127.0.0.1:3000/api/ping'
+          store_artifacts: true
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
-            - run-cypress-tests
+            - cypress/run
             - test
           filters:
             branches:
