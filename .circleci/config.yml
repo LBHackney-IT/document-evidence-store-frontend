@@ -132,23 +132,11 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      # - install-cypress:
-      #     name: Install & Persist
-
-      # - cypress/install: # Use Cypress step to install and cache dependencies
-      #     build: npm run build
-      #     executor: cypress-executor
-      #     post-checkout:
-      #       - run: cp .env.sample .env
-      - install-and-persist:
-          name: Install & Persist
-
+      - install-and-persist
       - test:
           requires:
             - install-and-persist
-
-      - run-cypress-tests:
-          name: Run Cypress tests
+      - run-cypress-tests:          
           requires:
             - install-and-persist
 
