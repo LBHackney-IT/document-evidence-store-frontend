@@ -60,7 +60,7 @@ jobs:
       - cypress/install:
           build: npm run build
           post-checkout: cp .env.sample .env
-      # - run: 
+      # - run:
       #     name: Post checkout
       #     command: cp .env.sample .env
 
