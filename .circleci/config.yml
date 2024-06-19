@@ -15,7 +15,7 @@ executors:
       - image: circleci/python:3.7
   # cypress-executor:
   #   docker:
-  #     - image: cypress/base:16.14.2-slim      
+  #     - image: cypress/base:16.14.2-slim
 
 references:
   workspace_root: &workspace_root '~'
@@ -118,12 +118,11 @@ workflows:
       #     post-checkout:
       #       - run: cp .env.sample .env
 
-
       - cypress/run:
-          pre-install: 
+          pre-install:
             - run: cp .env.sample .env
           install-command: npm run build
-          node-version: 16.14.2  
+          node-version: 16.14.2
           # requires:
           #   - cypress/install
           # executor: cypress-executor
@@ -132,7 +131,7 @@ workflows:
           start-command: npm run start:ci
           wait-on: 'http-get://127.0.0.1:3000/api/ping'
           store_artifacts:
-            - cypress/videos          
+            - cypress/videos
             - cypress/screenshots
 
       - test:
