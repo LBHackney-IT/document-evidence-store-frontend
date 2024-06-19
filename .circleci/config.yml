@@ -54,10 +54,9 @@ commands:
             sls deploy -s <<parameters.stage>>
 
 jobs:
-
-      # - run:
-      #     name: Post checkout
-      #     command: cp .env.sample .env
+  # - run:
+  #     name: Post checkout
+  #     command: cp .env.sample .env
 
   test:
     executor: node
@@ -150,15 +149,15 @@ workflows:
       - run-cypress-tests:
           executor: cypress-executor
           requires:
-            - install-and-persist          
+            - install-and-persist
           steps:
             - run: echo "This step assumes dependencies were installed using the cypress/install job"
             - attach_workspace:
                 at: *workspace_root
             - cypress/run-tests:
-                start-command: 'npm run start:ci'
+                start-command:
+                  'npm run start:ci'
                   # cypress-command: 'npx cypress run --parallel --record'
-
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
