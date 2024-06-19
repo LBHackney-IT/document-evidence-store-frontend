@@ -120,8 +120,6 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-
-
       # - install-cypress:
       #     name: Install & Persist
 
