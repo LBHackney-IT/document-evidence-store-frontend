@@ -119,20 +119,38 @@ workflows:
       #       - run: cp .env.sample .env
 
       - cypress/run:
-          pre-install:
-            - run: cp .env.sample .env
-          install-command: npm run build
-          node-version: 16.14.2
+          steps:
+            - *attach_workspace
+            - run: 
+                name: Copy vars
+                command: cp .env.sample .env   
+            - run: 
+                name: Build the application
+                command: npm run build  
+            - run:
+                name: Start the application
+                command: npm run start:ci && npx wait-on@latest http-get://127.0.0.1:3000/api/ping              
+            # - run:
+            #   name: Wait for the application to start
+            #   command: npx wait-on@latest http-get://127.0.0.1:3000/api/ping
+          # cypress-command: npx wait-on@latest http-get://127.0.0.1:3000/api/ping
+          # start-command: npm run start:ci
+          # wait-on: 'http-get://127.0.0.1:3000/api/ping'
+            - post-steps:
+                store_artifacts:
+                  - cypress/videos                       
+                  - cypress/screenshots
+          # pre-install:
+          #   - run: cp .env.sample .env
+          # pre-steps: 
+          #   - run: npm run build  
+          # install-command: npm run build
+          # node-version: 16.14.2
           # requires:
           #   - cypress/install
           # executor: cypress-executor
-          attach-workspace:
-            at: *attach_workspace
-          start-command: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping'
-          store_artifacts:
-            - cypress/videos
-            - cypress/screenshots
+          # attach-workspace:
+          #   at: *attach_workspace
 
       - test:
           requires:
