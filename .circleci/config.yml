@@ -14,7 +14,7 @@ executors:
       - image: circleci/python:3.7
   cypress-executor:
     docker:
-      - image: cypress/base:16.14.2-slim
+      - image: cypress/base:16.14.2
 
 references:
   workspace_root: &workspace_root '~'
