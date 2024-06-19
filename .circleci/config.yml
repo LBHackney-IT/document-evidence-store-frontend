@@ -12,6 +12,9 @@ executors:
   python:
     docker:
       - image: circleci/python:3.7
+  cypress-executor:
+    docker:
+      - image: cypress/base:14.17.6-slim      
 
 references:
   workspace_root: &workspace_root '~'
@@ -110,7 +113,7 @@ workflows:
     jobs:
       - cypress/install: # Use Cypress step to install and cache dependencies
           build: npm run build
-          executor: cypress/base-14-17-6
+          executor: cypress-executor
           post-checkout:
             - run: cp .env.sample .env
 
@@ -121,7 +124,7 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-          executor: cypress/base-16-14-2-slim
+          executor: cypress-executor
           attach-workspace: true
           start: npm run start:ci
           wait-on: 'http-get://127.0.0.1:3000/api/ping'
