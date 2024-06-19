@@ -54,12 +54,7 @@ commands:
             sls deploy -s <<parameters.stage>>
 
 jobs:
-  install-cypress:
-    executor: cypress-executor
-    steps:
-      - cypress/install:
-          build: npm run build
-          post-checkout: cp .env.sample .env
+
       # - run:
       #     name: Post checkout
       #     command: cp .env.sample .env
@@ -121,8 +116,18 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - install-cypress:
-          name: Install & Persist
+      - install-and-persist:
+          executor: cypress-executor
+          steps:
+            - cypress/install:
+            - persist_to_workspace:
+                root: *workspace_root
+                paths:
+                  - .cache/Cypress # this caches the Cypress binary for use across multiple jobs
+                  - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
+
+      # - install-cypress:
+      #     name: Install & Persist
 
       # - cypress/install: # Use Cypress step to install and cache dependencies
       #     build: npm run build
@@ -132,16 +137,28 @@ workflows:
 
       - test:
           requires:
-            - install-cypress
+            - install-and-persist
 
-      - cypress/run-tests:
-          requires:
-            - install-cypress
+      # - cypress/run-tests:
+      #     requires:
+      #       - install-cypress
+      #     executor: cypress-executor
+      #     attach-workspace: true
+      #     start: npm run start:ci
+      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
+      #     store_artifacts: true
+      - run-cypress-tests:
           executor: cypress-executor
-          attach-workspace: true
-          start: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping'
-          store_artifacts: true
+          requires:
+            - install-and-persist          
+          steps:
+            - run: echo "This step assumes dependencies were installed using the cypress/install job"
+            - attach_workspace:
+                at: *workspace_root
+            - cypress/run-tests:
+                start-command: 'npm run start:ci'
+                  # cypress-command: 'npx cypress run --parallel --record'
+
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
