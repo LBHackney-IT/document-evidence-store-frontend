@@ -63,6 +63,16 @@ jobs:
           paths:
             - .cache/Cypress # this caches the Cypress binary for use across multiple jobs
             - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
+
+  run-cypress-tests:
+    executor: cypress-executor
+    steps:
+      - run: echo "This step assumes dependencies were installed using the cypress/install job"
+      - attach_workspace:
+          at: *workspace_root
+      - cypress/run-tests:
+          start-command: npm run start:ci
+
   test:
     executor: node
     environment:
@@ -135,6 +145,11 @@ workflows:
           requires:
             - install-and-persist
 
+      - run-cypress-tests:
+          name: Run Cypress tests
+          requires:
+            - install-and-persist                  
+
       # - cypress/run-tests:
       #     requires:
       #       - install-cypress
@@ -143,16 +158,7 @@ workflows:
       #     start: npm run start:ci
       #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
       #     store_artifacts: true
-      - run-cypress-tests:
-          executor: cypress-executor
-          steps:
-            - run: echo "This step assumes dependencies were installed using the cypress/install job"
-            - attach_workspace:
-                at: *workspace_root
-            - cypress/run-tests:
-                start-command:
-                  'npm run start:ci'
-                  # cypress-command: 'npx cypress run --parallel --record'
+
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
