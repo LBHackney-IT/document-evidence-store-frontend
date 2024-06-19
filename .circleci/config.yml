@@ -55,7 +55,7 @@ commands:
 
 jobs:
   install-and-persist:
-    executor: cypress/default    
+    executor: cypress/default
     steps:
       - cypress/install:
           {}
@@ -67,7 +67,7 @@ jobs:
             - project # this caches your source code (from the `-checkout` command) for use across multiple jobs
 
   run-cypress-tests:
-    executor: cypress/default    
+    executor: cypress/default
     steps:
       - run: echo "This step assumes dependencies were installed using the cypress/install job"
       - attach_workspace:
