@@ -138,8 +138,9 @@ workflows:
       # - cypress/run:
       #     start-command: npm run start:ci
 
-      - cypress-test
-
+      - cypress-test:
+          name: Cypress Test
+          
       - test:
           requires:
             - cypress-test
