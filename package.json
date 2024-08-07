@@ -25,7 +25,7 @@
     "@testing-library/user-event": "^14.4.3",
     "@types/gtag.js": "0.0.8",
     "@types/styled-components": "^5.1.26",
-    "axios": "^0.21.2",
+    "axios": "^1.7.3",
     "babel-plugin-superjson-next": "^0.2.1",
     "file-type": "^16.5.4",
     "formik": "^2.2.5",
