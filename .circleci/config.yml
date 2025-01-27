@@ -7,7 +7,7 @@ orbs:
 executors:
   node:
     docker:
-      - image: circleci/node:16
+      - image: circleci/node:latest
     working_directory: ~/project
   python:
     docker:
@@ -121,7 +121,6 @@ workflows:
       - cypress/run:
           requires:
             - cypress/install
-          executor: cypress/base-16-14-2-slim
           attach-workspace: true
           start: npm run start:ci
           wait-on: 'http-get://127.0.0.1:3000/api/ping'
