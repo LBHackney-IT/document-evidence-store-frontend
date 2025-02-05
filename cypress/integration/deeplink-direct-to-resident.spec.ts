@@ -24,7 +24,7 @@ describe('Can search for a resident', () => {
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 14 January 2021 (2 years ago)'
+        'Date uploaded: 10:23 am 14 January 2021 (4 years ago)'
       )
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
