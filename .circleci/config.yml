@@ -108,7 +108,7 @@ jobs:
     steps:
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
       - cypress/install
-          # install-browsers: true
+        # install-browsers: true
       # - run:
       # name: Split E2E tests for parallel run
       # command: |
