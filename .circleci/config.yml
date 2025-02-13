@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   cypress: cypress-io/cypress@3.3.1
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
+  node: circleci/node@6.3.0
 
 executors:
   node:
@@ -22,6 +23,7 @@ references:
     attach_workspace:
       at: *workspace_root
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Commands ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 commands:
   assume-role-and-persist-workspace:
     description: 'Assumes deployment role and persists credentials across jobs'
@@ -53,27 +55,85 @@ commands:
             sudo npm i -g serverless
             sls deploy -s <<parameters.stage>>
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 jobs:
-  test:
+  build:
+    executor: node
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Build Next application
+          command: npm run build
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - build
+            - node_modules
+
+  lint-and-test:
     executor: node
     environment:
       NODE_ENV: ci
-
     steps:
       - *attach_workspace
       - checkout
-
       - run:
           name: Run linter
           command: npm run lint
-
       - run:
           name: Run prettier
           command: npm run prettier:test
-
       - run:
           name: Run unit tests
-          command: npm run test:unit -- --maxWorkers=2
+          command: npm run test:unit:ci
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test_results
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: coverage
+
+  run-cypress-e2e:
+      executor: node
+      resource_class: medium+
+      parallelism: 8
+      # parameters:
+      #   browser:
+      #     type: string
+      #     default: chrome
+      #   height:
+      #     type: integer
+      #     default: 768
+      #   width:
+      #     type: integer
+      #     default: 1366
+      steps:
+        # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
+        - cypress/install:
+            install-browsers: true
+        # - run:
+            # name: Split E2E tests for parallel run
+            # command: |
+            #   find cypress/e2e -type f -name "*.[jt]s" | sort | uniq > circleci_test_files.txt
+            #   # Use time-based splitting for maximum efficiency. Cypress expects files to be separated with commas
+            #   circleci tests split --split-by=timings circleci_test_files.txt | perl -pe 'chomp if eof' | tr '\n' ',' > circleci_test_slice.txt
+            #   cat circleci_test_slice.txt
+        - cypress/run-tests:
+            cypress-command: npx cypress run 
+            # --browser=<< parameters.browser >> --config viewportHeight=<< parameters.height >>,viewportWidth=<< parameters.width >> --reporter junit --reporter-options "mochaFile=cypress/results/results-[hash].xml" --spec "$(cat circleci_test_slice.txt)"
+        # - run:
+        #     name: Fix up JUnit output
+        #     command: node scripts/fix-junit-xml.js
+
+        # Store the test results so CircleCI can provide insights and do parallel test splitting
+        - store_test_results:
+            path: cypress/results
+
+        # We also store the test results as an artefact so we can download/access them when we need
+        - store_artifacts:
+            path: cypress/results
 
   assume-role-staging:
     executor: python
@@ -107,34 +167,40 @@ jobs:
       - deploy-lambda:
           stage: production
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Workflows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - cypress/install: # Use Cypress step to install and cache dependencies
-          build: npm run build
-          executor: cypress-executor
-          post-checkout:
-            - run: cp .env.sample .env
-
-      - test:
+      - lint-and-test
+      - build
+      - run-cypress-e2e:
           requires:
-            - cypress/install
+            - build
+      # - cypress/install: # Use Cypress step to install and cache dependencies
+      #     build: npm run build
+      #     executor: cypress-executor
+      #     post-checkout:
+      #       - run: cp .env.sample .env
 
-      - cypress/run:
-          requires:
-            - cypress/install
-          executor: cypress-executor
-          attach-workspace: true
-          start: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping'
-          store_artifacts: true
+      # - test:
+      #     requires:
+      #       - cypress/install
+
+      # - cypress/run:
+      #     requires:
+      #       - cypress/install
+      #     executor: cypress-executor
+      #     attach-workspace: true
+      #     start: npm run start:ci
+      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
+      #     store_artifacts: true
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
-            - cypress/run
-            - test
+            - run-cypress-e2e
+            - lint-and-test
           filters:
             branches:
               only:
