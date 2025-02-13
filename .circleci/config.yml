@@ -18,7 +18,7 @@ executors:
       - image: cypress/base:20.18.0
 
 references:
-  workspace_root: &workspace_root '~'
+  workspace_root: &workspace_root '.'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -172,8 +172,10 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - lint-and-test
       - build
+      - lint-and-test:
+          requires:
+            - build
       - run-cypress-e2e:
           requires:
             - build
