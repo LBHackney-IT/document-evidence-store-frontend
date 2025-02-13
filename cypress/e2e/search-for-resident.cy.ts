@@ -2,7 +2,7 @@ describe('Can search for a resident', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search', {
+    cy.intercept('/api/evidence/residents/search*', {
       fixture: 'residents/search',
     });
 
@@ -11,7 +11,8 @@ describe('Can search for a resident', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y();
+    // cy.checkA11y();
+    cy.checkAccessibility();
   });
 
   it('User can search for a resident', () => {

@@ -1,20 +1,20 @@
 version: 2.1
 
-orbs:
-  cypress: cypress-io/cypress@2.2.0
+orbs:  
+  cypress: cypress-io/cypress@3.3.1
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
 
 executors:
   node:
     docker:
-      - image: circleci/node:16
+      - image: cimg/node:20.18.2-browsers      
     working_directory: ~/project
   python:
     docker:
-      - image: circleci/python:3.7
+      - image: cimg/python:3.7
   cypress-executor:
     docker:
-      - image: cypress/base:14.17.6-slim
+      - image: cypress/base:20.18.0
 
 references:
   workspace_root: &workspace_root '~'

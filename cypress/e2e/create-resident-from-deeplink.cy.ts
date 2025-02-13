@@ -2,7 +2,7 @@ describe('Can allow a user to create a resident from the deeplink, prefilling th
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search', {
+    cy.intercept('/api/evidence/residents/search*', {
       fixture: 'residents/emptySearch',
     });
 
@@ -13,7 +13,8 @@ describe('Can allow a user to create a resident from the deeplink, prefilling th
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y();
+    // cy.checkA11y();
+    cy.checkAccessibility();
   });
 
   it('User can navigate to the create resident page, and the data is prefilled', () => {

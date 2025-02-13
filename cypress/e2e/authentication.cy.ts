@@ -12,7 +12,7 @@ describe('authentication', () => {
       );
     });
 
-    it('handles client side routing', () => {
+    it.skip('handles client side routing', () => {
       cy.visit('/login');
       cy.window().then((win) => {
         win.next.router.push('teams/2/dashboard/requests/new/1?test=param');

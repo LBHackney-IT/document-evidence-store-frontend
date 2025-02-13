@@ -11,7 +11,7 @@ describe('Create evidence requests', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y();
+    cy.checkAccessibility();
   });
 
   it('User can fill out new request form', () => {

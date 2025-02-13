@@ -2,12 +2,12 @@ describe('Can search for a resident', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search', {
-      fixture: 'residents/search',
-    });
-
     cy.intercept('POST', '/api/evidence/residents/merge-and-link', {
       fixture: 'residents/merge-and-link',
+    });
+
+    cy.intercept('/api/evidence/residents/search*', {
+      fixture: 'residents/search',
     });
 
     cy.visit(
@@ -17,9 +17,10 @@ describe('Can search for a resident', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y({
-      exclude: ['input'],
-    });
+    cy.checkAccessibility();
+    // cy.checkA11y({
+    //   exclude: ['input'],
+    // });
   });
 
   it('Automatically performs resident search from deeplink search term', () => {

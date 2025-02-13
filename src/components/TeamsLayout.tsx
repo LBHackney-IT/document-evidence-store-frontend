@@ -11,6 +11,8 @@ const TeamsLayout: FunctionComponent = (props) => {
   const { user } = useContext(UserContext);
   if (!user) return <></>;
 
+  // Already existing issue not impacting application. Added to backlog for review.
+  // eslint-disable-next-line
   const router = useRouter();
   const { teamId } = router.query as {
     teamId: string;

@@ -12,7 +12,8 @@ describe('Can add a resident to the DES database', () => {
     });
 
     it('Has no detectable accessibility issues', () => {
-      cy.checkA11y();
+      // cy.checkA11y();
+      cy.checkAccessibility();
     });
 
     it('User can add a resident', () => {

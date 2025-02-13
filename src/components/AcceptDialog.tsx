@@ -71,10 +71,14 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
       } catch (err) {
         console.error(err);
         setSubmitError(true);
-        if (err.error) {
-          router.push(props.redirect, undefined, { shallow: true });
+        if (err instanceof Error) {
+          if ('error' in err) {
+            router.push(props.redirect, undefined, { shallow: true });
+          } else {
+            setErrorMessage(err.message);
+          }
         } else {
-          setErrorMessage(err);
+          setErrorMessage('An unknown error occurred');
         }
       }
     },
