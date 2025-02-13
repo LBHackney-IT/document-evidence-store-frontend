@@ -109,15 +109,19 @@ jobs:
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
       - cypress/install
         # install-browsers: true
-      # - run:
-      # name: Split E2E tests for parallel run
+      - run:
+          name: Run application
+          command: npm run start:ci
+          wait-on: 'http-get://127.0.0.1:3000/api/ping'
+
       # command: |
       #   find cypress/e2e -type f -name "*.[jt]s" | sort | uniq > circleci_test_files.txt
       #   # Use time-based splitting for maximum efficiency. Cypress expects files to be separated with commas
       #   circleci tests split --split-by=timings circleci_test_files.txt | perl -pe 'chomp if eof' | tr '\n' ',' > circleci_test_slice.txt
       #   cat circleci_test_slice.txt
-      - cypress/run-tests:
-          cypress-command: npm run start:ci & wait-on http-get://127.0.0.1:3000/api/ping
+      - cypress/run-tests:          
+          cypress-command: npx cypress run
+          # wait-on: 'http-get://127.0.0.1:3000/api/ping'
           # cypress-command: npx cypress run
           # --browser=<< parameters.browser >> --config viewportHeight=<< parameters.height >>,viewportWidth=<< parameters.width >> --reporter junit --reporter-options "mochaFile=cypress/results/results-[hash].xml" --spec "$(cat circleci_test_slice.txt)"
       # - run:
