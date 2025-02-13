@@ -73,11 +73,7 @@ jobs:
 
   lint-and-test:
     executor: node
-    environment:
-      NODE_ENV: ci
     steps:
-      - *attach_workspace
-      - checkout
       - run:
           name: Run linter
           command: npm run lint
@@ -98,7 +94,7 @@ jobs:
   run-cypress-e2e:
     executor: node
     resource_class: medium+
-    parallelism: 8
+    # parallelism: 8
     # parameters:
     #   browser:
     #     type: string
@@ -111,8 +107,8 @@ jobs:
     #     default: 1366
     steps:
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
-      - cypress/install:
-          install-browsers: true
+      - cypress/install
+          # install-browsers: true
       # - run:
       # name: Split E2E tests for parallel run
       # command: |
