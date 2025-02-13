@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 
 module.exports = {
-
   async headers() {
     return [
       {
@@ -21,7 +20,9 @@ module.exports = {
   },
   distDir: 'build/_next',
   webpack: (config, { isServer }) => {
-    config.plugins.push(new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ }));
+    config.plugins.push(
+      new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
+    );
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {
       config.resolve.fallback = {
