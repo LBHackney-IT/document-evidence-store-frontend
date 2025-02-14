@@ -71,6 +71,7 @@ jobs:
 
   lint-and-test:
     executor: node
+    resource_class: medium+
     steps:
       - checkout
       - attach_workspace:
