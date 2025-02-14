@@ -20,7 +20,8 @@
     "test:e2e:ci": "cypress run",
     "test:e2e:dev": "cypress open",
     "mock": "mocks-server",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start-and-test": "start-server-and-test 'npm run start:ci' http://localhost:3000 'npm run test:e2e:ci'"
   },
   "dependencies": {
     "@reach/alert": "^0.13.2",
@@ -86,6 +87,7 @@
     "pretty-quick": "^3.1.0",
     "sass": "^1.29.0",
     "serverless": "^2.12.0",
+    "start-server-and-test": "^2.0.10",
     "ts-jest": "^26.4.4",
     "typescript": "^4.9.5",
     "uuid": "^8.3.2",
