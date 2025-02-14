@@ -89,9 +89,9 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: test_results
-            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
+          # environment:
+          #   JEST_JUNIT_OUTPUT_DIR: test_results
+          #   JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -121,11 +121,11 @@ jobs:
       - run:
           name: Run application
           command: npm run start:ci
-          # wait-on: 'http-get://127.0.0.1:3000/api/ping'
+          wait-on: 'http-get://127.0.0.1:3000/api/ping'
 
-      - run:
-          name: Wait for application to be ready
-          command: npx wait-on http-get://127.0.0.1:3000/api/ping
+      # - run:
+      #     name: Wait for application to be ready
+      #     command: npx wait-on http-get://127.0.0.1:3000/api/ping
 
       # command: |
       #   find cypress/e2e -type f -name "*.[jt]s" | sort | uniq > circleci_test_files.txt
