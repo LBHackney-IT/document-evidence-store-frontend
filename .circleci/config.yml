@@ -57,7 +57,8 @@ jobs:
     executor: node
     steps:
       - checkout
-      - node/install-packages
+      # - node/install-packages
+      - cypress/install
       - run:
           name: Build Next application
           command: npm run build
