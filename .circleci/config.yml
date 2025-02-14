@@ -61,9 +61,9 @@ jobs:
     executor: node
     steps:
       - checkout
-      # - run:
-      #     name: Copy envs
-      #     command: cp .env.sample .env
+      - run:
+          name: Copy envs
+          command: cp .env.sample .env
       - node/install-packages
       - run:
           name: Build Next application
@@ -78,6 +78,11 @@ jobs:
     executor: node
     steps:
       - checkout
+      - attach_workspace:
+          at: *workspace_root      
+      - run:
+          name: Install
+          command: npm install
       - run:
           name: Run linter
           command: npm run lint
