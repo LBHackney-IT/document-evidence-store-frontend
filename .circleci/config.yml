@@ -61,13 +61,13 @@ jobs:
     executor: node
     steps:
       - checkout
-      # - run: 
+      # - run:
       #     name: Copy envs
       #     command: cp .env.sample .env
       - node/install-packages
       - run:
           name: Build Next application
-          command: npm run build          
+          command: npm run build
       - persist_to_workspace:
           root: *workspace_root
           paths:
