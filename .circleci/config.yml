@@ -77,7 +77,7 @@ jobs:
   lint-and-test:
     executor: node
     steps:
-      - checkout      
+      - checkout
       - run:
           name: Run linter
           command: npm run lint
