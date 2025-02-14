@@ -81,11 +81,8 @@ jobs:
       - attach_workspace:
           at: *workspace_root
       - run:
-          name: Install
-          command: npm install
-      - run:
           name: Run linter
-          command: npm run lint
+          command: npm run lint:ci
       - run:
           name: Run prettier
           command: npm run prettier:test
