@@ -79,7 +79,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - run:
           name: Install
           command: npm install
