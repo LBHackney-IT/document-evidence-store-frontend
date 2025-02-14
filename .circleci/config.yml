@@ -138,9 +138,8 @@ jobs:
       #   cat circleci_test_slice.txt
 
       - cypress/run-tests:
-          start-command: npm run start:ci &
-            npx wait-on http-get://127.0.0.1:3000/api/ping
-          cypress-command: npx cypress run
+          start-command: npm run start:ci
+          cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
       # wait-on: 'http-get://127.0.0.1:3000/api/ping'
       # cypress-command: npx cypress run
       # --browser=<< parameters.browser >> --config viewportHeight=<< parameters.height >>,viewportWidth=<< parameters.width >> --reporter junit --reporter-options "mochaFile=cypress/results/results-[hash].xml" --spec "$(cat circleci_test_slice.txt)"
@@ -200,6 +199,12 @@ workflows:
       - run-cypress-e2e:
           requires:
             - build
+      # - cypress/run: 
+      #     start-command: npm run start:ci
+      #     cypress-command: npx cypress run
+      #     requires:
+      #       - build
+      
       # - cypress/install: # Use Cypress step to install and cache dependencies
       #     build: npm run build
       #     executor: cypress-executor
