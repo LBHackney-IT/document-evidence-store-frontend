@@ -199,12 +199,12 @@ workflows:
       - run-cypress-e2e:
           requires:
             - build
-      # - cypress/run: 
+      # - cypress/run:
       #     start-command: npm run start:ci
       #     cypress-command: npx cypress run
       #     requires:
       #       - build
-      
+
       # - cypress/install: # Use Cypress step to install and cache dependencies
       #     build: npm run build
       #     executor: cypress-executor
