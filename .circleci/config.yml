@@ -38,7 +38,7 @@ commands:
           root: *workspace_root
           paths:
             - .aws
-            
+
   deploy-lambda:
     description: 'Deploys application'
     parameters:
@@ -166,7 +166,7 @@ workflows:
 
       - run-cypress-e2e:
           requires:
-            - build 
+            - build
 
       - sonar-scan:
           context: SonarCloud
