@@ -21,7 +21,7 @@
     "test:e2e:dev": "cypress open",
     "mock": "mocks-server",
     "prepare": "husky install",
-    "start-and-test": "start-server-and-test start:ci test:e2e:ci"
+    "start-and-test": "start-server-and-test 'start:ci' http://localhost:3000 'test:e2e:ci'"
   },
   "dependencies": {
     "@reach/alert": "^0.13.2",

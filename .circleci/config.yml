@@ -125,7 +125,7 @@ jobs:
       #       npx wait-on http-get://127.0.0.1:3000/api/ping
       - run:
           name: Start application and run Cypress tests
-          command: npm run start-and-test
+          command: npx run start-and-test
 
       # - run:
       #     name: Wait for application to be ready
