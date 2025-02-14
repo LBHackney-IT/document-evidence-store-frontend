@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import { NextPage } from 'next';
 import NextApp, { AppInitialProps, AppProps } from 'next/app';
 import React from 'react';
-import { mocked } from 'ts-jest/utils';
+import { mocked } from 'jest-mock';
 import App from './_app';
 
 jest.mock('../services/request-authorizer');
