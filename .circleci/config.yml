@@ -71,7 +71,8 @@ jobs:
 
   lint-and-test:
     executor: node
-    resource_class: medium+
+    # resource_class: medium+
+    # parallelism: 2
     steps:
       - checkout
       - attach_workspace:
@@ -84,7 +85,7 @@ jobs:
           command: npm run prettier:test
       - run:
           name: Run unit tests
-          command: npm run test:unit
+          command: npm run test:unit -- --maxWorkers=2
           # environment:
           #   JEST_JUNIT_OUTPUT_DIR: test_results
           #   JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
