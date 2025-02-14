@@ -77,7 +77,7 @@ jobs:
   lint-and-test:
     executor: node
     steps:
-      - cypress/install
+      - checkout      
       - run:
           name: Run linter
           command: npm run lint
@@ -177,9 +177,10 @@ workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - lint-and-test
       - build
-
+      - lint-and-test:
+          requires:
+            - build
       - run-cypress-e2e:
           requires:
             - build
