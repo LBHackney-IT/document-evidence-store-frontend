@@ -116,7 +116,7 @@ jobs:
       - attach_workspace:
           at: *workspace_root
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
-      # - cypress/install
+      - cypress/install
       # install-browsers: true
       - run:
           name: Run application
