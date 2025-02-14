@@ -4,6 +4,7 @@ orbs:
   cypress: cypress-io/cypress@3.3.1
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
   node: circleci/node@6.3.0
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 
 executors:
   node:
@@ -60,9 +61,6 @@ jobs:
       - checkout
       - node/install-packages
       - run:
-          name: Copy envs
-          command: cp .env.sample .env
-      - run:
           name: Build Next application
           command: npm run build
       - persist_to_workspace:
@@ -100,6 +98,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: *workspace_root
+      - run:
+          name: Copy envs
+          command: cp .env.sample .env      
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
       - cypress/install
       - cypress/run-tests:
@@ -113,6 +114,12 @@ jobs:
       # We also store the test results as an artefact so we can download/access them when we need
       - store_artifacts:
           path: cypress/results
+
+    sonar-scan:
+      executor: node
+      steps:
+        - checkout
+        - sonarcloud/scan
 
   assume-role-staging:
     executor: python
