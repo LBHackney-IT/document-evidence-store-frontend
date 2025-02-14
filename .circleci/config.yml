@@ -57,11 +57,18 @@ jobs:
     executor: node
     steps:
       - checkout
-      # - node/install-packages
-      - cypress/install
+      - restore_cache:
+          key: dependency-cache--{{ checksum "package-lock.json" }}
+      - node/install-packages
       - run:
           name: Build Next application
           command: npm run build
+      - save_cache:          
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+            # - ./.next/cache
+            # - /home/circleci/.cache          
       - persist_to_workspace:
           root: *workspace_root
           paths:
