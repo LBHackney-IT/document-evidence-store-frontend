@@ -63,9 +63,9 @@ jobs:
           command: npm run build
       - persist_to_workspace:
           root: *workspace_root
-          # paths:
-          #   - build
-          #   - node_modules
+          paths:
+            - build
+            - node_modules
 
   lint-and-test:
     executor: node
