@@ -8,7 +8,7 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:20.18.2-browsers    
+      - image: cimg/node:20.18.2-browsers
   python:
     docker:
       - image: cimg/python:3.7
@@ -91,7 +91,7 @@ jobs:
           path: coverage
 
   run-cypress-e2e:
-    executor: node    
+    executor: node
     steps:
       - checkout
       - run:
