@@ -64,7 +64,7 @@ jobs:
       # - run:
       #     name: Copy envs
       #     command: cp .env.sample .env
-      - node/install-packages      
+      - node/install-packages
       - run:
           name: Build Next application
           command: npm run build
@@ -76,7 +76,7 @@ jobs:
 
   lint-and-test:
     executor: node
-    steps:      
+    steps:
       - run:
           name: Run linter
           command: npm run lint
@@ -178,7 +178,7 @@ workflows:
     jobs:
       - lint-and-test
       - build
-      
+
       - run-cypress-e2e:
           requires:
             - build
