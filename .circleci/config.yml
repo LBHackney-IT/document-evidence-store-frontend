@@ -100,7 +100,7 @@ jobs:
           at: *workspace_root
       - run:
           name: Copy envs
-          command: cp .env.sample .env      
+          command: cp .env.sample .env
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
       - cypress/install
       - cypress/run-tests:
@@ -115,11 +115,11 @@ jobs:
       - store_artifacts:
           path: cypress/results
 
-    sonar-scan:
-      executor: node
-      steps:
-        - checkout
-        - sonarcloud/scan
+  sonar-scan:
+    executor: node
+    steps:
+      - checkout
+      - sonarcloud/scan
 
   assume-role-staging:
     executor: python
@@ -165,6 +165,10 @@ workflows:
       - run-cypress-e2e:
           requires:
             - build
+      - sonar-scan:
+          context: SonarCloud
+          requires:
+            - lint-and-test            
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
