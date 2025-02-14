@@ -9,6 +9,7 @@ executors:
   node:
     docker:
       - image: cimg/node:20.18.2-browsers
+    working_directory: ~/project  
   python:
     docker:
       - image: cimg/python:3.7
@@ -59,6 +60,9 @@ jobs:
       - checkout
       - node/install-packages
       - run:
+          name: Copy envs
+          command: cp .env.sample .env
+      - run:
           name: Build Next application
           command: npm run build
       - persist_to_workspace:
@@ -94,13 +98,10 @@ jobs:
     executor: node
     steps:
       - checkout
-      - run:
-          name: Copy envs
-          command: cp .env.sample .env
       - attach_workspace:
           at: *workspace_root
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
-      # - cypress/install
+      - cypress/install
       - cypress/run-tests:
           start-command: npm run start:ci
           cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
