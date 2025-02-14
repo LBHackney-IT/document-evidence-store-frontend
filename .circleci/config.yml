@@ -8,14 +8,10 @@ orbs:
 executors:
   node:
     docker:
-      - image: cimg/node:20.18.2-browsers
-    # working_directory: ~/project
+      - image: cimg/node:20.18.2-browsers    
   python:
     docker:
       - image: cimg/python:3.7
-  # cypress-executor:
-  #   docker:
-  #     - image: cypress/base:20.18.0
 
 references:
   workspace_root: &workspace_root '.'
@@ -95,19 +91,7 @@ jobs:
           path: coverage
 
   run-cypress-e2e:
-    executor: node
-    resource_class: medium+
-    # parallelism: 8
-    # parameters:
-    #   browser:
-    #     type: string
-    #     default: chrome
-    #   height:
-    #     type: integer
-    #     default: 768
-    #   width:
-    #     type: integer
-    #     default: 1366
+    executor: node    
     steps:
       - checkout
       - run:
@@ -116,36 +100,10 @@ jobs:
       - attach_workspace:
           at: *workspace_root
       # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
-      - cypress/install
-      # install-browsers: true
-      # - run:
-      #     name: Run application
-      #     command: |
-      #       npm run start:ci &
-      #       npx wait-on http-get://127.0.0.1:3000/api/ping
-      # - run:
-      #     name: Start application and run Cypress tests
-      #     command: npm run start-and-test
-
-      # - run:
-      #     name: Wait for application to be ready
-      #     command: npx wait-on http-get://127.0.0.1:3000/api/ping
-
-      # command: |
-      #   find cypress/e2e -type f -name "*.[jt]s" | sort | uniq > circleci_test_files.txt
-      #   # Use time-based splitting for maximum efficiency. Cypress expects files to be separated with commas
-      #   circleci tests split --split-by=timings circleci_test_files.txt | perl -pe 'chomp if eof' | tr '\n' ',' > circleci_test_slice.txt
-      #   cat circleci_test_slice.txt
-
+      # - cypress/install
       - cypress/run-tests:
           start-command: npm run start:ci
           cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
-      # wait-on: 'http-get://127.0.0.1:3000/api/ping'
-      # cypress-command: npx cypress run
-      # --browser=<< parameters.browser >> --config viewportHeight=<< parameters.height >>,viewportWidth=<< parameters.width >> --reporter junit --reporter-options "mochaFile=cypress/results/results-[hash].xml" --spec "$(cat circleci_test_slice.txt)"
-      # - run:
-      #     name: Fix up JUnit output
-      #     command: node scripts/fix-junit-xml.js
 
       # Store the test results so CircleCI can provide insights and do parallel test splitting
       - store_test_results:
@@ -199,30 +157,6 @@ workflows:
       - run-cypress-e2e:
           requires:
             - build
-      # - cypress/run:
-      #     start-command: npm run start:ci
-      #     cypress-command: npx cypress run
-      #     requires:
-      #       - build
-
-      # - cypress/install: # Use Cypress step to install and cache dependencies
-      #     build: npm run build
-      #     executor: cypress-executor
-      #     post-checkout:
-      #       - run: cp .env.sample .env
-
-      # - test:
-      #     requires:
-      #       - cypress/install
-
-      # - cypress/run:
-      #     requires:
-      #       - cypress/install
-      #     executor: cypress-executor
-      #     attach-workspace: true
-      #     start: npm run start:ci
-      #     wait-on: 'http-get://127.0.0.1:3000/api/ping'
-      #     store_artifacts: true
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
