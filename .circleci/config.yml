@@ -71,8 +71,8 @@ jobs:
 
   lint-and-test:
     executor: node
-    resource_class: medium+
-    parallelism: 2
+    # resource_class: medium+
+    # parallelism: 2
     steps:
       - checkout
       - attach_workspace:
