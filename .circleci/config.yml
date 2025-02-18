@@ -71,8 +71,6 @@ jobs:
 
   lint-and-test:
     executor: node
-    # resource_class: medium+
-    # parallelism: 2
     steps:
       - checkout
       - attach_workspace:
@@ -103,25 +101,20 @@ jobs:
       - run:
           name: Copy envs
           command: cp .env.sample .env
-      # cypress/install checks out the code, installs dependencies (including NPM), etc. It uses optimal caching strategies for NPM with npm ci.
       - cypress/install
       - cypress/run-tests:
           start-command: npm run start:ci
           cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
-
-      # Store the test results so CircleCI can provide insights and do parallel test splitting
       - store_test_results:
           path: cypress/results
-
-      # We also store the test results as an artefact so we can download/access them when we need
       - store_artifacts:
           path: cypress/results
 
-  sonar-scan:
-    executor: node
-    steps:
-      - checkout
-      - sonarcloud/scan
+  # sonar-scan:
+  #   executor: node
+  #   steps:
+  #     - checkout
+  #     - sonarcloud/scan
 
   assume-role-staging:
     executor: python

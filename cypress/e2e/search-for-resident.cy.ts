@@ -2,7 +2,7 @@ describe('Can search for a resident', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search*', {
+    cy.intercept('/api/evidence/residents/search', {
       fixture: 'residents/search',
     });
 

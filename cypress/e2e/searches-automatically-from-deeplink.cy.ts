@@ -6,7 +6,7 @@ describe('Can search for a resident', () => {
       fixture: 'residents/merge-and-link',
     });
 
-    cy.intercept('/api/evidence/residents/search*', {
+    cy.intercept('/api/evidence/residents/search', {
       fixture: 'residents/search',
     });
 

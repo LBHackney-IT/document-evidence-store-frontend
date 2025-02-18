@@ -197,7 +197,11 @@ export class EvidenceApiGateway {
         ),
       };
     } catch (err) {
-      console.error(err);
+      console.error('Error fetching document submissions for resident:', {
+        residentId,
+        error: err.message,
+        stack: err.stack,
+      });
       throw new InternalServerError('Internal server error');
     }
   }

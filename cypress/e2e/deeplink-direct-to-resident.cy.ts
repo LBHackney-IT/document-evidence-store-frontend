@@ -1,4 +1,5 @@
 describe('Can search for a resident', () => {
+  
   beforeEach(() => {
     cy.login();
 

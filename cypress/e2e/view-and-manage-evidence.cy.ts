@@ -5,23 +5,6 @@ describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search*', {
-      fixture: 'residents/search',
-    });
-
-    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
-      const body = {
-        ...dsFixture,
-        id: 123,
-        state: req.body.state,
-        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-      };
-
-      req.reply((res) => {
-        res.send(200, body);
-      });
-    }).as('updateDocumentState');
-
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
 
     cy.injectAxe();
@@ -40,9 +23,6 @@ describe('Can view and manage evidence', () => {
 
   it('pages have no detectable accessibility issues', () => {
     cy.checkAccessibility();
-    // cy.checkA11y({
-    //   exclude: ['table'],
-    // });
   });
 
   it('has breadcrumbs on resident page', () => {
@@ -177,6 +157,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -242,6 +235,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve a document if a date is entered then removed', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -284,6 +290,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject a document', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -320,23 +339,6 @@ describe('Can view and manage evidence', () => {
 describe('Can view and manage evidence with HEIC document', () => {
   beforeEach(() => {
     cy.login();
-
-    cy.intercept('/api/evidence/residents/search*', {
-      fixture: 'residents/search',
-    });
-
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      const body = {
-        ...dsFixtureHeic,
-        id: 456,
-        state: req.body.state,
-        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-      };
-      req.reply((res) => {
-        res.send(200, body);
-      });
-    });
-
     cy.visit(`http://localhost:3000`);
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
@@ -382,23 +384,6 @@ describe('Can rotate a document', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search*', {
-      fixture: 'residents/search',
-    });
-
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      const body = {
-        ...dsFixture,
-        id: 123,
-        state: req.body.state,
-        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-      };
-
-      req.reply((res) => {
-        res.send(200, body);
-      });
-    }).as('updateDocumentState');
-
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
     cy.injectAxe();
     cy.contains('h1', 'Browse residents');
@@ -440,10 +425,6 @@ describe('Staff can upload document', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('/api/evidence/residents/search*', {
-      fixture: 'residents/search',
-    });
-
     cy.intercept('POST', '/api/evidence/document_submissions', (req) => {
       const body = {
         residentId: req.body.residentId,
@@ -467,8 +448,7 @@ describe('Staff can upload document', () => {
     cy.injectAxe();
     cy.contains('h1', 'Browse residents');
     cy.get('#search-query').type('Namey');
-    cy.get('.govuk-button').first().click();
-    // cy.get('[class*=TableSkeleton_table]').should('not.be.visible');
+    cy.get('.govuk-button').first().click();    
     cy.get('a').contains('Namey McName').click();
     cy.contains('h1', 'Namey McName');
   });
@@ -518,10 +498,6 @@ describe('Staff can upload document', () => {
 describe('Cant upload a document with past date', () => {
   beforeEach(() => {
     cy.login();
-
-    cy.intercept('/api/evidence/residents/search*', {
-      fixture: 'residents/search',
-    });
 
     cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
       req.responseTimeout = 5000;

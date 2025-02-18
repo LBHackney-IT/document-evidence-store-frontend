@@ -1,5 +1,5 @@
 describe('Can add a resident to the DES database', () => {
-  context('when resident doesn not exist', () => {
+  context('when resident does not exist', () => {
     beforeEach(() => {
       cy.login();
 
