@@ -84,9 +84,9 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci -- --maxWorkers=2
-          # environment:
-          #   JEST_JUNIT_OUTPUT_DIR: test_results
-          #   JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test_results
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
       - store_test_results:
           path: test_results
       - store_artifacts:
