@@ -83,10 +83,7 @@ jobs:
           command: npm run prettier:test
       - run:
           name: Run unit tests
-          command: npm run test:unit:ci -- --maxWorkers=2
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: test_results
-            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
+          command: npm run test:unit:ci
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -166,7 +163,7 @@ workflows:
       - sonar-scan:
           context: SonarCloud
           requires:
-            - lint-and-test
+            - lint-and-test            
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
