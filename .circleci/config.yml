@@ -84,6 +84,10 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
+      - persist_to_workspace:
+          root: *workspace_root
+          paths: 
+            - coverage          
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -110,8 +114,7 @@ jobs:
   sonar-scan:
     executor: node
     steps:
-      - attach_workspace:
-          at: *workspace_root
+      - *attach_workspace
       - sonarcloud/scan
 
   assume-role-staging:
