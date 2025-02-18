@@ -83,7 +83,7 @@ jobs:
           command: npm run prettier:test
       - run:
           name: Run unit tests
-          command: npm run test:unit -- --maxWorkers=2
+          command: npm run test:unit:ci -- --maxWorkers=2
           # environment:
           #   JEST_JUNIT_OUTPUT_DIR: test_results
           #   JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
