@@ -16,10 +16,10 @@
       "update-document-submission:success",
       "get-residents:success",
       "create-resident:success",
-      "get-document-submissions-with-resident:simulate",            
+      "get-document-submissions-with-resident:simulate",
       "get-document-submissions-with-expired-claim:success",
       "get-resident:success",
-      "get-download-url:success",      
+      "get-download-url:success",
       "link-and-merge-resident:success"
     ]
   }

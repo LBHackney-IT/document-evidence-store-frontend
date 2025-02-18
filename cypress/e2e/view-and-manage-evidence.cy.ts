@@ -448,7 +448,7 @@ describe('Staff can upload document', () => {
     cy.injectAxe();
     cy.contains('h1', 'Browse residents');
     cy.get('#search-query').type('Namey');
-    cy.get('.govuk-button').first().click();    
+    cy.get('.govuk-button').first().click();
     cy.get('a').contains('Namey McName').click();
     cy.contains('h1', 'Namey McName');
   });
