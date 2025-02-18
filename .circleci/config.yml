@@ -110,11 +110,11 @@ jobs:
       - store_artifacts:
           path: cypress/results
 
-  # sonar-scan:
-  #   executor: node
-  #   steps:
-  #     - checkout
-  #     - sonarcloud/scan
+  sonar-scan:
+    executor: node
+    steps:
+      - checkout
+      - sonarcloud/scan
 
   assume-role-staging:
     executor: python
