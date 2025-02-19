@@ -4,7 +4,7 @@
 
 module.exports = {
   // Log level. Can be one of silly, debug, verbose, info, warn or error
-  log: 'debug',
+  // log: 'debug',
   // Array of VariantHandlers to be added. Legacy
   //routesHandlers: [],
   config: {

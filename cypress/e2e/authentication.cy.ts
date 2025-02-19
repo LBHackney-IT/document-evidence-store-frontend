@@ -28,7 +28,7 @@ describe('authentication', () => {
 
   context('when logged in without the correct google group', () => {
     it('shows access denied', () => {
-      const user = { ...defaultUser, groups: ['some-other-group'] };
+      const user: UserData = { ...defaultUser, groups: ['some-other-group'] };
       cy.login(user);
 
       cy.visit('teams/2/dashboard/requests/new/1');

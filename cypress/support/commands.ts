@@ -8,6 +8,8 @@ export enum AccessibilityImpactCheckLevel {
   CRITICAL = 'critical',
 }
 
+export const secret = 'aDummySecret';
+
 export const defaultUser: UserData = {
   email: 'test@hackney.gov.uk',
   name: 'Test User',
@@ -15,12 +17,13 @@ export const defaultUser: UserData = {
 };
 
 Cypress.Commands.add('login', (userData: UserData = defaultUser) => {
-  const cookieName = Cypress.env('HACKNEY_COOKIE_NAME');
-  const token = jwt.sign(userData, 'sekret');
-
-  cy.setCookie(cookieName, token);
-  cy.wrap(defaultUser).as('defaultUser');
-  cy.wrap(userData).as('user');
+  cy.task('generateToken', { user: userData, secret }).then((token) => {
+    const cookieName = 'hackneyToken';
+    cy.setCookie(cookieName, token as string);
+    cy.getCookie(cookieName).should('have.property', 'value', token);
+    cy.wrap(defaultUser).as('defaultUser');
+    cy.wrap(userData).as('user');
+  });
 });
 
 Cypress.Commands.add(
