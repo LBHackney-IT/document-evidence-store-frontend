@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DocumentSubmission } from '../domain/document-submission';
 import styles from '../styles/Document.module.scss';
-import LoadingBox from '@govuk-react/loading-box';
+import { LoadingBox } from 'govuk-react';
 import { humanFileSize } from '../helpers/formatters';
 import rotated from '../styles/RotateImage.module.scss';
 import RotateDocument from 'src/components/RotateDocument';
@@ -42,6 +42,8 @@ const ImagePreview = (props: Props): JSX.Element | null => {
   };
 
   if (toConvertDocumentExtensions.includes(documentExtension as string)) {
+    // Already existing issue not impacting application. Added to backlog for review.
+    // eslint-disable-next-line
     useEffect(() => {
       if (typeof window !== 'undefined') {
         (async () => {
@@ -54,7 +56,9 @@ const ImagePreview = (props: Props): JSX.Element | null => {
               })
             )
             .then((conversionResult) => {
-              setConversionImage(URL.createObjectURL(conversionResult));
+              // this is unsafe but heic2any should never return an array unless that option is set.
+              const result = conversionResult as Blob;
+              setConversionImage(URL.createObjectURL(result));
               setLoading(false);
             })
             .catch((e) => {

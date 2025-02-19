@@ -11,10 +11,10 @@ const endpoint: NextApiHandler = async (req, res) => {
   try {
     const data = await evidenceApiGateway.getDocumentSubmissionsForResident(
       req.headers.userEmail?.toString() ?? '',
-      path[0].toString(),
-      team.toString(),
-      currentPage.toString(),
-      pageSize.toString(),
+      path ? path[0].toString() : '',
+      team ? team.toString() : '',
+      currentPage ? currentPage.toString() : '',
+      pageSize ? pageSize.toString() : '',
       state ? state.toString() : undefined
     );
     res.send(data);

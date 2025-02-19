@@ -5,7 +5,7 @@ import {
 import * as jwt from 'jsonwebtoken';
 import * as Cookie from 'universal-cookie';
 import * as MockCookie from '../../__mocks__/universal-cookie';
-import { mocked } from 'ts-jest/utils';
+import { mocked } from 'jest-mock';
 import { User } from '../domain/user';
 import { AuthenticationError } from '../../types/auth-errors';
 

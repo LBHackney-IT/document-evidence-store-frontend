@@ -38,3 +38,5 @@ cypress/videos
 .env
 
 debug.log
+# Sentry
+.sentryclirc

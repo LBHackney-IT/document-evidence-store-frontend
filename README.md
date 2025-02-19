@@ -37,7 +37,7 @@ _🔐 This side of the application is authenticated_
 ## 💻 Setup
 
 1. Install [Docker][docker-download].
-2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v16](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
+2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v20](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
 3. Clone this repository.
 4. Open it in your IDE.
 
@@ -52,6 +52,7 @@ Once you have the environment variables and the APIs and database container runn
 Install the packages and start the frontend by running:
 
 ```bash
+nvm use
 npm i
 npm run build
 npm run dev
@@ -91,9 +92,9 @@ npm run test:unit
 
 In order to run the integration tests, you need to:
 
-1. Navigate to the `.env` file and comment out (by adding a `#`) the DOCUMENTS_API_BASE_URL and uncomment the one specified in that file.
-2. Make sure that evidence-api is not running.
-3. In the terminal, run `npm run dev-mock`
+1. Navigate to the `.env` file and comment out (by adding a `#`) the DOCUMENTS_API_BASE_URL and EVIDENCE_API_BASE_URL. Uncomment the one specified for intergration tests.
+2. Make sure that documents-api and evidence-api are not running.
+3. In the terminal, run `npm run dev-mock`. This will run the application and the Mocks Server networking layer.
 4. Open up a new terminal and run `npm run test:e2e:dev` (or `npm run test:e2e:ci` to run in terminal and not UI)
 
 A new Cypress UI will open. You will need to click on 'Run x integration tests'. The tests will take a little longer than the unit tests. Close the window when they're all finished.

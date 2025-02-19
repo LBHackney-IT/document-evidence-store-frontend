@@ -5,24 +5,8 @@ describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
 
-    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-      const body = {
-        ...dsFixture,
-        id: 123,
-        state: req.body.state,
-        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-      };
-
-      req.reply((res) => {
-        res.send(200, body);
-      });
-    }).as('updateDocumentState');
-
-    cy.intercept('/api/evidence/residents/search', {
-      fixture: 'residents/search',
-    });
-
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
+
     cy.injectAxe();
     cy.contains('h1', 'Browse residents');
     cy.get('#search-query').type('Namey');
@@ -38,9 +22,7 @@ describe('Can view and manage evidence', () => {
   const dateInvalidErrorMessage = 'Please enter a valid date';
 
   it('pages have no detectable accessibility issues', () => {
-    cy.checkA11y({
-      exclude: ['table'],
-    });
+    cy.checkAccessibility();
   });
 
   it('has breadcrumbs on resident page', () => {
@@ -175,6 +157,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve the document', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -240,6 +235,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can approve a document if a date is entered then removed', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -282,6 +290,19 @@ describe('Can view and manage evidence', () => {
   });
 
   it('can reject a document', () => {
+    cy.intercept('PATCH', '/api/evidence/document_submissions/*', (req) => {
+      const body = {
+        ...dsFixture,
+        id: 123,
+        state: req.body.state,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
+      };
+
+      req.reply((res) => {
+        res.send(200, body);
+      });
+    }).as('updateDocumentState');
+
     cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
     cy.get('section[id="pending-review"]')
       .eq(0)
@@ -313,239 +334,212 @@ describe('Can view and manage evidence', () => {
       'This document is no longer valid'
     );
   });
+});
 
-  describe('When a user inputs a validity date that is in the past', () => {
-    beforeEach(() => {
-      cy.login();
+describe('Can view and manage evidence with HEIC document', () => {
+  beforeEach(() => {
+    cy.login();
+    cy.visit(`http://localhost:3000`);
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+    cy.injectAxe();
+    cy.contains('h1', 'Browse residents');
+    cy.get('#search-query').type('Namey');
+    cy.get('.govuk-button').first().click();
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
+  });
 
-      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-        req.responseTimeout = 5000;
-        req.reply((res) => {
-          res.send(400, 'The date cannot be in the past.');
-        });
-      }).as('acceptInvalidDate');
+  it('lets staff see an heic document detail page with actions and information', () => {
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"] a')
+      .eq(2)
+      .contains('Proof of ID')
+      .click();
 
-      cy.visit(`http://localhost:3000/teams/2/dashboard`);
-      cy.injectAxe();
-      cy.contains('h1', 'Browse residents');
-      cy.get('#search-query').type('Namey');
-      cy.get('.govuk-button').first().click();
-      cy.get('a').contains('Namey McName').click();
-      cy.contains('h1', 'Namey McName');
-    });
+    cy.contains('h1', 'Namey McNameProof of ID');
 
-    it('shows an error', async () => {
-      //arrange
-      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
-      cy.get('section[id="pending-review"')
-        .eq(0)
-        .contains('Proof of ID')
-        .click();
+    cy.get('button').should('contain', 'Accept');
+    cy.get('button').should('contain', 'Request new file');
+    cy.get('h2').should('contain', 'Preview');
+    cy.get('svg[class*="icon-loading"]').should('be.visible');
+    cy.get('figure').should('contain', 'HEIC');
+    cy.get('figure').should('contain', '9.8 KB');
+    cy.get('[data-testid="conversion-image"]')
+      .should('have.attr', 'src')
+      .then((src) => expect(src).to.have.length(0));
+    cy.wait(5000);
+    cy.get('[data-testid="conversion-image"]')
+      .should('have.attr', 'src')
+      .then((src) => expect(src).have.length.greaterThan(0));
+    cy.get('[data-testid="conversion-image"]').should(
+      'have.attr',
+      'alt',
+      'Proof of ID'
+    );
+    cy.get('svg[class="icon-loading]').should('not.exist');
+  });
+});
 
-      cy.get('button').contains('Accept').click();
+describe('Can rotate a document', () => {
+  beforeEach(() => {
+    cy.login();
 
-      cy.get('[role=dialog]').within(() => {
-        cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+    cy.injectAxe();
+    cy.contains('h1', 'Browse residents');
+    cy.get('#search-query').type('Namey');
+    cy.get('.govuk-button').first().click();
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
+  });
 
-        cy.get('label').contains('Day').next('input').type('01');
-        cy.get('label').contains('Month').next('input').type('01');
-        cy.get('label').contains('Year').next('input').type('1992');
+  it('allows image rotation', () => {
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"]')
+      .eq(0)
+      .contains('Proof of ID')
+      .click();
+    cy.get('[data-testid="rotate-button"]').click({ force: true });
+    cy.get('[data-testid="default-image"]')
+      .should('have.attr', 'class')
+      .and('contains', 'rotated90');
 
-        //act
-        cy.get('[data-testid="accept"]').click();
+    cy.get('[data-testid="rotate-button"]').click({ force: true });
+    cy.get('[data-testid="default-image"]')
+      .should('have.attr', 'class')
+      .and('contains', 'rotated180');
 
-        //assert
+    cy.get('[data-testid="rotate-button"]').click({ force: true });
+    cy.get('[data-testid="default-image"]')
+      .should('have.attr', 'class')
+      .and('contains', 'rotated270');
 
-        cy.wait('@acceptInvalidDate');
-        cy.get('fieldset>span')
-          .eq(0)
-          .should('contain', 'The date cannot be in the past.');
+    cy.get('[data-testid="rotate-button"]').click({ force: true });
+    cy.get('[data-testid="default-image"]')
+      .should('have.attr', 'class')
+      .and('contains', 'rotated360');
+  });
+});
+
+describe('Staff can upload document', () => {
+  beforeEach(() => {
+    cy.login();
+
+    cy.intercept('POST', '/api/evidence/document_submissions', (req) => {
+      const body = {
+        residentId: req.body.residentId,
+        team: req.body.team,
+        userCreatedBy: req.body.userCreatedBy,
+        staffSelectedDocumentTypeId: req.body.staffSelectedDocumentType,
+        documentDescription: req.body.documentDescription,
+      };
+
+      req.reply((res) => {
+        res.send(201, body);
       });
-    });
+    }).as('staffUploadDocument');
+
+    cy.intercept('POST', createDsFixture.uploadPolicy.url, {
+      statusCode: 201,
+      delayMs: 2500,
+    }).as('s3Upload');
+
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+    cy.injectAxe();
+    cy.contains('h1', 'Browse residents');
+    cy.get('#search-query').type('Namey');
+    cy.get('.govuk-button').first().click();
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
   });
 
-  describe('Can view and manage evidence with HEIC document', () => {
-    beforeEach(() => {
-      cy.login();
+  it('returns validation errors when form input is incorrect', () => {
+    cy.get('[data-testid="upload-documents"]').click();
+    cy.get('h1').should('contain', 'Upload documents');
+    cy.get('button').contains('Submit').click();
+    cy.get('span').contains('Please select a document type');
+    cy.get('span').contains('Please select a file');
+  });
 
-      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-        const body = {
-          ...dsFixtureHeic,
-          id: 456,
-          state: req.body.state,
-          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-        };
-        req.reply((res) => {
-          res.send(200, body);
-        });
+  it('lets staff upload a document', () => {
+    cy.get('[data-testid="upload-documents"]').click();
+    cy.get('h1').should('contain', 'Upload documents');
+    cy.get('select').select('Passport');
+    cy.get('[data-testid="document-description-0"]').type(
+      'here is a description of this document'
+    );
+    cy.get('input[type=file]').attachFile('example.png');
+    cy.get('button').contains('Submit').click();
+    cy.contains('h1', 'Namey McName');
+  });
+
+  it('lets staff upload more than one document', () => {
+    cy.get('[data-testid="upload-documents"]').click();
+    cy.get('h1').should('contain', 'Upload documents');
+    cy.get('select').eq(0).select('Passport');
+    cy.get('[data-testid="document-description-0"]').type(
+      'here is a description of this document'
+    );
+    cy.get('input[type=file]').eq(0).attachFile('example.png');
+
+    cy.get('button').contains('Add').click();
+
+    cy.get('select').eq(1).select('Driving license');
+    cy.get('[data-testid="document-description-1"]').type(
+      'here is another description'
+    );
+    cy.get('input[type=file]').eq(1).attachFile('example.png');
+
+    cy.get('button').contains('Submit').click();
+    cy.contains('h1', 'Namey McName');
+  });
+});
+
+describe('Cant upload a document with past date', () => {
+  beforeEach(() => {
+    cy.login();
+
+    cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
+      req.responseTimeout = 5000;
+      req.reply((res) => {
+        res.send(400, 'The date cannot be in the past.');
       });
+    }).as('acceptInvalidDate');
 
-      cy.visit(`http://localhost:3000/teams/2/dashboard`);
-      cy.injectAxe();
-      cy.contains('h1', 'Browse residents');
-      cy.get('#search-query').type('Namey');
-      cy.get('.govuk-button').first().click();
-      cy.get('a').contains('Namey McName').click();
-      cy.contains('h1', 'Namey McName');
-    });
-
-    it('lets staff see an heic document detail page with actions and information', () => {
-      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
-      cy.get('section[id="pending-review"] a')
-        .eq(2)
-        .contains('Proof of ID')
-        .click();
-
-      cy.contains('h1', 'Namey McNameProof of ID');
-
-      cy.get('button').should('contain', 'Accept');
-      cy.get('button').should('contain', 'Request new file');
-      cy.get('h2').should('contain', 'Preview');
-      cy.get('svg[class="icon-loading"]').should('be.visible');
-      cy.get('figure').should('contain', 'HEIC');
-      cy.get('figure').should('contain', '9.8 KB');
-      cy.get('[data-testid="conversion-image"]')
-        .should('have.attr', 'src')
-        .then((src) => expect(src).to.have.length(0));
-      cy.wait(5000);
-      cy.get('[data-testid="conversion-image"]')
-        .should('have.attr', 'src')
-        .then((src) => expect(src).have.length.greaterThan(0));
-      cy.get('[data-testid="conversion-image"]').should(
-        'have.attr',
-        'alt',
-        'Proof of ID'
-      );
-      cy.get('svg[class="icon-loading]').should('not.exist');
-    });
+    cy.visit(`http://localhost:3000/teams/2/dashboard`);
+    cy.injectAxe();
+    cy.contains('h1', 'Browse residents');
+    cy.get('#search-query').type('Namey');
+    cy.get('.govuk-button').first().click();
+    cy.get('a').contains('Namey McName').click();
+    cy.contains('h1', 'Namey McName');
   });
 
-  describe('Can rotate a document', () => {
-    beforeEach(() => {
-      cy.login();
+  it('shows an error', async () => {
+    //arrange
+    cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+    cy.get('section[id="pending-review"').eq(0).contains('Proof of ID').click();
 
-      cy.intercept('PATCH', '/api/evidence/document_submissions', (req) => {
-        const body = {
-          ...dsFixture,
-          id: 123,
-          state: req.body.state,
-          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentTypeId,
-        };
+    cy.get('button').contains('Accept').click();
 
-        req.reply((res) => {
-          res.send(200, body);
-        });
-      }).as('updateDocumentState');
+    cy.get('[role=dialog]').within(() => {
+      cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
 
-      cy.visit(`http://localhost:3000/teams/2/dashboard`);
-      cy.injectAxe();
-      cy.contains('h1', 'Browse residents');
-      cy.get('#search-query').type('Namey');
-      cy.get('.govuk-button').first().click();
-      cy.get('a').contains('Namey McName').click();
-      cy.contains('h1', 'Namey McName');
-    });
+      cy.get('label').contains('Day').next('input').type('01');
+      cy.get('label').contains('Month').next('input').type('01');
+      cy.get('label').contains('Year').next('input').type('1992');
 
-    it('allows image rotation', () => {
-      cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
-      cy.get('section[id="pending-review"]')
+      //act
+      cy.get('[data-testid="accept"]').click();
+
+      //assert
+
+      cy.wait('@acceptInvalidDate');
+      cy.get('fieldset>span')
         .eq(0)
-        .contains('Proof of ID')
-        .click();
-      cy.get('[data-testid="rotate-button"]').click({ force: true });
-      cy.get('[data-testid="default-image"]')
-        .should('have.attr', 'class')
-        .and('contains', 'rotated90');
-
-      cy.get('[data-testid="rotate-button"]').click({ force: true });
-      cy.get('[data-testid="default-image"]')
-        .should('have.attr', 'class')
-        .and('contains', 'rotated180');
-
-      cy.get('[data-testid="rotate-button"]').click({ force: true });
-      cy.get('[data-testid="default-image"]')
-        .should('have.attr', 'class')
-        .and('contains', 'rotated270');
-
-      cy.get('[data-testid="rotate-button"]').click({ force: true });
-      cy.get('[data-testid="default-image"]')
-        .should('have.attr', 'class')
-        .and('contains', 'rotated360');
-    });
-  });
-
-  describe('Staff can upload document', () => {
-    beforeEach(() => {
-      cy.login();
-
-      cy.intercept('POST', createDsFixture.uploadPolicy.url, {
-        statusCode: 201,
-        delayMs: 2500,
-      }).as('s3Upload');
-
-      cy.intercept('POST', '/api/evidence/document_submissions', (req) => {
-        const body = {
-          residentId: req.body.residentId,
-          team: req.body.team,
-          userCreatedBy: req.body.userCreatedBy,
-          staffSelectedDocumentTypeId: req.body.staffSelectedDocumentType,
-          documentDescription: req.body.documentDescription,
-        };
-
-        req.reply((res) => {
-          res.send(201, body);
-        });
-      }).as('staffUploadDocument');
-
-      cy.visit(`http://localhost:3000/teams/2/dashboard`);
-      cy.injectAxe();
-      cy.contains('h1', 'Browse residents');
-      cy.get('#search-query').type('Namey');
-      cy.get('.govuk-button').first().click();
-      cy.get('a').contains('Namey McName').click();
-      cy.contains('h1', 'Namey McName');
-    });
-
-    it('returns validation errors when form input is incorrect', () => {
-      cy.get('[data-testid="upload-documents"]').click();
-      cy.get('h1').should('contain', 'Upload documents');
-      cy.get('button').contains('Submit').click();
-      cy.get('span').contains('Please select a document type');
-      cy.get('span').contains('Please select a file');
-    });
-
-    it('lets staff upload a document', () => {
-      cy.get('[data-testid="upload-documents"]').click();
-      cy.get('h1').should('contain', 'Upload documents');
-      cy.get('select').select('Passport');
-      cy.get('[data-testid="document-description-0"]').type(
-        'here is a description of this document'
-      );
-      cy.get('input[type=file]').attachFile('example.png');
-      cy.get('button').contains('Submit').click();
-      cy.contains('h1', 'Namey McName');
-    });
-
-    it('lets staff upload more than one document', () => {
-      cy.get('[data-testid="upload-documents"]').click();
-      cy.get('h1').should('contain', 'Upload documents');
-      cy.get('select').eq(0).select('Passport');
-      cy.get('[data-testid="document-description-0"]').type(
-        'here is a description of this document'
-      );
-      cy.get('input[type=file]').eq(0).attachFile('example.png');
-
-      cy.get('button').contains('Add').click();
-
-      cy.get('select').eq(1).select('Driving license');
-      cy.get('[data-testid="document-description-1"]').type(
-        'here is another description'
-      );
-      cy.get('input[type=file]').eq(1).attachFile('example.png');
-
-      cy.get('button').contains('Submit').click();
-      cy.contains('h1', 'Namey McName');
+        .should('contain', 'The date cannot be in the past.');
     });
   });
 });
+
 export {};

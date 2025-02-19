@@ -31,7 +31,7 @@ const History = (props: Props): JSX.Element => {
               Requested a new file with reason:
               <br />
               <span className="lbh-rejection-reason">
-                "{props.documentSubmission.rejectionReason}"
+                &quot;{props.documentSubmission.rejectionReason}&quot;
               </span>
             </td>
             <td className="govuk-table__cell">

@@ -12,25 +12,25 @@ describe('Can upload a document', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    cy.checkA11y();
+    cy.checkAccessibility();
   });
 
   context('when upload is successful', () => {
     beforeEach(() => {
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
+        statusCode: 201,
+        delayMs: 2500,
+      }).as('s3Upload');
+
       cy.intercept('POST', /\/api\/evidence\/evidence_requests\/.+/, (req) => {
         const response = dsFixture;
 
         req.responseTimeout = 5000;
         req.reply((res) => {
-          res.delay(2500);
+          res.setDelay(2500);
           res.send(200, response);
         });
       }).as('post-document-state');
-
-      cy.intercept('POST', dsFixture.uploadPolicy.url, {
-        statusCode: 201,
-        delayMs: 2500,
-      }).as('s3Upload');
     });
 
     it('shows landing message, check guidance and lets you upload a file', () => {
@@ -151,6 +151,10 @@ describe('Can upload a document', () => {
 
   context('when upload is unsuccessful', () => {
     beforeEach(() => {
+      cy.intercept('POST', dsFixture.uploadPolicy.url, {
+        forceNetworkError: true,
+      }).as('s3Upload');
+
       cy.intercept('POST', /\/api\/evidence\/evidence_requests\/.+/, (req) => {
         const response = dsFixture;
 
@@ -159,10 +163,6 @@ describe('Can upload a document', () => {
           res.send(500, response);
         });
       }).as('post-document-state');
-
-      cy.intercept('POST', dsFixture.uploadPolicy.url, {
-        forceNetworkError: true,
-      }).as('s3Upload');
     });
 
     it('shows an error message', () => {

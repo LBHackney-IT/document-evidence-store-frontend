@@ -5,10 +5,17 @@ import { UserContext } from 'src/contexts/UserContext';
 import { registerDomainModels } from '../helpers/register-domain';
 import '../styles/globals.scss';
 import * as gtag from '../ga/gtag';
+import { User } from '../../src/domain/user';
 
 registerDomainModels();
 
-const CustomApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
+interface CustomAppProps {
+  user?: User;
+}
+
+const CustomApp = (props: AppProps): JSX.Element | null => {
+  const { Component } = props;
+  const pageProps = props.pageProps as CustomAppProps;
   const router = useRouter();
 
   const handleRouteChange = (url: URL) => {
@@ -21,8 +28,11 @@ const CustomApp = ({ Component, pageProps }: AppProps): JSX.Element | null => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
   }, [router.events]);
+
+  const value = { user: pageProps?.user };
+
   return (
-    <UserContext.Provider value={{ user: pageProps.json?.user }}>
+    <UserContext.Provider value={value}>
       <Component {...pageProps} />
     </UserContext.Provider>
   );

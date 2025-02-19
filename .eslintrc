@@ -8,7 +8,11 @@
   },
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
-  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "next/core-web-vitals"
+  ],
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2018
@@ -20,7 +24,9 @@
   },
   "rules": {
     "linebreak-style": ["error", "unix"],
-    "require-atomic-updates": "off"
+    "require-atomic-updates": "off",
+    "@next/next/no-img-element": "off",
+    "@next/next/no-html-link-for-pages": "off"
   },
   "overrides": [
     {
