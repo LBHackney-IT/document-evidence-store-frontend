@@ -14,7 +14,7 @@ const endpoint: NextApiHandler = async (req, res) => {
       path ? path[0].toString() : '',
       team ? team.toString() : '',
       currentPage ? currentPage.toString() : '',
-      pageSize ? pageSize.toString() : '',            
+      pageSize ? pageSize.toString() : '',
       state ? state.toString() : undefined
     );
     res.send(data);
