@@ -11,7 +11,6 @@ describe('Can search for a resident', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    // cy.checkA11y();
     cy.checkAccessibility();
   });
 

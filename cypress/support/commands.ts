@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken';
 import 'cypress-file-upload';
 
 export enum AccessibilityImpactCheckLevel {
@@ -32,8 +31,6 @@ Cypress.Commands.add(
     includedImpacts: AccessibilityImpactCheckLevel[] = [
       AccessibilityImpactCheckLevel.CRITICAL,
       AccessibilityImpactCheckLevel.SERIOUS,
-      // AccessibilityImpactCheckLevel.MODERATE,
-      // AccessibilityImpactCheckLevel.MINOR,
     ]
   ) => {
     cy.checkA11y(undefined, {

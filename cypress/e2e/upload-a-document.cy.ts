@@ -12,7 +12,6 @@ describe('Can upload a document', () => {
   });
 
   it('Has no detectable accessibility issues', () => {
-    // cy.checkA11y();
     cy.checkAccessibility();
   });
 

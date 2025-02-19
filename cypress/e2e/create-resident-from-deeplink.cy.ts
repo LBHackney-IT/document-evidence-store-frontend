@@ -13,7 +13,6 @@ describe('Can allow a user to create a resident from the deeplink, prefilling th
   });
 
   it('Has no detectable accessibility issues', () => {
-    // cy.checkA11y();
     cy.checkAccessibility();
   });
 
