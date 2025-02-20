@@ -117,11 +117,9 @@ export class InternalApiGateway {
       );
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
-      if (Axios.isAxiosError(err)) {
-        if (err.response) {
-          console.error(err);
-          throw err.response.data;
-        }
+      if (err.response) {
+        console.error(err);
+        throw err.response.data;
       }
       throw new InternalServerError('Internal server error');
     }
@@ -143,11 +141,9 @@ export class InternalApiGateway {
       );
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
-      if (Axios.isAxiosError(err)) {
-        if (err.response) {
-          console.error(err);
-          throw err.response.data;
-        }
+      if (err.response) {
+        console.error(err);
+        throw err.response.data;
       }
       throw new InternalServerError('Internal server error');
     }
@@ -213,11 +209,9 @@ export class InternalApiGateway {
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
-      if (Axios.isAxiosError(err)) {
-        if (err.response) {
-          console.error(err);
-          throw err.response.data;
-        }
+      if (err.response) {
+        console.error(err);
+        throw err.response.data;
       }
       throw new InternalServerError('Internal server error');
     }
