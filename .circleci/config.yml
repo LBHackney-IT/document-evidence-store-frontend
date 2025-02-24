@@ -37,8 +37,8 @@ commands:
       - run:
           name: clean up
           command: |
-              unset AWS_ACCESS_KEY_ID
-              unset AWS_SECRET_ACCESS_KEY     
+            unset AWS_ACCESS_KEY_ID
+            unset AWS_SECRET_ACCESS_KEY
       - persist_to_workspace:
           root: ~/
           paths:
