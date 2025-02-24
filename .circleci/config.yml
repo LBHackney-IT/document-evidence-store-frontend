@@ -37,7 +37,7 @@ commands:
       - persist_to_workspace:
           root: ~/
           paths:
-            - .aws/credentials
+            - .aws
 
   deploy-lambda:
     description: 'Deploys application'
