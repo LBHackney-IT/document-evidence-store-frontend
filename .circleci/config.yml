@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '.'
+  workspace_root: &workspace_root '~'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -178,7 +178,8 @@ workflows:
           filters:
             branches:
               only:
-                - main
+                # - main
+                - TS-1902-Update-frameworks
 
       - deploy-staging:
           requires:
