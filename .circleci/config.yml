@@ -185,13 +185,13 @@ workflows:
 
       - deploy-staging:
           context:
-            - "Serverless Framework"
+            - 'Serverless Framework'
           requires:
             - assume-role-staging
 
       - permit-deploy-production:
           context:
-            - "Serverless Framework"
+            - 'Serverless Framework'
           type: approval
           requires:
             - deploy-staging
