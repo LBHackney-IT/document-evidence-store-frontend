@@ -37,7 +37,7 @@ functions:
       securityGroupIds: ${self:custom.securityGroups.${self:provider.stage}}
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
-      HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
+      HACKNEY_JWT_SECRET: ${ssm:/evidence-api/${self:provider.stage}/hackney-jwt-secret}
       APP_URL: https://${self:custom.alias}
       HACKNEY_COOKIE_NAME: hackneyToken
       NODE_ENV: ${self:provider.stage}
