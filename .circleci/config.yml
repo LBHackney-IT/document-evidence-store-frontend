@@ -35,7 +35,6 @@ commands:
 
     steps:
       - checkout
-      - *attach_workspace
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
@@ -43,6 +42,13 @@ commands:
       - run:
           name: Deploy application
           command: |
+            # aws_assume_role/assume_role stores credentials in ~/.aws/credentials, however
+            # environment variables take precence. These are set to do the initial config, so
+            # the role isn't actually assumed. We need to remove the environment variables in
+            # order for the aws_assume_role/assume_role output to be picked up.
+            #
+            # I think the lbh-hackit orb setup here could be replaced with direct use of the aws-cli/setup and
+            # aws-cli/role_arn_setup, which would remove the need for this cleanup.          
             unset AWS_ACCESS_KEY_ID
             unset AWS_SECRET_ACCESS_KEY
             npm prune --production
