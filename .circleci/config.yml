@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '~'
+  workspace_root: &workspace_root '.'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -30,6 +30,8 @@ commands:
         type: string
     steps:
       - checkout
+      - attach_workspace:
+          at: *workspace_root
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
