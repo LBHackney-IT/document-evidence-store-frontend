@@ -43,6 +43,8 @@ commands:
       - run:
           name: Deploy application
           command: |
+            unset AWS_ACCESS_KEY_ID
+            unset AWS_SECRET_ACCESS_KEY
             npm prune --production
             sudo npm i -g serverless
             sls deploy -s <<parameters.stage>>
