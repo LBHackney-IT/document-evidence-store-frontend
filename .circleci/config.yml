@@ -30,15 +30,16 @@ commands:
         type: string
     steps:
       - checkout
+      - *attach_workspace
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
-      - run:
-          name: clean up
-          command: |
-            unset AWS_ACCESS_KEY_ID
-            unset AWS_SECRET_ACCESS_KEY
+      # - run:
+      #     name: clean up
+      #     command: |
+      #       unset AWS_ACCESS_KEY_ID
+      #       unset AWS_SECRET_ACCESS_KEY
       - persist_to_workspace:
           root: ~/
           paths:
@@ -51,6 +52,11 @@ commands:
         type: string
         default: staging
     steps:
+      - run:
+          name: clean up
+          command: |
+            unset AWS_ACCESS_KEY_ID
+            unset AWS_SECRET_ACCESS_KEY    
       - run:
           name: Deploy application
           command: |
