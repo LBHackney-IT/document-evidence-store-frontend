@@ -51,10 +51,12 @@ commands:
             # aws-cli/role_arn_setup, which would remove the need for this cleanup.          
             unset AWS_ACCESS_KEY_ID
             unset AWS_SECRET_ACCESS_KEY
-            # npm prune --production
-            # sudo npm i -g serverless
-            # sls deploy -s <<parameters.stage>>
-            npx --yes serverless deploy --stage <<parameters.stage>>
+            # should remove all of the devDeps
+            npm prune --production
+
+            sudo npm i -g serverless
+            sls deploy -s <<parameters.stage>>
+            # npx --yes serverless deploy --stage <<parameters.stage>>
       # - run:
       #     name: clean up
       #     command: |
@@ -102,7 +104,7 @@ commands:
           name: Deploy application
           command: |
             npm prune --production
-            sudo npm i -g serverless
+            # sudo npm i -g serverless
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
