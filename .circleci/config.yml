@@ -52,8 +52,8 @@ commands:
             unset AWS_ACCESS_KEY_ID
             unset AWS_SECRET_ACCESS_KEY
             # should remove all of the devDeps
-            npm prune --production
 
+            npm prune --production
             sudo npm i -g serverless
             sls deploy -s <<parameters.stage>>
             # npx --yes serverless deploy --stage <<parameters.stage>>
@@ -88,24 +88,24 @@ commands:
   #         paths:
   #           - .aws
 
-  deploy-lambda:
-    description: 'Deploys application'
-    parameters:
-      stage:
-        type: string
-        default: staging
-    steps:
-      # - run:
-      #     name: clean up
-      #     command: |
-      #       unset AWS_ACCESS_KEY_ID
-      #       unset AWS_SECRET_ACCESS_KEY
-      - run:
-          name: Deploy application
-          command: |
-            npm prune --production
-            # sudo npm i -g serverless
-            sls deploy -s <<parameters.stage>>
+  # deploy-lambda:
+  #   description: 'Deploys application'
+  #   parameters:
+  #     stage:
+  #       type: string
+  #       default: staging
+  #   steps:
+  #     # - run:
+  #     #     name: clean up
+  #     #     command: |
+  #     #       unset AWS_ACCESS_KEY_ID
+  #     #       unset AWS_SECRET_ACCESS_KEY
+  #     - run:
+  #         name: Deploy application
+  #         command: |
+  #           npm prune --production
+  #           # sudo npm i -g serverless
+  #           sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 jobs:
@@ -188,25 +188,25 @@ jobs:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
-  deploy-staging:
-    executor: node
+  # deploy-staging:
+  #   executor: node
 
-    steps:
-      - checkout
-      - *attach_workspace
+  #   steps:
+  #     - checkout
+  #     - *attach_workspace
 
-      - deploy-lambda:
-          stage: staging
+  #     - deploy-lambda:
+  #         stage: staging
 
-  deploy-production:
-    executor: node
+  # deploy-production:
+  #   executor: node
 
-    steps:
-      - checkout
-      - *attach_workspace
+  #   steps:
+  #     - checkout
+  #     - *attach_workspace
 
-      - deploy-lambda:
-          stage: production
+  #     - deploy-lambda:
+  #         stage: production
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Workflows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 workflows:
@@ -233,32 +233,33 @@ workflows:
             - api-assume-role-document-evidence-store-staging-context
             - 'Serverless Framework'
           requires:
-            - run-cypress-e2e
-            - lint-and-test
+            - build
+            # - run-cypress-e2e
+            # - lint-and-test
           filters:
             branches:
               only:
                 # - main
                 - TS-1902-Update-frameworks
 
-      - deploy-staging:
-          context:
-            - 'Serverless Framework'
-          requires:
-            - assume-role-staging
+      # - deploy-staging:
+      #     context:
+      #       - 'Serverless Framework'
+      #     requires:
+      #       - assume-role-staging
 
-      - permit-deploy-production:
-          context:
-            - 'Serverless Framework'
-          type: approval
-          requires:
-            - deploy-staging
+      # - permit-deploy-production:
+      #     context:
+      #       - 'Serverless Framework'
+      #     type: approval
+      #     requires:
+      #       - deploy-staging
 
-      - assume-role-production:
-          context: api-assume-role-document-evidence-store-production-context
-          requires:
-            - permit-deploy-production
+      # - assume-role-production:
+      #     context: api-assume-role-document-evidence-store-production-context
+      #     requires:
+      #       - permit-deploy-production
 
-      - deploy-production:
-          requires:
-            - assume-role-production
+      # - deploy-production:
+      #     requires:
+      #       - assume-role-production
