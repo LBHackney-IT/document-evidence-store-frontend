@@ -30,12 +30,13 @@ commands:
         type: string
     steps:
       - checkout
-      - attach_workspace:
-          at: *workspace_root
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
+      - run:
+          name: list aws dir
+          command: ls -la .aws
       - persist_to_workspace:
           root: *workspace_root
           paths:
