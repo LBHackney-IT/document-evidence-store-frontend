@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '.'
+  workspace_root: &workspace_root '~'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -34,13 +34,10 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
-      - run:
-          name: list aws dir
-          command: ls -la .aws
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - ~.aws
+            - .aws
 
   deploy-lambda:
     description: 'Deploys application'
@@ -69,8 +66,8 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - build
-            - node_modules
+            - project/build
+            - project/node_modules
 
   lint-and-test:
     executor: node
@@ -90,11 +87,11 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - coverage
+            - project/coverage
       - store_test_results:
-          path: test_results
+          path: project/test_results
       - store_artifacts:
-          path: coverage
+          path: project/coverage
 
   run-cypress-e2e:
     executor: node
@@ -110,9 +107,9 @@ jobs:
           start-command: npm run start:ci
           cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
       - store_test_results:
-          path: cypress/results
+          path: project/cypress/results
       - store_artifacts:
-          path: cypress/results
+          path: project/cypress/results
 
   sonar-scan:
     executor: node
