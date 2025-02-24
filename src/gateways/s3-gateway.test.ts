@@ -38,7 +38,7 @@ describe('S3 Gateway', () => {
 
     it('uses the correct form data', async () => {
       await gateway.upload(file, policy);
-      const data: FormData = mockedAxios.post.mock.calls[0][1];
+      const data = mockedAxios.post.mock.calls[0][1] as FormData;
 
       const dataArray = Array.from(data.entries());
 

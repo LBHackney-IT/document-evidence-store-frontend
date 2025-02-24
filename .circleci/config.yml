@@ -1,27 +1,27 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@2.2.0
+  cypress: cypress-io/cypress@3
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
+  node: circleci/node@6.3.0
+  sonarcloud: sonarsource/sonarcloud@2.0.0
 
 executors:
   node:
     docker:
-      - image: circleci/node:16
+      - image: cimg/node:20.18.2-browsers
     working_directory: ~/project
   python:
     docker:
-      - image: circleci/python:3.7
-  cypress-executor:
-    docker:
-      - image: cypress/base:14.17.6-slim
+      - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '~'
+  workspace_root: &workspace_root '.'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Commands ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 commands:
   assume-role-and-persist-workspace:
     description: 'Assumes deployment role and persists credentials across jobs'
@@ -53,27 +53,70 @@ commands:
             sudo npm i -g serverless
             sls deploy -s <<parameters.stage>>
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 jobs:
-  test:
+  build:
     executor: node
-    environment:
-      NODE_ENV: ci
-
     steps:
-      - *attach_workspace
       - checkout
+      - node/install-packages
+      - run:
+          name: Build Next application
+          command: npm run build
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - build
+            - node_modules
 
+  lint-and-test:
+    executor: node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *workspace_root
       - run:
           name: Run linter
-          command: npm run lint
-
+          command: npm run lint:ci
       - run:
           name: Run prettier
           command: npm run prettier:test
-
       - run:
           name: Run unit tests
-          command: npm run test:unit -- --maxWorkers=2
+          command: npm run test:unit:ci
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - coverage
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: coverage
+
+  run-cypress-e2e:
+    executor: node
+    steps:
+      - checkout
+      - attach_workspace:
+          at: *workspace_root
+      - run:
+          name: Copy envs
+          command: cp .env.sample .env
+      - cypress/install
+      - cypress/run-tests:
+          start-command: npm run start:ci
+          cypress-command: npx wait-on http-get://127.0.0.1:3000/api/ping && npx cypress run
+      - store_test_results:
+          path: cypress/results
+      - store_artifacts:
+          path: cypress/results
+
+  sonar-scan:
+    executor: node
+    steps:
+      - checkout
+      - *attach_workspace
+      - sonarcloud/scan
 
   assume-role-staging:
     executor: python
@@ -107,34 +150,31 @@ jobs:
       - deploy-lambda:
           stage: production
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Workflows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 workflows:
   version: 2
   continuous-delivery:
     jobs:
-      - cypress/install: # Use Cypress step to install and cache dependencies
-          build: npm run build
-          executor: cypress-executor
-          post-checkout:
-            - run: cp .env.sample .env
+      - build
 
-      - test:
+      - lint-and-test:
           requires:
-            - cypress/install
+            - build
 
-      - cypress/run:
+      - run-cypress-e2e:
           requires:
-            - cypress/install
-          executor: cypress-executor
-          attach-workspace: true
-          start: npm run start:ci
-          wait-on: 'http-get://127.0.0.1:3000/api/ping'
-          store_artifacts: true
+            - build
+
+      - sonar-scan:
+          context: SonarCloud
+          requires:
+            - lint-and-test
 
       - assume-role-staging:
           context: api-assume-role-document-evidence-store-staging-context
           requires:
-            - cypress/run
-            - test
+            - run-cypress-e2e
+            - lint-and-test
           filters:
             branches:
               only:

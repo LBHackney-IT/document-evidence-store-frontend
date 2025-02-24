@@ -6,6 +6,7 @@ test('it renders correctly', async () => {
   render(
     <Tabs
       tabTitles={['Tab one', 'Tab two']}
+      // eslint-disable-next-line
       children={[<p>Tab panel one</p>, <p>Tab panel two</p>]}
     />
   );
@@ -18,6 +19,7 @@ test('it responds to clicks between tabs', async () => {
   render(
     <Tabs
       tabTitles={['Tab one', 'Tab two']}
+      // eslint-disable-next-line
       children={[<p>Tab panel one</p>, <p>Tab panel two</p>]}
     />
   );

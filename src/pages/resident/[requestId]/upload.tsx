@@ -56,8 +56,9 @@ const Upload: NextPage<UploadProps> = ({
             className="govuk-inset-text"
             data-testid="select-multiple-files-guidance"
           >
-            After clicking the "Choose files" button, you can use the Ctrl key
-            (Command key on a Mac machine) + click to select multiple files.
+            After clicking the &quot;Choose files&quot; button, you can use the
+            Ctrl key (Command key on a Mac machine) + click to select multiple
+            files.
           </div>
           <UploaderForm
             evidenceRequestId={evidenceRequestId}

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "standard",
+    "routes": [
+      "get-evidence-requests:success",
+      "get-evidence-request:success",
+      "create-evidence-request:success",
+      "get-document-types:success",
+      "get-staff-selected-document-types:success",
+      "create-document-submission:success",
+      "get-document-submission-png:success",
+      "get-document-submission-pdf:success",
+      "get-document-submission-heic:success",
+      "get-approved-document-submission-png:success",
+      "get-rejected-document-submission-png:success",
+      "update-document-submission:success",
+      "get-residents:success",
+      "create-resident:success",
+      "get-document-submissions-with-resident:simulate",
+      "get-document-submissions-with-expired-claim:success",
+      "get-resident:success",
+      "get-download-url:success",
+      "link-and-merge-resident:success"
+    ]
+  }
+]

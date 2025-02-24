@@ -6,6 +6,8 @@ type UserData = {
   groups: string[];
 };
 
+type IncludedImpacts = ImpactValues[];
+
 declare namespace Cypress {
   interface Chainable {
     /**
@@ -13,5 +15,12 @@ declare namespace Cypress {
      * @example cy.login()
      */
     login(userData: UserData): Chainable<Element>;
+    /**
+     * Custom command to test page accessibility.
+     */
+    checkAccessibility(includedImpacts: IncludedImpacts): Chainable<Element>;
+  }
+  interface ApplicationWindow {
+    next;
   }
 }

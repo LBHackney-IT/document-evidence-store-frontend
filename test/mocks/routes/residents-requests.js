@@ -4,47 +4,71 @@ const mergeAndLink = require('../../../cypress/fixtures/residents/merge-and-link
 
 const getResidents = {
   id: 'get-residents',
-  url: '/api/v1/residents/:searchQuery',
+  url: '/api/v1/residents/search',
   method: 'GET',
-  response: {
-    status: 200,
-    body: searchResidents,
-  },
+  variants: [
+    {
+      id: 'success',
+      type: 'json',
+      options: {
+        status: 200,
+        body: searchResidents,
+      },
+    },
+  ],
 };
 
 const getResident = {
   id: 'get-resident',
   url: '/api/v1/residents/:id',
   method: 'GET',
-  response: {
-    status: 200,
-    body: residentFixture,
-  },
+  variants: [
+    {
+      id: 'success',
+      type: 'json',
+      options: {
+        status: 200,
+        body: residentFixture,
+      },
+    },
+  ],
 };
 
 const createResident = {
   id: 'create-resident',
   url: '/api/v1/residents',
   method: 'POST',
-  response: {
-    status: 201,
-    body: residentFixture,
-  },
+  variants: [
+    {
+      id: 'success',
+      type: 'json',
+      options: {
+        status: 201,
+        body: residentFixture,
+      },
+    },
+  ],
 };
 
 const linkAndMergeResident = {
   id: 'link-and-merge-resident',
   url: 'api/v1/residents/merge-and-link',
   method: 'POST',
-  response: {
-    status: 200,
-    body: mergeAndLink,
-  },
+  variants: [
+    {
+      id: 'success',
+      type: 'json',
+      options: {
+        status: 200,
+        body: mergeAndLink,
+      },
+    },
+  ],
 };
 
-module.exports = {
-  getResidents,
+module.exports = [
   getResident,
+  getResidents,
   createResident,
   linkAndMergeResident,
-};
+];
