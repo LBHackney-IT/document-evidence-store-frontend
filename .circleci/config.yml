@@ -50,7 +50,7 @@ commands:
           name: Deploy application
           command: |
             npm prune --production
-            sudo npm i -g serverless
+            sudo npm i -g serverless@4
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -184,10 +184,14 @@ workflows:
                 - TS-1902-Update-frameworks
 
       - deploy-staging:
+          context:
+            - "Serverless Framework"
           requires:
             - assume-role-staging
 
       - permit-deploy-production:
+          context:
+            - "Serverless Framework"
           type: approval
           requires:
             - deploy-staging
