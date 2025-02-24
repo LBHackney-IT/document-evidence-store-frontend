@@ -16,11 +16,13 @@ package:
   individually: true
   exclude:
     - ./**
+    - node_modules/**    
 
 functions:
   document-evidence-frontend:
     name: ${self:service}
     handler: src/lambda.handler
+    timeout: 30
     package:
       include:
         - auth-groups.json
@@ -29,7 +31,6 @@ functions:
         - next.config.js
         - public/**
         - build/_next/**
-        - '!build/_next/cache/**'
         - node_modules/**
     events:
       - http: ANY /
