@@ -136,9 +136,9 @@ jobs:
     executor: node
 
     steps:
-      - checkout      
+      - checkout
       - *attach_workspace
-    
+
       - deploy-lambda:
           stage: staging
 
