@@ -16,7 +16,6 @@ package:
   individually: true
   exclude:
     - ./**
-    - node_modules/**
 
 functions:
   document-evidence-frontend:
