@@ -18,9 +18,6 @@ describe('Can search for a resident', () => {
 
   it('Has no detectable accessibility issues', () => {
     cy.checkAccessibility();
-    // cy.checkA11y({
-    //   exclude: ['input'],
-    // });
   });
 
   it('Automatically performs resident search from deeplink search term', () => {
