@@ -1,8 +1,9 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3
+  aws-cli: circleci/aws-cli@3.2.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
+  cypress: cypress-io/cypress@3
   node: circleci/node@6.3.0
   sonarcloud: sonarsource/sonarcloud@2.0.0
 
@@ -28,23 +29,53 @@ commands:
     parameters:
       aws-account:
         type: string
+      stage:
+        type: string
+        default: staging        
+
     steps:
       - checkout
       - *attach_workspace
       - aws_assume_role/assume_role:
-          # account: <<parameters.aws-account>>
-          account: $AWS_ACCOUNT_DEVELOPMENT
+          account: <<parameters.aws-account>>          
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
+      - run:
+          name: Deploy application
+          command: |
+            npm prune --production
+            sudo npm i -g serverless
+            sls deploy -s <<parameters.stage>>          
       # - run:
       #     name: clean up
       #     command: |
       #       unset AWS_ACCESS_KEY_ID
       #       unset AWS_SECRET_ACCESS_KEY
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - .aws
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - .aws
+  # assume-role-and-persist-workspace:
+  #   description: 'Assumes deployment role and persists credentials across jobs'
+  #   parameters:
+  #     aws-account:
+  #       type: string
+  #   steps:
+  #     - checkout
+  #     - *attach_workspace
+  #     - aws_assume_role/assume_role:
+  #         account: <<parameters.aws-account>>          
+  #         profile_name: default
+  #         role: 'LBH_Circle_CI_Deployment_Role'
+  #     # - run:
+  #     #     name: clean up
+  #     #     command: |
+  #     #       unset AWS_ACCESS_KEY_ID
+  #     #       unset AWS_SECRET_ACCESS_KEY
+  #     - persist_to_workspace:
+  #         root: ~/
+  #         paths:
+  #           - .aws
 
   deploy-lambda:
     description: 'Deploys application'
@@ -133,10 +164,12 @@ jobs:
       - sonarcloud/scan
 
   assume-role-staging:
-    executor: python
+    # executor: python
+    executor: aws-cli/default    
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
+          stage: staging
 
   assume-role-production:
     executor: python
