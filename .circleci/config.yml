@@ -218,7 +218,9 @@ workflows:
             - lint-and-test
 
       - assume-role-staging:
-          context: api-assume-role-document-evidence-store-staging-context
+          context:
+            - api-assume-role-document-evidence-store-staging-context
+            - 'Serverless Framework'
           requires:
             - run-cypress-e2e
             - lint-and-test
