@@ -20,7 +20,7 @@ const nextConfig = {
     ];
   },
   distDir: 'build/_next',
-  webpack: (config, dev, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     config.plugins.push(
       new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
     );
