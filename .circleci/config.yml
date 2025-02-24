@@ -73,8 +73,9 @@ jobs:
     executor: node
     steps:
       - checkout
-      - attach_workspace:
-          at: *workspace_root
+      - *attach_workspace
+      # - attach_workspace:
+      #     at: *workspace_root
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -97,8 +98,9 @@ jobs:
     executor: node
     steps:
       - checkout
-      - attach_workspace:
-          at: *workspace_root
+      - *attach_workspace
+      # - attach_workspace:
+      #     at: *workspace_root
       - run:
           name: Copy envs
           command: cp .env.sample .env
@@ -134,9 +136,9 @@ jobs:
     executor: node
 
     steps:
+      - checkout      
       - *attach_workspace
-      - checkout
-
+    
       - deploy-lambda:
           stage: staging
 
@@ -144,8 +146,8 @@ jobs:
     executor: node
 
     steps:
-      - *attach_workspace
       - checkout
+      - *attach_workspace
 
       - deploy-lambda:
           stage: production
