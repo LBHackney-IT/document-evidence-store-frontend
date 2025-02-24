@@ -31,13 +31,13 @@ commands:
         type: string
       stage:
         type: string
-        default: staging        
+        default: staging
 
     steps:
       - checkout
       - *attach_workspace
       - aws_assume_role/assume_role:
-          account: <<parameters.aws-account>>          
+          account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
       - run:
@@ -45,7 +45,7 @@ commands:
           command: |
             npm prune --production
             sudo npm i -g serverless
-            sls deploy -s <<parameters.stage>>          
+            sls deploy -s <<parameters.stage>>
       # - run:
       #     name: clean up
       #     command: |
@@ -64,7 +64,7 @@ commands:
   #     - checkout
   #     - *attach_workspace
   #     - aws_assume_role/assume_role:
-  #         account: <<parameters.aws-account>>          
+  #         account: <<parameters.aws-account>>
   #         profile_name: default
   #         role: 'LBH_Circle_CI_Deployment_Role'
   #     # - run:
@@ -165,7 +165,7 @@ jobs:
 
   assume-role-staging:
     # executor: python
-    executor: aws-cli/default    
+    executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
