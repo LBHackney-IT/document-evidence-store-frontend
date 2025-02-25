@@ -25,7 +25,7 @@ functions:
     package:
       patterns:
         - auth-groups.json
-        - lambda.js
+        - src/lambda.js
         - teams.json
         - next.config.js
         - public/**
