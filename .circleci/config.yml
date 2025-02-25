@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws-cli: circleci/aws-cli@3.2.0
+  # aws-cli: circleci/aws-cli@3.2.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
   cypress: cypress-io/cypress@3
   node: circleci/node@6.3.0
@@ -17,7 +17,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '.'
+  workspace_root: &workspace_root '~'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -29,9 +29,9 @@ commands:
     parameters:
       aws-account:
         type: string
-      stage:
-        type: string
-        default: staging
+      # stage:
+      #   type: string
+      #   default: staging
 
     steps:
       - checkout
@@ -39,33 +39,33 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
-      - run:
-          name: Deploy application
-          command: |
-            # aws_assume_role/assume_role stores credentials in ~/.aws/credentials, however
-            # environment variables take precence. These are set to do the initial config, so
-            # the role isn't actually assumed. We need to remove the environment variables in
-            # order for the aws_assume_role/assume_role output to be picked up.
-            #
-            # I think the lbh-hackit orb setup here could be replaced with direct use of the aws-cli/setup and
-            # aws-cli/role_arn_setup, which would remove the need for this cleanup.          
-            unset AWS_ACCESS_KEY_ID
-            unset AWS_SECRET_ACCESS_KEY
-            # should remove all of the devDeps
+      # - run:
+      #     name: Deploy application
+      #     command: |
+      #       # aws_assume_role/assume_role stores credentials in ~/.aws/credentials, however
+      #       # environment variables take precence. These are set to do the initial config, so
+      #       # the role isn't actually assumed. We need to remove the environment variables in
+      #       # order for the aws_assume_role/assume_role output to be picked up.
+      #       #
+      #       # I think the lbh-hackit orb setup here could be replaced with direct use of the aws-cli/setup and
+      #       # aws-cli/role_arn_setup, which would remove the need for this cleanup.
+      #       unset AWS_ACCESS_KEY_ID
+      #       unset AWS_SECRET_ACCESS_KEY
+      #       # should remove all of the devDeps
 
-            npm prune --production
-            sudo npm i -g serverless
-            sls deploy -s <<parameters.stage>>
-            # npx --yes serverless deploy --stage <<parameters.stage>>
+      #       npm prune --production
+      #       sudo npm i -g serverless
+      #       sls deploy -s <<parameters.stage>>
+      #       # npx --yes serverless deploy --stage <<parameters.stage>>
       # - run:
       #     name: clean up
       #     command: |
       #       unset AWS_ACCESS_KEY_ID
       #       unset AWS_SECRET_ACCESS_KEY
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - .aws
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - .aws
   # assume-role-and-persist-workspace:
   #   description: 'Assumes deployment role and persists credentials across jobs'
   #   parameters:
@@ -88,24 +88,41 @@ commands:
   #         paths:
   #           - .aws
 
-  # deploy-lambda:
-  #   description: 'Deploys application'
-  #   parameters:
-  #     stage:
-  #       type: string
-  #       default: staging
-  #   steps:
-  #     # - run:
-  #     #     name: clean up
-  #     #     command: |
-  #     #       unset AWS_ACCESS_KEY_ID
-  #     #       unset AWS_SECRET_ACCESS_KEY
-  #     - run:
-  #         name: Deploy application
-  #         command: |
-  #           npm prune --production
-  #           # sudo npm i -g serverless
-  #           sls deploy -s <<parameters.stage>>
+  deploy-lambda:
+    description: 'Deploys application'
+    parameters:
+      stage:
+        type: string
+        default: staging
+    steps:
+      # - run:
+      #     name: clean up
+      #     command: |
+      #       unset AWS_ACCESS_KEY_ID
+      #       unset AWS_SECRET_ACCESS_KEY
+      # - run:
+      #     name: Deploy application
+      #     command: |
+      #       npm prune --production
+      #       # sudo npm i -g serverless
+      #       sls deploy -s <<parameters.stage>>
+      - *attach_workspace
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install serverless CLI
+          command: sudo npm i -g serverless@^3
+      - run:
+          name: Deploy application
+          command: |
+            # npm install
+            # npm run build
+            # rm -rf node_modules
+            # yarn install --production
+            # sls deploy --stage << parameters.stage >>                
+            npm install --production
+            npm run build --production                      
+            sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 jobs:
@@ -117,19 +134,17 @@ jobs:
       - run:
           name: Build Next application
           command: npm run build
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - build
-            - node_modules
+      # - persist_to_workspace:
+      #     root: *workspace_root
+      #     paths:
+      #       - build
+      #       - node_modules
 
   lint-and-test:
     executor: node
     steps:
       - checkout
       - *attach_workspace
-      # - attach_workspace:
-      #     at: *workspace_root
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -173,12 +188,12 @@ jobs:
       - sonarcloud/scan
 
   assume-role-staging:
-    # executor: python
-    executor: aws-cli/default
+    executor: python
+    # executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
-          stage: staging
+          # stage: staging
 
   assume-role-production:
     executor: python
@@ -186,15 +201,15 @@ jobs:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
-  # deploy-staging:
-  #   executor: node
+  deploy-staging:
+    executor: node
 
-  #   steps:
-  #     - checkout
-  #     - *attach_workspace
+    steps:
+      # - checkout
+      # - *attach_workspace
 
-  #     - deploy-lambda:
-  #         stage: staging
+      - deploy-lambda:
+          stage: staging
 
   # deploy-production:
   #   executor: node
@@ -229,7 +244,7 @@ workflows:
       - assume-role-staging:
           context:
             - api-assume-role-document-evidence-store-staging-context
-            - 'Serverless Framework'
+            # - 'Serverless Framework'
           requires:
             - build
             # - run-cypress-e2e
@@ -240,11 +255,11 @@ workflows:
                 # - main
                 - TS-1902-Update-frameworks
 
-      # - deploy-staging:
-      #     context:
-      #       - 'Serverless Framework'
-      #     requires:
-      #       - assume-role-staging
+      - deploy-staging:
+          # context:
+          #   - 'Serverless Framework'
+          requires:
+            - assume-role-staging
 
       # - permit-deploy-production:
       #     context:

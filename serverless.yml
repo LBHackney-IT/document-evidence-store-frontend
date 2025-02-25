@@ -49,7 +49,6 @@ functions:
         - 'next.config.js'
         - public/**
         - build/_next/**
-        - '!build/_next/cache/**'
         - node_modules/**
         - '!node_modules/@sentry/cli/sentry-cli'
 
