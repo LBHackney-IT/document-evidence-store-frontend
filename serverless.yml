@@ -14,8 +14,8 @@ provider:
 
 package:
   individually: true
-  exclude:
-    - ./**
+  patterns:
+    - '!./**'
 
 functions:
   document-evidence-frontend:
@@ -33,9 +33,9 @@ functions:
         - build/_next/*.json
         - build/_next/server/**
         - build/_next/static/**
-        - node_modules/**
-        - '!node_modules/@next/swc-linux-x64-gnu'
-        - '!node_modules/@next/swc-linux-x64-musl'
+        # - node_modules/**
+        # - '!node_modules/@next/swc-linux-x64-gnu'
+        # - '!node_modules/@next/swc-linux-x64-musl'
         # - '!node_modules/typescript'
 
     events:

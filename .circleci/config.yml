@@ -56,7 +56,7 @@ commands:
       - run:
           name: Deploy application
           command: |
-            npm prune --production                      
+            # npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
