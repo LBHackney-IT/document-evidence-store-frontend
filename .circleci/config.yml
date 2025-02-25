@@ -124,7 +124,7 @@ jobs:
           paths:
             - .
             # - build
-            # - node_modules            
+            # - node_modules
 
   lint-and-test:
     executor: node
