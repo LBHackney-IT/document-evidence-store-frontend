@@ -95,9 +95,11 @@ commands:
         type: string
         default: staging
     steps:
-      - *attach_workspace
+      # - *attach_workspace
+      - attach_workspace:
+          at: ~/project
       - checkout
-      # - setup_remote_docker
+      - setup_remote_docker
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
