@@ -14,7 +14,9 @@ provider:
 
 package:
   individually: true
-  # excludeDevDependencies: true
+  excludeDevDependencies: true
+  patterns:
+    - '!./**'
   # exclude:
   #   - ./**
   # patterns:
@@ -41,17 +43,16 @@ functions:
     timeout: 30
     package:
       patterns:
-        - auth-groups.json
-        - teams.json
-        - src/lambda.js
-        - next.config.js
+        - 'auth-groups.json'
+        - 'lambda.js'
+        - 'teams.json'
+        - 'next.config.js'
         - public/**
         - build/_next/**
         - '!build/_next/cache/**'
         - node_modules/**
+        - '!node_modules/@sentry/cli/sentry-cli'
 
-      # exclude:
-      #   - build/_next/cache/**
     events:
       - http: ANY /
       - http: ANY /{proxy+}
