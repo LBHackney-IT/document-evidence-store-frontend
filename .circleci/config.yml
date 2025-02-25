@@ -139,13 +139,10 @@ jobs:
       - run:
           name: Build Next application
           command: npm run build
-      - persist_to_workspace:
-          # root: *workspace_root
+      - persist_to_workspace:          
           root: ~/project
           paths:
             - .
-            # - build
-            # - node_modules
 
   lint-and-test:
     executor: node

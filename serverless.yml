@@ -43,10 +43,10 @@ functions:
     timeout: 30
     package:
       patterns:
-        - 'auth-groups.json'
-        - 'lambda.js'
-        - 'teams.json'
-        - 'next.config.js'
+        - auth-groups.json
+        - src/lambda.js
+        - teams.json
+        - next.config.js
         - public/**
         - build/_next/**
         - node_modules/**
