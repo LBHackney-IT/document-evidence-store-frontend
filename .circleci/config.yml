@@ -29,9 +29,6 @@ commands:
     parameters:
       aws-account:
         type: string
-      # stage:
-      #   type: string
-      #   default: staging
 
     steps:
       - checkout
@@ -39,54 +36,10 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
-      # - run:
-      #     name: Deploy application
-      #     command: |
-      #       # aws_assume_role/assume_role stores credentials in ~/.aws/credentials, however
-      #       # environment variables take precence. These are set to do the initial config, so
-      #       # the role isn't actually assumed. We need to remove the environment variables in
-      #       # order for the aws_assume_role/assume_role output to be picked up.
-      #       #
-      #       # I think the lbh-hackit orb setup here could be replaced with direct use of the aws-cli/setup and
-      #       # aws-cli/role_arn_setup, which would remove the need for this cleanup.
-      #       unset AWS_ACCESS_KEY_ID
-      #       unset AWS_SECRET_ACCESS_KEY
-      #       # should remove all of the devDeps
-
-      #       npm prune --production
-      #       sudo npm i -g serverless
-      #       sls deploy -s <<parameters.stage>>
-      #       # npx --yes serverless deploy --stage <<parameters.stage>>
-      # - run:
-      #     name: clean up
-      #     command: |
-      #       unset AWS_ACCESS_KEY_ID
-      #       unset AWS_SECRET_ACCESS_KEY
       - persist_to_workspace:
           root: *workspace_root
           paths:
             - .aws
-  # assume-role-and-persist-workspace:
-  #   description: 'Assumes deployment role and persists credentials across jobs'
-  #   parameters:
-  #     aws-account:
-  #       type: string
-  #   steps:
-  #     - checkout
-  #     - *attach_workspace
-  #     - aws_assume_role/assume_role:
-  #         account: <<parameters.aws-account>>
-  #         profile_name: default
-  #         role: 'LBH_Circle_CI_Deployment_Role'
-  #     # - run:
-  #     #     name: clean up
-  #     #     command: |
-  #     #       unset AWS_ACCESS_KEY_ID
-  #     #       unset AWS_SECRET_ACCESS_KEY
-  #     - persist_to_workspace:
-  #         root: ~/
-  #         paths:
-  #           - .aws
 
   deploy-lambda:
     description: 'Deploys application'
@@ -96,8 +49,7 @@ commands:
         default: staging
     steps:
       - *attach_workspace
-      - checkout
-      # - setup_remote_docker
+      - checkout      
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
@@ -114,18 +66,17 @@ jobs:
   build:
     executor: node
     steps:
+      - *attach_workspace
       - checkout
       - node/install-packages
       - run:
           name: Build Next application
           command: npm run build --production
       - persist_to_workspace:
-          root: ~/project
-          # root: *workspace_root
+          # root: ~/project
+          root: *workspace_root
           paths:
             - .
-            # - ./project/build
-            # - ./project/node_modules
 
   lint-and-test:
     executor: node
