@@ -34,7 +34,8 @@ functions:
         - src/lambda.js
         - next.config.js
         - public/**
-        - build/_next/**
+        - build/_next/**        
+        - '!build/_next/cache/**'
         - node_modules/**
     events:
       - http: ANY /
