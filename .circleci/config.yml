@@ -123,6 +123,7 @@ commands:
             # npm install --production
             # npm run build --production
 
+            npm install
             npm run build --production
             rm -rf node_modules            
             # npm prune --production                      
