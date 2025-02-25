@@ -95,20 +95,9 @@ commands:
         type: string
         default: staging
     steps:
-      # - run:
-      #     name: clean up
-      #     command: |
-      #       unset AWS_ACCESS_KEY_ID
-      #       unset AWS_SECRET_ACCESS_KEY
-      # - run:
-      #     name: Deploy application
-      #     command: |
-      #       npm prune --production
-      #       # sudo npm i -g serverless
-      #       sls deploy -s <<parameters.stage>>
       - *attach_workspace
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
@@ -116,14 +105,6 @@ commands:
           name: Deploy application
           command: |
             # npm install
-            # npm run build
-            # rm -rf node_modules
-            # yarn install --production
-            # sls deploy --stage << parameters.stage >>                
-            # npm install --production
-            # npm run build --production
-
-            npm install
             npm run build --production            
             npm prune --production                      
             sls deploy -s <<parameters.stage>>
@@ -142,6 +123,8 @@ jobs:
           root: ~/project
           paths:
             - .
+            # - build
+            # - node_modules            
 
   lint-and-test:
     executor: node

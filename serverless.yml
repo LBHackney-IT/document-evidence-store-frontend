@@ -13,8 +13,7 @@ provider:
     lambda: true
 
 package:
-  individually: true
-  excludeDevDependencies: true
+  individually: true  
   exclude:
     - ./**
 
