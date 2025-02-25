@@ -261,8 +261,8 @@ workflows:
                 - TS-1902-Update-frameworks
 
       - deploy-staging:
-          # context:
-          #   - 'Serverless Framework'
+          context:
+            - 'Serverless Framework'
           requires:
             - assume-role-staging
 
