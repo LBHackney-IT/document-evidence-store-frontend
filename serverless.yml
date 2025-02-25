@@ -15,7 +15,7 @@ provider:
 package:
   individually: true
   patterns:
-    - '!./**'    
+    - '!./**'
 
 functions:
   document-evidence-frontend:
