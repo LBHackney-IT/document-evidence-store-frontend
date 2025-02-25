@@ -50,9 +50,9 @@ commands:
     steps:
       - *attach_workspace
       - checkout
-      - run:
-          name: Install serverless CLI
-          command: sudo npm i -g serverless
+      # - run:
+      #     name: Install serverless CLI
+      #     command: sudo npm i -g serverless
       - run:
           name: Deploy application
           command: |
@@ -67,6 +67,9 @@ jobs:
       - *attach_workspace
       - checkout
       - node/install-packages
+      - run:
+          name: Install serverless CLI
+          command: sudo npm i -g serverless
       - run:
           name: Build Next application
           command: npm run build --production
