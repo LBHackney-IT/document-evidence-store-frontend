@@ -95,9 +95,7 @@ commands:
         type: string
         default: staging
     steps:
-      # - *attach_workspace
-      - attach_workspace:
-          at: ~/project
+      - *attach_workspace
       - checkout
       - setup_remote_docker
       - run:
@@ -122,11 +120,12 @@ jobs:
           name: Build Next application
           command: npm run build
       - persist_to_workspace:
-          root: ~/project
+          # root: ~/project
+          root: *workspace_root
           paths:
-            - .
-            # - build
-            # - node_modules
+            # - .
+            - ./project/build
+            - ./project/node_modules
 
   lint-and-test:
     executor: node
