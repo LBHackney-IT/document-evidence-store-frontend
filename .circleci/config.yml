@@ -122,7 +122,10 @@ commands:
             # sls deploy --stage << parameters.stage >>                
             # npm install --production
             # npm run build --production
-            npm prune --production                      
+
+            npm run build --production
+            rm -rf node_modules            
+            # npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
