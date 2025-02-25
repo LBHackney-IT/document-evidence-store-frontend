@@ -120,8 +120,9 @@ commands:
             # rm -rf node_modules
             # yarn install --production
             # sls deploy --stage << parameters.stage >>                
-            npm install --production
-            npm run build --production                      
+            # npm install --production
+            # npm run build --production
+            npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
