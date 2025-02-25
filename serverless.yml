@@ -12,6 +12,12 @@ provider:
     apiGateway: true
     lambda: true
 
+plugins:
+  - serverless-webpack
+
+build:
+  esbuild: false
+
 package:
   individually: true
   excludeDevDependencies: true
@@ -122,6 +128,8 @@ resources:
                 OriginProtocolPolicy: https-only
 
 custom:
+  webpack:
+    webpackConfig: ./next.config.js
   domain-name:
     Fn::Join:
       - '.'
