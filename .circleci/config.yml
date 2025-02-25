@@ -153,8 +153,6 @@ jobs:
     steps:
       - checkout
       - *attach_workspace
-      # - attach_workspace:
-      #     at: *workspace_root
       - run:
           name: Copy envs
           command: cp .env.sample .env

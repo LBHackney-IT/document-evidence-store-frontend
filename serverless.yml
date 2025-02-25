@@ -14,13 +14,21 @@ provider:
 
 package:
   individually: true
+  excludeDevDependencies: true
   exclude:
     - ./**
-    - node_modules/**
-    - build/**
-    - public/**
-    - src/**
-    - tests/**
+  # patterns:
+  #   - src/**
+  #   - handler.js
+  #   - '!.git/**'
+  #   - '!.travis.yml'
+  # exclude:
+  #   - ./**
+  #   - node_modules/**
+  #   - build/**
+  #   - public/**
+  #   - src/**
+  #   - tests/**
 
 functions:
   document-evidence-frontend:
@@ -28,7 +36,7 @@ functions:
     handler: src/lambda.handler
     timeout: 30
     package:
-      include:
+      patterns:
         - auth-groups.json
         - teams.json
         - src/lambda.js
@@ -36,8 +44,10 @@ functions:
         - public/**
         - build/_next/**
         - node_modules/**
-      exclude:
-        - build/_next/cache/**
+        - '!build/_next/cache/**'
+
+      # exclude:
+      #   - build/_next/cache/**
     events:
       - http: ANY /
       - http: ANY /{proxy+}
