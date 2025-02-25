@@ -56,9 +56,7 @@ commands:
       - run:
           name: Deploy application
           command: |
-            # npm install
-            # npm run build --production            
-            # npm prune --production                      
+            npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -72,8 +70,7 @@ jobs:
       - run:
           name: Build Next application
           command: npm run build --production
-      - persist_to_workspace:
-          # root: ~/project
+      - persist_to_workspace:          
           root: *workspace_root
           paths:
             - .
@@ -81,8 +78,8 @@ jobs:
   lint-and-test:
     executor: node
     steps:
-      - checkout
       - *attach_workspace
+      - checkout
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -104,8 +101,8 @@ jobs:
   run-cypress-e2e:
     executor: node
     steps:
-      - checkout
       - *attach_workspace
+      - checkout
       - run:
           name: Copy envs
           command: cp .env.sample .env
@@ -121,8 +118,8 @@ jobs:
   sonar-scan:
     executor: node
     steps:
-      - checkout
       - *attach_workspace
+      - checkout
       - sonarcloud/scan
 
   assume-role-staging:
