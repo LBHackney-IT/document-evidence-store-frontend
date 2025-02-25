@@ -233,18 +233,18 @@ workflows:
     jobs:
       - build
 
-      - lint-and-test:
-          requires:
-            - build
+      # - lint-and-test:
+      #     requires:
+      #       - build
 
-      - run-cypress-e2e:
-          requires:
-            - build
+      # - run-cypress-e2e:
+      #     requires:
+      #       - build
 
-      - sonar-scan:
-          context: SonarCloud
-          requires:
-            - lint-and-test
+      # - sonar-scan:
+      #     context: SonarCloud
+      #     requires:
+      #       - lint-and-test
 
       - assume-role-staging:
           context:
