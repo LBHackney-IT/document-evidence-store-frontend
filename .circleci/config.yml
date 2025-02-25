@@ -97,7 +97,7 @@ commands:
     steps:
       - *attach_workspace
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
@@ -105,8 +105,8 @@ commands:
           name: Deploy application
           command: |
             # npm install
-            npm run build --production            
-            npm prune --production                      
+            # npm run build --production            
+            # npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -118,14 +118,14 @@ jobs:
       - node/install-packages
       - run:
           name: Build Next application
-          command: npm run build
+          command: npm run build --production
       - persist_to_workspace:
-          # root: ~/project
-          root: *workspace_root
+          root: ~/project
+          # root: *workspace_root
           paths:
-            # - .
-            - ./project/build
-            - ./project/node_modules
+            - .
+            # - ./project/build
+            # - ./project/node_modules
 
   lint-and-test:
     executor: node
