@@ -50,13 +50,13 @@ commands:
     steps:
       - *attach_workspace
       - checkout
-      # - run:
-      #     name: Install serverless CLI
-      #     command: sudo npm i -g serverless
+      - run:
+          name: Install serverless CLI
+          command: sudo npm i -g serverless
       - run:
           name: Deploy application
           command: |
-            # npm prune --production                      
+            npm prune --production                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -67,9 +67,6 @@ jobs:
       - *attach_workspace
       - checkout
       - node/install-packages
-      - run:
-          name: Install serverless CLI
-          command: sudo npm i -g serverless
       - run:
           name: Build Next application
           command: npm run build --production
@@ -92,14 +89,15 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - coverage
       - store_test_results:
           path: test_results
       - store_artifacts:
           path: coverage
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - coverage
+            - test_results
 
   run-cypress-e2e:
     executor: node
