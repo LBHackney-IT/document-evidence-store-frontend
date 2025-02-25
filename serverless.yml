@@ -14,14 +14,18 @@ provider:
 
 package:
   individually: true
-  excludeDevDependencies: true
-  exclude:
-    - ./**
+  # excludeDevDependencies: true
+  # exclude:
+  #   - ./**
   # patterns:
   #   - src/**
-  #   - handler.js
-  #   - '!.git/**'
-  #   - '!.travis.yml'
+  #   - public/**
+  #   - build/_next/**
+  #   - node_modules/**
+  #   - auth-groups.json
+  #   - teams.json
+  #   - next.config.js
+
   # exclude:
   #   - ./**
   #   - node_modules/**
@@ -43,8 +47,8 @@ functions:
         - next.config.js
         - public/**
         - build/_next/**
-        - node_modules/**
         - '!build/_next/cache/**'
+        - node_modules/**
 
       # exclude:
       #   - build/_next/cache/**
