@@ -16,6 +16,11 @@ package:
   individually: true
   exclude:
     - ./**
+    - node_modules/**
+    - build/**
+    - public/**
+    - src/**
+    - tests/**
 
 functions:
   document-evidence-frontend:

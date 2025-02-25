@@ -31,11 +31,11 @@ const nextConfig = {
       };
     }
     // https://nextjs.org/docs/app/building-your-application/optimizing/memory-usage#disable-webpack-cache
-    if (config.cache && !dev) {
-      config.cache = Object.freeze({
-        type: 'memory',
-      });
-    }
+    // if (config.cache && !dev) {
+    //   config.cache = Object.freeze({
+    //     type: 'memory',
+    //   });
+    // }
     return config;
   },
   async redirects() {
