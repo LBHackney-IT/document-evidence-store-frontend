@@ -36,8 +36,8 @@ functions:
         - public/**
         - build/_next/**
         - node_modules/**
-      exclude: 
-        - build/_next/cache/**                   
+      exclude:
+        - build/_next/cache/**
     events:
       - http: ANY /
       - http: ANY /{proxy+}
