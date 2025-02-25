@@ -12,35 +12,11 @@ provider:
     apiGateway: true
     lambda: true
 
-plugins:
-  - serverless-webpack
-
-build:
-  esbuild: false
-
 package:
   individually: true
   excludeDevDependencies: true
-  patterns:
-    - '!./**'
-  # exclude:
-  #   - ./**
-  # patterns:
-  #   - src/**
-  #   - public/**
-  #   - build/_next/**
-  #   - node_modules/**
-  #   - auth-groups.json
-  #   - teams.json
-  #   - next.config.js
-
-  # exclude:
-  #   - ./**
-  #   - node_modules/**
-  #   - build/**
-  #   - public/**
-  #   - src/**
-  #   - tests/**
+  exclude:
+    - ./**
 
 functions:
   document-evidence-frontend:
@@ -54,8 +30,13 @@ functions:
         - teams.json
         - next.config.js
         - public/**
-        - build/_next/**
+        - build/_next/BUILD_ID
+        - build/_next/*.json
+        - build/_next/server/**
+        - build/_next/static/**        
         - node_modules/**
+        - '!node_modules/@next/swc-linux-x64-gnu'
+        - '!node_modules/@next/swc-linux-x64-musl'
 
     events:
       - http: ANY /
@@ -128,8 +109,6 @@ resources:
                 OriginProtocolPolicy: https-only
 
 custom:
-  webpack:
-    webpackConfig: ./next.config.js
   domain-name:
     Fn::Join:
       - '.'
