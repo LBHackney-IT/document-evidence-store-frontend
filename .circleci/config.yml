@@ -124,7 +124,7 @@ commands:
             # npm run build --production
 
             npm install
-            npm run build --production                 
+            npm run build --production            
             npm prune --production                      
             sls deploy -s <<parameters.stage>>
 

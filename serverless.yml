@@ -44,13 +44,12 @@ functions:
     package:
       patterns:
         - auth-groups.json
-        - src/lambda.js
+        - lambda.js
         - teams.json
         - next.config.js
         - public/**
         - build/_next/**
         - node_modules/**
-        - '!node_modules/@sentry/cli/sentry-cli'
 
     events:
       - http: ANY /
