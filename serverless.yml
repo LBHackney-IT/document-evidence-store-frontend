@@ -35,8 +35,9 @@ functions:
         - next.config.js
         - public/**
         - build/_next/**
-        - '!build/_next/cache/**'
         - node_modules/**
+      exclude: 
+        - build/_next/cache/**                   
     events:
       - http: ANY /
       - http: ANY /{proxy+}
