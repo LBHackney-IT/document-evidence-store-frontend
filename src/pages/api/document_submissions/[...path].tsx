@@ -1,3 +1,4 @@
+import { wrapApiHandlerWithSentry } from '@sentry/nextjs';
 import { NextApiHandler } from 'next';
 import { EvidenceApiGateway } from '../../../gateways/evidence-api';
 
@@ -24,4 +25,7 @@ const endpoint: NextApiHandler = async (req, res) => {
   }
 };
 
-export default endpoint;
+export default wrapApiHandlerWithSentry(
+  endpoint,
+  'api/document_submissions/[...path]'
+);

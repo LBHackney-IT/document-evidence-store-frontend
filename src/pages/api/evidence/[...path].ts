@@ -5,6 +5,7 @@ import {
   RequestAuthorizer,
   RequestAuthorizerCommand,
 } from '../../../services/request-authorizer';
+import { wrapApiHandlerWithSentry } from '@sentry/nextjs';
 
 const evidenceApiGateway = new EvidenceApiGateway();
 
@@ -45,4 +46,4 @@ const endpoint: NextApiHandler = async (req, res) => {
   }
 };
 
-export default endpoint;
+export default wrapApiHandlerWithSentry(endpoint, 'api/evidence/[...path]');
