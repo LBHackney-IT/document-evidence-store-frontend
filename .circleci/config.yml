@@ -88,15 +88,15 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
-      - store_test_results:
-          path: test_results
-      - store_artifacts:
-          path: coverage
       - persist_to_workspace:
           root: *workspace_root
           paths:
             - coverage
             - test_results
+      - store_test_results:
+          path: test_results
+      - store_artifacts:
+          path: coverage
 
   run-cypress-e2e:
     executor: node
