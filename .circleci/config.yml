@@ -72,8 +72,8 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - node_modules
-            - build
+            - ./node_modules
+            - ./build
 
   lint-and-test:
     executor: node
