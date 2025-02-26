@@ -77,8 +77,8 @@ jobs:
   lint-and-test:
     executor: node
     steps:
-      - *attach_workspace
-      - checkout
+      # - *attach_workspace
+      # - checkout
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -88,11 +88,11 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - coverage
-            - test_results
+      # - persist_to_workspace:
+      #     root: *workspace_root
+      #     paths:
+      #       - coverage
+      #       - test_results
       - store_test_results:
           path: test_results
       - store_artifacts:
