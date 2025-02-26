@@ -69,11 +69,11 @@ jobs:
       - run:
           name: Build Next application
           command: npm run build --production
-      # - persist_to_workspace:
-      #     root: *workspace_root
-      #     paths:
-      #       - .node_modules
-      #       - .build
+      - persist_to_workspace:
+          root: *workspace_root
+          paths:
+            - ./build
+            - ./node_modules
 
   lint-and-test:
     executor: node
