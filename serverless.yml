@@ -28,15 +28,15 @@ functions:
         - src/lambda.js
         - teams.json
         - next.config.js
-        - public/**
+        - 'public/**'
         - build/_next/BUILD_ID
-        - build/_next/*.json
-        - build/_next/server/**
-        - build/_next/static/**
-        - node_modules/**
-        # - '!node_modules/@next/swc-linux-x64-gnu'
-        # - '!node_modules/@next/swc-linux-x64-musl'
-        # - '!node_modules/typescript'
+        - 'build/_next/*.json'
+        - 'build/_next/server/**'
+        - 'build/_next/static/**'
+        - 'node_modules/**'
+        - '!node_modules/@next/swc-linux-x64-gnu'
+        - '!node_modules/@next/swc-linux-x64-musl'
+        - '!node_modules/typescript'
 
     events:
       - http: ANY /
