@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  # aws-cli: circleci/aws-cli@3.2.0
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
   cypress: cypress-io/cypress@3
   node: circleci/node@6.3.0
@@ -125,11 +124,9 @@ jobs:
 
   assume-role-staging:
     executor: python
-    # executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
-          # stage: staging
 
   assume-role-production:
     executor: python
@@ -139,23 +136,15 @@ jobs:
 
   deploy-staging:
     executor: node
-
     steps:
-      # - checkout
-      # - *attach_workspace
-
       - deploy-lambda:
           stage: staging
 
-  # deploy-production:
-  #   executor: node
-
-  #   steps:
-  #     - checkout
-  #     - *attach_workspace
-
-  #     - deploy-lambda:
-  #         stage: production
+  deploy-production:
+    executor: node
+    steps:
+      - deploy-lambda:
+          stage: production
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Workflows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 workflows:
@@ -164,27 +153,26 @@ workflows:
     jobs:
       - build
 
-      # - lint-and-test:
-      #     requires:
-      #       - build
+      - lint-and-test:
+          requires:
+            - build
 
-      # - run-cypress-e2e:
-      #     requires:
-      #       - build
+      - run-cypress-e2e:
+          requires:
+            - build
 
-      # - sonar-scan:
-      #     context: SonarCloud
-      #     requires:
-      #       - lint-and-test
+      - sonar-scan:
+          context: SonarCloud
+          requires:
+            - lint-and-test
 
       - assume-role-staging:
           context:
             - api-assume-role-document-evidence-store-staging-context
-            # - 'Serverless Framework'
           requires:
             - build
-            # - run-cypress-e2e
-            # - lint-and-test
+            - run-cypress-e2e
+            - lint-and-test
           filters:
             branches:
               only:
@@ -197,18 +185,18 @@ workflows:
           requires:
             - assume-role-staging
 
-      # - permit-deploy-production:
-      #     context:
-      #       - 'Serverless Framework'
-      #     type: approval
-      #     requires:
-      #       - deploy-staging
+      - permit-deploy-production:
+          type: approval
+          requires:
+            - deploy-staging
 
-      # - assume-role-production:
-      #     context: api-assume-role-document-evidence-store-production-context
-      #     requires:
-      #       - permit-deploy-production
+      - assume-role-production:
+          context: api-assume-role-document-evidence-store-production-context
+          requires:
+            - permit-deploy-production
 
-      # - deploy-production:
-      #     requires:
-      #       - assume-role-production
+      - deploy-production:
+          context:
+            - 'Serverless Framework'
+          requires:
+            - assume-role-production

@@ -30,12 +30,6 @@ const nextConfig = {
         fs: false,
       };
     }
-    // https://nextjs.org/docs/app/building-your-application/optimizing/memory-usage#disable-webpack-cache
-    // if (config.cache && !dev) {
-    //   config.cache = Object.freeze({
-    //     type: 'memory',
-    //   });
-    // }
     return config;
   },
   async redirects() {
@@ -57,6 +51,7 @@ const sentryWebpackPluginOptions = {
   //   urlPrefix, include, ignore
 
   silent: true, // Suppresses all logs
+  hideSourceMaps: true,
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
