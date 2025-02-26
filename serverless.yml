@@ -48,8 +48,8 @@ functions:
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
       APP_URL: https://${self:custom.alias}
       HACKNEY_COOKIE_NAME: hackneyToken
-      NODE_ENV: ${self:provider.stage}
-      NEXT_PUBLIC_NODE_ENV: ${self:provider.stage}
+      # NODE_ENV: ${self:provider.stage}
+      # NEXT_PUBLIC_NODE_ENV: ${self:provider.stage}
       APP_ENV: ${self:provider.stage}
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
@@ -68,7 +68,7 @@ functions:
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
-      NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
+      # NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
 resources:
   Resources:
     CloudFrontDistribution:
