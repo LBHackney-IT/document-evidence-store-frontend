@@ -6,12 +6,10 @@ import * as Sentry from '@sentry/nextjs';
 
 // const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
 
-const {
-  SENTRY_DSN,
-  SENTRY_ENVIRONMENT,
-  SENTRY_RELEASE,
-  NODE_ENV,
-} = process.env;
+const SENTRY_DSN = process.env.SENTRY_DSN;
+const SENTRY_ENVIRONMENT = process.env.SENTRY_ENVIRONMENT;
+const SENTRY_RELEASE = process.env.SENTRY_RELEASE;
+const NODE_ENV = process.env.NODE_ENV;
 
 Sentry.init({
   dsn:
