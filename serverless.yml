@@ -49,6 +49,7 @@ functions:
       APP_URL: https://${self:custom.alias}
       HACKNEY_COOKIE_NAME: hackneyToken
       NODE_ENV: ${self:provider.stage}
+      NEXT_PUBLIC_NODE_ENV: ${self:provider.stage}
       APP_ENV: ${self:provider.stage}
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
