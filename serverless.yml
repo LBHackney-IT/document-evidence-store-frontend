@@ -68,7 +68,7 @@ functions:
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
-      # NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
+      NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
 resources:
   Resources:
     CloudFrontDistribution:
