@@ -5,7 +5,7 @@
 import * as Sentry from '@sentry/nextjs';
 
 const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
-// const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
+const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
 
 Sentry.init({
   dsn:
@@ -18,6 +18,6 @@ Sentry.init({
   // `release` value here - use the environment variable `SENTRY_RELEASE`, so
   // that it will also get attached to your source maps
 
-  // environment: ENVIRONMENT,
-  // enabled: ENVIRONMENT === 'production' || ENVIRONMENT === 'staging',
+  environment: ENVIRONMENT,
+  enabled: ENVIRONMENT === 'production' || ENVIRONMENT === 'staging',
 });
