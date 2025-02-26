@@ -88,10 +88,13 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - project/**
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test_results
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
+      # - persist_to_workspace:
+      #     root: *workspace_root
+      #     paths:
+      #       - project/**
       - store_test_results:
           path: test_results
       - store_artifacts:
