@@ -1,4 +1,4 @@
-# 📤 Hackney Upload frontend
+# 📤 Hackney Upload frontend [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LBHackney-IT_document-evidence-store-frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LBHackney-IT_document-evidence-store-frontend)
 
 This is the resident and staff-facing frontend for Hackney's new document and evidence store.
 
