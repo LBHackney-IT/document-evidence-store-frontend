@@ -1,6 +1,6 @@
 # 📤 Hackney Upload frontend
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LBHackney-IT/document-evidence-store-frontend/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/LBHackney-IT/document-evidence-store-frontend/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/LBHackney-IT/document-evidence-store-frontend/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/LBHackney-IT/document-evidence-store-frontend/tree/main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=LBHackney-IT_document-evidence-store-frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=LBHackney-IT_document-evidence-store-frontend)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=LBHackney-IT_document-evidence-store-frontend&metric=coverage)](https://sonarcloud.io/summary/new_code?id=LBHackney-IT_document-evidence-store-frontend)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=LBHackney-IT_document-evidence-store-frontend&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=LBHackney-IT_document-evidence-store-frontend)
