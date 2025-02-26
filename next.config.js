@@ -41,6 +41,9 @@ const nextConfig = {
       },
     ];
   },
+  experimental: {
+    instrumentationHook: true,
+  },
 };
 
 const sentryWebpackPluginOptions = {
