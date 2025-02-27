@@ -11,7 +11,7 @@ const SENTRY_DSN = process.env.SENTRY_DSN;
 const SENTRY_ENVIRONMENT =
   process.env.SENTRY_ENVIRONMENT || process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT;
 const SENTRY_RELEASE = process.env.SENTRY_RELEASE;
-// const NODE_ENV = process.env.NODE_ENV;
+const NODE_ENV = process.env.NODE_ENV;
 
 Sentry.init({
   dsn:
@@ -26,6 +26,5 @@ Sentry.init({
 
   release: SENTRY_RELEASE,
   environment: SENTRY_ENVIRONMENT,
-  enabled:
-    SENTRY_ENVIRONMENT === 'production' || SENTRY_ENVIRONMENT === 'staging',
+  enabled: NODE_ENV === 'production',
 });
