@@ -55,7 +55,7 @@ commands:
       - run:
           name: Deploy application
           command: |
-            export NEXT_PUBLIC_SENTRY_ENVIRONMENT=<<parameters.stage>>
+            export SENTRY_ENVIRONMENT=<<parameters.stage>>
             npm prune --omit=dev                      
             sls deploy -s <<parameters.stage>>
 
