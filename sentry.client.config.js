@@ -21,9 +21,12 @@ console.log(
 );
 console.log('SENTRY_ENVIRONMENT client', process.env.SENTRY_ENVIRONMENT);
 
-const ENVIRONMENT = process.env.NEXT_PUBLIC_ENV;
+const ENVIRONMENT = process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT;
 
-console.log('NEXT_PUBLIC_ENV client', process.env.NEXT_PUBLIC_ENV);
+console.log(
+  'NEXT_PUBLIC_SENTRY_ENVIRONMENT client',
+  process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT
+);
 console.log('APP_ENV client', process.env.APP_ENV);
 console.log('NEXT_PUBLIC_APP_ENV client', process.env.NEXT_PUBLIC_APP_ENV);
 
