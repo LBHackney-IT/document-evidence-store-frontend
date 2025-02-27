@@ -41,13 +41,10 @@ const nextConfig = {
       },
     ];
   },
-  experimental: {
-    instrumentationHook: true,
-  },
+  // experimental: {
+  //   instrumentationHook: true,
+  // },
 };
-
-const NODE_ENV = process.env.NODE_ENV;
-const SENTRY_RELEASE = process.env.SENTRY_RELEASE;
 
 const sentryWebpackPluginOptions = {
   // Additional config options for the Sentry Webpack plugin. Keep in mind that
@@ -55,9 +52,7 @@ const sentryWebpackPluginOptions = {
   // recommended:
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
-  dryRun: !(NODE_ENV === 'production'),
-  release: SENTRY_RELEASE,
-  silent: !(NODE_ENV === 'production'),
+
   silent: true, // Suppresses all logs
   hideSourceMaps: true,
   // For all available options, see:
