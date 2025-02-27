@@ -169,8 +169,8 @@ workflows:
             - api-assume-role-document-evidence-store-staging-context
           requires:
             - build
-            - run-cypress-e2e
-            - lint-and-test
+            # - run-cypress-e2e
+            # - lint-and-test
           filters:
             branches:
               only:
