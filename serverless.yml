@@ -51,6 +51,7 @@ functions:
       # NODE_ENV: production
       # NEXT_PUBLIC_NODE_ENV: ${self:provider.stage}
       APP_ENV: ${self:provider.stage}
+      NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
       EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/evidence_requests/token}
@@ -68,11 +69,11 @@ functions:
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
-      NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
-      NEXT_PUBLIC_ENV: ${self:provider.stage}
-
-      NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${self:provider.stage}
+      # NEXT_PUBLIC_ENV: ${self:provider.stage}
+      # SENTRY_ENVIRONMENT: ${self:provider.stage}
+      # NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${self:provider.stage}
       NEXT_PUBLIC_SENTRY_RELEASE: $CIRCLE_SHA1
+      SENTRY_RELEASE: $CIRCLE_SHA1
 resources:
   Resources:
     CloudFrontDistribution:
