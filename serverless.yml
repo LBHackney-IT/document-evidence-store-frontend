@@ -19,7 +19,7 @@ package:
 
 functions:
   document-evidence-frontend:
-    name: ${self:service}    
+    name: ${self:service}
     handler: src/lambda.handler
     timeout: 30
     package:
