@@ -55,7 +55,7 @@ commands:
       - run:
           name: Deploy application
           command: |
-            npm prune --production                      
+            npm prune --omit=dev                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -72,7 +72,9 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - .
+            # - .
+            - project/build
+            - project/node_modules
 
   lint-and-test:
     executor: node

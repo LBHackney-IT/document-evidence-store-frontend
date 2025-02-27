@@ -19,8 +19,8 @@ package:
 
 functions:
   document-evidence-frontend:
-    # name: ${self:service}
-    name: ${self:service}-${self:provider.stage}
+    name: ${self:service}
+    # name: ${self:service}-${self:provider.stage}
     handler: src/lambda.handler
     timeout: 30
     package:
