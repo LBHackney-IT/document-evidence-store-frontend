@@ -69,7 +69,7 @@ functions:
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
       NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
-      NEXT_PUBLIC_ENV:  ${self:provider.stage}
+      NEXT_PUBLIC_ENV: ${self:provider.stage}
       SENTRY_ENVIRONMENT: ${self:provider.stage}
       NEXT_PUBLIC_SENTRY_ENVIRONMENT: ${self:provider.stage}
       NEXT_PUBLIC_SENTRY_RELEASE: $CIRCLE_SHA1
