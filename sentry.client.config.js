@@ -7,18 +7,25 @@ import * as Sentry from '@sentry/nextjs';
 // const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
 
 console.log('NEXT_PUBLIC_NODE_ENV client', process.env.NEXT_PUBLIC_NODE_ENV);
+console.log('NODE_ENV client', process.env.NODE_ENV);
+
 console.log(
   'NEXT_PUBLIC_SENTRY_RELEASE client',
   process.env.NEXT_PUBLIC_SENTRY_RELEASE
 );
+console.log('SENTRY_RELEASE client', process.env.SENTRY_RELEASE);
+
 console.log(
   'NEXT_PUBLIC_SENTRY_ENVIRONMENT client',
   process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT
 );
+console.log('SENTRY_ENVIRONMENT client', process.env.SENTRY_ENVIRONMENT);
 
 const ENVIRONMENT = process.env.NEXT_PUBLIC_ENV;
 
-console.log('NEXT_PUBLIC_ENV client', ENVIRONMENT);
+console.log('NEXT_PUBLIC_ENV client', process.env.NEXT_PUBLIC_ENV);
+console.log('APP_ENV client', process.env.APP_ENV);
+console.log('NEXT_PUBLIC_APP_ENV client', process.env.NEXT_PUBLIC_APP_ENV);
 
 Sentry.init({
   dsn:
