@@ -25,5 +25,6 @@ Sentry.init({
   // that it will also get attached to your source maps
   release: SENTRY_RELEASE,
   environment: SENTRY_ENVIRONMENT,
-  enabled: SENTRY_ENVIRONMENT === 'production' || SENTRY_ENVIRONMENT === 'staging',
+  enabled:
+    SENTRY_ENVIRONMENT === 'production' || SENTRY_ENVIRONMENT === 'staging',
 });

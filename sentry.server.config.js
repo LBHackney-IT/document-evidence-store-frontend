@@ -26,5 +26,6 @@ Sentry.init({
   // enabled: ENVIRONMENT === 'production' || ENVIRONMENT === 'staging',
   release: SENTRY_RELEASE,
   environment: SENTRY_ENVIRONMENT,
-  enabled: SENTRY_ENVIRONMENT === 'production' || SENTRY_ENVIRONMENT === 'staging',
+  enabled:
+    SENTRY_ENVIRONMENT === 'production' || SENTRY_ENVIRONMENT === 'staging',
 });
