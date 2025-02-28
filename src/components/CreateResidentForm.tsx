@@ -5,6 +5,7 @@ import { CreateResidentRequest } from 'src/gateways/internal-api';
 import * as Yup from 'yup';
 import styles from '../styles/CreateResidentForm.module.scss';
 import LoadingSpinner from './LoadingSpinner';
+import { generalPhoneRegex } from 'src/helpers/patterns';
 
 export const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -12,18 +13,18 @@ export const emailOrPhoneNumberMessage =
 export const createResidentSchema = Yup.object().shape(
   {
     name: Yup.string().required("Please enter the resident's name"),
-    email: Yup.string().when('phoneNumber', {
-      is: (phoneNumber) => !phoneNumber,
-      then: Yup.string()
-        .required(emailOrPhoneNumberMessage)
-        .email('Please provide a valid email address'),
-    }),
-    phoneNumber: Yup.string().when('email', {
-      is: (email) => !email,
-      then: Yup.string()
-        .required(emailOrPhoneNumberMessage)
-        .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
-    }),
+    email: Yup.string()
+      .email('Please provide a valid email address')
+      .when('phoneNumber', {
+        is: (phoneNumber) => !phoneNumber,
+        then: Yup.string().required(emailOrPhoneNumberMessage),
+      }),
+    phoneNumber: Yup.string()
+      .matches(generalPhoneRegex, 'Please provide a valid phone number')
+      .when('email', {
+        is: (email) => !email,
+        then: Yup.string().required(emailOrPhoneNumberMessage),
+      }),
   },
   [['email', 'phoneNumber']]
 );
@@ -94,6 +95,8 @@ const CreateResidentForm: FunctionComponent<Props> = ({
         }}
         onSubmit={handleSubmit}
         validationSchema={createResidentSchema}
+        validateOnBlur={false}
+        validateOnChange={false}
       >
         {({ errors, touched, resetForm }) => (
           <>

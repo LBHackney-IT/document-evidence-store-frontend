@@ -6,6 +6,7 @@ import { EvidenceRequestForm } from 'src/gateways/internal-api';
 import SelectOption from './SelectOption';
 import { Team } from '../domain/team';
 import * as Yup from 'yup';
+import { mobilePhoneRegex } from 'src/helpers/patterns';
 
 const emailOrPhoneNumberMessage =
   'Please provide either an email or a phone number';
@@ -17,18 +18,21 @@ export const schemaNewRequestFormStep1 = Yup.object().shape(
     resident: Yup.object().shape(
       {
         name: Yup.string().required("Please enter the resident's name"),
-        email: Yup.string().when(['phoneNumber'], {
-          is: (phoneNumber) => !phoneNumber,
-          then: Yup.string()
-            .required(emailOrPhoneNumberMessage)
-            .email('Please provide a valid email address'),
-        }),
-        phoneNumber: Yup.string().when(['email'], {
-          is: (email) => !email,
-          then: Yup.string()
-            .required(emailOrPhoneNumberMessage)
-            .matches(/^\+?[\d]{6,14}$/, 'Please provide a valid phone number'),
-        }),
+        email: Yup.string()
+          .email('Please provide a valid email address')
+          .when(['phoneNumber'], {
+            is: (phoneNumber) => !phoneNumber,
+            then: Yup.string().required(emailOrPhoneNumberMessage),
+          }),
+        phoneNumber: Yup.string()
+          .matches(
+            mobilePhoneRegex,
+            'Please provide a valid mobile phone number'
+          )
+          .when(['email'], {
+            is: (email) => !email,
+            then: Yup.string().required(emailOrPhoneNumberMessage),
+          }),
       },
       [['email', 'phoneNumber']]
     ),

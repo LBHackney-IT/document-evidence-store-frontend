@@ -11,10 +11,6 @@ const SENTRY_RELEASE =
 
 const NODE_ENV = process.env.NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV;
 
-console.log('env e', ENVIRONMENT);
-console.log('env e', SENTRY_RELEASE);
-console.log('env e', NODE_ENV);
-
 Sentry.init({
   dsn:
     'https://10f8d5ba589f0ed60270b0e4675551b0@o183917.ingest.us.sentry.io/4508841639936001',

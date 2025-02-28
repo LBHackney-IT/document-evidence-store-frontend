@@ -208,6 +208,8 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
           initialValues={initialValues}
           validationSchema={currentValidationSchema}
           onSubmit={submitHandler}
+          validateOnBlur={false}
+          validateOnChange={false}
         >
           {({ isSubmitting, values }) => (
             <Form>
