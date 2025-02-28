@@ -11,6 +11,7 @@ const SENTRY_RELEASE =
 
 const NODE_ENV = process.env.NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV;
 
+console.log('the whole thing', process.env);
 console.log('env c', ENVIRONMENT);
 console.log('env c', SENTRY_RELEASE);
 console.log('env c', NODE_ENV);

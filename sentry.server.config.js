@@ -13,7 +13,7 @@ const NODE_ENV = process.env.NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV;
 
 console.log('env s', ENVIRONMENT);
 console.log('env s', SENTRY_RELEASE);
-console.log('env s', NODE_ENV);
+// console.log('env s', NODE_ENV);
 
 Sentry.init({
   dsn:
