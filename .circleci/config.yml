@@ -71,7 +71,7 @@ jobs:
           command: npm run build --omit=dev
       - persist_to_workspace:
           root: *workspace_root
-          paths:            
+          paths:
             - build
             - node_modules
 
