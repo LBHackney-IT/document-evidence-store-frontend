@@ -126,7 +126,7 @@ jobs:
   assume-role-staging:
     # executor: python
     # context is api-assume-role-document-evidence-store-staging-context
-    # executor: aws-cli/default    
+    # executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
