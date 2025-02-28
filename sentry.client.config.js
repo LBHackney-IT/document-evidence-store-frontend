@@ -4,7 +4,7 @@
 
 import * as Sentry from '@sentry/nextjs';
 
-const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
+// const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
 const SENTRY_RELEASE =
   process.env.SENTRY_RELEASE || process.env.NEXT_PUBLIC_SENTRY_RELEASE;
 const NODE_ENV = process.env.NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV;
@@ -15,5 +15,5 @@ Sentry.init({
   tracesSampleRate: 1.0,
   release: SENTRY_RELEASE,
   enabled: NODE_ENV === 'production',
-  environment: ENVIRONMENT,
+  environment: 'staging',
 });
