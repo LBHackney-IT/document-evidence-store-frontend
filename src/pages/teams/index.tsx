@@ -12,6 +12,18 @@ type TeamsProps = {
 };
 
 const Teams: NextPage<WithUser<TeamsProps>> = ({ teams }) => {
+  const ENVIRONMENT = process.env.APP_ENV || process.env.NEXT_PUBLIC_APP_ENV;
+
+  const SENTRY_RELEASE =
+    process.env.SENTRY_RELEASE || process.env.NEXT_PUBLIC_SENTRY_RELEASE;
+
+  const NODE_ENV = process.env.NODE_ENV || process.env.NEXT_PUBLIC_NODE_ENV;
+
+  console.log('the whole thing', process.env);
+  console.log('env c', ENVIRONMENT);
+  console.log('env c', SENTRY_RELEASE);
+  console.log('env c', NODE_ENV);
+
   return (
     <TeamsLayout>
       <Head>
