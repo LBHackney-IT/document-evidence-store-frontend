@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  aws_assume_role: lbh-hackit/aws_assume_role@0.1.0  
+  aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
   cypress: cypress-io/cypress@3
   node: circleci/node@7
   sonarcloud: sonarsource/sonarcloud@2
@@ -123,13 +123,13 @@ jobs:
       - sonarcloud/scan
 
   assume-role-staging:
-    executor: python        
+    executor: python
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
 
   assume-role-production:
-    executor: python    
+    executor: python
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
