@@ -1,8 +1,7 @@
 version: 2.1
 
 orbs:
-  aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
-  aws-cli: circleci/aws-cli@5
+  aws_assume_role: lbh-hackit/aws_assume_role@0.1.0  
   cypress: cypress-io/cypress@3
   node: circleci/node@7
   sonarcloud: sonarsource/sonarcloud@2
@@ -12,9 +11,9 @@ executors:
     docker:
       - image: cimg/node:20.18.2-browsers
     working_directory: ~/project
-  # python:
-  #   docker:
-  #     - image: cimg/python:3.7
+  python:
+    docker:
+      - image: cimg/python:3.7
 
 references:
   workspace_root: &workspace_root '~'
@@ -124,16 +123,13 @@ jobs:
       - sonarcloud/scan
 
   assume-role-staging:
-    # executor: python
-    # context is api-assume-role-document-evidence-store-staging-context
-    executor: aws-cli/default
+    executor: python        
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
 
   assume-role-production:
-    # executor: python
-    executor: aws-cli/default
+    executor: python    
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
