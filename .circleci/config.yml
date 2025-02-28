@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
-  # aws-cli: circleci/aws-cli@5
+  aws-cli: circleci/aws-cli@5
   cypress: cypress-io/cypress@3
   node: circleci/node@7
   sonarcloud: sonarsource/sonarcloud@2
@@ -126,14 +126,14 @@ jobs:
   assume-role-staging:
     # executor: python
     # context is api-assume-role-document-evidence-store-staging-context
-    # executor: aws-cli/default
+    executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_STAGING
 
   assume-role-production:
     # executor: python
-    # executor: aws-cli/default
+    executor: aws-cli/default
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_PRODUCTION
