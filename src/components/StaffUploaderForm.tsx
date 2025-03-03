@@ -40,7 +40,7 @@ export const validationSchema = Yup.object().shape({
         'at-least-one-file',
         'Please select a file',
         (value) => {
-          return value ? value.length > 0 : false;
+          return value && value.length > 0;
         }
       ),
     })

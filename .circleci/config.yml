@@ -73,8 +73,6 @@ jobs:
           root: *workspace_root
           paths:
             - .
-            # - build
-            # - node_modules
 
   lint-and-test:
     executor: node

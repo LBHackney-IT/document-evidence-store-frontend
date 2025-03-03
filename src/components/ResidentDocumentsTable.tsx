@@ -161,11 +161,11 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                   {documentTab.id === 'awaiting-submission' &&
                   awaitingSubmissions &&
                   awaitingSubmissions.length > 0 ? (
-                    awaitingSubmissions.map((submission) => (
+                    awaitingSubmissions.map((submission, i) => (
                       <li
                         className={styles.item}
                         data-testid={`${documentTab.id}-evidence-awaiting-tile`}
-                        key={`${documentTab.id}-evidence-awaiting-tile`}
+                        key={`${documentTab.id}-evidence-awaiting-tile-${i}`}
                       >
                         <EvidenceAwaitingSubmissionTile
                           documentType={submission.documentType}
