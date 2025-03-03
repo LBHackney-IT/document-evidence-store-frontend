@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '.'
+  workspace_root: &workspace_root '~'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -79,6 +79,7 @@ jobs:
   lint-and-test:
     executor: node
     steps:
+      - *attach_workspace
       - checkout
       - run:
           name: Run linter
@@ -159,7 +160,6 @@ workflows:
       - run-cypress-e2e:
           requires:
             - build
-            - build
 
       - sonar-scan:
           context: SonarCloud
@@ -177,6 +177,7 @@ workflows:
             branches:
               only:
                 - main
+                - TS-1902-Update-frameworks
 
       - deploy-staging:
           context:
