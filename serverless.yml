@@ -14,22 +14,30 @@ provider:
 
 package:
   individually: true
-  exclude:
-    - ./**
+  patterns:
+    - '!./**'
 
 functions:
   document-evidence-frontend:
     name: ${self:service}
     handler: src/lambda.handler
+    timeout: 30
     package:
-      include:
+      patterns:
         - auth-groups.json
-        - teams.json
         - src/lambda.js
+        - teams.json
         - next.config.js
-        - public/**
-        - build/_next/**
-        - node_modules/**
+        - 'public/**'
+        - build/_next/BUILD_ID
+        - 'build/_next/*.json'
+        - 'build/_next/server/**'
+        - 'build/_next/static/**'
+        - 'node_modules/**'
+        - '!node_modules/@next/swc-linux-x64-gnu'
+        - '!node_modules/@next/swc-linux-x64-musl'
+        - '!node_modules/typescript'
+
     events:
       - http: ANY /
       - http: ANY /{proxy+}
@@ -37,11 +45,8 @@ functions:
       securityGroupIds: ${self:custom.securityGroups.${self:provider.stage}}
       subnetIds: ${self:custom.subnets.${self:provider.stage}}
     environment:
-      HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
-      APP_URL: https://${self:custom.alias}
-      HACKNEY_COOKIE_NAME: hackneyToken
-      NODE_ENV: ${self:provider.stage}
       APP_ENV: ${self:provider.stage}
+      APP_URL: https://${self:custom.alias}
       EVIDENCE_API_BASE_URL: ${ssm:/evidence-api/${self:provider.stage}/base-url}
       EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET: ${ssm:/evidence-api/${self:provider.stage}/get/document_types/token}
       EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET: ${ssm:/evidence-api/${self:provider.stage}/get/evidence_requests/token}
@@ -58,7 +63,12 @@ functions:
       DOCUMENTS_API_GET_CLAIMS_TOKEN: ${ssm:/documents-api/${self:provider.stage}/get/claims/token}
       FEEDBACK_FORM_RESIDENT_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-resident-url}
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
+      HACKNEY_COOKIE_NAME: hackneyToken
+      HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
+      NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
+      NEXT_PUBLIC_SENTRY_RELEASE: $CIRCLE_SHA1
+      SENTRY_RELEASE: $CIRCLE_SHA1
 resources:
   Resources:
     CloudFrontDistribution:

@@ -1,10 +1,10 @@
 version: 2.1
 
 orbs:
-  cypress: cypress-io/cypress@3
   aws_assume_role: lbh-hackit/aws_assume_role@0.1.0
-  node: circleci/node@6.3.0
-  sonarcloud: sonarsource/sonarcloud@2.0.0
+  cypress: cypress-io/cypress@3
+  node: circleci/node@7
+  sonarcloud: sonarsource/sonarcloud@2
 
 executors:
   node:
@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '.'
+  workspace_root: &workspace_root '~'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -28,6 +28,7 @@ commands:
     parameters:
       aws-account:
         type: string
+
     steps:
       - checkout
       - aws_assume_role/assume_role:
@@ -46,11 +47,15 @@ commands:
         type: string
         default: staging
     steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          name: Install serverless CLI
+          command: sudo npm i -g serverless
       - run:
           name: Deploy application
           command: |
-            npm prune --production
-            sudo npm i -g serverless
+            npm prune --omit=dev                      
             sls deploy -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
@@ -58,23 +63,22 @@ jobs:
   build:
     executor: node
     steps:
+      - *attach_workspace
       - checkout
       - node/install-packages
       - run:
           name: Build Next application
-          command: npm run build
+          command: npm run build --omit=dev
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - build
-            - node_modules
+            - .
 
   lint-and-test:
     executor: node
     steps:
+      - *attach_workspace
       - checkout
-      - attach_workspace:
-          at: *workspace_root
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -84,10 +88,9 @@ jobs:
       - run:
           name: Run unit tests
           command: npm run test:unit:ci
-      - persist_to_workspace:
-          root: *workspace_root
-          paths:
-            - coverage
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: test_results
+            JEST_JUNIT_ADD_FILE_ATTRIBUTE: 'true'
       - store_test_results:
           path: test_results
       - store_artifacts:
@@ -96,9 +99,8 @@ jobs:
   run-cypress-e2e:
     executor: node
     steps:
+      - *attach_workspace
       - checkout
-      - attach_workspace:
-          at: *workspace_root
       - run:
           name: Copy envs
           command: cp .env.sample .env
@@ -114,8 +116,8 @@ jobs:
   sonar-scan:
     executor: node
     steps:
-      - checkout
       - *attach_workspace
+      - checkout
       - sonarcloud/scan
 
   assume-role-staging:
@@ -132,21 +134,13 @@ jobs:
 
   deploy-staging:
     executor: node
-
     steps:
-      - *attach_workspace
-      - checkout
-
       - deploy-lambda:
           stage: staging
 
   deploy-production:
     executor: node
-
     steps:
-      - *attach_workspace
-      - checkout
-
       - deploy-lambda:
           stage: production
 
@@ -171,8 +165,10 @@ workflows:
             - lint-and-test
 
       - assume-role-staging:
-          context: api-assume-role-document-evidence-store-staging-context
+          context:
+            - api-assume-role-document-evidence-store-staging-context
           requires:
+            - build
             - run-cypress-e2e
             - lint-and-test
           filters:
@@ -181,6 +177,8 @@ workflows:
                 - main
 
       - deploy-staging:
+          context:
+            - 'Serverless Framework'
           requires:
             - assume-role-staging
 
@@ -195,5 +193,7 @@ workflows:
             - permit-deploy-production
 
       - deploy-production:
+          context:
+            - 'Serverless Framework'
           requires:
             - assume-role-production

@@ -161,67 +161,63 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                   {documentTab.id === 'awaiting-submission' &&
                   awaitingSubmissions &&
                   awaitingSubmissions.length > 0 ? (
-                    awaitingSubmissions.map((x, i) => (
+                    awaitingSubmissions.map((submission, i) => (
                       <li
                         className={styles.item}
                         data-testid={`${documentTab.id}-evidence-awaiting-tile`}
-                        key={i}
+                        key={`${documentTab.id}-evidence-awaiting-tile-${i}`}
                       >
                         <EvidenceAwaitingSubmissionTile
-                          documentType={x.documentType}
-                          dateRequested={x.dateRequested}
-                          requestedBy={x.requestedBy}
-                          reason={x.reason}
+                          documentType={submission.documentType}
+                          dateRequested={submission.dateRequested}
+                          requestedBy={submission.requestedBy}
+                          reason={submission.reason}
                         />
                       </li>
                     ))
                   ) : documentTab.id != 'awaiting-submission' &&
                     documentSubmissions &&
                     documentSubmissions.length > 0 ? (
-                    documentSubmissions.map((documentSubmission, index) => (
-                      <>
-                        <li
-                          className={styles.item}
-                          data-testid={`${documentTab.id}-evidence-tile`}
-                          key={index}
-                        >
-                          <EvidenceTile
-                            id={documentSubmission.id}
-                            documentDescription={
-                              documentSubmission.document?.description
-                            }
-                            title={
-                              documentSubmission.staffSelectedDocumentType
-                                ?.title ||
-                              documentSubmission.documentType?.title
-                            }
-                            createdAt={formatDate(documentSubmission.createdAt)}
-                            key={documentSubmission.id}
-                            fileSizeInBytes={
-                              documentSubmission.document
-                                ? documentSubmission.document.fileSizeInBytes
-                                : 0
-                            }
-                            format={
-                              documentSubmission.document
-                                ? documentSubmission.document.extension
-                                : 'unknown'
-                            }
-                            state={documentSubmission.state}
-                            reason={
-                              documentSubmission.evidenceRequestId &&
-                              getReason(documentSubmission.evidenceRequestId)
-                            }
-                            requestedBy={
-                              documentSubmission.evidenceRequestId &&
-                              getUserRequestedBy(
-                                documentSubmission.evidenceRequestId
-                              )
-                            }
-                            userUpdatedBy={documentSubmission.userUpdatedBy}
-                          />
-                        </li>
-                      </>
+                    documentSubmissions.map((documentSubmission) => (
+                      <li
+                        className={styles.item}
+                        data-testid={`${documentTab.id}-evidence-tile`}
+                        key={documentSubmission.id}
+                      >
+                        <EvidenceTile
+                          id={documentSubmission.id}
+                          documentDescription={
+                            documentSubmission.document?.description
+                          }
+                          title={
+                            documentSubmission.staffSelectedDocumentType
+                              ?.title || documentSubmission.documentType?.title
+                          }
+                          createdAt={formatDate(documentSubmission.createdAt)}
+                          fileSizeInBytes={
+                            documentSubmission.document
+                              ? documentSubmission.document.fileSizeInBytes
+                              : 0
+                          }
+                          format={
+                            documentSubmission.document
+                              ? documentSubmission.document.extension
+                              : 'unknown'
+                          }
+                          state={documentSubmission.state}
+                          reason={
+                            documentSubmission.evidenceRequestId &&
+                            getReason(documentSubmission.evidenceRequestId)
+                          }
+                          requestedBy={
+                            documentSubmission.evidenceRequestId &&
+                            getUserRequestedBy(
+                              documentSubmission.evidenceRequestId
+                            )
+                          }
+                          userUpdatedBy={documentSubmission.userUpdatedBy}
+                        />
+                      </li>
                     ))
                   ) : (
                     <h3>There are no documents to review</h3>

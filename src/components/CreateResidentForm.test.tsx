@@ -48,8 +48,11 @@ describe('CreateResidentForm', () => {
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText(/Name/i), 'Test Resident');
-    await user.type(screen.getByLabelText(/Email Address/i), 'resident@email');
-    await user.type(screen.getByLabelText(/Phone Number/i), '0700000');
+    await user.type(
+      screen.getByLabelText(/Email Address/i),
+      'resident@email.co.uk'
+    );
+    await user.type(screen.getByLabelText(/Phone Number/i), '07123456789');
 
     await user.click(
       screen.getByRole('button', {
@@ -60,8 +63,8 @@ describe('CreateResidentForm', () => {
     await waitFor(() =>
       expect(createResident).toHaveBeenCalledWith({
         name: 'Test Resident',
-        email: 'resident@email',
-        phoneNumber: '0700000',
+        email: 'resident@email.co.uk',
+        phoneNumber: '07123456789',
         groupId: null,
       })
     );
@@ -81,8 +84,11 @@ describe('CreateResidentForm', () => {
     const user = userEvent.setup();
 
     await user.type(screen.getByLabelText(/Name/i), 'Test Resident');
-    await user.type(screen.getByLabelText(/Email Address/i), 'resident@email');
-    await user.type(screen.getByLabelText(/Phone Number/i), '0700000');
+    await user.type(
+      screen.getByLabelText(/Email Address/i),
+      'resident@email.co.uk'
+    );
+    await user.type(screen.getByLabelText(/Phone Number/i), '0712345678');
 
     await user.click(
       screen.getByRole('button', {
