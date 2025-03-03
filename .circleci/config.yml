@@ -176,8 +176,7 @@ workflows:
           filters:
             branches:
               only:
-                - main
-                - TS-1902-Update-frameworks
+                - main                
 
       - deploy-staging:
           context:
