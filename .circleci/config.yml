@@ -176,7 +176,7 @@ workflows:
           filters:
             branches:
               only:
-                - main                
+                - main
 
       - deploy-staging:
           context:
