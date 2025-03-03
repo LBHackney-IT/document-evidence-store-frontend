@@ -20,7 +20,7 @@ const nextConfig = {
     ];
   },
   distDir: 'build/_next',
-  webpack: (config, { isServer, dev }) => {
+  webpack: (config, { isServer }) => {
     config.plugins.push(
       new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
     );
@@ -41,9 +41,6 @@ const nextConfig = {
       },
     ];
   },
-  // experimental: {
-  //   instrumentationHook: true,
-  // },
 };
 
 const sentryWebpackPluginOptions = {
@@ -54,7 +51,6 @@ const sentryWebpackPluginOptions = {
   //   urlPrefix, include, ignore
 
   silent: true, // Suppresses all logs
-  hideSourceMaps: true,
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
