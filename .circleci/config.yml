@@ -38,7 +38,8 @@ commands:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - .aws
+            - build
+            - node_modules
 
   deploy-lambda:
     description: 'Deploys application'
@@ -175,6 +176,7 @@ workflows:
             branches:
               only:
                 - main
+                - TS-1966                
 
       - deploy-staging:
           context:
