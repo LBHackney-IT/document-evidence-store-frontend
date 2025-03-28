@@ -38,8 +38,8 @@ commands:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - build
-          #  - node_modules
+            - .aws
+
 
   deploy-lambda:
     description: 'Deploys application'
@@ -73,7 +73,8 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - .
+            - build
+            - node_modules
 
   lint-and-test:
     executor: node
