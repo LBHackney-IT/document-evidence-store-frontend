@@ -40,7 +40,6 @@ commands:
           paths:
             - .aws
 
-
   deploy-lambda:
     description: 'Deploys application'
     parameters:
