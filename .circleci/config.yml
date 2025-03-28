@@ -39,7 +39,7 @@ commands:
           root: *workspace_root
           paths:
             - build
-            - node_modules
+          #  - node_modules
 
   deploy-lambda:
     description: 'Deploys application'
