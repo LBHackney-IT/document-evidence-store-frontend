@@ -37,7 +37,7 @@ commands:
           role: 'LBH_Circle_CI_Deployment_Role'
       - run:
           name: Stalking
-          command: find .     
+          command: find .
       - persist_to_workspace:
           root: *workspace_root
           paths:
