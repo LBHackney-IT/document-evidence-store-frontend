@@ -47,7 +47,6 @@ commands:
         type: string
         default: staging
     steps:
-      - *attach_workspace
       - checkout
       - run:
           name: Install serverless CLI
@@ -63,7 +62,6 @@ jobs:
   build:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
       - node/install-packages
       - run:
@@ -78,7 +76,6 @@ jobs:
   lint-and-test:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
       - run:
           name: Run linter
@@ -100,7 +97,6 @@ jobs:
   run-cypress-e2e:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
       - run:
           name: Copy envs
@@ -117,7 +113,6 @@ jobs:
   sonar-scan:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
       - sonarcloud/scan
 
