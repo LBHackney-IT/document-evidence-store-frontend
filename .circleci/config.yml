@@ -63,12 +63,12 @@ jobs:
   build:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
+      - *attach_workspace
       - node/install-packages
       - run:
           name: Build Next application
-          command: npm run build 
+          command: npm run build
       - persist_to_workspace:
           root: *workspace_root
           paths:
