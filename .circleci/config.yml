@@ -32,7 +32,7 @@ commands:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - aws_assume_role/assume_role:
           account: <<parameters.aws-account>>
           profile_name: default
