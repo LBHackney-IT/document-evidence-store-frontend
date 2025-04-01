@@ -49,7 +49,7 @@ commands:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
@@ -66,7 +66,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - node/install-packages
       - run:
           name: Build Next application
@@ -82,7 +82,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -105,7 +105,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - run:
           name: Copy envs
           command: cp .env.sample .env
@@ -123,7 +123,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root      
+          at: *workspace_root
       - sonarcloud/scan
 
   assume-role-staging:
