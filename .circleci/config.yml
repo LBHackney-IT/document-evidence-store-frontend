@@ -48,6 +48,8 @@ commands:
         default: staging
     steps:
       - checkout
+      - attach_workspace:
+          at: *workspace_root      
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
