@@ -79,7 +79,6 @@ jobs:
           paths:
             - build
             - node_modules
-            - ./.aws
 
   lint-and-test:
     executor: node
