@@ -55,6 +55,7 @@ commands:
           command: sudo npm i -g serverless
       - run:
           name: Deploy application
+          root: '~'
           command: |
             npm prune --omit=dev                      
             sls deploy -s <<parameters.stage>>
@@ -130,7 +131,6 @@ jobs:
     executor: python
     steps:
       - assume-role-and-persist-workspace:
-          root: '~'
           aws-account: $AWS_ACCOUNT_STAGING
 
   assume-role-production:
