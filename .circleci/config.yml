@@ -35,9 +35,6 @@ commands:
           account: <<parameters.aws-account>>
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
-      - run:
-          name: Stalking
-          command: find ~
       - persist_to_workspace:
           root: '~'
           paths:
@@ -133,6 +130,7 @@ jobs:
     executor: python
     steps:
       - assume-role-and-persist-workspace:
+          root: '~'
           aws-account: $AWS_ACCOUNT_STAGING
 
   assume-role-production:
