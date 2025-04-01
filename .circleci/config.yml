@@ -39,9 +39,9 @@ commands:
           name: Stalking
           command: find ~
       - persist_to_workspace:
-          root: *workspace_root
+          root: ~
           paths:
-            - ~/.aws
+            - .aws
 
   deploy-lambda:
     description: 'Deploys application'
