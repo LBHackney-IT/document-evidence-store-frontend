@@ -181,7 +181,6 @@ workflows:
             branches:
               only:
                 - main
-                - TS-1966
 
       - deploy-staging:
           context:
