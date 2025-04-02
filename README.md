@@ -202,4 +202,3 @@ You will also need to update the relevant information for the user on the UI. Na
 # License
 
 [MIT](./LICENSE)
-
