@@ -49,13 +49,12 @@ commands:
     steps:
       - checkout
       - attach_workspace:
-          at: *workspace_root
+          at: '~'
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
       - run:
           name: Deploy application
-          root: '~'
           command: |
             npm prune --omit=dev                      
             sls deploy -s <<parameters.stage>>
