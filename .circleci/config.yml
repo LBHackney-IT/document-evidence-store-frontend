@@ -16,7 +16,7 @@ executors:
       - image: cimg/python:3.7
 
 references:
-  workspace_root: &workspace_root '~'
+  workspace_root: &workspace_root '.'
   attach_workspace: &attach_workspace
     attach_workspace:
       at: *workspace_root
@@ -36,7 +36,7 @@ commands:
           profile_name: default
           role: 'LBH_Circle_CI_Deployment_Role'
       - persist_to_workspace:
-          root: *workspace_root
+          root: '~'
           paths:
             - .aws
 
@@ -47,8 +47,9 @@ commands:
         type: string
         default: staging
     steps:
-      - *attach_workspace
       - checkout
+      - attach_workspace:
+          at: '~'
       - run:
           name: Install serverless CLI
           command: sudo npm i -g serverless
@@ -63,8 +64,9 @@ jobs:
   build:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
+      - attach_workspace:
+          at: *workspace_root
       - node/install-packages
       - run:
           name: Build Next application
@@ -72,13 +74,15 @@ jobs:
       - persist_to_workspace:
           root: *workspace_root
           paths:
-            - .
+            - build
+            - node_modules
 
   lint-and-test:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
+      - attach_workspace:
+          at: *workspace_root
       - run:
           name: Run linter
           command: npm run lint:ci
@@ -99,8 +103,9 @@ jobs:
   run-cypress-e2e:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
+      - attach_workspace:
+          at: *workspace_root
       - run:
           name: Copy envs
           command: cp .env.sample .env
@@ -116,8 +121,9 @@ jobs:
   sonar-scan:
     executor: node
     steps:
-      - *attach_workspace
       - checkout
+      - attach_workspace:
+          at: *workspace_root
       - sonarcloud/scan
 
   assume-role-staging:
