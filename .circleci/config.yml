@@ -265,7 +265,7 @@ workflows:
           context:
             - 'Serverless Framework'
           requires:
-            - terraform-init-and-apply-to-dr
+            - permit-release-dr
 
       - assume-role-staging:
           context:

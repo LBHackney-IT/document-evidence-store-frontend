@@ -22,8 +22,6 @@ terraform {
 }
 
 resource "aws_security_group" "frontend_traffic" {
-  provider = aws.core
-
   vpc_id      = data.aws_vpc.dr_vpc.id
   name_prefix = "allow_frontend_traffic"
 
