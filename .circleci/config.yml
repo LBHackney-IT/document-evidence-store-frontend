@@ -11,6 +11,9 @@ executors:
     docker:
       - image: cimg/node:20.18.2-browsers
     working_directory: ~/project
+  docker-terraform:
+    docker:
+      - image: "hashicorp/terraform:light"
   python:
     docker:
       - image: cimg/python:3.7
@@ -39,6 +42,47 @@ commands:
           root: *workspace_root
           paths:
             - .aws
+
+    # Preview terraform before applying
+    terraform-init-then-preview:
+      description: "Initializes and applies terraform configuration"
+      parameters:
+        environment:
+          type: string
+      steps:
+        - *attach_workspace
+        - checkout
+        - run:
+            command: |
+              cd ./terraform/<<parameters.environment>>/
+              terraform get -update=true
+              terraform init
+            name: get and init
+        - run:
+            name: preview
+            command: |
+              cd ./terraform/<<parameters.environment>>/
+              terraform plan
+    # Apply terraform
+    terraform-init-then-apply:
+      description: "Initializes and applies terraform configuration"
+      parameters:
+        environment:
+          type: string
+      steps:
+        - *attach_workspace
+        - checkout
+        - run:
+            command: |
+              cd ./terraform/<<parameters.environment>>/
+              terraform get -update=true
+              terraform init
+            name: get and init
+        - run:
+            name: apply
+            command: |
+              cd ./terraform/<<parameters.environment>>/
+              terraform apply -auto-approve
 
   deploy-lambda:
     description: 'Deploys application'
@@ -120,6 +164,31 @@ jobs:
       - checkout
       - sonarcloud/scan
 
+  # Infrastructure changes preview:
+  preview-terraform-dr-changes:
+    executor: docker-terraform
+    steps:
+      - terraform-init-then-preview:
+          environment: "production"
+  # Infrastructure deployment:
+  terraform-init-and-apply-to-dr:
+    executor: docker-terraform
+    steps:
+      - terraform-init-then-apply:
+          environment: "production"
+
+  assume-role-disaster-recovery:
+    executor: docker-python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_DISASTER_RECOVERY
+
+  deploy-dr:
+    executor: node
+    steps:
+      - deploy-lambda:
+          stage: production
+
   assume-role-staging:
     executor: python
     steps:
@@ -163,6 +232,40 @@ workflows:
           context: SonarCloud
           requires:
             - lint-and-test
+
+      - assume-role-disaster-recovery:
+          requires:
+            - build
+          context:
+            - api-assume-role-disaster-recovery-context
+          filters:
+            branches:
+              only:
+                - dr-testing
+
+      - preview-terraform-dr-changes:
+          requires:
+            - assume-role-disaster-recovery
+
+      - permit-terraform-dr-changes:
+          type: approval
+          requires:
+            - preview-terraform-dr-changes
+
+      - terraform-init-and-apply-to-dr:
+          requires:
+            - permit-terraform-dr-changes
+
+      - permit-release-dr:
+          type: approval
+          requires:
+            - terraform-init-and-apply-to-dr
+
+      - deploy-dr:
+          context:
+            - 'Serverless Framework'
+          requires:
+            - terraform-init-and-apply-to-dr
 
       - assume-role-staging:
           context:
