@@ -44,45 +44,45 @@ commands:
             - .aws
 
     # Preview terraform before applying
-    terraform-init-then-preview:
-      description: "Initializes and applies terraform configuration"
-      parameters:
-        environment:
-          type: string
-      steps:
-        - *attach_workspace
-        - checkout
-        - run:
-            command: |
-              cd ./terraform/<<parameters.environment>>/
-              terraform get -update=true
-              terraform init
-            name: get and init
-        - run:
-            name: preview
-            command: |
-              cd ./terraform/<<parameters.environment>>/
-              terraform plan
+  terraform-init-then-preview:
+    description: "Initializes and applies terraform configuration"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform get -update=true
+            terraform init
+          name: get and init
+      - run:
+          name: preview
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform plan
     # Apply terraform
-    terraform-init-then-apply:
-      description: "Initializes and applies terraform configuration"
-      parameters:
-        environment:
-          type: string
-      steps:
-        - *attach_workspace
-        - checkout
-        - run:
-            command: |
-              cd ./terraform/<<parameters.environment>>/
-              terraform get -update=true
-              terraform init
-            name: get and init
-        - run:
-            name: apply
-            command: |
-              cd ./terraform/<<parameters.environment>>/
-              terraform apply -auto-approve
+  terraform-init-then-apply:
+    description: "Initializes and applies terraform configuration"
+    parameters:
+      environment:
+        type: string
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform get -update=true
+            terraform init
+          name: get and init
+      - run:
+          name: apply
+          command: |
+            cd ./terraform/<<parameters.environment>>/
+            terraform apply -auto-approve
 
   deploy-lambda:
     description: 'Deploys application'
