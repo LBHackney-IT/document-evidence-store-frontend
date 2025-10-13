@@ -178,7 +178,7 @@ jobs:
           environment: "production"
 
   assume-role-disaster-recovery:
-    executor: docker-python
+    executor: python
     steps:
       - assume-role-and-persist-workspace:
           aws-account: $AWS_ACCOUNT_DISASTER_RECOVERY
