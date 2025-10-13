@@ -259,7 +259,7 @@ workflows:
       - permit-release-dr:
           type: approval
           requires:
-            - terraform-init-and-apply-to-dr
+            - assume-role-disaster-recovery
 
       - deploy-dr:
           context:
