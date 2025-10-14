@@ -75,8 +75,6 @@ resources:
       Type: AWS::CloudFront::Distribution
       Properties:
         DistributionConfig:
-          Aliases:
-            - "DR-TEST"
           PriceClass: PriceClass_100
           DefaultCacheBehavior:
             TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
