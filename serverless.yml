@@ -78,9 +78,6 @@ resources:
           Aliases:
             - ${self:custom.alias}
           PriceClass: PriceClass_100
-          ViewerCertificate:
-            MinimumProtocolVersion: TLSv1.2_2018
-            SslSupportMethod: sni-only
           DefaultCacheBehavior:
             TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
             ViewerProtocolPolicy: 'redirect-to-https'
