@@ -114,7 +114,6 @@ custom:
         - execute-api
         - eu-west-2
         - amazonaws.com
-  alias: ${ssm:/evidence-api/${self:provider.stage}/client-url}
   certificate-arn:
     staging: arn:aws:acm:us-east-1:549011513230:certificate/0497c31a-63ad-41d7-bca6-7d0896a6100d
   securityGroups:
