@@ -84,6 +84,24 @@ commands:
             cd ./terraform/<<parameters.environment>>/
             terraform apply -auto-approve
 
+  deploy-lambda:
+    description: 'Deploys application'
+    parameters:
+      stage:
+        type: string
+        default: staging
+    steps:
+      - *attach_workspace
+      - checkout
+      - run:
+          name: Install serverless CLI
+          command: sudo npm i -g serverless
+      - run:
+          name: Deploy application
+          command: |
+            npm prune --omit=dev                      
+            sls deploy -s <<parameters.stage>>
+
   destroy-lambda:
     description: 'Destroy application'
     parameters:
