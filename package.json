@@ -27,7 +27,7 @@
     "@reach/dialog": "^0.13.2",
     "@reach/tabs": "^0.13.2",
     "@sentry/nextjs": "^7.119.2",
-    "axios": "^1.7.9",
+    "axios": "^1.12.2",
     "babel-plugin-superjson-next": "^0.4.5",
     "eslint-config-next": "^12.3.4",
     "file-type": "^16.5.4",
