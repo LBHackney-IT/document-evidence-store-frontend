@@ -6,6 +6,7 @@ import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile
 import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
 import { DocumentSubmission } from '../domain/document-submission';
+import { Resident } from '../domain/resident';
 import styles from '../styles/EvidenceTile.module.scss';
 
 interface Props {
@@ -15,6 +16,10 @@ interface Props {
   total: number;
   pageSize: number;
   onPageOrTabChange: (page: number, state?: string) => Promise<void>;
+  resident: Resident;
+  isSuperUser: boolean;
+  isSuperUserDeleteEnabled: boolean;
+  userEmail: string;
 }
 
 export type EvidenceAwaitingSubmission = {
@@ -39,8 +44,66 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   total,
   pageSize,
   onPageOrTabChange,
+  resident,
+  isSuperUser,
+  isSuperUserDeleteEnabled,
+  userEmail,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
+  const [
+    documentToDelete,
+    setDocumentToDelete,
+  ] = useState<DocumentSubmission | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const handleDeleteClick = (documentSubmission: DocumentSubmission) => {
+    setDocumentToDelete(documentSubmission);
+    setDeleteError(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (documentToDelete && !isDeleting) {
+      setIsDeleting(true);
+      setDeleteError(null);
+
+      try {
+        const response = await fetch(
+          `/api/document_submissions/${documentToDelete.id}/visibility`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              useremail: userEmail,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to delete document. Please try again.');
+        }
+
+        // Success - reload page (popup will stay open until reload completes)
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting document:', error);
+        setDeleteError(
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while deleting the document. Please try again.'
+        );
+        setIsDeleting(false);
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    if (!isDeleting) {
+      setDocumentToDelete(null);
+      setDeleteError(null);
+    }
+  };
+
   const selectTab = (tabName: string) => {
     if (selectedTab === tabName) {
       return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
@@ -216,6 +279,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                             )
                           }
                           userUpdatedBy={documentSubmission.userUpdatedBy}
+                          onDeleteClick={() =>
+                            handleDeleteClick(documentSubmission)
+                          }
+                          isSuperUser={isSuperUser && isSuperUserDeleteEnabled}
                         />
                       </li>
                     ))
@@ -235,6 +302,105 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
           total={total}
           onPageOrTabChange={onPageChange}
         />
+      )}
+      {documentToDelete && (
+        <div
+          className="lbh-dialog-overlay"
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+          }}
+        >
+          <div
+            className="lbh-dialog"
+            style={{
+              backgroundColor: 'white',
+              padding: '2rem',
+              borderRadius: '4px',
+              maxWidth: '500px',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <h2 className="lbh-heading-h3">Confirm deletion</h2>
+            <p className="lbh-body">
+              You are about to delete{' '}
+              <strong>
+                {documentToDelete.staffSelectedDocumentType?.title ||
+                  documentToDelete.documentType?.title}
+              </strong>{' '}
+              uploaded on{' '}
+              <strong>{formatDate(documentToDelete.createdAt)}</strong> for
+              resident <strong>{resident.name}</strong>
+            </p>
+            {deleteError && (
+              <div
+                style={{
+                  marginTop: '1rem',
+                  padding: '1rem',
+                  backgroundColor: '#fef7f6',
+                  border: '2px solid #be3a34',
+                  borderRadius: '4px',
+                }}
+              >
+                <p
+                  className="lbh-body-s"
+                  style={{ color: '#be3a34', margin: 0 }}
+                >
+                  <strong>Error:</strong> {deleteError}
+                </p>
+              </div>
+            )}
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+              <button
+                className="lbh-button lbh-button--secondary"
+                onClick={handleConfirmDelete}
+                data-testid="confirm-delete-button"
+                disabled={isDeleting}
+                style={{
+                  backgroundColor: 'white',
+                  borderColor: '#be3a34',
+                  color: '#be3a34',
+                  opacity: isDeleting ? 0.6 : 1,
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                }}
+                onMouseEnter={(e) => {
+                  if (!isDeleting) {
+                    e.currentTarget.style.backgroundColor = '#be3a34';
+                    e.currentTarget.style.color = 'white';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isDeleting) {
+                    e.currentTarget.style.backgroundColor = 'white';
+                    e.currentTarget.style.color = '#be3a34';
+                  }
+                }}
+              >
+                {isDeleting ? 'Deleting...' : 'Confirm Delete'}
+              </button>
+              <button
+                className="lbh-button lbh-button--secondary"
+                onClick={handleCancelDelete}
+                data-testid="cancel-delete-button"
+                disabled={isDeleting}
+                style={{
+                  opacity: isDeleting ? 0.6 : 1,
+                  cursor: isDeleting ? 'not-allowed' : 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

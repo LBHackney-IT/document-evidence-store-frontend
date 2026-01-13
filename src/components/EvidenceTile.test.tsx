@@ -1,9 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { EvidenceTile } from './EvidenceTile';
 import { DocumentState } from '../domain/document-submission';
 
 describe('EvidenceTile', () => {
+  const mockOnDeleteClick = jest.fn();
+
   it('renders all the data expected', async () => {
     render(
       <EvidenceTile
@@ -17,6 +19,8 @@ describe('EvidenceTile', () => {
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver1@email.com'}
         documentDescription={'This is the description'}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
     expect(screen.getByText('Foo'));
@@ -40,6 +44,8 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver1@email.com'}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
     expect(screen.queryByText('Accept')).toBeNull();
@@ -59,6 +65,8 @@ describe('EvidenceTile', () => {
         requestedBy={undefined}
         userUpdatedBy={null}
         documentDescription={undefined}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
 
@@ -80,6 +88,8 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
     expect(screen.getByText('REJECTED')).toHaveClass('lbh-tag--red');
@@ -97,6 +107,8 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
     expect(screen.getByText('APPROVED')).toHaveClass('lbh-tag--green');
@@ -114,9 +126,103 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
+        onDeleteClick={mockOnDeleteClick}
+        isSuperUser={true}
       />
     );
     expect(screen.getByText('PENDING REVIEW')).toHaveClass('lbh-tag--blue');
     expect(screen.queryByText('UPLOADED')).toBeNull();
+  });
+
+  describe('Delete functionality', () => {
+    beforeEach(() => {
+      mockOnDeleteClick.mockClear();
+    });
+
+    it('displays delete button when isSuperUser is true', () => {
+      render(
+        <EvidenceTile
+          id="123"
+          title="Foo"
+          createdAt="1 day ago"
+          fileSizeInBytes={1024}
+          format="PDF"
+          state={DocumentState.APPROVED}
+          reason={'housing reason'}
+          requestedBy={'ash@dummy.com'}
+          userUpdatedBy={'approver1@email.com'}
+          onDeleteClick={mockOnDeleteClick}
+          isSuperUser={true}
+        />
+      );
+      expect(screen.getByTestId('delete-button-123')).toBeInTheDocument();
+      expect(screen.getByText('Delete')).toBeInTheDocument();
+    });
+
+    it('does not display delete button when isSuperUser is false', () => {
+      render(
+        <EvidenceTile
+          id="123"
+          title="Foo"
+          createdAt="1 day ago"
+          fileSizeInBytes={1024}
+          format="PDF"
+          state={DocumentState.APPROVED}
+          reason={'housing reason'}
+          requestedBy={'ash@dummy.com'}
+          userUpdatedBy={'approver1@email.com'}
+          onDeleteClick={mockOnDeleteClick}
+          isSuperUser={false}
+        />
+      );
+      expect(screen.queryByTestId('delete-button-123')).not.toBeInTheDocument();
+    });
+
+    it('calls onDeleteClick when delete button is clicked', () => {
+      render(
+        <EvidenceTile
+          id="123"
+          title="Foo"
+          createdAt="1 day ago"
+          fileSizeInBytes={1024}
+          format="PDF"
+          state={DocumentState.APPROVED}
+          reason={'housing reason'}
+          requestedBy={'ash@dummy.com'}
+          userUpdatedBy={'approver1@email.com'}
+          onDeleteClick={mockOnDeleteClick}
+          isSuperUser={true}
+        />
+      );
+
+      const deleteButton = screen.getByTestId('delete-button-123');
+      fireEvent.click(deleteButton);
+
+      expect(mockOnDeleteClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('delete button has correct styling for super users', () => {
+      render(
+        <EvidenceTile
+          id="123"
+          title="Foo"
+          createdAt="1 day ago"
+          fileSizeInBytes={1024}
+          format="PDF"
+          state={DocumentState.APPROVED}
+          reason={'housing reason'}
+          requestedBy={'ash@dummy.com'}
+          userUpdatedBy={'approver1@email.com'}
+          onDeleteClick={mockOnDeleteClick}
+          isSuperUser={true}
+        />
+      );
+
+      const deleteButton = screen.getByTestId('delete-button-123');
+      expect(deleteButton).toHaveStyle({
+        backgroundColor: 'white',
+        color: 'rgb(190, 58, 52)',
+      });
+    });
   });
 });

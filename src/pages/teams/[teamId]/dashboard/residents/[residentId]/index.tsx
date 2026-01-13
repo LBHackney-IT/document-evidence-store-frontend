@@ -34,6 +34,8 @@ type ResidentPageProps = {
   teamId: string;
   feedbackUrl: string;
   userEmail: string;
+  isSuperUser: boolean;
+  isSuperUserDeleteEnabled: boolean;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
@@ -45,6 +47,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   resident,
   teamId,
   feedbackUrl,
+  isSuperUser,
+  isSuperUserDeleteEnabled,
 }) => {
   const contextToPass: UserContextInterface = {
     residentIdContext: resident.id,
@@ -114,6 +118,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           total={totalPages}
           pageSize={pageSize}
           onPageOrTabChange={onPageOrTabChange}
+          resident={resident}
+          isSuperUser={isSuperUser}
+          isSuperUserDeleteEnabled={isSuperUserDeleteEnabled}
+          userEmail={userEmail}
         />
       </ResidentPageContext.Provider>
     </Layout>
@@ -176,6 +184,16 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const userEmail = user.email;
 
+  // Check if user is a super user
+  const superUsersString = process.env.SUPER_USERS || '';
+  const superUsers = superUsersString
+    .split(',')
+    .map((email) => email.trim().toLowerCase())
+    .filter((email) => email.length > 0);
+  const isSuperUser = superUsers.includes(userEmail.toLowerCase());
+  const isSuperUserDeleteEnabled =
+    process.env.IS_SUPER_USER_DELETE_ENABLED === 'true';
+
   const [
     documentSubmissionsObject,
     pendingEvidenceRequests,
@@ -234,6 +252,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
       teamId,
       feedbackUrl,
       userEmail,
+      isSuperUser,
+      isSuperUserDeleteEnabled,
     },
   };
 });

@@ -65,6 +65,8 @@ functions:
       FEEDBACK_FORM_STAFF_URL: ${ssm:/evidence-api/${self:provider.stage}/feedback-form-staff-url}
       HACKNEY_COOKIE_NAME: hackneyToken
       HACKNEY_JWT_SECRET: ${ssm:/common/hackney-jwt-secret}
+      SUPER_USERS: ${ssm:/evidence-api/${self:provider.stage}/super-users, ''}
+      IS_SUPER_USER_DELETE_ENABLED: ${ssm:/evidence-api/${self:provider.stage}/is-super-user-delete-enabled, 'false'}
       NEXT_PUBLIC_APP_ENV: ${self:provider.stage}
       NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: ${ssm:/document-evidence-service-frontend/${self:provider.stage}/google-analytics-account-code}
       NEXT_PUBLIC_SENTRY_RELEASE: $CIRCLE_SHA1
@@ -109,6 +111,28 @@ resources:
                 HTTPPort: 80
                 HTTPSPort: 443
                 OriginProtocolPolicy: https-only
+
+    SuperUsersParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /evidence-api/${self:provider.stage}/super-users
+        Description: List of super users with elevated permissions
+        Type: String
+        Value: 'to_be_updated'
+        Tags:
+          Environment: ${self:provider.stage}
+          Service: ${self:service}
+
+    IsSuperUserDeleteEnabledParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /evidence-api/${self:provider.stage}/is-super-user-delete-enabled
+        Description: Feature flag to enable super user document deletion
+        Type: String
+        Value: 'false'
+        Tags:
+          Environment: ${self:provider.stage}
+          Service: ${self:service}
 
 custom:
   domain-name:

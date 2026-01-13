@@ -223,6 +223,27 @@ export class EvidenceApiGateway {
     }
   }
 
+  async hideDocumentSubmission(
+    userEmail: string,
+    documentSubmissionId: string
+  ): Promise<void> {
+    try {
+      await this.client.patch(
+        `/api/v1/document_submissions/${documentSubmissionId}/visibility`,
+        { DocumentHidden: true },
+        {
+          headers: {
+            Authorization: tokens?.document_submissions?.PATCH,
+            UserEmail: userEmail,
+          },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+      throw new InternalServerError('Internal server error');
+    }
+  }
+
   async request(
     pathSegments: string[],
     method: Method,
