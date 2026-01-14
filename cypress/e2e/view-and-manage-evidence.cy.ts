@@ -5,6 +5,8 @@ describe('Can view and manage evidence', () => {
   beforeEach(() => {
     cy.login();
 
+    cy.clock(Date.UTC(2026, 9, 21), ['Date']);
+
     cy.visit(`http://localhost:3000/teams/2/dashboard`);
 
     cy.injectAxe();
@@ -39,7 +41,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 14 January 2021 (4 years ago)'
+        'Date uploaded: 10:23 am 14 January 2021 (5 years ago)'
       )
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
@@ -50,7 +52,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Passport(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 25 December 2020 (5 years ago)'
+        'Date uploaded: 10:23 am 25 December 2020 (6 years ago)'
       )
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
@@ -61,7 +63,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 30 December 2020 (5 years ago)'
+        'Date uploaded: 10:23 am 30 December 2020 (6 years ago)'
       )
       .and('contain.text', 'reason number 2')
       .and('contain.text', 'Requested by test2@hackney.gov.uk');
