@@ -21,6 +21,16 @@ export default defineConfig({
           }
         }
       );
+      
+      // Set default environment variables for Next.js server during tests
+      // These are used as fallbacks when AWS SSM is not available
+      if (!process.env.SUPER_USERS) {
+        process.env.SUPER_USERS = 'test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk';
+      }
+      if (!process.env.IS_SUPER_USER_DELETE_ENABLED) {
+        process.env.IS_SUPER_USER_DELETE_ENABLED = 'false';
+      }
+      
       const updatedConfig = dotenvPlugin(config, {}, true);
       return updatedConfig;
     },
