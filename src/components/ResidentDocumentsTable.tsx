@@ -7,7 +7,8 @@ import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
 import { DocumentSubmission } from '../domain/document-submission';
 import { Resident } from '../domain/resident';
-import styles from '../styles/EvidenceTile.module.scss';
+import evidenceTileStyles from '../styles/EvidenceTile.module.scss';
+import styles from '../styles/ResidentDocumentsTable.module.scss';
 
 interface Props {
   evidenceRequests: EvidenceRequest[];
@@ -178,12 +179,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   const onPageChange = (targetPage: number) =>
     onPageOrTabChange(targetPage, selectedTab);
   return (
-    <div
-      className="js-enabled"
-      style={{
-        paddingTop: '1.5em',
-      }}
-    >
+    <div className={`js-enabled ${styles.container}`}>
       <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
         <ul className="govuk-tabs__list">
           {DocumentTabs.map((documentTab) => {
@@ -226,7 +222,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                   awaitingSubmissions.length > 0 ? (
                     awaitingSubmissions.map((submission, i) => (
                       <li
-                        className={styles.item}
+                        className={evidenceTileStyles.item}
                         data-testid={`${documentTab.id}-evidence-awaiting-tile`}
                         key={`${documentTab.id}-evidence-awaiting-tile-${i}`}
                       >
@@ -243,7 +239,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                     documentSubmissions.length > 0 ? (
                     documentSubmissions.map((documentSubmission) => (
                       <li
-                        className={styles.item}
+                        className={evidenceTileStyles.item}
                         data-testid={`${documentTab.id}-evidence-tile`}
                         key={documentSubmission.id}
                       >
@@ -304,31 +300,8 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
         />
       )}
       {documentToDelete && (
-        <div
-          className="lbh-dialog-overlay"
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-          }}
-        >
-          <div
-            className="lbh-dialog"
-            style={{
-              backgroundColor: 'white',
-              padding: '2rem',
-              borderRadius: '4px',
-              maxWidth: '500px',
-              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            }}
-          >
+        <div className={styles.dialogOverlay}>
+          <div className={styles.dialogBox}>
             <h2 className="lbh-heading-h3">Confirm deletion</h2>
             <p className="lbh-body">
               You are about to delete{' '}
@@ -341,60 +314,26 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
               resident <strong>{resident.name}</strong>
             </p>
             {deleteError && (
-              <div
-                style={{
-                  marginTop: '1rem',
-                  padding: '1rem',
-                  backgroundColor: '#fef7f6',
-                  border: '2px solid #be3a34',
-                  borderRadius: '4px',
-                }}
-              >
-                <p
-                  className="lbh-body-s"
-                  style={{ color: '#be3a34', margin: 0 }}
-                >
+              <div className={styles.errorMessage}>
+                <p className="lbh-body-s">
                   <strong>Error:</strong> {deleteError}
                 </p>
               </div>
             )}
-            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+            <div className={styles.buttonContainer}>
               <button
-                className="lbh-button lbh-button--secondary"
+                className={`lbh-button lbh-button--secondary ${styles.confirmDeleteButton}`}
                 onClick={handleConfirmDelete}
                 data-testid="confirm-delete-button"
                 disabled={isDeleting}
-                style={{
-                  backgroundColor: 'white',
-                  borderColor: '#be3a34',
-                  color: '#be3a34',
-                  opacity: isDeleting ? 0.6 : 1,
-                  cursor: isDeleting ? 'not-allowed' : 'pointer',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isDeleting) {
-                    e.currentTarget.style.backgroundColor = '#be3a34';
-                    e.currentTarget.style.color = 'white';
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isDeleting) {
-                    e.currentTarget.style.backgroundColor = 'white';
-                    e.currentTarget.style.color = '#be3a34';
-                  }
-                }}
               >
                 {isDeleting ? 'Deleting...' : 'Confirm Delete'}
               </button>
               <button
-                className="lbh-button lbh-button--secondary"
+                className={`lbh-button lbh-button--secondary ${styles.cancelButton}`}
                 onClick={handleCancelDelete}
                 data-testid="cancel-delete-button"
                 disabled={isDeleting}
-                style={{
-                  opacity: isDeleting ? 0.6 : 1,
-                  cursor: isDeleting ? 'not-allowed' : 'pointer',
-                }}
               >
                 Cancel
               </button>

@@ -23,6 +23,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@aws-sdk/client-ssm": "^3.968.0",
     "@reach/alert": "^0.13.2",
     "@reach/dialog": "^0.13.2",
     "@reach/tabs": "^0.13.2",

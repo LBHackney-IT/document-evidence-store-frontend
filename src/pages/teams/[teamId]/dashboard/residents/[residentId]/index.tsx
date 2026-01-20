@@ -7,6 +7,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import React, { useState } from 'react';
+import { getSuperUsers, getIsSuperUserDeleteEnabled } from 'src/lib/ssm-config';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -184,27 +185,27 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const userEmail = user.email;
 
-  // Check if user is a super user
-  const superUsersString = process.env.SUPER_USERS || '';
-  const superUsers = superUsersString
-    .split(',')
-    .map((email) => email.trim().toLowerCase())
-    .filter((email) => email.length > 0);
-  const isSuperUser = superUsers.includes(userEmail.toLowerCase());
-  const isSuperUserDeleteEnabled =
-    process.env.IS_SUPER_USER_DELETE_ENABLED === 'true';
-
+  // Fetch SSM parameters and other data in parallel
   const [
     documentSubmissionsObject,
     pendingEvidenceRequests,
     forReviewEvidenceRequests,
     resident,
+    superUsers,
+    isSuperUserDeleteEnabled,
   ] = await Promise.all([
     documentSubmissionsPromise,
     pendingEvidenceRequestsPromise,
     forReviewEvidenceRequestsPromise,
     residentPromise,
+    getSuperUsers(),
+    getIsSuperUserDeleteEnabled(),
   ]);
+
+  // Check if user is a super user
+  const isSuperUser = superUsers
+    .map((email) => email.toLowerCase())
+    .includes(userEmail.toLowerCase());
 
   const evidenceRequests = pendingEvidenceRequests.concat(
     forReviewEvidenceRequests

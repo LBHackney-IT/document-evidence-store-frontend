@@ -1,0 +1,69 @@
+.container {
+  padding-top: 1.5em;
+}
+
+.dialogOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.dialogBox {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 4px;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.errorMessage {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #fef7f6;
+  border: 2px solid #be3a34;
+  border-radius: 4px;
+
+  p {
+    color: #be3a34;
+    margin: 0;
+  }
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.confirmDeleteButton {
+  background-color: white;
+  border-color: #be3a34;
+  color: #be3a34;
+
+  &:hover:not(:disabled) {
+    background-color: #be3a34;
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.cancelButton {
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+
+
