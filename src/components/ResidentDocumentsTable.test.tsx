@@ -106,7 +106,9 @@ describe('ResidentDocumentsTable', () => {
   describe('Super user delete functionality', () => {
     beforeEach(() => {
       // Mock window.location.reload
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (window as any).location;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).location = { reload: jest.fn() };
       // Mock fetch
       global.fetch = jest.fn();
@@ -196,7 +198,9 @@ describe('ResidentDocumentsTable', () => {
 
   describe('Feature flag behavior', () => {
     beforeEach(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       delete (window as any).location;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).location = { reload: jest.fn() };
       global.fetch = jest.fn();
     });
