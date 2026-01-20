@@ -9,7 +9,10 @@ try {
     });
   }
 } catch (error) {
-  console.warn('Failed to initialize SSM client, will use environment variables:', error);
+  console.warn(
+    'Failed to initialize SSM client, will use environment variables:',
+    error
+  );
 }
 
 // Cache parameters for the lifetime of the Lambda container
@@ -49,8 +52,7 @@ export async function getSuperUsers(): Promise<string[]> {
   try {
     // In test/local environments, use environment variable fallback
     if (process.env.SUPER_USERS) {
-      return process.env.SUPER_USERS
-        .split(',')
+      return process.env.SUPER_USERS.split(',')
         .map((email) => email.trim())
         .filter(Boolean);
     }
@@ -84,7 +86,10 @@ export async function getIsSuperUserDeleteEnabled(): Promise<boolean> {
 
     return value === 'true';
   } catch (error) {
-    console.warn('Failed to fetch delete enabled flag, returning false:', error);
+    console.warn(
+      'Failed to fetch delete enabled flag, returning false:',
+      error
+    );
     return false;
   }
 }

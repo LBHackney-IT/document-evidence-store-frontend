@@ -1,0 +1,39 @@
+warning: in the working copy of 'src/lib/ssm-config.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/lib/ssm-config.ts b/src/lib/ssm-config.ts[m
+[1mindex ff62327..db857c3 100644[m
+[1m--- a/src/lib/ssm-config.ts[m
+[1m+++ b/src/lib/ssm-config.ts[m
+[36m@@ -9,7 +9,10 @@[m [mtry {[m
+     });[m
+   }[m
+ } catch (error) {[m
+[31m-  console.warn('Failed to initialize SSM client, will use environment variables:', error);[m
+[32m+[m[32m  console.warn([m
+[32m+[m[32m    'Failed to initialize SSM client, will use environment variables:',[m
+[32m+[m[32m    error[m
+[32m+[m[32m  );[m
+ }[m
+ [m
+ // Cache parameters for the lifetime of the Lambda container[m
+[36m@@ -49,8 +52,7 @@[m [mexport async function getSuperUsers(): Promise<string[]> {[m
+   try {[m
+     // In test/local environments, use environment variable fallback[m
+     if (process.env.SUPER_USERS) {[m
+[31m-      return process.env.SUPER_USERS[m
+[31m-        .split(',')[m
+[32m+[m[32m      return process.env.SUPER_USERS.split(',')[m
+         .map((email) => email.trim())[m
+         .filter(Boolean);[m
+     }[m
+[36m@@ -84,7 +86,10 @@[m [mexport async function getIsSuperUserDeleteEnabled(): Promise<boolean> {[m
+ [m
+     return value === 'true';[m
+   } catch (error) {[m
+[31m-    console.warn('Failed to fetch delete enabled flag, returning false:', error);[m
+[32m+[m[32m    console.warn([m
+[32m+[m[32m      'Failed to fetch delete enabled flag, returning false:',[m
+[32m+[m[32m      error[m
+[32m+[m[32m    );[m
+     return false;[m
+   }[m
+ }[m
