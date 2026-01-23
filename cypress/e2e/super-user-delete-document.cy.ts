@@ -28,7 +28,6 @@ describe('Super user delete document functionality', () => {
   };
 
   describe('when feature flag is enabled', () => {
-
     describe('as a super user', () => {
       beforeEach(() => {
         cy.login(superUser);
@@ -119,12 +118,16 @@ describe('Super user delete document functionality', () => {
 
       it('disables buttons while delete is in progress', () => {
         // Intercept with a delay to simulate network latency
-        cy.intercept('PATCH', '/api/document_submissions/*/visibility', (req) => {
-          req.reply((res) => {
-            res.delay = 1000;
-            res.send({ statusCode: 200, body: { success: true } });
-          });
-        }).as('deleteDocument');
+        cy.intercept(
+          'PATCH',
+          '/api/document_submissions/*/visibility',
+          (req) => {
+            req.reply((res) => {
+              res.delay = 1000;
+              res.send({ statusCode: 200, body: { success: true } });
+            });
+          }
+        ).as('deleteDocument');
 
         cy.get('[data-testid^="delete-button-"]').first().click();
         cy.get('[role="alertdialog"]').should('be.visible');
@@ -176,9 +179,9 @@ describe('Super user delete document functionality', () => {
       it('displays delete buttons in all document tabs', () => {
         // Check all documents tab
         cy.get('a.govuk-tabs__tab[href*="all-documents"]').click();
-        cy.get('section[id="all-documents"] [data-testid^="delete-button-"]').should(
-          'exist'
-        );
+        cy.get(
+          'section[id="all-documents"] [data-testid^="delete-button-"]'
+        ).should('exist');
 
         // Check pending review tab
         cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
@@ -230,9 +233,9 @@ describe('Super user delete document functionality', () => {
       it('does not display delete buttons in any tab', () => {
         // Check all documents tab
         cy.get('a.govuk-tabs__tab[href*="all-documents"]').click();
-        cy.get('section[id="all-documents"] [data-testid^="delete-button-"]').should(
-          'not.exist'
-        );
+        cy.get(
+          'section[id="all-documents"] [data-testid^="delete-button-"]'
+        ).should('not.exist');
 
         // Check pending review tab
         cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
@@ -251,4 +254,3 @@ describe('Super user delete document functionality', () => {
 });
 
 export {};
-
