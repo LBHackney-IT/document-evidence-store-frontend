@@ -10,6 +10,7 @@
     "clean": "eslint . --ext .js,.jsx,.ts,.tsx --fix && npx prettier --write .",
     "start": "next start",
     "start:ci": "SUPER_USERS=test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk IS_SUPER_USER_DELETE_ENABLED=false concurrently -k \"npm:start\" \"npm:mock\"",
+    "start:ci:super-user": "SUPER_USERS=test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk IS_SUPER_USER_DELETE_ENABLED=true concurrently -k \"npm:start\" \"npm:mock\"",
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx",
     "lint:ci": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
@@ -19,6 +20,8 @@
     "test:unit:ci": "jest --ci --coverage --reporters=jest-junit --maxWorkers=2",
     "test:e2e:ci": "SUPER_USERS=test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk IS_SUPER_USER_DELETE_ENABLED=false cypress run",
     "test:e2e:dev": "cypress open",
+    "test:e2e:super-user": "SUPER_USERS=test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk IS_SUPER_USER_DELETE_ENABLED=true cypress run --spec cypress/e2e/super-user-delete-document.cy.ts",
+    "test:e2e:super-user:dev": "SUPER_USERS=test@hackney.gov.uk,test1@hackney.gov.uk,test2@hackney.gov.uk IS_SUPER_USER_DELETE_ENABLED=true cypress open --e2e --browser chrome",
     "mock": "mocks-server",
     "prepare": "husky install"
   },
