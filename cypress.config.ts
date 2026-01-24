@@ -32,6 +32,12 @@ export default defineConfig({
         process.env.IS_SUPER_USER_DELETE_ENABLED = 'false';
       }
 
+      // Expose environment variables to Cypress tests via config.env
+      config.env = config.env || {};
+      config.env.IS_SUPER_USER_DELETE_ENABLED =
+        process.env.IS_SUPER_USER_DELETE_ENABLED;
+      config.env.SUPER_USERS = process.env.SUPER_USERS;
+
       const updatedConfig = dotenvPlugin(config, {}, true);
       return updatedConfig;
     },

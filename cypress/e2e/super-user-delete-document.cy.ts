@@ -1,6 +1,8 @@
 describe('Super user delete document functionality', () => {
-  // Note: This test suite should be run with IS_SUPER_USER_DELETE_ENABLED=true
-  // Use: npm run test:e2e:super-user
+  // Note: This test suite adapts to the IS_SUPER_USER_DELETE_ENABLED flag
+  // - When flag is 'true': Tests delete button functionality
+  // - When flag is 'false': Tests that delete buttons are NOT visible
+  // Use npm run test:e2e:super-user to test with flag enabled
 
   const superUser = {
     email: 'test@hackney.gov.uk',
@@ -27,7 +29,19 @@ describe('Super user delete document functionality', () => {
     cy.get('h1').should('contain', 'Namey McName');
   };
 
+  // Determine if feature flag is enabled at runtime
+  const isFeatureFlagEnabled = () => {
+    const flag = Cypress.env('IS_SUPER_USER_DELETE_ENABLED');
+    return flag === 'true' || flag === true;
+  };
+
   describe('when feature flag is enabled', () => {
+    before(function () {
+      if (!isFeatureFlagEnabled()) {
+        this.skip();
+      }
+    });
+
     describe('as a super user', () => {
       beforeEach(() => {
         cy.login(superUser);
@@ -248,6 +262,60 @@ describe('Super user delete document functionality', () => {
         cy.get('section[id="approved"] [data-testid^="delete-button-"]').should(
           'not.exist'
         );
+      });
+    });
+  });
+
+  describe('when feature flag is disabled', () => {
+    before(function () {
+      if (isFeatureFlagEnabled()) {
+        this.skip();
+      }
+    });
+
+    describe('as a super user', () => {
+      beforeEach(() => {
+        cy.login(superUser);
+        navigateToResidentPage();
+      });
+
+      it('does not display delete buttons even for super users', () => {
+        cy.get('section[id="all-documents"]').within(() => {
+          cy.get('[data-testid^="delete-button-"]').should('not.exist');
+        });
+      });
+
+      it('does not display delete buttons in any tab', () => {
+        // Check all documents tab
+        cy.get('a.govuk-tabs__tab[href*="all-documents"]').click();
+        cy.get(
+          'section[id="all-documents"] [data-testid^="delete-button-"]'
+        ).should('not.exist');
+
+        // Check pending review tab
+        cy.get('a.govuk-tabs__tab[href*="pending-review"]').click();
+        cy.get(
+          'section[id="pending-review"] [data-testid^="delete-button-"]'
+        ).should('not.exist');
+
+        // Check approved tab
+        cy.get('a.govuk-tabs__tab[href*="approved"]').click();
+        cy.get('section[id="approved"] [data-testid^="delete-button-"]').should(
+          'not.exist'
+        );
+      });
+    });
+
+    describe('as a non-super user', () => {
+      beforeEach(() => {
+        cy.login(regularUser);
+        navigateToResidentPage();
+      });
+
+      it('does not display delete buttons', () => {
+        cy.get('section[id="all-documents"]').within(() => {
+          cy.get('[data-testid^="delete-button-"]').should('not.exist');
+        });
       });
     });
   });
