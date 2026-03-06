@@ -197,7 +197,6 @@ workflows:
           requires:
             - permit-release-dr
 
-
       - assume-role-staging:
           context:
             - api-assume-role-document-evidence-store-staging-context

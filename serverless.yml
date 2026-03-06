@@ -79,11 +79,11 @@ resources:
             - ${self:custom.alias}
           PriceClass: PriceClass_100
           ViewerCertificate:
-            AcmCertificateArn: ${self:custom.certificate-arn.dr}
+            AcmCertificateArn: ${self:custom.certificate-arn.${self:provider.stage}}
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
           DefaultCacheBehavior:
-            TargetOriginId: ${self:service}-dr-custom-origin
+            TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
             ViewerProtocolPolicy: 'redirect-to-https'
             AllowedMethods:
               - GET
@@ -102,7 +102,7 @@ resources:
                 Forward: all
           Enabled: true
           Origins:
-            - Id: ${self:service}-dr-custom-origin
+            - Id: ${self:service}-${self:provider.stage}-custom-origin
               DomainName: ${self:custom.domain-name}
               OriginPath: /${self:provider.stage}
               CustomOriginConfig:
