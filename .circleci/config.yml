@@ -120,6 +120,12 @@ jobs:
       - checkout
       - sonarcloud/scan
 
+  assume-role-disaster-recovery:
+    executor: python
+    steps:
+      - assume-role-and-persist-workspace:
+          aws-account: $AWS_ACCOUNT_DISASTER_RECOVERY
+
   assume-role-staging:
     executor: python
     steps:
@@ -144,6 +150,12 @@ jobs:
       - deploy-lambda:
           stage: production
 
+  deploy-dr:
+    executor: node
+    steps:
+      - deploy-lambda:
+          stage: production
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Workflows ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 workflows:
   version: 2
@@ -163,6 +175,28 @@ workflows:
           context: SonarCloud
           requires:
             - lint-and-test
+
+      - assume-role-disaster-recovery:
+          requires:
+            - build
+          context:
+            - api-assume-role-disaster-recovery-context
+          filters:
+            branches:
+              only:
+                - dr-system-test
+
+      - permit-release-dr:
+          type: approval
+          requires:
+            - assume-role-disaster-recovery
+
+      - deploy-dr:
+          context:
+            - 'Serverless Framework'
+          requires:
+            - permit-release-dr
+
 
       - assume-role-staging:
           context:
