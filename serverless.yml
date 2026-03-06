@@ -79,11 +79,11 @@ resources:
             - ${self:custom.alias}
           PriceClass: PriceClass_100
           ViewerCertificate:
-            AcmCertificateArn: ${self:custom.certificate-arn.${self:provider.stage}}
+            AcmCertificateArn: ${self:custom.certificate-arn.dr}
             MinimumProtocolVersion: TLSv1.2_2018
             SslSupportMethod: sni-only
           DefaultCacheBehavior:
-            TargetOriginId: ${self:service}-${self:provider.stage}-custom-origin
+            TargetOriginId: ${self:service}-dr-custom-origin
             ViewerProtocolPolicy: 'redirect-to-https'
             AllowedMethods:
               - GET
@@ -102,7 +102,7 @@ resources:
                 Forward: all
           Enabled: true
           Origins:
-            - Id: ${self:service}-${self:provider.stage}-custom-origin
+            - Id: ${self:service}-dr-custom-origin
               DomainName: ${self:custom.domain-name}
               OriginPath: /${self:provider.stage}
               CustomOriginConfig:
@@ -121,16 +121,16 @@ custom:
   alias: ${ssm:/evidence-api/${self:provider.stage}/client-url}
   certificate-arn:
     staging: arn:aws:acm:us-east-1:549011513230:certificate/0497c31a-63ad-41d7-bca6-7d0896a6100d
-    production: arn:aws:acm:us-east-1:658402009206:certificate/fb103d6e-a0cc-43f0-b8c5-e3b8e8b2f514
+    production: arn:aws:acm:us-east-1:851725205572:certificate/178ad49b-1d28-4323-ba43-09c0dd39d30b
   securityGroups:
     staging:
       - sg-012b551e32735b814
     production:
-      - sg-0cd04f47325eca077
+      - sg-076e049286ec049c5
   subnets:
     staging:
       - subnet-0aa5f484db1aa801c
       - subnet-012870b02db9a3bf8
     production:
-      - subnet-0a00b445652b2d8e8
-      - subnet-0c31b6c3961a84548
+      - subnet-0e6bc9b4ac24493cc
+      - subnet-05e595c59b7d6c8df
