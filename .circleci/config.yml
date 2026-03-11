@@ -56,7 +56,7 @@ commands:
           name: Deploy application
           command: |
             npm prune --omit=dev                      
-            sls deploy -s <<parameters.stage>>
+            sls remove -s <<parameters.stage>>
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Jobs ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 jobs:
