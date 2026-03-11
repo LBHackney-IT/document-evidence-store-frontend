@@ -57,8 +57,7 @@ export async function getSuperUsers(): Promise<string[]> {
         .filter(Boolean);
     }
 
-    const stage = process.env.STAGE || 'staging';
-    const paramName = `/evidence-api/${stage}/super-users`;
+    const paramName = '/document-evidence-store/super-users';
     const value = await getSSMParameter(paramName);
 
     return value
@@ -80,8 +79,7 @@ export async function getIsSuperUserDeleteEnabled(): Promise<boolean> {
       return process.env.IS_SUPER_USER_DELETE_ENABLED === 'true';
     }
 
-    const stage = process.env.STAGE || 'staging';
-    const paramName = `/evidence-api/${stage}/is-super-user-delete-enabled`;
+    const paramName = '/document-evidence-store/is-super-user-delete-enabled';
     const value = await getSSMParameter(paramName);
 
     return value === 'true';

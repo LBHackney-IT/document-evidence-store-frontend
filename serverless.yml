@@ -19,8 +19,9 @@ provider:
             - ssm:GetParameter
             - ssm:GetParameters
           Resource:
-            - arn:aws:ssm:${self:provider.region}:*:parameter/evidence-api/${self:provider.stage}/super-users
-            - arn:aws:ssm:${self:provider.region}:*:parameter/evidence-api/${self:provider.stage}/is-super-user-delete-enabled
+            # DES parameter for superuser function
+            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store/super-users
+            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store/is-super-user-delete-enabled
 
 package:
   individually: true
@@ -121,28 +122,6 @@ resources:
                 HTTPPort: 80
                 HTTPSPort: 443
                 OriginProtocolPolicy: https-only
-
-    SuperUsersParameter:
-      Type: AWS::SSM::Parameter
-      Properties:
-        Name: /evidence-api/${self:provider.stage}/super-users
-        Description: List of super users with elevated permissions
-        Type: String
-        Value: 'to_be_updated'
-        Tags:
-          Environment: ${self:provider.stage}
-          Service: ${self:service}
-
-    IsSuperUserDeleteEnabledParameter:
-      Type: AWS::SSM::Parameter
-      Properties:
-        Name: /evidence-api/${self:provider.stage}/is-super-user-delete-enabled
-        Description: Feature flag to enable super user document deletion
-        Type: String
-        Value: 'false'
-        Tags:
-          Environment: ${self:provider.stage}
-          Service: ${self:service}
 
 custom:
   domain-name:
