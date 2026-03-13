@@ -86,7 +86,7 @@ export class EvidenceApiGateway {
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/${teamName}?enabled=${isEnabled}`,
+        `/api/v1/document_types/${encodeURIComponent(teamName)}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -108,7 +108,7 @@ export class EvidenceApiGateway {
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/staff_selected/${teamName}?enabled=${isEnabled}`,
+        `/api/v1/document_types/staff_selected/${encodeURIComponent(teamName)}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -129,7 +129,7 @@ export class EvidenceApiGateway {
   ): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse>(
-        `/api/v1/evidence_requests/${id}`,
+        `/api/v1/evidence_requests/${encodeURIComponent(id)}`,
         {
           headers: {
             Authorization: tokens?.evidence_requests?.GET,
@@ -150,7 +150,7 @@ export class EvidenceApiGateway {
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponse>(
-        `/api/v1/document_submissions/${id}`,
+        `/api/v1/document_submissions/${encodeURIComponent(id)}`,
         {
           headers: {
             Authorization: tokens?.document_submissions?.GET,
@@ -205,7 +205,7 @@ export class EvidenceApiGateway {
   async getResident(userEmail: string, residentId: string): Promise<Resident> {
     try {
       const { data } = await this.client.get<ResidentResponse>(
-        `/api/v1/residents/${residentId}`,
+        `/api/v1/residents/${encodeURIComponent(residentId)}`,
         {
           headers: {
             Authorization: tokens?.residents?.GET,
@@ -229,7 +229,7 @@ export class EvidenceApiGateway {
   ): Promise<void> {
     try {
       await this.client.patch(
-        `/api/v1/document_submissions/${documentSubmissionId}/visibility`,
+        `/api/v1/document_submissions/${encodeURIComponent(documentSubmissionId)}/visibility`,
         { DocumentHidden: true },
         {
           headers: {
