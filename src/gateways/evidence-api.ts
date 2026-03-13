@@ -86,7 +86,9 @@ export class EvidenceApiGateway {
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/${encodeURIComponent(teamName)}?enabled=${isEnabled}`,
+        `/api/v1/document_types/${encodeURIComponent(
+          teamName
+        )}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -108,7 +110,9 @@ export class EvidenceApiGateway {
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
-        `/api/v1/document_types/staff_selected/${encodeURIComponent(teamName)}?enabled=${isEnabled}`,
+        `/api/v1/document_types/staff_selected/${encodeURIComponent(
+          teamName
+        )}?enabled=${isEnabled}`,
         {
           headers: {
             Authorization: tokens?.document_types?.GET,
@@ -229,7 +233,9 @@ export class EvidenceApiGateway {
   ): Promise<void> {
     try {
       await this.client.patch(
-        `/api/v1/document_submissions/${encodeURIComponent(documentSubmissionId)}/visibility`,
+        `/api/v1/document_submissions/${encodeURIComponent(
+          documentSubmissionId
+        )}/visibility`,
         { DocumentHidden: true },
         {
           headers: {

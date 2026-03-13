@@ -156,7 +156,9 @@ export class InternalApiGateway {
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
-        `/api/evidence/evidence_requests/${encodeURIComponent(evidenceRequestId)}/document_submissions`,
+        `/api/evidence/evidence_requests/${encodeURIComponent(
+          evidenceRequestId
+        )}/document_submissions`,
         params,
         {
           headers: {
@@ -199,7 +201,9 @@ export class InternalApiGateway {
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
-        `/api/evidence/document_submissions/${encodeURIComponent(documentSubmissionId)}`,
+        `/api/evidence/document_submissions/${encodeURIComponent(
+          documentSubmissionId
+        )}`,
         params,
         {
           headers: {
@@ -297,7 +301,9 @@ export class InternalApiGateway {
   ): Promise<void> {
     try {
       await this.client.post<void>(
-        `/api/evidence/evidence_requests/${encodeURIComponent(evidenceRequestId)}/confirmation`,
+        `/api/evidence/evidence_requests/${encodeURIComponent(
+          evidenceRequestId
+        )}/confirmation`,
         null,
         {
           headers: {

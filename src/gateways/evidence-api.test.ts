@@ -44,7 +44,9 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly without a query param', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/${encodeURIComponent(teamName)}?enabled=undefined`,
+          `/api/v1/document_types/${encodeURIComponent(
+            teamName
+          )}?enabled=undefined`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -70,7 +72,9 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly with a false query param', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, false);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/${encodeURIComponent(teamName)}?enabled=false`,
+          `/api/v1/document_types/${encodeURIComponent(
+            teamName
+          )}?enabled=false`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -122,7 +126,9 @@ describe('Evidence api gateway', () => {
           teamName
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${encodeURIComponent(teamName)}?enabled=undefined`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=undefined`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -139,7 +145,9 @@ describe('Evidence api gateway', () => {
           true
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${encodeURIComponent(teamName)}?enabled=true`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=true`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -156,7 +164,9 @@ describe('Evidence api gateway', () => {
           false
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${encodeURIComponent(teamName)}?enabled=false`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=false`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -621,11 +631,14 @@ describe('Evidence api gateway', () => {
       await gateway.hideDocumentSubmission(userEmail, documentSubmissionId);
 
       expect(client.patch).toHaveBeenCalledWith(
-        `/api/v1/document_submissions/${encodeURIComponent(documentSubmissionId)}/visibility`,
+        `/api/v1/document_submissions/${encodeURIComponent(
+          documentSubmissionId
+        )}/visibility`,
         { DocumentHidden: true },
         {
           headers: {
-            Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
+            Authorization:
+              process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
             UserEmail: userEmail,
           },
         }
