@@ -20,8 +20,8 @@ provider:
             - ssm:GetParameters
           Resource:
             # DES parameter for superuser function
-            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store/super-users
-            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store/is-super-user-delete-enabled
+            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/super-users
+            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/is-super-user-delete-enabled
 
 package:
   individually: true
