@@ -155,7 +155,7 @@ describe('EvidenceTile', () => {
           isSuperUser={true}
         />
       );
-      expect(screen.getByTestId('delete-button-123')).toBeInTheDocument();
+      expect(screen.getByTestId('document-delete-button')).toBeInTheDocument();
       expect(screen.getByText('Delete')).toBeInTheDocument();
     });
 
@@ -175,7 +175,9 @@ describe('EvidenceTile', () => {
           isSuperUser={false}
         />
       );
-      expect(screen.queryByTestId('delete-button-123')).not.toBeInTheDocument();
+      expect(
+        screen.queryByTestId('document-delete-button')
+      ).not.toBeInTheDocument();
     });
 
     it('calls onDeleteClick when delete button is clicked', () => {
@@ -195,7 +197,7 @@ describe('EvidenceTile', () => {
         />
       );
 
-      const deleteButton = screen.getByTestId('delete-button-123');
+      const deleteButton = screen.getByTestId('document-delete-button');
       fireEvent.click(deleteButton);
 
       expect(mockOnDeleteClick).toHaveBeenCalledTimes(1);
@@ -218,11 +220,9 @@ describe('EvidenceTile', () => {
         />
       );
 
-      const deleteButton = screen.getByTestId('delete-button-123');
-      expect(deleteButton).toHaveStyle({
-        backgroundColor: 'white',
-        color: 'rgb(190, 58, 52)',
-      });
+      const deleteButton = screen.getByTestId('document-delete-button');
+      expect(deleteButton).toHaveClass('govuk-tag');
+      expect(deleteButton).toBeInTheDocument();
     });
   });
 });

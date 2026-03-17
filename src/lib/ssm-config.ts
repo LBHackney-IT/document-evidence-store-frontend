@@ -78,7 +78,9 @@ export async function getIsSuperUserDeleteEnabled(): Promise<boolean> {
   try {
     // In test/local environments, use environment variable fallback
     if (process.env.IS_SUPER_USER_DELETE_ENABLED !== undefined) {
-      return process.env.IS_SUPER_USER_DELETE_ENABLED === 'true';
+      return (
+        process.env.IS_SUPER_USER_DELETE_ENABLED.trim().toLowerCase() === 'true'
+      );
     }
 
     const stage = process.env.STAGE || 'staging';
@@ -86,7 +88,7 @@ export async function getIsSuperUserDeleteEnabled(): Promise<boolean> {
     const paramName = `/${accountName}/document-evidence-store/is-super-user-delete-enabled`;
     const value = await getSSMParameter(paramName);
 
-    return value === 'true';
+    return value.trim().toLowerCase() === 'true';
   } catch (error) {
     console.warn(
       'Failed to fetch delete enabled flag, returning false:',

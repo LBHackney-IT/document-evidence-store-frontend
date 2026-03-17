@@ -134,7 +134,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       expect(deleteButtons.length).toBeGreaterThan(0);
     });
 
@@ -323,7 +323,7 @@ describe('ResidentDocumentsTable', () => {
       );
 
       // Both conditions met - button appears
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       expect(deleteButtons.length).toBeGreaterThan(0);
     });
 
@@ -363,7 +363,7 @@ describe('ResidentDocumentsTable', () => {
       );
 
       // Feature enabled - buttons appear
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       expect(deleteButtons.length).toBeGreaterThan(0);
 
       // Toggle feature flag off again
@@ -402,7 +402,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       expect(screen.getByText('Confirm Delete')).toBeInTheDocument();
@@ -427,7 +427,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       const cancelButton = screen.getByText('Cancel');
@@ -457,7 +457,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       const confirmButton = screen.getByRole('button', {
@@ -505,7 +505,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       const confirmButton = screen.getByRole('button', {
@@ -543,7 +543,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       const confirmButton = screen.getByRole('button', {
@@ -579,7 +579,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       const confirmButton = screen.getByRole('button', {
@@ -612,7 +612,7 @@ describe('ResidentDocumentsTable', () => {
         />
       );
 
-      const deleteButtons = screen.getAllByText('Delete');
+      const deleteButtons = screen.getAllByTestId('document-delete-button');
       fireEvent.click(deleteButtons[0]);
 
       expect(screen.getByText(/Test Resident/)).toBeInTheDocument();

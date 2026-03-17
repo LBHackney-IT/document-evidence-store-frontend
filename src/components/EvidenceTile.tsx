@@ -76,34 +76,16 @@ export const EvidenceTile: FunctionComponent<Props> = ({
           </td>
           <td></td>
           <td>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                flexShrink: 0,
-              }}
-            >
+            <div className={styles.actionContainer}>
               <span className={`govuk-tag ${tagColour[state]} ${styles.tag}`}>
                 {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
               </span>
               {isSuperUser && (
                 <button
-                  className="govuk-tag"
+                  className={`govuk-tag ${styles.deleteButton}`}
                   onClick={onDeleteClick}
-                  data-testid={`delete-button-${id}`}
-                  style={{
-                    backgroundColor: 'white',
-                    borderColor: '#be3a34',
-                    color: '#be3a34',
-                    cursor: 'pointer',
-                    whiteSpace: 'nowrap',
-                    marginRight: 0,
-                    marginTop: 0,
-                    marginBottom: 0,
-                    padding: '5px 8px',
-                    lineHeight: '1',
-                  }}
+                  data-testid="document-delete-button"
+                  data-document-id={id}
                 >
                   Delete
                 </button>

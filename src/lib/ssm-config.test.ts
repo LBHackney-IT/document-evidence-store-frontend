@@ -58,6 +58,22 @@ describe('ssm-config', () => {
       expect(result).toBe(true);
     });
 
+    it('returns true when environment variable is "TRUE" (case insensitive)', async () => {
+      process.env.IS_SUPER_USER_DELETE_ENABLED = 'TRUE';
+
+      const result = await getIsSuperUserDeleteEnabled();
+
+      expect(result).toBe(true);
+    });
+
+    it('returns true when environment variable has whitespace', async () => {
+      process.env.IS_SUPER_USER_DELETE_ENABLED = '  true  ';
+
+      const result = await getIsSuperUserDeleteEnabled();
+
+      expect(result).toBe(true);
+    });
+
     it('returns false when environment variable is "false"', async () => {
       process.env.IS_SUPER_USER_DELETE_ENABLED = 'false';
 
