@@ -20,8 +20,8 @@ provider:
             - ssm:GetParameters
           Resource:
             # DES parameter for superuser function
-            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/super-users
-            - arn:aws:ssm:${self:provider.region}:*:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/is-super-user-delete-enabled
+            - arn:aws:ssm:${self:provider.region}:${self:custom.parameterStoreAccountId.${self:provider.stage}}:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/super-users
+            - arn:aws:ssm:${self:provider.region}:${self:custom.parameterStoreAccountId.${self:provider.stage}}:parameter/document-evidence-store-${self:provider.stage}/document-evidence-store/is-super-user-delete-enabled
 
 package:
   individually: true
@@ -135,6 +135,9 @@ custom:
   certificate-arn:
     staging: arn:aws:acm:us-east-1:549011513230:certificate/0497c31a-63ad-41d7-bca6-7d0896a6100d
     production: arn:aws:acm:us-east-1:658402009206:certificate/fb103d6e-a0cc-43f0-b8c5-e3b8e8b2f514
+  parameterStoreAccountId:
+    staging: 469511945406
+    production: 918025132036
   securityGroups:
     staging:
       - sg-012b551e32735b814
