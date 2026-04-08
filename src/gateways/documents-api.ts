@@ -26,7 +26,7 @@ export class DocumentsApiGateway {
   async getDocumentPreSignedUrl(claimId: string): Promise<string> {
     try {
       const { data } = await this.client.get<string>(
-        `/api/v1/claims/${claimId}/download_links`,
+        `/api/v1/claims/${encodeURIComponent(claimId)}/download_links`,
         {
           headers: { Authorization: tokens?.claims?.GET },
         }

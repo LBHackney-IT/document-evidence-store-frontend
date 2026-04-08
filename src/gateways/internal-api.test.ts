@@ -69,7 +69,9 @@ describe('Internal API Gateway', () => {
         );
 
         expect(client.patch).toHaveBeenCalledWith(
-          `/api/evidence/document_submissions/${documentSubmissionId}`,
+          `/api/evidence/document_submissions/${encodeURIComponent(
+            documentSubmissionId
+          )}`,
           { state: 'UPLOADED', userUpdatedBy: 'test@hackney.gov.uk' },
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
@@ -135,7 +137,9 @@ describe('Internal API Gateway', () => {
         expect(
           client.post
         ).toHaveBeenCalledWith(
-          `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
+          `/api/evidence/evidence_requests/${encodeURIComponent(
+            evidenceRequestId
+          )}/document_submissions`,
           request,
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );
@@ -428,7 +432,9 @@ describe('Internal API Gateway', () => {
         expect(
           client.post
         ).toHaveBeenCalledWith(
-          `/api/evidence/evidence_requests/${evidenceRequestId}/confirmation`,
+          `/api/evidence/evidence_requests/${encodeURIComponent(
+            evidenceRequestId
+          )}/confirmation`,
           null,
           { headers: { UserEmail: Constants.DUMMY_EMAIL } }
         );

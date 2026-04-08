@@ -16,6 +16,8 @@ export const EvidenceTile: FunctionComponent<Props> = ({
   requestedBy,
   userUpdatedBy,
   documentDescription,
+  onDeleteClick,
+  isSuperUser,
 }) => {
   enum tagColour {
     UPLOADED = 'lbh-tag lbh-tag--blue',
@@ -74,9 +76,21 @@ export const EvidenceTile: FunctionComponent<Props> = ({
           </td>
           <td></td>
           <td>
-            <span className={`govuk-tag ${tagColour[state]} ${styles.tag}`}>
-              {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
-            </span>
+            <div className={styles.actionContainer}>
+              <span className={`govuk-tag ${tagColour[state]} ${styles.tag}`}>
+                {state === 'UPLOADED' ? 'PENDING REVIEW' : state}
+              </span>
+              {isSuperUser && (
+                <button
+                  className={`govuk-tag ${styles.deleteButton}`}
+                  onClick={onDeleteClick}
+                  data-testid="document-delete-button"
+                  data-document-id={id}
+                >
+                  Delete
+                </button>
+              )}
+            </div>
           </td>
         </tr>
       </tbody>
@@ -106,4 +120,6 @@ interface Props {
   userUpdatedBy: string | null;
   documentDescription?: string | undefined;
   title?: string;
+  onDeleteClick: () => void;
+  isSuperUser: boolean;
 }

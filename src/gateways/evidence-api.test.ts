@@ -44,7 +44,9 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly without a query param', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/${teamName}?enabled=undefined`,
+          `/api/v1/document_types/${encodeURIComponent(
+            teamName
+          )}?enabled=undefined`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -57,7 +59,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly with a true query param', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, true);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/${teamName}?enabled=true`,
+          `/api/v1/document_types/${encodeURIComponent(teamName)}?enabled=true`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -70,7 +72,9 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly with a false query param', async () => {
         await gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName, false);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/${teamName}?enabled=false`,
+          `/api/v1/document_types/${encodeURIComponent(
+            teamName
+          )}?enabled=false`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -122,7 +126,9 @@ describe('Evidence api gateway', () => {
           teamName
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${teamName}?enabled=undefined`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=undefined`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -139,7 +145,9 @@ describe('Evidence api gateway', () => {
           true
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${teamName}?enabled=true`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=true`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -156,7 +164,9 @@ describe('Evidence api gateway', () => {
           false
         );
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_types/staff_selected/${teamName}?enabled=false`,
+          `/api/v1/document_types/staff_selected/${encodeURIComponent(
+            teamName
+          )}?enabled=false`,
           {
             headers: {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
@@ -516,7 +526,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/evidence_requests/${id}`,
+          `/api/v1/evidence_requests/${encodeURIComponent(id)}`,
           {
             headers: {
               Authorization:
@@ -572,7 +582,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly', async () => {
         await gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
         expect(client.get).toHaveBeenLastCalledWith(
-          `/api/v1/document_submissions/${id}`,
+          `/api/v1/document_submissions/${encodeURIComponent(id)}`,
           {
             headers: {
               Authorization:
@@ -608,6 +618,39 @@ describe('Evidence api gateway', () => {
           new InternalServerError('Internal server error')
         );
       });
+    });
+  });
+
+  describe('hideDocumentSubmission', () => {
+    const documentSubmissionId = 'test-doc-id';
+    const userEmail = 'test@example.com';
+
+    it('calls axios patch with correct parameters', async () => {
+      client.patch.mockResolvedValue({ data: {} });
+
+      await gateway.hideDocumentSubmission(userEmail, documentSubmissionId);
+
+      expect(client.patch).toHaveBeenCalledWith(
+        `/api/v1/document_submissions/${encodeURIComponent(
+          documentSubmissionId
+        )}/visibility`,
+        { DocumentHidden: true },
+        {
+          headers: {
+            Authorization:
+              process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_PATCH,
+            UserEmail: userEmail,
+          },
+        }
+      );
+    });
+
+    it('throws internal server error when request fails', async () => {
+      client.patch.mockRejectedValue(new Error('Network error'));
+
+      await expect(
+        gateway.hideDocumentSubmission(userEmail, documentSubmissionId)
+      ).rejects.toThrow(InternalServerError);
     });
   });
 

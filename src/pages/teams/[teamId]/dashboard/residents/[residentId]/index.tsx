@@ -7,6 +7,7 @@ import { withAuth, WithUser } from 'src/helpers/authed-server-side-props';
 import { RequestAuthorizer } from '../../../../../../services/request-authorizer';
 import { TeamHelper } from '../../../../../../services/team-helper';
 import React, { useState } from 'react';
+import { getSuperUsers, getIsSuperUserDeleteEnabled } from 'src/lib/ssm-config';
 import ResidentDetailsTable from '../../../../../../components/ResidentDetailsTable';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -34,6 +35,8 @@ type ResidentPageProps = {
   teamId: string;
   feedbackUrl: string;
   userEmail: string;
+  isSuperUser: boolean;
+  isSuperUserDeleteEnabled: boolean;
 };
 
 const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
@@ -45,6 +48,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
   resident,
   teamId,
   feedbackUrl,
+  isSuperUser,
+  isSuperUserDeleteEnabled,
 }) => {
   const contextToPass: UserContextInterface = {
     residentIdContext: resident.id,
@@ -114,6 +119,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
           total={totalPages}
           pageSize={pageSize}
           onPageOrTabChange={onPageOrTabChange}
+          resident={resident}
+          isSuperUser={isSuperUser}
+          isSuperUserDeleteEnabled={isSuperUserDeleteEnabled}
+          userEmail={userEmail}
         />
       </ResidentPageContext.Provider>
     </Layout>
@@ -176,17 +185,27 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
 
   const userEmail = user.email;
 
+  // Fetch SSM parameters and other data in parallel
   const [
     documentSubmissionsObject,
     pendingEvidenceRequests,
     forReviewEvidenceRequests,
     resident,
+    superUsers,
+    isSuperUserDeleteEnabled,
   ] = await Promise.all([
     documentSubmissionsPromise,
     pendingEvidenceRequestsPromise,
     forReviewEvidenceRequestsPromise,
     residentPromise,
+    getSuperUsers(),
+    getIsSuperUserDeleteEnabled(),
   ]);
+
+  // Check if user is a super user
+  const isSuperUser = superUsers
+    .map((email) => email.toLowerCase())
+    .includes(userEmail.toLowerCase());
 
   const evidenceRequests = pendingEvidenceRequests.concat(
     forReviewEvidenceRequests
@@ -234,6 +253,8 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
       teamId,
       feedbackUrl,
       userEmail,
+      isSuperUser,
+      isSuperUserDeleteEnabled,
     },
   };
 });

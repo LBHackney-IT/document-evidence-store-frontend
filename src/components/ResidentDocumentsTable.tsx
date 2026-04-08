@@ -6,7 +6,9 @@ import { EvidenceAwaitingSubmissionTile } from './EvidenceAwaitingSubmissionTile
 import { EvidenceRequest } from '../domain/evidence-request';
 import { DateTime } from 'luxon';
 import { DocumentSubmission } from '../domain/document-submission';
-import styles from '../styles/EvidenceTile.module.scss';
+import { Resident } from '../domain/resident';
+import evidenceTileStyles from '../styles/EvidenceTile.module.scss';
+import styles from '../styles/ResidentDocumentsTable.module.scss';
 
 interface Props {
   evidenceRequests: EvidenceRequest[];
@@ -15,6 +17,10 @@ interface Props {
   total: number;
   pageSize: number;
   onPageOrTabChange: (page: number, state?: string) => Promise<void>;
+  resident: Resident;
+  isSuperUser: boolean;
+  isSuperUserDeleteEnabled: boolean;
+  userEmail: string;
 }
 
 export type EvidenceAwaitingSubmission = {
@@ -39,8 +45,66 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   total,
   pageSize,
   onPageOrTabChange,
+  resident,
+  isSuperUser,
+  isSuperUserDeleteEnabled,
+  userEmail,
 }) => {
   const [selectedTab, setSelectedTab] = useState('all-documents');
+  const [
+    documentToDelete,
+    setDocumentToDelete,
+  ] = useState<DocumentSubmission | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const handleDeleteClick = (documentSubmission: DocumentSubmission) => {
+    setDocumentToDelete(documentSubmission);
+    setDeleteError(null);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (documentToDelete && !isDeleting) {
+      setIsDeleting(true);
+      setDeleteError(null);
+
+      try {
+        const response = await fetch(
+          `/api/document_submissions/${documentToDelete.id}/visibility`,
+          {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              useremail: userEmail,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to delete document. Please try again.');
+        }
+
+        // Success - reload page (popup will stay open until reload completes)
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting document:', error);
+        setDeleteError(
+          error instanceof Error
+            ? error.message
+            : 'An error occurred while deleting the document. Please try again.'
+        );
+        setIsDeleting(false);
+      }
+    }
+  };
+
+  const handleCancelDelete = () => {
+    if (!isDeleting) {
+      setDocumentToDelete(null);
+      setDeleteError(null);
+    }
+  };
+
   const selectTab = (tabName: string) => {
     if (selectedTab === tabName) {
       return 'govuk-tabs__list-item  govuk-tabs__list-item--selected';
@@ -115,12 +179,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
   const onPageChange = (targetPage: number) =>
     onPageOrTabChange(targetPage, selectedTab);
   return (
-    <div
-      className="js-enabled"
-      style={{
-        paddingTop: '1.5em',
-      }}
-    >
+    <div className={`js-enabled ${styles.container}`}>
       <div className="govuk-tabs lbh-tabs" data-module="govuk-tabs">
         <ul className="govuk-tabs__list">
           {DocumentTabs.map((documentTab) => {
@@ -163,7 +222,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                   awaitingSubmissions.length > 0 ? (
                     awaitingSubmissions.map((submission, i) => (
                       <li
-                        className={styles.item}
+                        className={evidenceTileStyles.item}
                         data-testid={`${documentTab.id}-evidence-awaiting-tile`}
                         key={`${documentTab.id}-evidence-awaiting-tile-${i}`}
                       >
@@ -180,7 +239,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                     documentSubmissions.length > 0 ? (
                     documentSubmissions.map((documentSubmission) => (
                       <li
-                        className={styles.item}
+                        className={evidenceTileStyles.item}
                         data-testid={`${documentTab.id}-evidence-tile`}
                         key={documentSubmission.id}
                       >
@@ -216,6 +275,10 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                             )
                           }
                           userUpdatedBy={documentSubmission.userUpdatedBy}
+                          onDeleteClick={() =>
+                            handleDeleteClick(documentSubmission)
+                          }
+                          isSuperUser={isSuperUser && isSuperUserDeleteEnabled}
                         />
                       </li>
                     ))
@@ -235,6 +298,48 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
           total={total}
           onPageOrTabChange={onPageChange}
         />
+      )}
+      {documentToDelete && (
+        <div className={styles.dialogOverlay}>
+          <div className={styles.dialogBox}>
+            <h2 className="lbh-heading-h3">Confirm deletion</h2>
+            <p className="lbh-body">
+              You are about to delete{' '}
+              <strong>
+                {documentToDelete.staffSelectedDocumentType?.title ||
+                  documentToDelete.documentType?.title}
+              </strong>{' '}
+              uploaded on{' '}
+              <strong>{formatDate(documentToDelete.createdAt)}</strong> for
+              resident <strong>{resident.name}</strong>
+            </p>
+            {deleteError && (
+              <div className={styles.errorMessage}>
+                <p className="lbh-body-s">
+                  <strong>Error:</strong> {deleteError}
+                </p>
+              </div>
+            )}
+            <div className={styles.buttonContainer}>
+              <button
+                className={`lbh-button lbh-button--secondary ${styles.confirmDeleteButton}`}
+                onClick={handleConfirmDelete}
+                data-testid="confirm-delete-button"
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Confirm Delete'}
+              </button>
+              <button
+                className={`lbh-button lbh-button--secondary ${styles.cancelButton}`}
+                onClick={handleCancelDelete}
+                data-testid="cancel-delete-button"
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

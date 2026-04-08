@@ -40,3 +40,6 @@ cypress/videos
 debug.log
 # Sentry
 .sentryclirc
+
+# TypeScript incremental compilation cache
+*.tsbuildinfo
