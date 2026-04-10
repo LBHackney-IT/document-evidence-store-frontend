@@ -6,7 +6,6 @@
   "engines": {
     "node": ">=24"
   },
-  "type": "module",
   "scripts": {
     "dev": "next dev",
     "dev-mock": "concurrently -k \"npm:mock\" \"next dev\"",
