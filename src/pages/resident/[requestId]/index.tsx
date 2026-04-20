@@ -30,8 +30,11 @@ const Index: NextPage<IndexProps> = ({ requestId, team }) => {
           className="lbh-body"
           dangerouslySetInnerHTML={stringToMarkup(team.landingMessage)}
         ></p>
-        <Link href={`/resident/${requestId}/upload`}>
-          <a className="govuk-button lbh-button">Continue</a>
+        <Link
+          href={`/resident/${requestId}/upload`}
+          className="govuk-button lbh-button"
+        >
+          Continue
         </Link>
       </InterruptionCard>
     </Layout>
@@ -45,7 +48,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceApiGateway = new EvidenceApiGateway();
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
     Constants.DUMMY_EMAIL,
-    requestId
+    requestId,
   );
 
   const teamName = evidenceRequest.team;

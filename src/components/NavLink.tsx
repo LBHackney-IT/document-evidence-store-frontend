@@ -8,21 +8,22 @@ const NavLink: FunctionComponent<Props> = (props) => {
 
   if (router.pathname === props.href) {
     return (
-      <Link href={props.href}>
-        <a className={`lbh-link ${styles.active}`}>{props.children}</a>
+      <Link href={props.href} className={`lbh-link ${styles.active}`}>
+        {props.children}
       </Link>
     );
   }
 
   return (
-    <Link href={props.href}>
-      <a className="lbh-link">{props.children}</a>
+    <Link href={props.href} className="lbh-link">
+      {props.children}
     </Link>
   );
 };
 
 export interface Props {
   href: string;
+  children: React.ReactNode;
 }
 
 export default NavLink;

@@ -7,12 +7,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { TeamHelper } from '../services/team-helper';
 
-const TeamsLayout: FunctionComponent = (props) => {
+const TeamsLayout: FunctionComponent<Props> = (props) => {
   const { user } = useContext(UserContext);
   if (!user) return <></>;
 
   // Already existing issue not impacting application. Added to backlog for review.
-  // eslint-disable-next-line
+
   const router = useRouter();
   const { teamId } = router.query as {
     teamId: string;
@@ -37,8 +37,8 @@ const TeamsLayout: FunctionComponent = (props) => {
         <div className="lbh-container">
           <nav className={styles.switcher} aria-label="Switch service">
             <strong className={`lbh-heading-h5 ${styles['switcher__name']}`}>
-              <Link href={`/teams/${teamId}/dashboard`}>
-                <a className="lbh-link">Back to {currentTeam?.name}</a>
+              <Link href={`/teams/${teamId}/dashboard`} className="lbh-link">
+                Back to {currentTeam?.name}
               </Link>
             </strong>
           </nav>
@@ -55,5 +55,9 @@ const TeamsLayout: FunctionComponent = (props) => {
     </>
   );
 };
+
+interface Props {
+  children: React.ReactNode;
+}
 
 export default TeamsLayout;

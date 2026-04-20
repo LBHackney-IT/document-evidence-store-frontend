@@ -24,12 +24,12 @@ const Layout: FunctionComponent<Props> = (props) => {
 
   const currentTeam = TeamHelper.getTeamFromId(
     TeamHelper.getTeamsJson(),
-    props.teamId
+    props.teamId,
   );
 
   const userTeams = TeamHelper.filterTeamsForUser(
     TeamHelper.getTeamsJson(),
-    user
+    user,
   );
 
   return (
@@ -55,10 +55,9 @@ const Layout: FunctionComponent<Props> = (props) => {
                 pathname: '/teams',
                 query: { teamId: props.teamId },
               }}
+              className={`lbh-link ${styles['switcher__link']}`}
             >
-              <a className={`lbh-link ${styles['switcher__link']}`}>
-                Switch team
-              </a>
+              Switch team
             </Link>
           )}
         </nav>
@@ -93,6 +92,7 @@ const Layout: FunctionComponent<Props> = (props) => {
 interface Props {
   teamId: string;
   feedbackUrl: string;
+  children: React.ReactNode;
 }
 
 export default Layout;
