@@ -17,7 +17,7 @@ describe('Pagination', () => {
         pageSize={pageSize}
         total={total}
         onPageOrTabChange={onPageChange}
-      />
+      />,
     );
 
     expect(screen.getAllByRole('listitem')).toHaveLength(3);

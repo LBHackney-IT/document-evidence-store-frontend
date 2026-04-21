@@ -37,7 +37,7 @@ describe('NewRequestFormStep2', () => {
           <NewRequestFormStep2 documentTypes={documentTypes} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(screen.getByText('Proof of ID')).toBeVisible();
@@ -55,7 +55,7 @@ describe('NewRequestFormStep2', () => {
           <NewRequestFormStep2 documentTypes={documentTypes} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
     fireEvent.click(screen.getByText('Continue'));
 
@@ -75,7 +75,7 @@ describe('NewRequestFormStep2', () => {
           <NewRequestFormStep2 documentTypes={documentTypes} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     fillInForm();
@@ -89,7 +89,7 @@ describe('NewRequestFormStep2', () => {
         {
           documentTypes: ['proof-of-id', 'passport-scan'],
         },
-      ])
+      ]),
     );
   });
 });

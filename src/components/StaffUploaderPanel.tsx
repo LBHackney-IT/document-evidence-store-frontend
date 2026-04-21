@@ -18,11 +18,11 @@ const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
       touched.staffUploaderPanel &&
       ((getIn(
         touched.staffUploaderPanel[props.panelIndex],
-        'staffSelectedDocumentType'
+        'staffSelectedDocumentType',
       ) &&
         getIn(
           errors.staffUploaderPanel[props.panelIndex],
-          'staffSelectedDocumentType'
+          'staffSelectedDocumentType',
         )) ||
         (getIn(touched.staffUploaderPanel[props.panelIndex], 'description') &&
           getIn(errors.staffUploaderPanel[props.panelIndex], 'description')) ||
@@ -65,7 +65,7 @@ const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
           if (e.currentTarget.files !== null) {
             props.setFieldValue(
               `${props.name}.files`,
-              Array.from(e.currentTarget.files)
+              Array.from(e.currentTarget.files),
             );
           }
         }}
@@ -79,7 +79,7 @@ const StaffUploaderPanel: FunctionComponent<Props> = (props) => {
           onClick={() => {
             props.setFieldValue(
               `staffUploaderPanel[${props.panelIndex}].files`,
-              []
+              [],
             );
             if (inputRef.current) {
               inputRef.current.value = '';

@@ -17,7 +17,7 @@ describe('EvidenceTile', () => {
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver1@email.com'}
         documentDescription={'This is the description'}
-      />
+      />,
     );
     expect(screen.getByText('Foo'));
     expect(screen.getByText('Date uploaded: 1 day ago'));
@@ -40,7 +40,7 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver1@email.com'}
-      />
+      />,
     );
     expect(screen.queryByText('Accept')).toBeNull();
     expect(screen.queryByText('Request new file')).toBeNull();
@@ -59,7 +59,7 @@ describe('EvidenceTile', () => {
         requestedBy={undefined}
         userUpdatedBy={null}
         documentDescription={undefined}
-      />
+      />,
     );
 
     expect(screen.queryByText('format')).toBeNull();
@@ -80,12 +80,12 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
-      />
+      />,
     );
     expect(screen.getByText('REJECTED')).toHaveClass('lbh-tag--red');
   });
 
-  it('displays correct tag color for APPROVED ', async () => {
+  it('displays correct tag color for APPROVED', async () => {
     render(
       <EvidenceTile
         id="123"
@@ -97,7 +97,7 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
-      />
+      />,
     );
     expect(screen.getByText('APPROVED')).toHaveClass('lbh-tag--green');
   });
@@ -114,7 +114,7 @@ describe('EvidenceTile', () => {
         reason={'housing reason'}
         requestedBy={'ash@dummy.com'}
         userUpdatedBy={'approver2@email.com'}
-      />
+      />,
     );
     expect(screen.getByText('PENDING REVIEW')).toHaveClass('lbh-tag--blue');
     expect(screen.queryByText('UPLOADED')).toBeNull();

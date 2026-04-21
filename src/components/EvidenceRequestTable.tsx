@@ -16,7 +16,7 @@ export const EvidenceRequestTable: FunctionComponent<Props> = ({
           userRequestedBy: row.userRequestedBy,
         };
       }),
-    [requests]
+    [requests],
   );
 
   return (

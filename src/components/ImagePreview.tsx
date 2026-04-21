@@ -43,7 +43,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
 
   if (toConvertDocumentExtensions.includes(documentExtension as string)) {
     // Already existing issue not impacting application. Added to backlog for review.
-    // eslint-disable-next-line
+
     useEffect(() => {
       if (typeof window !== 'undefined') {
         (async () => {
@@ -53,7 +53,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             .then((blob) =>
               heic2any({
                 blob,
-              })
+              }),
             )
             .then((conversionResult) => {
               // this is unsafe but heic2any should never return an array unless that option is set.
@@ -81,7 +81,7 @@ const ImagePreview = (props: Props): JSX.Element | null => {
             dataTestId={'default-image'}
           />
         ) : toConvertDocumentExtensions.includes(
-            documentExtension as string
+            documentExtension as string,
           ) ? (
           <LoadingBox
             loading={loading}

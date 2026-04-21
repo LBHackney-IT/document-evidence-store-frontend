@@ -15,18 +15,18 @@ const SelectDocumentType = (props: Props): JSX.Element => {
       {touched.staffUploaderPanel &&
         getIn(
           touched.staffUploaderPanel[props.panelIndex],
-          'staffSelectedDocumentType'
+          'staffSelectedDocumentType',
         ) &&
         errors.staffUploaderPanel &&
         getIn(
           errors.staffUploaderPanel[props.panelIndex],
-          'staffSelectedDocumentType'
+          'staffSelectedDocumentType',
         ) && (
           <span className="govuk-error-message lbh-error-message">
             <span className="govuk-visually-hidden">Error:</span>{' '}
             {getIn(
               errors.staffUploaderPanel[props.panelIndex],
-              'staffSelectedDocumentType'
+              'staffSelectedDocumentType',
             )}
           </span>
         )}

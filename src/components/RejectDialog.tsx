@@ -34,14 +34,14 @@ const RejectDialog: FunctionComponent<Props> = (props) => {
             state: values.state,
             userUpdatedBy: props.email,
             rejectionReason: values.rejectionReason,
-          }
+          },
         );
         router.push(props.redirect, undefined, { shallow: true });
       } catch (err) {
         console.error(err);
       }
     },
-    []
+    [],
   );
   return (
     <Dialog

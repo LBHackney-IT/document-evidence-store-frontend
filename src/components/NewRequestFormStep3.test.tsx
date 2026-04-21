@@ -19,16 +19,16 @@ describe('NewRequestFormStep3', () => {
           <button type="submit">Continue</button>
           <button type="submit">Skip and continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(
-      screen.getByText('Would you like to add a note to this request?')
+      screen.getByText('Would you like to add a note to this request?'),
     ).toBeVisible();
     expect(
       screen.getByText(
-        'For example, you can add specific guidance for some of the documents, if needed.'
-      )
+        'For example, you can add specific guidance for some of the documents, if needed.',
+      ),
     ).toBeVisible();
   });
 
@@ -40,7 +40,7 @@ describe('NewRequestFormStep3', () => {
           <button type="submit">Continue</button>
           <button type="submit">Skip and continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     fireEvent.change(screen.getByTestId('textarea'), {
@@ -54,7 +54,7 @@ describe('NewRequestFormStep3', () => {
     });
 
     expect(mockHandler.mock.calls[0]).toEqual(
-      expect.arrayContaining([{ noteToResident: 'ipsum lorem' }])
+      expect.arrayContaining([{ noteToResident: 'ipsum lorem' }]),
     );
   });
 });

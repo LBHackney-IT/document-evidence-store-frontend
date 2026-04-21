@@ -8,7 +8,7 @@ test('is properly named, and labelled', async () => {
       label="Example label"
       name="exampleName"
       setFieldValue={jest.fn()}
-    />
+    />,
   );
   expect(screen.getByLabelText('Example label'));
   expect(screen.getByTestId('fileInput')).toHaveProperty('name', 'exampleName');
@@ -24,7 +24,7 @@ test('accepts jpeg files', async () => {
       label="Example label"
       name="exampleName"
       setFieldValue={mockHandler}
-    />
+    />,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -45,7 +45,7 @@ test('accepts pdf files', async () => {
       label="Example label"
       name="exampleName"
       setFieldValue={mockHandler}
-    />
+    />,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -67,7 +67,7 @@ test('accepts multiple files', async () => {
       label="Example label"
       name="exampleName"
       setFieldValue={mockHandler}
-    />
+    />,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -86,7 +86,7 @@ test('removes selected files', async () => {
       label="Example label"
       name="exampleName"
       setFieldValue={mockHandler}
-    />
+    />,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -105,7 +105,7 @@ test('displays hints', async () => {
       name="exampleName"
       hint="Example hint"
       setFieldValue={jest.fn()}
-    />
+    />,
   );
   expect(screen.getByText('Example hint'));
 });
@@ -117,7 +117,7 @@ test('displays errors', async () => {
       name="exampleName"
       error="Example error"
       setFieldValue={jest.fn()}
-    />
+    />,
   );
   expect(screen.getByText('Example error'));
 });

@@ -2,7 +2,7 @@ import React, { useMemo, useEffect, useState } from 'react';
 import { useField, FieldHookConfig } from 'formik';
 
 const getLengthOfValue = (
-  initialValue: string | number | readonly string[] | undefined
+  initialValue: string | number | readonly string[] | undefined,
 ) => {
   if (typeof initialValue === 'string') {
     return initialValue.length;
@@ -21,12 +21,13 @@ export const TextAreaWithCharacterCount = ({
 }: Props & FieldHookConfig<string>): JSX.Element => {
   const [field, meta] = useField(props);
   const [characterCount, setCharacterCount] = useState(
-    getLengthOfValue(meta.value)
+    getLengthOfValue(meta.value),
   );
 
-  const exceedingValue = useMemo(() => maxCharacterLength - characterCount, [
-    characterCount,
-  ]);
+  const exceedingValue = useMemo(
+    () => maxCharacterLength - characterCount,
+    [characterCount],
+  );
 
   useEffect(() => {
     setCharacterCount(String(meta.value).length);
@@ -49,14 +50,14 @@ export const TextAreaWithCharacterCount = ({
         <span className="govuk-hint" aria-live="polite">
           {`You have ${exceedingValue} ${pluralize(
             'character',
-            exceedingValue
+            exceedingValue,
           )} remaining`}
         </span>
       ) : (
         <span className="govuk-error-message" aria-live="polite">
           {`You have ${Math.abs(exceedingValue)} ${pluralize(
             'character',
-            exceedingValue
+            exceedingValue,
           )} too many`}
         </span>
       )}

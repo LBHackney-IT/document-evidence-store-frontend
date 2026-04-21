@@ -26,7 +26,7 @@ export const createResidentSchema = Yup.object().shape(
         then: Yup.string().required(emailOrPhoneNumberMessage),
       }),
   },
-  [['email', 'phoneNumber']]
+  [['email', 'phoneNumber']],
 );
 
 const CreateResidentForm: FunctionComponent<Props> = ({
@@ -60,8 +60,8 @@ const CreateResidentForm: FunctionComponent<Props> = ({
               groupId: string;
             }>
           >
-        | undefined
-    ) => void
+        | undefined,
+    ) => void,
   ) => {
     setIsLoading(false);
     setSubmitError(false);

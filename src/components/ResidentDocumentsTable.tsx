@@ -212,7 +212,7 @@ export const ResidentDocumentsTable: FunctionComponent<Props> = ({
                           requestedBy={
                             documentSubmission.evidenceRequestId &&
                             getUserRequestedBy(
-                              documentSubmission.evidenceRequestId
+                              documentSubmission.evidenceRequestId,
                             )
                           }
                           userUpdatedBy={documentSubmission.userUpdatedBy}

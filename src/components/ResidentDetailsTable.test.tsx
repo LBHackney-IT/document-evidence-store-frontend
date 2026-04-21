@@ -13,16 +13,16 @@ describe('ResidentDetailsTable', () => {
       phoneNumber: '0123',
     };
     const componentTestOne = render(
-      <ResidentDetailsTable resident={resident} />
+      <ResidentDetailsTable resident={resident} />,
     );
     expect(componentTestOne.getByTestId('name-cell')).toHaveTextContent(
-      'Frodo'
+      'Frodo',
     );
     expect(componentTestOne.getByTestId('email-cell')).toHaveTextContent(
-      'frodo@bagend.com'
+      'frodo@bagend.com',
     );
     expect(componentTestOne.getByTestId('number-cell')).toHaveTextContent(
-      '0123'
+      '0123',
     );
   });
 
@@ -46,22 +46,22 @@ describe('ResidentDetailsTable', () => {
         phoneNumber,
       };
       const componentTestTwo = render(
-        <ResidentDetailsTable resident={resident} />
+        <ResidentDetailsTable resident={resident} />,
       );
       expect(componentTestTwo.getByTestId('name-cell')).toHaveTextContent(
-        resident.name
+        resident.name,
       );
       expect(
-        componentTestTwo.getByTestId('blankNumber-cell')
+        componentTestTwo.getByTestId('blankNumber-cell'),
       ).toBeInTheDocument();
       expect(
-        componentTestTwo.getByTestId('blankNumber-cell')
+        componentTestTwo.getByTestId('blankNumber-cell'),
       ).toHaveTextContent('-');
       expect(
-        componentTestTwo.getByTestId('blankEmail-cell')
+        componentTestTwo.getByTestId('blankEmail-cell'),
       ).toBeInTheDocument();
       expect(componentTestTwo.getByTestId('blankEmail-cell')).toHaveTextContent(
-        '-'
+        '-',
       );
     });
   }

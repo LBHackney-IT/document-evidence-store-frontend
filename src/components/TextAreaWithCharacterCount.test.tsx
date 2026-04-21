@@ -22,7 +22,7 @@ describe('TextAreaWithCharacterCount', () => {
             rows={5}
           />
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(screen.getByText('You have 6 characters remaining')).toBeVisible();

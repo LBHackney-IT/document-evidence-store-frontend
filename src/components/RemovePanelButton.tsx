@@ -4,11 +4,8 @@ import styles from 'src/styles/RemoveBoxButton.module.scss';
 import { StaffUploadFormValues } from './StaffUploaderForm';
 
 const RemovePanelButton: FunctionComponent<Props> = (props) => {
-  const {
-    values,
-    errors,
-    setFieldError,
-  } = useFormikContext<StaffUploadFormValues>();
+  const { values, errors, setFieldError } =
+    useFormikContext<StaffUploadFormValues>();
   return (
     <div>
       <button

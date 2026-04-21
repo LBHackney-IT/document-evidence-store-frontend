@@ -12,7 +12,7 @@ test('is properly named, labelled and responds to clicks', async () => {
       <Form>
         <Checkbox label="Example label" name="exampleName" id="exampleName" />
       </Form>
-    </Formik>
+    </Formik>,
   );
 
   expect(screen.getByLabelText('Example label'));
@@ -22,6 +22,6 @@ test('is properly named, labelled and responds to clicks', async () => {
   fireEvent.click(screen.getByLabelText('Example label'));
 
   await waitFor(() =>
-    expect(screen.getByRole('checkbox')).toHaveProperty('checked', true)
+    expect(screen.getByRole('checkbox')).toHaveProperty('checked', true),
   );
 });

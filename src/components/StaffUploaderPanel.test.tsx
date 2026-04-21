@@ -16,7 +16,7 @@ test('is properly named', async () => {
         removePanel={jest.fn()}
         panelIndex={1}
       />
-    </Formik>
+    </Formik>,
   );
   expect(screen.getByTestId('fileInput')).toHaveProperty('name', 'exampleName');
   expect(screen.getByTestId('fileInput')).toHaveProperty('value', '');
@@ -38,7 +38,7 @@ test('accepts jpeg files', async () => {
         removePanel={jest.fn()}
         panelIndex={1}
       />
-    </Formik>
+    </Formik>,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -66,7 +66,7 @@ test('accepts pdf files', async () => {
         removePanel={jest.fn()}
         panelIndex={1}
       />
-    </Formik>
+    </Formik>,
   );
 
   Object.defineProperty(screen.getByTestId('fileInput'), 'files', {
@@ -89,7 +89,7 @@ test('displays errors', async () => {
         removePanel={jest.fn()}
         panelIndex={0}
       />
-    </Formik>
+    </Formik>,
   );
   expect(container.getElementsByClassName('govuk-error-message'));
 });

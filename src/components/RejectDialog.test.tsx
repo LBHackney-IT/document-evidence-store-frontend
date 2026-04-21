@@ -13,7 +13,7 @@ describe('RejectDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
     expect(screen.getByLabelText('Reason for rejection'));
     expect(screen.getByText('No, cancel'));
@@ -28,7 +28,7 @@ describe('RejectDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
     fireEvent.click(screen.getByText('Request new file'));
 
@@ -45,7 +45,7 @@ describe('RejectDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
 
     fireEvent.change(screen.getByLabelText('Reason for rejection'), {

@@ -27,14 +27,14 @@ export const schemaNewRequestFormStep1 = Yup.object().shape(
         phoneNumber: Yup.string()
           .matches(
             mobilePhoneRegex,
-            'Please provide a valid mobile phone number'
+            'Please provide a valid mobile phone number',
           )
           .when(['email'], {
             is: (email) => !email,
             then: Yup.string().required(emailOrPhoneNumberMessage),
           }),
       },
-      [['email', 'phoneNumber']]
+      [['email', 'phoneNumber']],
     ),
     team: Yup.string(),
     reason: Yup.string(),
@@ -46,7 +46,7 @@ export const schemaNewRequestFormStep1 = Yup.object().shape(
           !phoneNumberCheckbox[0] &&
           !uploadLinkCheckbox[0],
         then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
-      }
+      },
     ),
     phoneNumberCheckbox: Yup.array().when(
       ['emailCheckbox', 'uploadLinkCheckbox'],
@@ -54,11 +54,11 @@ export const schemaNewRequestFormStep1 = Yup.object().shape(
         is: (emailCheckbox, uploadLinkCheckbox) =>
           emailCheckbox && !emailCheckbox[0] && !uploadLinkCheckbox[0],
         then: Yup.array().min(1, atLeastOneDeliveryMethodMessage),
-      }
+      },
     ),
     deliveryMethods: Yup.array(),
   },
-  [['emailCheckbox', 'phoneNumberCheckbox']]
+  [['emailCheckbox', 'phoneNumberCheckbox']],
 );
 
 const NewRequestFormStep1 = ({ team }: Props): JSX.Element => {

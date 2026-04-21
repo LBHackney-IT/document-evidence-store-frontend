@@ -52,7 +52,12 @@ jest.mock('next/router', () => ({
   },
 }));
 
-jest.mock('next/link', () => ({ children }: HTMLElement) => children);
+jest.mock(
+  'next/link',
+  () =>
+    ({ children }: HTMLElement) =>
+      children,
+);
 
 beforeEach(() => {
   render(
@@ -60,17 +65,17 @@ beforeEach(() => {
       user={testUser}
       team={testTeam}
       residents={testResidents}
-    />
+    />,
   );
 });
 
 describe('LinkResidentSummaryTable', () => {
   it('renders the expected component, with the expected number of rows', () => {
     expect(screen.getByTestId('link-resident-summary-tr-0')).toHaveTextContent(
-      'testResident One'
+      'testResident One',
     );
     expect(screen.getByTestId('link-resident-summary-tr-1')).toHaveTextContent(
-      'testResident Two'
+      'testResident Two',
     );
   });
 
@@ -78,8 +83,8 @@ describe('LinkResidentSummaryTable', () => {
     fireEvent.click(screen.getByText('Link residents'));
     expect(
       screen.getByText(
-        'Are you sure you want to link the Housing Register resident with this DES resident?'
-      )
+        'Are you sure you want to link the Housing Register resident with this DES resident?',
+      ),
     ).toBeInTheDocument();
   });
 });
