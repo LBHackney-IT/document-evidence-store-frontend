@@ -13,7 +13,7 @@ export default tseslint.config(
       'next.config.js',
       'db/**',
       'cypress/**',
-      'src/tests',
+      'test/**',
     ],
   },
   eslint.configs.recommended,
@@ -24,6 +24,10 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         ecmaFeatures: { jsx: true },
+      },
+      globals: {
+        ...globals.jest,
+        ...globals.jasmine,
       },
     },
     settings: {
