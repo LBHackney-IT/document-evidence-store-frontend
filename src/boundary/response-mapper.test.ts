@@ -140,7 +140,7 @@ describe('ResponseMapper', () => {
           title: 'Proof of ID',
           description: 'A valid document that can be used to prove identity',
           enabled: true,
-        })
+        }),
       );
     });
 
@@ -151,7 +151,7 @@ describe('ResponseMapper', () => {
           title: 'Passport',
           description: 'A valid passport open at the photo page',
           enabled: true,
-        })
+        }),
       );
     });
 
@@ -163,7 +163,7 @@ describe('ResponseMapper', () => {
       it('maps the document', () => {
         expect(result.document).toBeInstanceOf(Document);
         expect(result.document?.fileSizeInBytes).toEqual(
-          responseJson.document?.fileSize
+          responseJson.document?.fileSize,
         );
       });
     });
