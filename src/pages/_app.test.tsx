@@ -21,11 +21,11 @@ jest.mock('next/router', () => {
 });
 
 const MockedNextApp = mocked(NextApp);
-const pageProps = ({ foo: 'bar' } as unknown) as AppInitialProps;
+const pageProps = { foo: 'bar' } as unknown as AppInitialProps;
 MockedNextApp.getInitialProps.mockImplementation(async () => pageProps);
 
 describe.skip('CustomApp', () => {
-  const pageComponent = (jest.fn(() => <p>Hello</p>) as unknown) as NextPage;
+  const pageComponent = jest.fn(() => <p>Hello</p>) as unknown as NextPage;
   // const appProps = { Component: pageComponent, pageProps } as AppProps;
 
   it('renders the component with the right props', () => {

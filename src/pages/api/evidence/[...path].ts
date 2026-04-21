@@ -35,7 +35,7 @@ const endpoint: NextApiHandler = async (req, res) => {
       req.method as Method,
       req.headers,
       req.body,
-      req.query
+      req.query,
     );
 
     res.status(status).json(data);
