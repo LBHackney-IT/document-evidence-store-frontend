@@ -10,6 +10,7 @@ const InterruptionCard: FunctionComponent<Props> = (props) => (
 
 interface Props {
   image?: string;
+  children: React.ReactNode;
 }
 
 export default InterruptionCard;
