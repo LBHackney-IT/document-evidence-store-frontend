@@ -41,17 +41,17 @@ describe('Confirm Request Dialog', () => {
               deliveryMethods={request.deliveryMethods}
             />
           </Form>
-        </Formik>
+        </Formik>,
       );
     });
 
-    it('is open', () => {
-      expect(screen.queryByRole('dialog')).toBeVisible();
+    it('is open', async () => {
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeVisible());
     });
 
     it('has the correct text', () => {
       expect(
-        screen.getByText('Are you sure you want to send this request?')
+        screen.getByText('Are you sure you want to send this request?'),
       ).toBeVisible();
       expect(screen.getByText('For the following evidences:')).toBeVisible();
       expect(screen.getByText('Confirm')).toBeVisible();

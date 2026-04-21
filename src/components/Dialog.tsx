@@ -1,24 +1,22 @@
 import React, { FunctionComponent } from 'react';
-import { Dialog as ReachDialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
-import styles from '../styles/Dialog.module.scss';
+import * as RadixDialog from '@radix-ui/react-dialog';
 
 const Dialog: FunctionComponent<Props> = (props) => (
-  <ReachDialog
-    isOpen={props.open}
+  <RadixDialog.Root
+    open={props.open}
     aria-label={props.title}
-    onDismiss={props.onDismiss}
-    className={styles.dialog}
+    onOpenChange={(open) => !open && props.onDismiss}
   >
     <h2 className="lbh-heading-h2">{props.title}</h2>
     {props.children}
-  </ReachDialog>
+  </RadixDialog.Root>
 );
 
 interface Props {
   open: boolean;
   title: string;
   onDismiss(): void;
+  children: React.ReactNode;
 }
 
 export default Dialog;
