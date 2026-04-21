@@ -62,7 +62,7 @@ export const getServerSideProps = withAuth<UploadPageProps>(async (ctx) => {
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
-    teamId
+    teamId,
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -75,11 +75,12 @@ export const getServerSideProps = withAuth<UploadPageProps>(async (ctx) => {
     };
   }
   const userEmail = user.email;
-  const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
-    userEmail,
-    team.name,
-    true
-  );
+  const staffSelectedDocumentTypes =
+    await evidenceApiGateway.getStaffSelectedDocumentTypes(
+      userEmail,
+      team.name,
+      true,
+    );
   return {
     props: {
       userEmail,

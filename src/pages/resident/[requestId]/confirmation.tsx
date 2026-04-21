@@ -66,7 +66,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const evidenceApiGateway = new EvidenceApiGateway();
   const evidenceRequest = await evidenceApiGateway.getEvidenceRequest(
     Constants.DUMMY_EMAIL,
-    requestId
+    requestId,
   );
   const residentReferenceId = evidenceRequest.resident.referenceId;
 

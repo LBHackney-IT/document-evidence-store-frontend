@@ -92,7 +92,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
       TeamHelper.getTeamsJson(),
       user,
-      teamId
+      teamId,
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -108,7 +108,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
     const gateway = new EvidenceApiGateway();
     const evidenceRequests = await gateway.getEvidenceRequests(
       user.email,
-      team.name
+      team.name,
     );
     return {
       props: {
@@ -118,7 +118,7 @@ export const getServerSideProps = withAuth<BrowseResidentsProps>(
         feedbackUrl,
       },
     };
-  }
+  },
 );
 
 export default BrowseResidents;
