@@ -37,9 +37,12 @@ body {
   margin-top: 20px !important;
 }
 
-// counteract z-index on the header
-[data-reach-dialog-overlay] {
-  z-index: 5;
+// Radix dialog positioning (replaces @reach/dialog layout)
+.lbh-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(11, 12, 12, 0.5);
 }
 
 // counteract weird padding class we don't want or need

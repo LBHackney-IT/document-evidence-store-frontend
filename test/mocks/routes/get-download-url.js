@@ -15,7 +15,7 @@ const getDownloadUrl = {
           } else {
             res.status(200);
             res.send(
-              'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Lb_hackney_logo.svg/800px-Lb_hackney_logo.svg.png'
+              'https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Lb_hackney_logo.svg/800px-Lb_hackney_logo.svg.png',
             );
           }
         },
