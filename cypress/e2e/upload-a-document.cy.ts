@@ -47,23 +47,23 @@ describe('Can upload a document', () => {
         .click();
       cy.get('[data-testid=photo-info-details-text]').should(
         'contain',
-        'You can use your smartphone camera. First, make sure you’re in a well-lit place.'
+        'You can use your smartphone camera. First, make sure you’re in a well-lit place.',
       );
       cy.get('[data-testid=file-formats-details-title]')
         .should('contain', 'Which file formats are accepted?')
         .click();
       cy.get('[data-testid=file-formats-details-text]').should(
         'contain',
-        'We currently support the following formats:'
+        'We currently support the following formats:',
       );
       cy.get('[data-testid=select-multiple-files-guidance]').should(
         'contain',
-        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
+        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`,
       );
 
       //Attach a file
       cy.get('input[type=file]').each((input) =>
-        cy.wrap(input).attachFile('example.png')
+        cy.wrap(input).attachFile('example.png'),
       );
       cy.get('button').contains('Continue').click();
 
@@ -80,7 +80,7 @@ describe('Can upload a document', () => {
       cy.get('h1').should('contain', 'We’re checking your documents');
       cy.get('p').should(
         'contain',
-        `Your reference number: ${residentReferenceId}`
+        `Your reference number: ${residentReferenceId}`,
       );
       cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });
@@ -95,15 +95,15 @@ describe('Can upload a document', () => {
       cy.get('h1').should('contain', 'Upload your documents');
       cy.get('[data-testid=photo-info-details-title]').should(
         'contain',
-        'How to photograph your documents'
+        'How to photograph your documents',
       );
       cy.get('[data-testid=file-formats-details-title]').should(
         'contain',
-        'Which file formats are accepted?'
+        'Which file formats are accepted?',
       );
       cy.get('[data-testid=select-multiple-files-guidance]').should(
         'contain',
-        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`
+        `After clicking the "Choose files" button, you can use the Ctrl key (Command key on a Mac machine) + click to select multiple files.`,
       );
 
       //Attach a file
@@ -131,7 +131,7 @@ describe('Can upload a document', () => {
       cy.get('h1').should('contain', 'We’re checking your documents');
       cy.get('p').should(
         'contain',
-        `Your reference number: ${residentReferenceId}`
+        `Your reference number: ${residentReferenceId}`,
       );
       cy.get('p').should('contain', `${teams[1].slaMessage}`);
     });
@@ -169,14 +169,14 @@ describe('Can upload a document', () => {
       cy.get('a').contains('Continue').click();
 
       cy.get('input[type=file]').each((input) =>
-        cy.wrap(input).attachFile('example.png')
+        cy.wrap(input).attachFile('example.png'),
       );
       cy.get('button').contains('Continue').click();
 
       // View error message
       cy.get('span').should(
         'contain',
-        'There was an error. Please try again later'
+        'There was an error. Please try again later',
       );
     });
   });

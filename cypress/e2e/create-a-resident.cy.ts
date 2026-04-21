@@ -49,7 +49,7 @@ describe('Can add a resident to the DES database', () => {
 
       cy.get('span').should(
         'contain',
-        'The resident already exists in the system'
+        'The resident already exists in the system',
       );
     });
   });

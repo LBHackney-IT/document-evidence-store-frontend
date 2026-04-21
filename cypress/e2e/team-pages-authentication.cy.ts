@@ -14,7 +14,7 @@ describe('all pages under teams check for google group membership', () => {
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
-    }
+    },
   );
 
   context(
@@ -27,7 +27,7 @@ describe('all pages under teams check for google group membership', () => {
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
-    }
+    },
   );
 
   context(
@@ -40,7 +40,7 @@ describe('all pages under teams check for google group membership', () => {
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
-    }
+    },
   );
 
   context(
@@ -53,7 +53,7 @@ describe('all pages under teams check for google group membership', () => {
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
-    }
+    },
   );
 
   context(
@@ -63,11 +63,11 @@ describe('all pages under teams check for google group membership', () => {
         cy.login();
 
         cy.visit(
-          `http://localhost:3000/teams/1/dashboard/residents/123/document/123`
+          `http://localhost:3000/teams/1/dashboard/residents/123/document/123`,
         );
 
         cy.get('h1').should('contain.text', 'Choose a team');
       });
-    }
+    },
   );
 });

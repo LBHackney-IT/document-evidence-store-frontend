@@ -8,7 +8,7 @@ describe('authentication', () => {
         'eq',
         `${
           Cypress.config().baseUrl
-        }/login?redirect=%2Fteams%2F2%2Fdashboard%2Frequests%2Fnew%2F1%3Ftest%3Dparam`
+        }/login?redirect=%2Fteams%2F2%2Fdashboard%2Frequests%2Fnew%2F1%3Ftest%3Dparam`,
       );
     });
 
@@ -20,7 +20,7 @@ describe('authentication', () => {
           'eq',
           `${
             Cypress.config().baseUrl
-          }/login?redirect=%2Fteams%2F2%2Fdashboard%2Frequests%2Fnew%2F1%3Ftest%3Dparam%26teamId%3D2%26step%3D1`
+          }/login?redirect=%2Fteams%2F2%2Fdashboard%2Frequests%2Fnew%2F1%3Ftest%3Dparam%26teamId%3D2%26step%3D1`,
         );
       });
     });
