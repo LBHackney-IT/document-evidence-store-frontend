@@ -22,7 +22,7 @@ export const registerDomainModels = (): void => {
         serialize: (v) => v.toISO(),
         deserialize: (v) => DateTime.fromISO(v, { zone: 'utc' }),
       },
-      'datetime'
+      'datetime',
     );
   } catch (e) {
     // console.error(e);

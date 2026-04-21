@@ -4,7 +4,8 @@ import EvidenceRequestFixture from '../../cypress/fixtures/evidence_requests/ind
 
 describe('sortEvidenceRequestsDescending', () => {
   it('sorts the evidence requests in descending order', () => {
-    const evidenceRequests = (EvidenceRequestFixture as unknown) as EvidenceRequest[];
+    const evidenceRequests =
+      EvidenceRequestFixture as unknown as EvidenceRequest[];
     const result = sortEvidenceRequestsDescending(evidenceRequests);
     expect(result[0].id).toBe('3fa85f64-5717-4562-b3fc-2c963f66afa8');
     expect(result[1].id).toBe('3fa85f64-5717-4562-b3fc-2c963f66afa7');

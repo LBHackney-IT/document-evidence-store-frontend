@@ -10,11 +10,10 @@ export type TokenDictionary = {
     | undefined;
 };
 
-export interface EvidenceRequestResponse
-  extends Omit<
-    IEvidenceRequest,
-    'createdAt' | 'deliveryMethods' | 'documentTypes'
-  > {
+export interface EvidenceRequestResponse extends Omit<
+  IEvidenceRequest,
+  'createdAt' | 'deliveryMethods' | 'documentTypes'
+> {
   createdAt: string;
   deliveryMethods: string[];
   documentTypes: IDocumentType[];
@@ -22,19 +21,18 @@ export interface EvidenceRequestResponse
   noteToResident: string;
 }
 
-export interface DocumentSubmissionResponse
-  extends Omit<
-    IDocumentSubmission,
-    | 'createdAt'
-    | 'claimValidUntil'
-    | 'evidenceRequestId'
-    | 'state'
-    | 'documentType'
-    | 'staffSelectedDocumentType'
-    | 'document'
-    | 'rejectedAt'
-    | 'userUpdatedBy'
-  > {
+export interface DocumentSubmissionResponse extends Omit<
+  IDocumentSubmission,
+  | 'createdAt'
+  | 'claimValidUntil'
+  | 'evidenceRequestId'
+  | 'state'
+  | 'documentType'
+  | 'staffSelectedDocumentType'
+  | 'document'
+  | 'rejectedAt'
+  | 'userUpdatedBy'
+> {
   createdAt: string;
   claimValidUntil: string;
   evidenceRequestId: string;

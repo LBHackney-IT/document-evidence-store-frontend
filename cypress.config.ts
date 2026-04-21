@@ -19,7 +19,7 @@ export default defineConfig({
           if (results && results.video && results.stats.failures === 0) {
             if (existsSync(results.video)) unlinkSync(results.video);
           }
-        }
+        },
       );
       const updatedConfig = dotenvPlugin(config, {}, true);
       return updatedConfig;

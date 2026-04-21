@@ -7,9 +7,8 @@ import { withAuth } from './authed-server-side-props';
 
 jest.mock('../services/request-authorizer');
 
-const {
-  executeMock,
-} = (RequestAuthorizer as unknown) as typeof MockRequestAuthorizer;
+const { executeMock } =
+  RequestAuthorizer as unknown as typeof MockRequestAuthorizer;
 
 describe('withAuth', () => {
   const props = { important: 'prop' };
