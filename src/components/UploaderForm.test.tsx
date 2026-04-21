@@ -7,12 +7,10 @@ import * as MockUploadFormModelImport from '../services/__mocks__/upload-form-mo
 import * as UploadFormModelImport from '../services/upload-form-model';
 
 const successHandler = jest.fn();
-const {
-  UploadFormModel,
-  mockHandleSubmit,
-} = (UploadFormModelImport as unknown) as jest.Mocked<
-  typeof MockUploadFormModelImport
->;
+const { UploadFormModel, mockHandleSubmit } =
+  UploadFormModelImport as unknown as jest.Mocked<
+    typeof MockUploadFormModelImport
+  >;
 
 jest.mock('../services/upload-form-model');
 
@@ -36,14 +34,14 @@ describe('UploaderForm', () => {
         evidenceRequestId={'123'}
         documentTypes={documentTypes}
         onSuccess={successHandler}
-      />
+      />,
     );
   });
 
   it('renders an uploader panel and a continue button', async () => {
     expect(screen.getByText('Proof of ID'));
     expect(
-      screen.getByText('A valid document that can be used to prove identity')
+      screen.getByText('A valid document that can be used to prove identity'),
     );
     expect(screen.getByText('Continue'));
   });
@@ -58,7 +56,7 @@ describe('UploaderForm', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Continue').closest('button')?.disabled
+        screen.getByText('Continue').closest('button')?.disabled,
       ).toBeTruthy();
     });
   });
@@ -83,7 +81,7 @@ describe('UploaderForm', () => {
 
   it('tests the continue button is disabled when there is no file attached', async () => {
     expect(
-      screen.getByText('Continue').closest('button')?.disabled
+      screen.getByText('Continue').closest('button')?.disabled,
     ).toBeTruthy();
   });
 

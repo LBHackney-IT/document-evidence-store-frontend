@@ -14,7 +14,7 @@ import PageWarning from 'src/components/PageWarning';
 const getError = (
   id: string,
   touched: FormikTouched<File>,
-  errors: FormikErrors<File>
+  errors: FormikErrors<File>,
 ) => {
   const dirty = touched[id as keyof typeof touched];
   if (!dirty) return null;
@@ -28,12 +28,13 @@ const UploaderForm: FunctionComponent<Props> = ({
 }) => {
   const [submitError, setSubmitError] = useState(false);
   const [submission, setSubmission] = useState(false);
-  const model = useMemo(() => new UploadFormModel(documentTypes), [
-    documentTypes,
-  ]);
+  const model = useMemo(
+    () => new UploadFormModel(documentTypes),
+    [documentTypes],
+  );
 
   const handleSubmit = useCallback(
-    async (values) => {
+    async (values: any) => {
       setSubmission(true);
       try {
         await model.handleSubmit(values, evidenceRequestId);
@@ -44,7 +45,7 @@ const UploaderForm: FunctionComponent<Props> = ({
         setSubmission(false);
       }
     },
-    [model, submitError]
+    [model, submitError],
   );
 
   return (
