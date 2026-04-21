@@ -29,7 +29,7 @@ export const validationSchema = Yup.object().shape({
         'Please select a document type',
         (value) => {
           return value !== 'Please select';
-        }
+        },
       ),
       description: Yup.string()
         .max(255, 'Description must be less than 255 characters')
@@ -41,9 +41,9 @@ export const validationSchema = Yup.object().shape({
         'Please select a file',
         (value) => {
           return value && value.length > 0;
-        }
+        },
       ),
-    })
+    }),
   ),
 });
 
@@ -70,11 +70,11 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
   const [uploaderPanels, setUploaderPanels] = useState([true]);
   const model = useMemo(
     () => new StaffUploadFormModel(staffSelectedDocumentTypes),
-    [staffSelectedDocumentTypes]
+    [staffSelectedDocumentTypes],
   );
 
   const handleSubmit = useCallback(
-    async (values) => {
+    async (values: any) => {
       setSubmission(true);
       try {
         await model.handleSubmit(userEmail, residentId, team.name, values);
@@ -85,7 +85,7 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
         setSubmission(false);
       }
     },
-    [model, submitError]
+    [model, submitError],
   );
 
   const addPanel = useCallback(() => {
@@ -96,13 +96,13 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
   }, [uploaderPanelsNumber]);
 
   const removePanel = useCallback(
-    (panelIndex) => {
+    (panelIndex: number) => {
       setUploaderPanelsNumber(uploaderPanelsNumber - 1);
       const currentPanels = uploaderPanels;
       currentPanels[panelIndex] = false;
       setUploaderPanels(currentPanels);
     },
-    [uploaderPanelsNumber, uploaderPanels]
+    [uploaderPanelsNumber, uploaderPanels],
   );
 
   return (
@@ -135,7 +135,7 @@ const StaffUploaderForm: FunctionComponent<Props> = ({
                   removePanel={removePanel}
                   panelIndex={index}
                 />
-              )
+              ),
           )}
           <button
             type="button"
