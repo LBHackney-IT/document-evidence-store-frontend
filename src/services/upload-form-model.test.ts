@@ -9,13 +9,13 @@ import * as S3Gateway from '../gateways/s3-gateway';
 import * as MockS3Gateway from '../gateways/__mocks__/s3-gateway';
 
 const documentSubmission = documentSubmissionFixture.map((ds) =>
-  ResponseMapper.mapDocumentSubmission(ds)
+  ResponseMapper.mapDocumentSubmission(ds),
 )[0];
-const documentTypes = (documentSubmissionFixture.map(
-  (ds) => ResponseMapper.mapDocumentSubmission(ds).documentType
-) as unknown) as DocumentType[];
+const documentTypes = documentSubmissionFixture.map(
+  (ds) => ResponseMapper.mapDocumentSubmission(ds).documentType,
+) as unknown as DocumentType[];
 const evidenceRequest = ResponseMapper.mapEvidenceRequest(
-  evidenceRequestFixture[0]
+  evidenceRequestFixture[0],
 );
 const evidenceRequestId = evidenceRequest.id;
 
@@ -24,7 +24,8 @@ const mockSendUploadConfirmationNotificationToResidentAndStaff = jest.fn();
 jest.mock('../gateways/internal-api', () => ({
   InternalApiGateway: jest.fn(() => ({
     createDocumentSubmission: mockCreateDocumentSubmission,
-    sendUploadConfirmationNotificationToResidentAndStaff: mockSendUploadConfirmationNotificationToResidentAndStaff,
+    sendUploadConfirmationNotificationToResidentAndStaff:
+      mockSendUploadConfirmationNotificationToResidentAndStaff,
   })),
 }));
 
@@ -79,19 +80,19 @@ describe('UploadFormModel', () => {
         1,
         Constants.DUMMY_EMAIL,
         evidenceRequestId,
-        firstDocumentSubmissionRequest
+        firstDocumentSubmissionRequest,
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         2,
         Constants.DUMMY_EMAIL,
         evidenceRequestId,
-        secondDocumentSubmissionRequest
+        secondDocumentSubmissionRequest,
       );
       expect(mockCreateDocumentSubmission).toHaveBeenNthCalledWith(
         3,
         Constants.DUMMY_EMAIL,
         evidenceRequestId,
-        thirdDocumentSubmissionRequest
+        thirdDocumentSubmissionRequest,
       );
     });
 
@@ -101,24 +102,24 @@ describe('UploadFormModel', () => {
       expect(uploadMock).toHaveBeenNthCalledWith(
         1,
         fileList1[0],
-        documentSubmission.uploadPolicy
+        documentSubmission.uploadPolicy,
       );
       expect(uploadMock).toHaveBeenNthCalledWith(
         2,
         fileList2[0],
-        documentSubmission.uploadPolicy
+        documentSubmission.uploadPolicy,
       );
       expect(uploadMock).toHaveBeenNthCalledWith(
         3,
         fileList2[1],
-        documentSubmission.uploadPolicy
+        documentSubmission.uploadPolicy,
       );
     });
 
     it('sends a confirmation to the resident after upload is successful', async () => {
       await model.handleSubmit(values, evidenceRequestId);
       expect(
-        mockSendUploadConfirmationNotificationToResidentAndStaff
+        mockSendUploadConfirmationNotificationToResidentAndStaff,
       ).toHaveBeenCalledTimes(1);
     });
   });

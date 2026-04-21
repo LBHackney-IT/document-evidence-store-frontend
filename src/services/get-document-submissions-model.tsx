@@ -10,7 +10,7 @@ export class DocumentSubmissionsModel {
     team: string,
     currentPage: string,
     pageSize: string,
-    state?: string
+    state?: string,
   ): Promise<DocumentSubmissionsObject> {
     const docSubmissionObject = await this.gateway.getDocumentSubmissions(
       userEmail,
@@ -18,7 +18,7 @@ export class DocumentSubmissionsModel {
       team,
       currentPage,
       pageSize,
-      state
+      state,
     );
     return docSubmissionObject;
   }

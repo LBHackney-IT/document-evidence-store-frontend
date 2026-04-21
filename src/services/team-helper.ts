@@ -16,7 +16,7 @@ export class TeamHelper {
   public static userAuthorizedToViewTeam(
     teamsJson: Team[],
     user: User | undefined,
-    teamId: string
+    teamId: string,
   ): boolean {
     if (user == undefined) {
       return false;
@@ -25,7 +25,7 @@ export class TeamHelper {
     const userAuthorizedToViewTeam = this.userMemberOfTeamGoogleGroup(
       teamsJson,
       user,
-      teamId
+      teamId,
     );
 
     if (!userAuthorizedToViewTeam) {
@@ -37,25 +37,25 @@ export class TeamHelper {
   private static userMemberOfTeamGoogleGroup(
     teamsJson: Team[],
     user: User,
-    teamId: string
+    teamId: string,
   ): boolean {
     const userTeams = this.filterTeamsForUser(teamsJson, user);
     const filterUserTeamsByTeamId = userTeams.filter(
-      (team) => team.id == teamId
+      (team) => team.id == teamId,
     );
     return filterUserTeamsByTeamId.length > 0;
   }
 
   public static getTeamFromId(
     teamsJson: Team[],
-    teamId: string
+    teamId: string,
   ): Team | undefined {
     return teamsJson.find((team) => team.id == teamId);
   }
 
   public static getTeamByName(
     teamsJson: Team[],
-    teamName: string
+    teamName: string,
   ): Team | undefined {
     return teamsJson.find((team) => team.name == teamName);
   }
