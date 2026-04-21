@@ -95,7 +95,7 @@ export class InternalApiGateway {
   private client: AxiosInstance;
 
   constructor(
-    { client }: InternalApiDependencies = { client: Axios.create() }
+    { client }: InternalApiDependencies = { client: Axios.create() },
   ) {
     this.client = client;
   }
@@ -103,7 +103,7 @@ export class InternalApiGateway {
   async createResident(
     userEmail: string,
     team: string,
-    payload: CreateResidentRequest
+    payload: CreateResidentRequest,
   ): Promise<Resident> {
     try {
       const { data } = await this.client.post<ResidentResponse>(
@@ -113,7 +113,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
@@ -127,7 +127,7 @@ export class InternalApiGateway {
 
   async createEvidenceRequest(
     userEmail: string,
-    payload: EvidenceRequestRequest
+    payload: EvidenceRequestRequest,
   ): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.post<EvidenceRequestResponse>(
@@ -137,7 +137,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
@@ -152,7 +152,7 @@ export class InternalApiGateway {
   async createDocumentSubmission(
     userEmail: string,
     evidenceRequestId: string,
-    params: DocumentSubmissionRequest
+    params: DocumentSubmissionRequest,
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
@@ -162,7 +162,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -173,7 +173,7 @@ export class InternalApiGateway {
 
   async createDocumentSubmissionWithoutEvidenceRequest(
     userEmail: string,
-    params: DocumentSubmissionWithoutEvidenceRequestRequest
+    params: DocumentSubmissionWithoutEvidenceRequestRequest,
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.post<DocumentSubmissionResponse>(
@@ -183,7 +183,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -195,7 +195,7 @@ export class InternalApiGateway {
   async updateDocumentSubmission(
     userEmail: string,
     documentSubmissionId: string,
-    params: DocumentSubmissionUpdateRequest
+    params: DocumentSubmissionUpdateRequest,
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.patch<DocumentSubmissionResponse>(
@@ -205,7 +205,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -223,7 +223,7 @@ export class InternalApiGateway {
     team: string,
     currentPage: string,
     pageSize: string,
-    state?: string
+    state?: string,
   ): Promise<DocumentSubmissionsObject> {
     try {
       const { data } = await this.client.get<DocumentSubmissionsObject>(
@@ -239,7 +239,7 @@ export class InternalApiGateway {
           headers: {
             userEmail: userEmail,
           },
-        }
+        },
       );
       return data;
     } catch (err) {
@@ -250,7 +250,7 @@ export class InternalApiGateway {
 
   async searchResidents(
     userEmail: string,
-    params: ResidentRequest
+    params: ResidentRequest,
   ): Promise<Resident[]> {
     try {
       const { data } = await this.client.get<ResidentResponse[]>(
@@ -260,7 +260,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapResidentResponseList(data);
     } catch (err) {
@@ -272,7 +272,7 @@ export class InternalApiGateway {
   async filterToReviewEvidenceRequests(
     userEmail: string,
     team: string,
-    state?: EvidenceRequestState
+    state?: EvidenceRequestState,
   ): Promise<EvidenceRequest[]> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
@@ -282,7 +282,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return data.map(ResponseMapper.mapEvidenceRequest);
     } catch (err) {
@@ -293,7 +293,7 @@ export class InternalApiGateway {
 
   async sendUploadConfirmationNotificationToResidentAndStaff(
     userEmail: string,
-    evidenceRequestId: string
+    evidenceRequestId: string,
   ): Promise<void> {
     try {
       await this.client.post<void>(
@@ -303,7 +303,7 @@ export class InternalApiGateway {
           headers: {
             UserEmail: userEmail,
           },
-        }
+        },
       );
     } catch (err) {
       console.error(err);
@@ -318,7 +318,7 @@ export class InternalApiGateway {
     residentName: string,
     residentEmail: string,
     residentPhone: string,
-    residentsToDelete: string[]
+    residentsToDelete: string[],
   ): Promise<{ resident: Resident; groupId: string }> {
     const requestBody = {
       team: team,

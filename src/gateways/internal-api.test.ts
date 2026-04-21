@@ -39,7 +39,7 @@ const client = {
 
 describe('Internal API Gateway', () => {
   const gateway = new InternalApiGateway({
-    client: (client as unknown) as AxiosInstance,
+    client: client as unknown as AxiosInstance,
   });
 
   describe('updateDocumentSubmission', () => {
@@ -54,7 +54,7 @@ describe('Internal API Gateway', () => {
         });
 
         mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-          expectedResult
+          expectedResult,
         );
       });
 
@@ -65,13 +65,13 @@ describe('Internal API Gateway', () => {
           {
             state: DocumentState.UPLOADED,
             userUpdatedBy: 'test@hackney.gov.uk',
-          }
+          },
         );
 
         expect(client.patch).toHaveBeenCalledWith(
           `/api/evidence/document_submissions/${documentSubmissionId}`,
           { state: 'UPLOADED', userUpdatedBy: 'test@hackney.gov.uk' },
-          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } },
         );
       });
 
@@ -82,7 +82,7 @@ describe('Internal API Gateway', () => {
           {
             state: DocumentState.UPLOADED,
             userUpdatedBy: 'test@hackney.gov.uk',
-          }
+          },
         );
 
         expect(result).toBe(expectedResult);
@@ -99,10 +99,10 @@ describe('Internal API Gateway', () => {
             {
               state: DocumentState.UPLOADED,
               userUpdatedBy: 'test@hackney.gov.uk',
-            }
+            },
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -121,7 +121,7 @@ describe('Internal API Gateway', () => {
         });
 
         mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-          expectedResult
+          expectedResult,
         );
       });
 
@@ -129,15 +129,13 @@ describe('Internal API Gateway', () => {
         await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
-          request
+          request,
         );
 
-        expect(
-          client.post
-        ).toHaveBeenCalledWith(
+        expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/evidence_requests/${evidenceRequestId}/document_submissions`,
           request,
-          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } },
         );
       });
 
@@ -145,7 +143,7 @@ describe('Internal API Gateway', () => {
         const result = await gateway.createDocumentSubmission(
           Constants.DUMMY_EMAIL,
           evidenceRequestId,
-          request
+          request,
         );
 
         expect(result).toBe(expectedResult);
@@ -159,10 +157,10 @@ describe('Internal API Gateway', () => {
           gateway.createDocumentSubmission(
             Constants.DUMMY_EMAIL,
             evidenceRequestId,
-            request
+            request,
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -180,14 +178,14 @@ describe('Internal API Gateway', () => {
         });
 
         mockedResponseMapper.mapDocumentSubmission.mockReturnValue(
-          expectedResult
+          expectedResult,
         );
       });
 
       it('makes the api request', async () => {
         await gateway.createDocumentSubmissionWithoutEvidenceRequest(
           Constants.DUMMY_EMAIL,
-          request
+          request,
         );
 
         expect(client.post).toHaveBeenCalledWith(
@@ -195,15 +193,16 @@ describe('Internal API Gateway', () => {
           request,
           {
             headers: { UserEmail: Constants.DUMMY_EMAIL },
-          }
+          },
         );
       });
 
       it('returns the updated model', async () => {
-        const result = await gateway.createDocumentSubmissionWithoutEvidenceRequest(
-          Constants.DUMMY_EMAIL,
-          request
-        );
+        const result =
+          await gateway.createDocumentSubmissionWithoutEvidenceRequest(
+            Constants.DUMMY_EMAIL,
+            request,
+          );
 
         expect(result).toBe(expectedResult);
       });
@@ -215,10 +214,10 @@ describe('Internal API Gateway', () => {
         const functionCall = () =>
           gateway.createDocumentSubmissionWithoutEvidenceRequest(
             Constants.DUMMY_EMAIL,
-            request
+            request,
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -257,14 +256,14 @@ describe('Internal API Gateway', () => {
           baseRequest,
           {
             headers: { UserEmail: Constants.DUMMY_EMAIL },
-          }
+          },
         );
       });
 
       it('returns the updated model', async () => {
         const result = await gateway.createEvidenceRequest(
           Constants.DUMMY_EMAIL,
-          baseRequest
+          baseRequest,
         );
 
         expect(result).toBe(expectedResult);
@@ -277,7 +276,7 @@ describe('Internal API Gateway', () => {
         const functionCall = () =>
           gateway.createEvidenceRequest(Constants.DUMMY_EMAIL, baseRequest);
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -295,7 +294,7 @@ describe('Internal API Gateway', () => {
         });
 
         mockedResponseMapper.mapResidentResponseList.mockReturnValue(
-          expectedResult
+          expectedResult,
         );
       });
 
@@ -313,7 +312,7 @@ describe('Internal API Gateway', () => {
               searchQuery: searchQuery,
             },
             headers: { UserEmail: Constants.DUMMY_EMAIL },
-          }
+          },
         );
       });
 
@@ -336,14 +335,15 @@ describe('Internal API Gateway', () => {
             searchQuery: searchQuery,
           });
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
   });
 
   describe('filterToReviewEvidenceRequests', () => {
-    const apiResponse: EvidenceRequestResponse[] = EvidenceRequestResponseFixture;
+    const apiResponse: EvidenceRequestResponse[] =
+      EvidenceRequestResponseFixture;
     const expected: EvidenceRequest[] = EvidenceRequestsFixture;
     const team = 'Development Team';
 
@@ -355,7 +355,7 @@ describe('Internal API Gateway', () => {
         });
 
         expected.forEach(
-          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce
+          mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce,
         );
       });
 
@@ -363,7 +363,7 @@ describe('Internal API Gateway', () => {
         await gateway.filterToReviewEvidenceRequests(
           Constants.DUMMY_EMAIL,
           team,
-          EvidenceRequestState.FOR_REVIEW
+          EvidenceRequestState.FOR_REVIEW,
         );
 
         expect(client.get).toHaveBeenCalledWith(
@@ -376,7 +376,7 @@ describe('Internal API Gateway', () => {
             headers: {
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -384,7 +384,7 @@ describe('Internal API Gateway', () => {
         const result = await gateway.filterToReviewEvidenceRequests(
           Constants.DUMMY_EMAIL,
           team,
-          EvidenceRequestState.FOR_REVIEW
+          EvidenceRequestState.FOR_REVIEW,
         );
 
         expect(result).toEqual(expected);
@@ -399,11 +399,11 @@ describe('Internal API Gateway', () => {
           return gateway.filterToReviewEvidenceRequests(
             Constants.DUMMY_EMAIL,
             team,
-            EvidenceRequestState.FOR_REVIEW
+            EvidenceRequestState.FOR_REVIEW,
           );
         };
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -422,15 +422,13 @@ describe('Internal API Gateway', () => {
       it('makes the api request', async () => {
         await gateway.sendUploadConfirmationNotificationToResidentAndStaff(
           Constants.DUMMY_EMAIL,
-          evidenceRequestId
+          evidenceRequestId,
         );
 
-        expect(
-          client.post
-        ).toHaveBeenCalledWith(
+        expect(client.post).toHaveBeenCalledWith(
           `/api/evidence/evidence_requests/${evidenceRequestId}/confirmation`,
           null,
-          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } },
         );
       });
     });
@@ -441,10 +439,10 @@ describe('Internal API Gateway', () => {
         const functionCall = () =>
           gateway.sendUploadConfirmationNotificationToResidentAndStaff(
             Constants.DUMMY_EMAIL,
-            evidenceRequestId
+            evidenceRequestId,
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -463,7 +461,7 @@ describe('Internal API Gateway', () => {
         });
 
         mockedResponseMapper.mapResidentResponse.mockReturnValue(
-          expectedResult
+          expectedResult,
         );
       });
 
@@ -475,7 +473,7 @@ describe('Internal API Gateway', () => {
           { ...request, team },
           {
             headers: { UserEmail: Constants.DUMMY_EMAIL },
-          }
+          },
         );
       });
 
@@ -483,7 +481,7 @@ describe('Internal API Gateway', () => {
         const result = await gateway.createResident(
           Constants.DUMMY_EMAIL,
           team,
-          request
+          request,
         );
 
         expect(result).toBe(expectedResult);
@@ -496,7 +494,7 @@ describe('Internal API Gateway', () => {
         const functionCall = () =>
           gateway.createResident(Constants.DUMMY_EMAIL, team, request);
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -527,7 +525,7 @@ describe('Internal API Gateway', () => {
           residentName,
           residentEmail,
           residentPhone,
-          residentsToDelete
+          residentsToDelete,
         );
 
         expect(client.post).toHaveBeenCalledWith(
@@ -542,7 +540,7 @@ describe('Internal API Gateway', () => {
             },
             residentsToDelete,
           },
-          { headers: { UserEmail: Constants.DUMMY_EMAIL } }
+          { headers: { UserEmail: Constants.DUMMY_EMAIL } },
         );
       });
     });
@@ -557,10 +555,10 @@ describe('Internal API Gateway', () => {
             residentName,
             residentEmail,
             residentPhone,
-            residentsToDelete
+            residentsToDelete,
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
