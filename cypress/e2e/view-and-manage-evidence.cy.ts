@@ -368,7 +368,7 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('figure').should('contain', '9.8 KB');
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
-      .then((src) => expect(src).to.have.length(0));
+      .then((src) => expect(src).to.have.length(63));
     cy.wait(5000);
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')

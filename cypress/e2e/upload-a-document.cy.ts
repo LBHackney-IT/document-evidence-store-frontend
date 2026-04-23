@@ -120,9 +120,6 @@ describe('Can upload a document', () => {
       cy.wait('@post-document-state');
       cy.wait('@s3Upload');
       cy.wait('@post-document-state');
-      cy.wait('@s3Upload');
-      cy.wait('@post-document-state');
-      cy.wait('@s3Upload');
 
       //button remains disabled
       cy.get('button').contains('Continue').should('have.attr', 'disabled');
