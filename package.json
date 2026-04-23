@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
-    "dev-mock": "concurrently -k \"npm:mock\" \"next dev\"",
+    "dev-mock": "concurrently -k \"npm:mock\" \"next dev --webpack\"",
     "build": "next build --webpack",
     "clean": "eslint . --ext .js,.jsx,.ts,.tsx --fix && npx prettier --write .",
     "start": "next start",
