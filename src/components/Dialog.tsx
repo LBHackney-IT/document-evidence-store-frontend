@@ -7,8 +7,15 @@ const Dialog: FunctionComponent<Props> = (props) => (
     aria-label={props.title}
     onOpenChange={(open) => !open && props.onDismiss}
   >
-    <h2 className="lbh-heading-h2">{props.title}</h2>
-    {props.children}
+    <RadixDialog.Portal>
+      <RadixDialog.Overlay className="lbh-dialog-overlay" />
+      <RadixDialog.Content className="lbh-dialog lbh-dialog--radix">
+        <RadixDialog.Title className="lbh-heading-h2">
+          {props.title}
+        </RadixDialog.Title>
+        {props.children}
+      </RadixDialog.Content>
+    </RadixDialog.Portal>
   </RadixDialog.Root>
 );
 
