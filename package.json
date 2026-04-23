@@ -92,7 +92,7 @@
     "serverless": "^4.6.2",
     "ts-jest": "^29.4.9",
     "typescript": "^5.9.3",
-    "uuid": "^8.3.2",
+    "uuid": "^14.0.0",
     "wait-on": "^8.0.2"
   },
   "overrides": {
