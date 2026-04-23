@@ -155,7 +155,6 @@ Following [Hackney's API Playbook](https://github.com/LBHackney-IT/API-Playbook-
 At the time of writing we have two Gateways which are for specific use cases:
 
 - **`internal-api.ts`**
-
   - This acts as a means of routing client side requests, for example form submissions, to a proxy endpoint on the Next.js server.
   - Taking an example: we make `POST/api/evidence/evidence_requests` which Next.js routes to `pages/api/evidence/[..path].ts`
   - `[...path].ts` uses the Next.js [catch all routes](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) functionality.
