@@ -42,27 +42,22 @@ const ConfirmationDialog: FunctionComponent<Props> = (props) => {
       onDismiss={props.onDismiss}
       title="Are you sure you want to link the Housing Register resident with this DES resident?"
     >
-      <RadixDialog.Portal>
-        <RadixDialog.Overlay className="lbh-dialog-overlay" />
-        <RadixDialog.Content>
-          <div className={styles.actions}>
-            <button
-              className="govuk-button lbh-button"
-              onClick={() => handleSubmit()}
-              type="submit"
-            >
-              Yes, link residents
-            </button>
-            <button
-              onClick={props.onDismiss}
-              className={`lbh-body lbh-link ${styles.cancelButton}`}
-              type="button"
-            >
-              No, cancel
-            </button>
-          </div>
-        </RadixDialog.Content>
-      </RadixDialog.Portal>
+      <div className={styles.actions}>
+        <button
+          className="govuk-button lbh-button"
+          onClick={() => handleSubmit()}
+          type="submit"
+        >
+          Yes, link residents
+        </button>
+        <button
+          onClick={props.onDismiss}
+          className={`lbh-body lbh-link ${styles.cancelButton}`}
+          type="button"
+        >
+          No, cancel
+        </button>
+      </div>
     </Dialog>
   );
 };
