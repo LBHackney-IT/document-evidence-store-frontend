@@ -91,8 +91,8 @@ const BINARY_EXTS = new Set([
   '.eot',
 ]);
 
-const staticDir = path.join(__dirname, 'build', '_next', 'static');
-const publicDir = path.join(__dirname, 'public');
+const staticDir = path.join(__dirname, '..', 'build', '_next', 'static');
+const publicDir = path.join(__dirname, '..', 'public');
 
 /**
  * Resolve a path under rootDir and return an absolute path only if it stays inside
