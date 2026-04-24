@@ -21,7 +21,7 @@ functions:
   document-evidence-frontend:
     name: ${self:service}
     handler: src/lambda.handler
-    timeout: 30
+    timeout: 29
     package:
       patterns:
         - auth-groups.json
@@ -29,14 +29,10 @@ functions:
         - teams.json
         - next.config.js
         - 'public/**'
-        - build/_next/BUILD_ID
-        - 'build/_next/*.json'
-        - 'build/_next/server/**'
-        - 'build/_next/static/**'
-        - 'node_modules/**'
-        - '!node_modules/@next/swc-linux-x64-gnu'
-        - '!node_modules/@next/swc-linux-x64-musl'
-        - '!node_modules/typescript'
+        - build/_next/standalone/**
+        - '!build/_next/standalone/**/*.map'
+        - build/_next/static/**
+        - '!build/_next/static/**/*.map'
 
     events:
       - http: ANY /
