@@ -4,7 +4,13 @@ const fs = require('fs');
 const { createRequire } = require('module');
 
 // Next standalone output (next.config.js: output: 'standalone', distDir: 'build/_next')
-const standaloneDir = path.join(__dirname, 'build', '_next', 'standalone');
+const standaloneDir = path.join(
+  __dirname,
+  '..',
+  'build',
+  '_next',
+  'standalone',
+);
 const requireStandalone = createRequire(
   path.join(standaloneDir, 'package.json'),
 );
