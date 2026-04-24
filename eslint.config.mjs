@@ -13,6 +13,7 @@ export default tseslint.config(
       'next.config.js',
       'db/**',
       'cypress/**',
+      'scripts/**',
       'test/**',
     ],
   },

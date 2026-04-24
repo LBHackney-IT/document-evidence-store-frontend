@@ -10,6 +10,7 @@
     "dev": "next dev --webpack",
     "dev-mock": "concurrently -k \"npm:mock\" \"next dev --webpack\"",
     "build": "next build --webpack",
+    "postbuild": "node scripts/prepare-lambda-standalone.cjs",
     "clean": "eslint . --ext .js,.jsx,.ts,.tsx --fix && npx prettier --write .",
     "start": "next start",
     "start:ci": "concurrently -k \"npm:start\" \"npm:mock\"",
