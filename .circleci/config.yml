@@ -171,6 +171,10 @@ workflows:
             - build
             - run-cypress-e2e
             - lint-and-test
+          filters:
+            branches:
+              only:
+                - main
 
       - deploy-staging:
           context:
@@ -182,10 +186,6 @@ workflows:
           type: approval
           requires:
             - deploy-staging
-          filters:
-            branches:
-              only:
-                - main
 
       - assume-role-production:
           context: api-assume-role-document-evidence-store-production-context
