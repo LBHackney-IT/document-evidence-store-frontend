@@ -29,6 +29,7 @@ export default tseslint.config(
       globals: {
         ...globals.jest,
         ...globals.jasmine,
+        JSX: 'readonly',
       },
     },
     settings: {
