@@ -12,13 +12,13 @@ describe('EvidenceAwaitingSubmissionTile', () => {
         dateRequested={date}
         requestedBy={'example@example.com'}
         reason={'this is a reason'}
-      />
+      />,
     );
     expect(screen.getByText('Proof of ID'));
     expect(
       screen.getByText(
-        `Date requested: 11:28 am 25 August 2022 (${date.toRelativeCalendar()})`
-      )
+        `Date requested: 11:28 am 25 August 2022 (${date.toRelativeCalendar()})`,
+      ),
     );
     expect(screen.getByText('Requested by example@example.com'));
     expect(screen.getByText('this is a reason'));
@@ -31,7 +31,7 @@ describe('EvidenceAwaitingSubmissionTile', () => {
         dateRequested={undefined}
         requestedBy={undefined}
         reason={undefined}
-      ></EvidenceAwaitingSubmissionTile>
+      ></EvidenceAwaitingSubmissionTile>,
     );
     expect(screen.getByText('Proof of ID'));
     expect(screen.queryByText('Date requested:')).toBeNull();
@@ -47,10 +47,10 @@ describe('EvidenceAwaitingSubmissionTile', () => {
         dateRequested={date}
         requestedBy={'example@example.com'}
         reason={'this is a reason'}
-      />
+      />,
     );
     expect(screen.getByText('AWAITING SUBMISSION')).toHaveClass(
-      'lbh-tag--yellow'
+      'lbh-tag--yellow',
     );
   });
 });

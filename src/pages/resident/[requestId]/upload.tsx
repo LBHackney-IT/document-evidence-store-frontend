@@ -81,7 +81,7 @@ export const getServerSideProps: GetServerSideProps<
   const gateway = new EvidenceApiGateway();
   const evidenceRequest = await gateway.getEvidenceRequest(
     Constants.DUMMY_EMAIL,
-    requestId
+    requestId,
   );
   const evidenceRequestId = evidenceRequest.id;
   const documentTypes = evidenceRequest.documentTypes;

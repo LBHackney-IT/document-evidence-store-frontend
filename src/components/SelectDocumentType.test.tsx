@@ -19,7 +19,7 @@ describe('SelectDocumentType', () => {
           panelIndex={0}
           documentTypes={documentTypes}
         />
-      </Formik>
+      </Formik>,
     );
     expect(screen.getByLabelText('Example label'));
   });
@@ -32,13 +32,13 @@ describe('SelectDocumentType', () => {
           panelIndex={0}
           documentTypes={documentTypes}
         />
-      </Formik>
+      </Formik>,
     );
     expect(screen.getAllByRole('option').length).toBe(3);
 
     userEvent.selectOptions(
       screen.getByRole('combobox'),
-      screen.getByRole('option', { name: documentTypes[1].title })
+      screen.getByRole('option', { name: documentTypes[1].title }),
     );
 
     const selectedOption = screen.getByRole('option', {

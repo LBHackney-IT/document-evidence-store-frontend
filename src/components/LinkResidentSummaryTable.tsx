@@ -28,7 +28,7 @@ export const LinkResidentSummaryTable: FunctionComponent<Props> = ({
           phoneNumber: row.phoneNumber,
         };
       }),
-    [residents]
+    [residents],
   );
 
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);

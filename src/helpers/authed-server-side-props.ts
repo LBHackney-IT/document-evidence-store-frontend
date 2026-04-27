@@ -11,9 +11,8 @@ const authorizer = new RequestAuthorizer();
 type AuthProps = { user?: User };
 export type WithUser<PropsType = void> = PropsType & AuthProps;
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function withAuth<PropsType extends { [key: string]: unknown }>(
-  gssp?: GetServerSideProps<PropsType>
+  gssp?: GetServerSideProps<PropsType>,
 ) {
   const authedGssp = async (ctx: GetServerSidePropsContext) => {
     const command: RequestAuthorizerCommand = {
@@ -26,7 +25,7 @@ export function withAuth<PropsType extends { [key: string]: unknown }>(
     if (authResult.success) {
       if (gssp === undefined) {
         return {
-          props: ({ user: authResult.user } as unknown) as WithUser<PropsType>,
+          props: { user: authResult.user } as unknown as WithUser<PropsType>,
         };
       }
 

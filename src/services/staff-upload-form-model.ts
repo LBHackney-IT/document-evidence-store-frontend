@@ -13,28 +13,28 @@ export class StaffUploadFormModel {
     userEmail: string,
     residentId: string,
     teamName: string,
-    formValues: StaffUploadFormValues
+    formValues: StaffUploadFormValues,
   ): Promise<void> {
-    const createDocumentSubmissionAndUploadForEachFile = formValues.staffUploaderPanel.map(
-      async (uploaderPanel) => {
+    const createDocumentSubmissionAndUploadForEachFile =
+      formValues.staffUploaderPanel.map(async (uploaderPanel) => {
         if (uploaderPanel.files) {
           for (const file of uploaderPanel.files) {
-            const documentSubmission = await this.gateway.createDocumentSubmissionWithoutEvidenceRequest(
-              userEmail,
-              {
-                residentId,
-                team: teamName,
-                userCreatedBy: userEmail,
-                staffSelectedDocumentTypeId:
-                  uploaderPanel.staffSelectedDocumentType,
-                documentDescription: uploaderPanel.description,
-              }
-            );
+            const documentSubmission =
+              await this.gateway.createDocumentSubmissionWithoutEvidenceRequest(
+                userEmail,
+                {
+                  residentId,
+                  team: teamName,
+                  userCreatedBy: userEmail,
+                  staffSelectedDocumentTypeId:
+                    uploaderPanel.staffSelectedDocumentType,
+                  documentDescription: uploaderPanel.description,
+                },
+              );
             await this.uploadFile(file, documentSubmission);
           }
         }
-      }
-    );
+      });
 
     await Promise.all(createDocumentSubmissionAndUploadForEachFile);
   }

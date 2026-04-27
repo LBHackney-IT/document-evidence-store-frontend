@@ -29,7 +29,7 @@ export class DocumentsApiGateway {
         `/api/v1/claims/${claimId}/download_links`,
         {
           headers: { Authorization: tokens?.claims?.GET },
-        }
+        },
       );
       return data;
     } catch (err) {

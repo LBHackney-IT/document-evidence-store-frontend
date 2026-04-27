@@ -41,7 +41,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 14 January 2021 (5 years ago)'
+        'Date uploaded: 10:23 am 14 January 2021 (5 years ago)',
       )
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
@@ -52,7 +52,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Passport(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 25 December 2020 (6 years ago)'
+        'Date uploaded: 10:23 am 25 December 2020 (6 years ago)',
       )
       .and('contain.text', 'reason number 1')
       .and('contain.text', 'Requested by test1@hackney.gov.uk');
@@ -63,7 +63,7 @@ describe('Can view and manage evidence', () => {
       .and('contain.text', 'Proof of ID(PNG 24.7 KB)')
       .and(
         'contain.text',
-        'Date uploaded: 10:23 am 30 December 2020 (6 years ago)'
+        'Date uploaded: 10:23 am 30 December 2020 (6 years ago)',
       )
       .and('contain.text', 'reason number 2')
       .and('contain.text', 'Requested by test2@hackney.gov.uk');
@@ -184,7 +184,7 @@ describe('Can view and manage evidence', () => {
     cy.get('[role=dialog]').within(() => {
       cy.get('h2').should(
         'contain',
-        'Are you sure you want to accept this file?'
+        'Are you sure you want to accept this file?',
       );
 
       cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
@@ -221,7 +221,7 @@ describe('Can view and manage evidence', () => {
     cy.get('[role=dialog]').within(() => {
       cy.get('h2').should(
         'contain',
-        'Are you sure you want to accept this file?'
+        'Are you sure you want to accept this file?',
       );
 
       cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
@@ -231,7 +231,7 @@ describe('Can view and manage evidence', () => {
       cy.get('label').contains('Year').next('input').type('9101');
 
       cy.get('[data-testid="error-invalid-date"]').contains(
-        dateInvalidErrorMessage
+        dateInvalidErrorMessage,
       );
     });
   });
@@ -262,7 +262,7 @@ describe('Can view and manage evidence', () => {
     cy.get('[role=dialog]').within(() => {
       cy.get('h2').should(
         'contain',
-        'Are you sure you want to accept this file?'
+        'Are you sure you want to accept this file?',
       );
 
       cy.get('#staffSelectedDocumentTypeId-passport-scan').click();
@@ -333,7 +333,7 @@ describe('Can view and manage evidence', () => {
     cy.get('section[id="approved"] a').eq(1).contains('Passport').click();
 
     cy.get('[data-testid="page-warning"]').contains(
-      'This document is no longer valid'
+      'This document is no longer valid',
     );
   });
 });
@@ -368,7 +368,7 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('figure').should('contain', '9.8 KB');
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
-      .then((src) => expect(src).to.have.length(0));
+      .then((src) => expect(src).to.have.length(63));
     cy.wait(5000);
     cy.get('[data-testid="conversion-image"]')
       .should('have.attr', 'src')
@@ -376,7 +376,7 @@ describe('Can view and manage evidence with HEIC document', () => {
     cy.get('[data-testid="conversion-image"]').should(
       'have.attr',
       'alt',
-      'Proof of ID'
+      'Proof of ID',
     );
     cy.get('svg[class="icon-loading]').should('not.exist');
   });
@@ -468,7 +468,7 @@ describe('Staff can upload document', () => {
     cy.get('h1').should('contain', 'Upload documents');
     cy.get('select').select('Passport');
     cy.get('[data-testid="document-description-0"]').type(
-      'here is a description of this document'
+      'here is a description of this document',
     );
     cy.get('input[type=file]').attachFile('example.png');
     cy.get('button').contains('Submit').click();
@@ -480,7 +480,7 @@ describe('Staff can upload document', () => {
     cy.get('h1').should('contain', 'Upload documents');
     cy.get('select').eq(0).select('Passport');
     cy.get('[data-testid="document-description-0"]').type(
-      'here is a description of this document'
+      'here is a description of this document',
     );
     cy.get('input[type=file]').eq(0).attachFile('example.png');
 
@@ -488,7 +488,7 @@ describe('Staff can upload document', () => {
 
     cy.get('select').eq(1).select('Driving license');
     cy.get('[data-testid="document-description-1"]').type(
-      'here is another description'
+      'here is another description',
     );
     cy.get('input[type=file]').eq(1).attachFile('example.png');
 

@@ -48,7 +48,7 @@ describe('Confirm Dialog', () => {
           residentIds={residentIds}
           team={testTeam}
           user={testUser}
-        />
+        />,
       );
     });
 
@@ -59,8 +59,8 @@ describe('Confirm Dialog', () => {
     it('has the correct text', () => {
       expect(
         screen.getByText(
-          'Are you sure you want to link the Housing Register resident with this DES resident?'
-        )
+          'Are you sure you want to link the Housing Register resident with this DES resident?',
+        ),
       ).toBeVisible();
     });
 

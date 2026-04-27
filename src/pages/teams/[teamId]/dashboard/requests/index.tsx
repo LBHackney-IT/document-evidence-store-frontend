@@ -32,8 +32,11 @@ const RequestsIndexPage: NextPage<WithUser<RequestsIndexPageProps>> = ({
         Pending requests
       </h1>
 
-      <Link href={`/teams/${teamId}/dashboard/requests/new/1`}>
-        <a className="govuk-button lbh-button">Make new request</a>
+      <Link
+        href={`/teams/${teamId}/dashboard/requests/new/1`}
+        className="govuk-button lbh-button"
+      >
+        Make new request
       </Link>
       <EvidenceRequestTable requests={evidenceRequests} />
     </Layout>
@@ -52,7 +55,7 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
       TeamHelper.getTeamsJson(),
       user,
-      teamId
+      teamId,
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -70,12 +73,12 @@ export const getServerSideProps = withAuth<RequestsIndexPageProps>(
       user.email,
       team.name,
       null,
-      EvidenceRequestState.PENDING
+      EvidenceRequestState.PENDING,
     );
     return {
       props: { evidenceRequests, teamId, feedbackUrl },
     };
-  }
+  },
 );
 
 export default RequestsIndexPage;

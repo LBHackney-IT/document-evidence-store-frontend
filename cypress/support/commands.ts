@@ -31,7 +31,7 @@ Cypress.Commands.add(
     includedImpacts: AccessibilityImpactCheckLevel[] = [
       AccessibilityImpactCheckLevel.CRITICAL,
       AccessibilityImpactCheckLevel.SERIOUS,
-    ]
+    ],
   ) => {
     cy.checkA11y(undefined, {
       includedImpacts,
@@ -40,5 +40,5 @@ Cypress.Commands.add(
         values: ['wcag22aa', 'best-practice'],
       },
     });
-  }
+  },
 );

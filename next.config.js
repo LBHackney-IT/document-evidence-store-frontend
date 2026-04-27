@@ -20,9 +20,15 @@ const nextConfig = {
     ];
   },
   distDir: 'build/_next',
+  // Trace production deps into build/_next/standalone so the Lambda zip stays under 250MB unzipped.
+  output: 'standalone',
+  // Reduce what gets traced into standalone (esp. dev-only trees if referenced accidentally).
+  outputFileTracingExcludes: {
+    '*': ['**/node_modules/cypress/**', '**/node_modules/@types/**'],
+  },
   webpack: (config, { isServer }) => {
     config.plugins.push(
-      new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ })
+      new webpack.IgnorePlugin({ resourceRegExp: /.*\.test\.ts$/ }),
     );
     // Fixes npm packages that depend on `fs` module
     if (!isServer) {

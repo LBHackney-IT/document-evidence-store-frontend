@@ -18,7 +18,7 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
           phoneNumber: row.phoneNumber,
         };
       }),
-    [residents]
+    [residents],
   );
 
   const [loading, setIsLoading] = useState(false);
@@ -51,15 +51,14 @@ export const ResidentSummaryTable: FunctionComponent<Props> = ({
           <tr className="govuk-table__row" key={row.id}>
             <td className="govuk-table__cell">{row.referenceId}</td>
             <td className="govuk-table__cell">
-              <Link href={`/teams/${teamId}/dashboard/residents/${row.id}`}>
-                <a
-                  className="lbh-link"
-                  onClick={() => {
-                    setIsLoading(!loading);
-                  }}
-                >
-                  {row.name}
-                </a>
+              <Link
+                href={`/teams/${teamId}/dashboard/residents/${row.id}`}
+                className="lbh-link"
+                onClick={() => {
+                  setIsLoading(!loading);
+                }}
+              >
+                {row.name}
               </Link>
             </td>
             <td className="govuk-table__cell">{row.email}</td>

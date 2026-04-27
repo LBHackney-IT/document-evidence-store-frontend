@@ -10,22 +10,21 @@ jest.mock('../../../gateways/evidence-api');
 jest.mock('../../../services/request-authorizer');
 
 const { requestMock } = EvidenceApi as typeof EvidenceApiMock;
-const {
-  executeMock,
-} = (RequestAuthorizer as unknown) as typeof MockRequestAuthorizer;
+const { executeMock } =
+  RequestAuthorizer as unknown as typeof MockRequestAuthorizer;
 
 describe('endpoint', () => {
   const cookieHeader = 'cookie header';
-  const req = ({
+  const req = {
     method: 'GET',
     query: { path: ['foo'] },
     headers: { cookie: cookieHeader },
-  } as unknown) as NextApiRequest;
+  } as unknown as NextApiRequest;
 
-  const res = ({
+  const res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
-  } as unknown) as NextApiResponse;
+  } as unknown as NextApiResponse;
 
   describe('returns 200', () => {
     const expectedData = 'foo';

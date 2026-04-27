@@ -4,7 +4,7 @@ import { formatDate } from '../helpers/formatters';
 import { DateTime } from 'luxon';
 
 export const EvidenceAwaitingSubmissionTile: FunctionComponent<Props> = (
-  props
+  props,
 ) => (
   <table>
     <tbody>

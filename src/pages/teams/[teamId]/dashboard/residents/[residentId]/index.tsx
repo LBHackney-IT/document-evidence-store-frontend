@@ -53,10 +53,8 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
 
   const pageSize = 10;
   const [totalPages, setTotalPages] = useState(total);
-  const [
-    displayedDocumentSubmissions,
-    setDisplayedDocumentSubmissions,
-  ] = useState<DocumentSubmission[]>(documentSubmissions);
+  const [displayedDocumentSubmissions, setDisplayedDocumentSubmissions] =
+    useState<DocumentSubmission[]>(documentSubmissions);
 
   const onPageOrTabChange = async (targetPage: number, state?: string) => {
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -69,10 +67,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         team?.name ?? '',
         targetPage.toString(),
         pageSize.toString(),
-        state !== 'all-documents' ? state : undefined
+        state !== 'all-documents' ? state : undefined,
       );
       setDisplayedDocumentSubmissions(
-        documentSubmissionPromise.documentSubmissions
+        documentSubmissionPromise.documentSubmissions,
       );
       setTotalPages(documentSubmissionPromise.total);
     } catch (e) {
@@ -88,10 +86,12 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
         </title>
       </Head>
       <h1 className="lbh-heading-h2">
-        <Link href={`/teams/${teamId}/dashboard`}>
-          <a className="lbh-link" data-testid="search-page">
-            Search page
-          </a>
+        <Link
+          href={`/teams/${teamId}/dashboard`}
+          className="lbh-link"
+          data-testid="search-page"
+        >
+          Search page
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {resident.name}
@@ -100,10 +100,10 @@ const ResidentPage: NextPage<WithUser<ResidentPageProps>> = ({
       <div>
         <Link
           href={`/teams/${teamId}/dashboard/residents/${resident.id}/upload`}
+          className="lbh-link"
+          data-testid="upload-documents"
         >
-          <a className="lbh-link" data-testid="upload-documents">
-            Upload documents
-          </a>
+          Upload documents
         </Link>
       </div>
       <ResidentPageContext.Provider value={contextToPass}>
@@ -133,7 +133,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
-    teamId
+    teamId,
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -157,20 +157,20 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
     residentId,
     team.name,
     initialPage.toString(),
-    pageLimit.toString()
+    pageLimit.toString(),
   );
 
   const pendingEvidenceRequestsPromise = gateway.getEvidenceRequests(
     user.email,
     team.name,
     residentId,
-    EvidenceRequestState.PENDING
+    EvidenceRequestState.PENDING,
   );
   const forReviewEvidenceRequestsPromise = gateway.getEvidenceRequests(
     user.email,
     team.name,
     residentId,
-    EvidenceRequestState.FOR_REVIEW
+    EvidenceRequestState.FOR_REVIEW,
   );
   const residentPromise = gateway.getResident(user.email, residentId);
 
@@ -189,12 +189,12 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   ]);
 
   const evidenceRequests = pendingEvidenceRequests.concat(
-    forReviewEvidenceRequests
+    forReviewEvidenceRequests,
   );
 
   const documentTypesMap = new Map<string, Set<DocumentType>>();
   evidenceRequests.forEach((er) =>
-    documentTypesMap.set(er.id, new Set(er.documentTypes))
+    documentTypesMap.set(er.id, new Set(er.documentTypes)),
   );
   documentSubmissionsObject.documentSubmissions.forEach((ds) => {
     if (!ds.evidenceRequestId) {
@@ -213,7 +213,7 @@ export const getServerSideProps = withAuth<ResidentPageProps>(async (ctx) => {
   documentTypesMap.forEach((value, key) => {
     value.forEach((dt) => {
       const evidenceRequestFromKey = evidenceRequests.find(
-        (er) => er.id == key
+        (er) => er.id == key,
       );
       awaitingSubmissions.push({
         documentType: dt.title,

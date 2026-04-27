@@ -17,7 +17,7 @@ describe('DocumentTypeAndDescription', () => {
           documentTypes={testDocTypes}
           panelIndex={0}
         />
-      </Formik>
+      </Formik>,
     );
     const descriptionField = screen.getByLabelText('Description');
     const docField = screen.getByLabelText('Document type');

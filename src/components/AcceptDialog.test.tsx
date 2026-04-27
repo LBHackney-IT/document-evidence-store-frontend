@@ -7,7 +7,7 @@ import { ResponseMapper } from '../boundary/response-mapper';
 const yesAcceptButtonText = 'Yes, accept';
 const mockHandler = jest.fn();
 const staffSelectedDocumentTypes = DocumentTypesFixture.map(
-  ResponseMapper.mapDocumentType
+  ResponseMapper.mapDocumentType,
 );
 
 describe('AcceptDialog', () => {
@@ -20,7 +20,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
     // Two radio buttons
     expect(screen.getByText('Proof of ID'));
@@ -45,7 +45,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
     fireEvent.click(screen.getByText(yesAcceptButtonText));
 
@@ -63,7 +63,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('Proof of ID'));
@@ -94,7 +94,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('Proof of ID'));
@@ -122,7 +122,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('Proof of ID'));
@@ -152,7 +152,7 @@ describe('AcceptDialog', () => {
         email="email@email"
         documentSubmissionId="123"
         redirect="foo"
-      />
+      />,
     );
 
     fireEvent.click(screen.getByText('Proof of ID'));

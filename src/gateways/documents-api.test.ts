@@ -8,7 +8,7 @@ const client = {
 
 describe('Documents api gateway', () => {
   const gateway = new DocumentsApiGateway({
-    client: (client as unknown) as AxiosInstance,
+    client: client as unknown as AxiosInstance,
   });
 
   describe('GET request to /claims/{claimId}/download_links', () => {
@@ -30,7 +30,7 @@ describe('Documents api gateway', () => {
           headers: {
             Authorization: process.env.DOCUMENTS_API_GET_DOCUMENTS_TOKEN,
           },
-        }
+        },
       );
     });
 

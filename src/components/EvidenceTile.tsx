@@ -33,8 +33,9 @@ export const EvidenceTile: FunctionComponent<Props> = ({
                 <h3 className={`${styles.title} lbh-heading-h3`}>
                   <Link
                     href={`/teams/${residentPageContext?.teamIdContext}/dashboard/residents/${residentPageContext?.residentIdContext}/document/${id}`}
+                    className="lbh-link"
                   >
-                    <a className="lbh-link">{title}</a>
+                    {title}
                   </Link>
                   {format && (
                     <p
@@ -43,7 +44,7 @@ export const EvidenceTile: FunctionComponent<Props> = ({
                       data-testid="format"
                     >
                       {`(${format?.toUpperCase()} ${humanFileSize(
-                        fileSizeInBytes
+                        fileSizeInBytes,
                       )})`}
                     </p>
                   )}

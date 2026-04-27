@@ -74,7 +74,7 @@ describe('NewRequestFormStep1', () => {
           <NewRequestFormStep1 team={team} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(screen.getByLabelText('Name')).toBeVisible();
@@ -96,16 +96,16 @@ describe('NewRequestFormStep1', () => {
           <NewRequestFormStep1 team={team} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
     fireEvent.click(screen.getByText('Continue'));
 
     await waitFor(() => {
       expect(
-        screen.getByText("Please enter the resident's name")
+        screen.getByText("Please enter the resident's name"),
       ).toBeVisible();
       expect(
-        screen.getAllByText('Please provide either an email or a phone number')
+        screen.getAllByText('Please provide either an email or a phone number'),
       ).toHaveLength(2);
     });
   });
@@ -121,7 +121,7 @@ describe('NewRequestFormStep1', () => {
           <NewRequestFormStep1 team={team} />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     fillInForm();

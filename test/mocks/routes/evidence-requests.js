@@ -64,7 +64,7 @@ const createDocumentSubmission = {
         middleware: (req, res) => {
           res.status(201);
           const documentType = documentTypes.find(
-            (dt) => dt.id === req.body.documentType
+            (dt) => dt.id === req.body.documentType,
           );
           const body = {
             ...documentSubmission,

@@ -58,7 +58,7 @@ export class EvidenceApiGateway {
     userEmail: string,
     teamName: string,
     residentId?: string | null,
-    state?: EvidenceRequestState | null
+    state?: EvidenceRequestState | null,
   ): Promise<EvidenceRequest[]> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse[]>(
@@ -69,7 +69,7 @@ export class EvidenceApiGateway {
             UserEmail: userEmail,
           },
           params: { team: teamName, residentId: residentId, state: state },
-        }
+        },
       );
 
       return data.map((er) => ResponseMapper.mapEvidenceRequest(er));
@@ -82,7 +82,7 @@ export class EvidenceApiGateway {
   async getDocumentTypes(
     userEmail: string,
     teamName: string,
-    isEnabled?: boolean
+    isEnabled?: boolean,
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
@@ -92,7 +92,7 @@ export class EvidenceApiGateway {
             Authorization: tokens?.document_types?.GET,
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return data.map((dt) => ResponseMapper.mapDocumentType(dt));
     } catch (err) {
@@ -104,7 +104,7 @@ export class EvidenceApiGateway {
   async getStaffSelectedDocumentTypes(
     userEmail: string,
     teamName: string,
-    isEnabled?: boolean
+    isEnabled?: boolean,
   ): Promise<DocumentType[]> {
     try {
       const { data } = await this.client.get<IDocumentType[]>(
@@ -114,7 +114,7 @@ export class EvidenceApiGateway {
             Authorization: tokens?.document_types?.GET,
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return data.map((er) => ResponseMapper.mapDocumentType(er));
     } catch (err) {
@@ -125,7 +125,7 @@ export class EvidenceApiGateway {
 
   async getEvidenceRequest(
     userEmail: string,
-    id: string
+    id: string,
   ): Promise<EvidenceRequest> {
     try {
       const { data } = await this.client.get<EvidenceRequestResponse>(
@@ -135,7 +135,7 @@ export class EvidenceApiGateway {
             Authorization: tokens?.evidence_requests?.GET,
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapEvidenceRequest(data);
     } catch (err) {
@@ -146,7 +146,7 @@ export class EvidenceApiGateway {
 
   async getDocumentSubmission(
     userEmail: string,
-    id: string
+    id: string,
   ): Promise<DocumentSubmission> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponse>(
@@ -156,7 +156,7 @@ export class EvidenceApiGateway {
             Authorization: tokens?.document_submissions?.GET,
             UserEmail: userEmail,
           },
-        }
+        },
       );
       return ResponseMapper.mapDocumentSubmission(data);
     } catch (err) {
@@ -171,7 +171,7 @@ export class EvidenceApiGateway {
     team: string,
     page: string,
     pageSize: string,
-    state?: string
+    state?: string,
   ): Promise<DocumentSubmissionsObject> {
     try {
       const { data } = await this.client.get<DocumentSubmissionResponseObject>(
@@ -188,12 +188,12 @@ export class EvidenceApiGateway {
             page: page,
             pageSize: pageSize,
           },
-        }
+        },
       );
       return {
         total: data.total,
         documentSubmissions: data.documentSubmissions.map((ds) =>
-          ResponseMapper.mapDocumentSubmission(ds)
+          ResponseMapper.mapDocumentSubmission(ds),
         ),
       };
     } catch (err) {
@@ -214,7 +214,7 @@ export class EvidenceApiGateway {
           params: {
             residentId: residentId,
           },
-        }
+        },
       );
       return ResponseMapper.mapResidentResponse(data);
     } catch (err) {
@@ -228,10 +228,10 @@ export class EvidenceApiGateway {
     method: Method,
     headers: unknown,
     body?: unknown,
-    params?: unknown
+    params?: unknown,
   ): Promise<{ data?: string; status: number }> {
     const headerDictionary: TokenDictionary = JSON.parse(
-      JSON.stringify(headers)
+      JSON.stringify(headers),
     );
     const requestHeaders = Object.keys(headerDictionary)
       .filter((key) => headersToSendToEvidenceApi.includes(key))

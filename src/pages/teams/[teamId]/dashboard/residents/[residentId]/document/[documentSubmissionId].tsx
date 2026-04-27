@@ -49,10 +49,8 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
   feedbackUrl,
 }) => {
   const router = useRouter();
-  const {
-    residentId,
-    documentSubmissionId,
-  } = router.query as DocumentDetailPageQuery;
+  const { residentId, documentSubmissionId } =
+    router.query as DocumentDetailPageQuery;
   const documentSubmission = _documentSubmission;
   const [isClicked, setIsClicked] = useState(false);
   const [acceptDialogOpen, setAcceptDialogOpen] = useState(false);
@@ -60,7 +58,7 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
 
   const documentTypeTitle = documentSubmission.staffSelectedDocumentType
     ? documentSubmission.staffSelectedDocumentType.title
-    : documentSubmission.documentType?.title ?? 'No title';
+    : (documentSubmission.documentType?.title ?? 'No title');
 
   async function copyPageUrl() {
     try {
@@ -109,8 +107,11 @@ const DocumentDetailPage: NextPage<WithUser<DocumentDetailPageProps>> = ({
       )}
 
       <h1 className="lbh-heading-h2">
-        <Link href={`/teams/${teamId}/dashboard/residents/${residentId}`}>
-          <a className="lbh-link">{resident.name}</a>
+        <Link
+          href={`/teams/${teamId}/dashboard/residents/${residentId}`}
+          className="lbh-link"
+        >
+          {resident.name}
         </Link>
         <img src="/divider.svg" alt="" className="lbu-divider" />
         {documentTypeTitle}
@@ -193,7 +194,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
-    teamId
+    teamId,
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -207,19 +208,20 @@ export const getServerSideProps = withAuth(async (ctx) => {
   }
   const documentSubmission = await evidenceApiGateway.getDocumentSubmission(
     user.email,
-    documentSubmissionId
+    documentSubmissionId,
   );
-  const staffSelectedDocumentTypes = await evidenceApiGateway.getStaffSelectedDocumentTypes(
-    user.email,
-    team.name,
-    true
-  );
+  const staffSelectedDocumentTypes =
+    await evidenceApiGateway.getStaffSelectedDocumentTypes(
+      user.email,
+      team.name,
+      true,
+    );
   const resident = await evidenceApiGateway.getResident(user.email, residentId);
 
   let downloadUrl = '';
   if (documentSubmission && documentSubmission.claimId) {
     downloadUrl = await documentsApiGateway.getDocumentPreSignedUrl(
-      documentSubmission.claimId
+      documentSubmission.claimId,
     );
   }
   return {

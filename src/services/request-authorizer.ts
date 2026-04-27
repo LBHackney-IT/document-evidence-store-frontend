@@ -94,7 +94,7 @@ export class RequestAuthorizer {
 
   private userIsInValidGroup(user: User): boolean {
     return Object.values(this.authGroups).some((group) =>
-      user.groups.includes(group)
+      user.groups.includes(group),
     );
   }
 
@@ -115,9 +115,11 @@ export class RequestAuthorizer {
 
       if (!token) return;
 
-      const user = (this.verifyToken
-        ? jsonwebtoken.verify(token, this.secret)
-        : jsonwebtoken.decode(token)) as User | undefined;
+      const user = (
+        this.verifyToken
+          ? jsonwebtoken.verify(token, this.secret)
+          : jsonwebtoken.decode(token)
+      ) as User | undefined;
 
       return user;
     } catch (err) {

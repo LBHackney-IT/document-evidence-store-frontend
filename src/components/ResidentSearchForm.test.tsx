@@ -2,6 +2,24 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import ResidentSearchForm from './ResidentSearchForm';
 
+jest.mock('next/router', () => ({
+  useRouter() {
+    return {
+      route: '/',
+      pathname: '',
+      query: '',
+      asPath: '',
+      push: jest.fn(),
+      events: {
+        on: jest.fn(),
+        off: jest.fn(),
+      },
+      beforePopState: jest.fn(() => null),
+      prefetch: jest.fn(() => null),
+    };
+  },
+}));
+
 describe('ResidentSearchForm', () => {
   const teamId = '2';
 
@@ -15,7 +33,7 @@ describe('ResidentSearchForm', () => {
         email={''}
         phone={''}
         groupId={''}
-      />
+      />,
     );
     expect(screen.getByPlaceholderText('Search by name or contact detail'));
     expect(screen.getByText('Search'));
@@ -32,7 +50,7 @@ describe('ResidentSearchForm', () => {
         email={''}
         phone={''}
         groupId={''}
-      />
+      />,
     );
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
@@ -40,7 +58,7 @@ describe('ResidentSearchForm', () => {
         target: {
           value: 'example',
         },
-      }
+      },
     );
     fireEvent.click(screen.getByText('Search'));
     expect(mockHandler).toHaveBeenCalledTimes(1);
@@ -57,7 +75,7 @@ describe('ResidentSearchForm', () => {
         email={''}
         phone={''}
         groupId={''}
-      />
+      />,
     );
     fireEvent.change(
       screen.getByPlaceholderText('Search by name or contact detail'),
@@ -65,7 +83,7 @@ describe('ResidentSearchForm', () => {
         target: {
           value: '   ',
         },
-      }
+      },
     );
     fireEvent.click(screen.getByText('Search'));
     expect(mockHandler).toHaveBeenCalledTimes(0);

@@ -32,26 +32,27 @@ export class UploadFormModel {
         ...others,
         [key.id]: null,
       }),
-      {}
+      {},
     );
   }
 
   async handleSubmit(
     formValues: FormValues,
-    evidenceRequestId: string
+    evidenceRequestId: string,
   ): Promise<void> {
     const createDocumentSubmissionAndUploadForEachFile = Object.entries(
-      formValues
+      formValues,
     ).map(async ([documentTypeId, files]) => {
       if (files) {
         for (const file of files) {
-          const documentSubmission = await this.gateway.createDocumentSubmission(
-            Constants.DUMMY_EMAIL,
-            evidenceRequestId,
-            {
-              documentType: documentTypeId,
-            }
-          );
+          const documentSubmission =
+            await this.gateway.createDocumentSubmission(
+              Constants.DUMMY_EMAIL,
+              evidenceRequestId,
+              {
+                documentType: documentTypeId,
+              },
+            );
           await this.uploadFile(file, documentSubmission);
         }
       }
@@ -60,7 +61,7 @@ export class UploadFormModel {
     await Promise.all(createDocumentSubmissionAndUploadForEachFile);
     await this.gateway.sendUploadConfirmationNotificationToResidentAndStaff(
       Constants.DUMMY_EMAIL,
-      evidenceRequestId
+      evidenceRequestId,
     );
   }
 

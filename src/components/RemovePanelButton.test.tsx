@@ -8,7 +8,7 @@ describe.only('remove panel button', () => {
     render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <RemovePanelButton removePanel={jest.fn()} panelIndex={1} />
-      </Formik>
+      </Formik>,
     );
     expect(screen.getByRole('button')).not.toBeNull();
   });
@@ -22,7 +22,7 @@ describe.only('remove panel button', () => {
         onSubmit={jest.fn()}
       >
         <RemovePanelButton removePanel={removePanelHandler} panelIndex={1} />
-      </Formik>
+      </Formik>,
     );
     fireEvent.click(screen.getByRole('button'));
     expect(removePanelHandler).toHaveBeenCalled();

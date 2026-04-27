@@ -45,7 +45,7 @@ _🔐 This side of the application is authenticated_
 ## 💻 Setup
 
 1. Install [Docker][docker-download].
-2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v20](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
+2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v24](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
 3. Clone this repository.
 4. Open it in your IDE of choice.
 
@@ -155,7 +155,6 @@ Following [Hackney's API Playbook](https://github.com/LBHackney-IT/API-Playbook-
 At the time of writing we have two Gateways which are for specific use cases:
 
 - **`internal-api.ts`**
-
   - This acts as a means of routing client side requests, for example form submissions, to a proxy endpoint on the Next.js server.
   - Taking an example: we make `POST/api/evidence/evidence_requests` which Next.js routes to `pages/api/evidence/[..path].ts`
   - `[...path].ts` uses the Next.js [catch all routes](https://nextjs.org/docs/routing/dynamic-routes#catch-all-routes) functionality.

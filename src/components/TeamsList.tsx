@@ -9,8 +9,8 @@ const TeamsList = (props: Props): JSX.Element => {
         <ul className="lbh-list lbh-body-l">
           {props.teams.map((team) => (
             <li key={team.id}>
-              <Link href={`/teams/${team.id}/dashboard`}>
-                <a className="lbh-link">{team.name}</a>
+              <Link href={`/teams/${team.id}/dashboard`} className="lbh-link">
+                {team.name}
               </Link>
             </li>
           ))}

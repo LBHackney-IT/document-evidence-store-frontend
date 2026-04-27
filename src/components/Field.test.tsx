@@ -11,7 +11,7 @@ test('is properly named, labelled and responds to input', async () => {
       <Form>
         <Field label="Example label" name="exampleName" />
       </Form>
-    </Formik>
+    </Formik>,
   );
   expect(screen.getByLabelText('Example label'));
   expect(screen.getByRole('textbox')).toHaveProperty('name', 'exampleName');
@@ -20,7 +20,10 @@ test('is properly named, labelled and responds to input', async () => {
     target: { value: 'Example value' },
   });
   await waitFor(() =>
-    expect(screen.getByRole('textbox')).toHaveProperty('value', 'Example value')
+    expect(screen.getByRole('textbox')).toHaveProperty(
+      'value',
+      'Example value',
+    ),
   );
 });
 
@@ -30,7 +33,7 @@ test('displays hints', async () => {
       <Form>
         <Field label="Example label" name="exampleName" hint="Example hint" />
       </Form>
-    </Formik>
+    </Formik>,
   );
   expect(screen.getByText('Example hint'));
 });
@@ -41,7 +44,7 @@ test('displays errors', async () => {
       <Form>
         <Field label="Example label" name="exampleName" error="Example error" />
       </Form>
-    </Formik>
+    </Formik>,
   );
   expect(screen.getByText('Example error'));
 });
@@ -52,7 +55,7 @@ test('renders a textarea if asked', async () => {
       <Form>
         <Field label="Example label" name="exampleName" textarea />
       </Form>
-    </Formik>
+    </Formik>,
   );
   expect(screen.getByTestId('textarea'));
 });

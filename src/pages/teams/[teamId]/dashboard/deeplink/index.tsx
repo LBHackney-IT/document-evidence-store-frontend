@@ -40,7 +40,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
   const gateway = new InternalApiGateway();
 
   const checkForExistingLinkByGroupId = async (
-    groupId: string
+    groupId: string,
   ): Promise<boolean> => {
     if (!groupIdQuery) {
       return false;
@@ -50,7 +50,7 @@ const DeeplinkSearch: NextPage<WithUser<DeeplinkSearchProps>> = ({
     });
     if (linkedResident.length == 1) {
       router.push(
-        `/teams/${team.id}/dashboard/residents/${linkedResident[0].id}`
+        `/teams/${team.id}/dashboard/residents/${linkedResident[0].id}`,
       );
       return true;
     }
@@ -123,7 +123,7 @@ export const getServerSideProps = withAuth<DeeplinkSearchProps>(async (ctx) => {
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
-    teamId
+    teamId,
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -139,7 +139,7 @@ export const getServerSideProps = withAuth<DeeplinkSearchProps>(async (ctx) => {
   const gateway = new EvidenceApiGateway();
   const evidenceRequests = await gateway.getEvidenceRequests(
     user.email,
-    team.name
+    team.name,
   );
   return {
     props: {

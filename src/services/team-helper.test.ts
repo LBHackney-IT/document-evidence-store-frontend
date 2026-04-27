@@ -181,7 +181,7 @@ describe('Team Helper', () => {
     const result = TeamHelper.userAuthorizedToViewTeam(
       teamJson,
       jwtPayload,
-      '1'
+      '1',
     );
     expect(result).toBeFalsy();
   });

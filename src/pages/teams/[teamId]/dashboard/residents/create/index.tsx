@@ -34,11 +34,11 @@ const CreateResidentPage: NextPage<WithUser<CreatePageProps>> = ({
       const newResident = await gateway.createResident(
         user.email,
         teamName,
-        resident
+        resident,
       );
       router.push(`/teams/${teamId}/dashboard/residents/${newResident.id}`);
     },
-    []
+    [],
   );
 
   return (
@@ -69,7 +69,7 @@ export const getServerSideProps = withAuth<CreatePageProps>(async (ctx) => {
   const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
     TeamHelper.getTeamsJson(),
     user,
-    teamId
+    teamId,
   );
 
   const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);

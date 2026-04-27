@@ -19,7 +19,7 @@ export const ResidentTable: FunctionComponent<Props> = ({
           userRequestedBy: row.userRequestedBy,
         };
       }),
-    [residents]
+    [residents],
   );
 
   return (
@@ -59,8 +59,9 @@ export const ResidentTable: FunctionComponent<Props> = ({
             <td className="govuk-table__cell">
               <Link
                 href={`/teams/${teamId}/dashboard/residents/${row.residentId}`}
+                className="lbh-link"
               >
-                <a className="lbh-link">{row.residentName}</a>
+                {row.residentName}
               </Link>
             </td>
             <td className="govuk-table__cell govuk-table__cell--numeric">

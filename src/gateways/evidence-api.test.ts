@@ -25,7 +25,7 @@ const client = {
 
 describe('Evidence api gateway', () => {
   const gateway = new EvidenceApiGateway({
-    client: (client as unknown) as AxiosInstance,
+    client: client as unknown as AxiosInstance,
   });
   const validateStatus = expect.any(Function);
 
@@ -50,7 +50,7 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -63,7 +63,7 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -76,7 +76,7 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -86,7 +86,7 @@ describe('Evidence api gateway', () => {
         for (let i = 0; i < expectedJson.length; i++) {
           expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
             i + 1,
-            expectedJson[i]
+            expectedJson[i],
           );
         }
       });
@@ -98,7 +98,7 @@ describe('Evidence api gateway', () => {
         const functionCall = () =>
           gateway.getDocumentTypes(Constants.DUMMY_EMAIL, teamName);
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -119,7 +119,7 @@ describe('Evidence api gateway', () => {
       it('calls axios correctly without a query param', async () => {
         await gateway.getStaffSelectedDocumentTypes(
           Constants.DUMMY_EMAIL,
-          teamName
+          teamName,
         );
         expect(client.get).toHaveBeenLastCalledWith(
           `/api/v1/document_types/staff_selected/${teamName}?enabled=undefined`,
@@ -128,7 +128,7 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -136,7 +136,7 @@ describe('Evidence api gateway', () => {
         await gateway.getStaffSelectedDocumentTypes(
           Constants.DUMMY_EMAIL,
           teamName,
-          true
+          true,
         );
         expect(client.get).toHaveBeenLastCalledWith(
           `/api/v1/document_types/staff_selected/${teamName}?enabled=true`,
@@ -145,7 +145,7 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
@@ -153,7 +153,7 @@ describe('Evidence api gateway', () => {
         await gateway.getStaffSelectedDocumentTypes(
           Constants.DUMMY_EMAIL,
           teamName,
-          false
+          false,
         );
         expect(client.get).toHaveBeenLastCalledWith(
           `/api/v1/document_types/staff_selected/${teamName}?enabled=false`,
@@ -162,20 +162,20 @@ describe('Evidence api gateway', () => {
               Authorization: process.env.EVIDENCE_API_TOKEN_DOCUMENT_TYPES_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
       it('passes the json from the GET to the mapDocType method', async () => {
         await gateway.getStaffSelectedDocumentTypes(
           Constants.DUMMY_EMAIL,
-          teamName
+          teamName,
         );
 
         for (let i = 0; i < expectedJson.length; i++) {
           expect(mockedResponseMapper.mapDocumentType).toHaveBeenNthCalledWith(
             i + 1,
-            expectedJson[i]
+            expectedJson[i],
           );
         }
       });
@@ -187,10 +187,10 @@ describe('Evidence api gateway', () => {
         const functionCall = () =>
           gateway.getStaffSelectedDocumentTypes(
             Constants.DUMMY_EMAIL,
-            teamName
+            teamName,
           );
         await expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -214,7 +214,7 @@ describe('Evidence api gateway', () => {
           ({
             data: expectedData,
             status: expectedStatus,
-          } as AxiosResponse)
+          }) as AxiosResponse,
       );
     });
 
@@ -254,7 +254,7 @@ describe('Evidence api gateway', () => {
           ({
             data: expectedData,
             status: expectedStatus,
-          } as AxiosResponse)
+          }) as AxiosResponse,
       );
     });
 
@@ -296,7 +296,7 @@ describe('Evidence api gateway', () => {
             ({
               data: expectedData,
               status: expectedStatus,
-            } as AxiosResponse)
+            }) as AxiosResponse,
         );
       });
 
@@ -330,7 +330,7 @@ describe('Evidence api gateway', () => {
             ({
               data: expectedData,
               status: expectedStatus,
-            } as AxiosResponse)
+            }) as AxiosResponse,
         );
       });
 
@@ -377,7 +377,7 @@ describe('Evidence api gateway', () => {
             ({
               data: expectedData,
               status: expectedStatus,
-            } as AxiosResponse)
+            }) as AxiosResponse,
         );
       });
 
@@ -425,7 +425,7 @@ describe('Evidence api gateway', () => {
     describe('when successful', () => {
       const expectedData = EvidenceRequestFixture;
       const mappedData = EvidenceRequestFixture.map(
-        ResponseMapper.mapEvidenceRequest
+        ResponseMapper.mapEvidenceRequest,
       );
 
       beforeEach(() => {
@@ -436,7 +436,7 @@ describe('Evidence api gateway', () => {
 
         for (let i = 0; i < expectedData.length; i++) {
           mockedResponseMapper.mapEvidenceRequest.mockReturnValueOnce(
-            mappedData[i]
+            mappedData[i],
           );
         }
       });
@@ -446,7 +446,7 @@ describe('Evidence api gateway', () => {
           Constants.DUMMY_EMAIL,
           'Housing benefit',
           null,
-          EvidenceRequestState.PENDING
+          EvidenceRequestState.PENDING,
         );
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/evidence_requests',
@@ -461,19 +461,19 @@ describe('Evidence api gateway', () => {
               residentId: null,
               state: EvidenceRequestState.PENDING,
             },
-          }
+          },
         );
       });
 
       it('maps the response', async () => {
         await gateway.getEvidenceRequests(
           Constants.DUMMY_EMAIL,
-          'Housing benefit'
+          'Housing benefit',
         );
 
         for (let i = 0; i < expectedData.length; i++) {
           expect(
-            mockedResponseMapper.mapEvidenceRequest
+            mockedResponseMapper.mapEvidenceRequest,
           ).toHaveBeenNthCalledWith(i + 1, expectedData[i]);
         }
       });
@@ -481,7 +481,7 @@ describe('Evidence api gateway', () => {
       it('returns mapped EvidenceTypes', async () => {
         const result = await gateway.getEvidenceRequests(
           Constants.DUMMY_EMAIL,
-          'Housing benefit'
+          'Housing benefit',
         );
         expect(result).toEqual(mappedData);
       });
@@ -492,8 +492,8 @@ describe('Evidence api gateway', () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
           gateway.getEvidenceRequests(Constants.DUMMY_EMAIL, 'Housing benefit');
-        expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -523,21 +523,21 @@ describe('Evidence api gateway', () => {
                 process.env.EVIDENCE_API_TOKEN_EVIDENCE_REQUESTS_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
       it('maps the response', async () => {
         await gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
         expect(mockedResponseMapper.mapEvidenceRequest).toHaveBeenCalledWith(
-          expectedData
+          expectedData,
         );
       });
 
       it('returns mapped EvidenceTypes', async () => {
         const result = await gateway.getEvidenceRequest(
           Constants.DUMMY_EMAIL,
-          id
+          id,
         );
         expect(result).toEqual(mappedData);
       });
@@ -548,8 +548,8 @@ describe('Evidence api gateway', () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
           gateway.getEvidenceRequest(Constants.DUMMY_EMAIL, id);
-        expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -579,21 +579,21 @@ describe('Evidence api gateway', () => {
                 process.env.EVIDENCE_API_TOKEN_DOCUMENT_SUBMISSIONS_GET,
               UserEmail: Constants.DUMMY_EMAIL,
             },
-          }
+          },
         );
       });
 
       it('maps the response', async () => {
         await gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
         expect(mockedResponseMapper.mapDocumentSubmission).toHaveBeenCalledWith(
-          expectedData
+          expectedData,
         );
       });
 
       it('returns mapped EvidenceTypes', async () => {
         const result = await gateway.getDocumentSubmission(
           Constants.DUMMY_EMAIL,
-          id
+          id,
         );
         expect(result).toEqual(mappedData);
       });
@@ -604,8 +604,8 @@ describe('Evidence api gateway', () => {
         client.get.mockRejectedValue(new Error('Network error'));
         const functionCall = () =>
           gateway.getDocumentSubmission(Constants.DUMMY_EMAIL, id);
-        expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error'),
         );
       });
     });
@@ -620,7 +620,7 @@ describe('Evidence api gateway', () => {
     describe('returns the correct response', () => {
       const expectedData = DocumentSubmissionsResponseObjectFixture;
       const mappedData = expectedData.documentSubmissions.map((ds) =>
-        ResponseMapper.mapDocumentSubmission(ds)
+        ResponseMapper.mapDocumentSubmission(ds),
       );
 
       beforeEach(() => {
@@ -629,7 +629,7 @@ describe('Evidence api gateway', () => {
         });
 
         mappedData.map((data) =>
-          mockedResponseMapper.mapDocumentSubmission.mockReturnValue(data)
+          mockedResponseMapper.mapDocumentSubmission.mockReturnValue(data),
         );
       });
 
@@ -640,7 +640,7 @@ describe('Evidence api gateway', () => {
           team,
           page,
           pageSize,
-          state
+          state,
         );
         expect(client.get).toHaveBeenLastCalledWith(
           '/api/v1/document_submissions',
@@ -657,7 +657,7 @@ describe('Evidence api gateway', () => {
               page: page,
               pageSize: pageSize,
             },
-          }
+          },
         );
       });
 
@@ -668,13 +668,13 @@ describe('Evidence api gateway', () => {
           residentId,
           page,
           pageSize,
-          state
+          state,
         );
 
         expectedData.documentSubmissions.map((ds) =>
           expect(
-            mockedResponseMapper.mapDocumentSubmission
-          ).toHaveBeenCalledWith(ds)
+            mockedResponseMapper.mapDocumentSubmission,
+          ).toHaveBeenCalledWith(ds),
         );
       });
 
@@ -685,7 +685,7 @@ describe('Evidence api gateway', () => {
           residentId,
           page,
           pageSize,
-          state
+          state,
         );
         expect(result.documentSubmissions).toEqual(mappedData);
       });
@@ -701,10 +701,10 @@ describe('Evidence api gateway', () => {
             residentId,
             page,
             pageSize,
-            state
+            state,
           );
-        expect(functionCall).rejects.toEqual(
-          new InternalServerError('Internal server error')
+        await expect(functionCall).rejects.toEqual(
+          new InternalServerError('Internal server error'),
         );
       });
     });

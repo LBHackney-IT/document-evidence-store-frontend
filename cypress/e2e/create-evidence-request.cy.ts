@@ -36,7 +36,7 @@ describe('Create evidence requests', () => {
     cy.get('button').contains('Continue').click();
 
     cy.get('[data-testid="textarea"]').type(
-      'Not all those who wander are lost'
+      'Not all those who wander are lost',
     );
     cy.get('button').contains('Continue').click();
 
@@ -81,7 +81,7 @@ describe('Create evidence requests', () => {
     cy.get('button').contains('Continue').click();
 
     cy.get('[data-testid="textarea"]').type(
-      'Not all those who wander are lost'
+      'Not all those who wander are lost',
     );
     cy.get('button').contains('Continue').click();
 

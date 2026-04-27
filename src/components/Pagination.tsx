@@ -30,7 +30,7 @@ export const Pagination: FunctionComponent<Props> = (props: Props) => {
           >
             {current}
           </a>
-        </li>
+        </li>,
       );
     }
     return pages;

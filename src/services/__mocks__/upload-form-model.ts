@@ -1,7 +1,7 @@
 import { FormValues } from '../upload-form-model';
 
 const { UploadFormModel: ActualFormModel } = jest.requireActual(
-  '../upload-form-model'
+  '../upload-form-model',
 );
 
 export const mockHandleSubmit = jest.fn();
@@ -11,5 +11,5 @@ export const UploadFormModel = jest.fn(
     model.handleSubmit = mockHandleSubmit;
 
     return model;
-  }
+  },
 );

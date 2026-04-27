@@ -101,7 +101,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
             onAccept={submitHandler}
             onDismiss={() => {
               push(
-                `/teams/${team.id}/dashboard/requests/new/${currentStep - 1}`
+                `/teams/${team.id}/dashboard/requests/new/${currentStep - 1}`,
               );
               setPreviousStepNumber(previousStepNumber - 1);
             }}
@@ -130,7 +130,7 @@ const RequestsNewPage: NextPage<WithUser<RequestsNewPageProps>> = ({
       };
       const response: EvidenceRequest = await gateway.createEvidenceRequest(
         user.email,
-        requestPayload
+        requestPayload,
       );
 
       setComplete(true);
@@ -263,7 +263,7 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     const userAuthorizedToViewTeam = TeamHelper.userAuthorizedToViewTeam(
       TeamHelper.getTeamsJson(),
       user,
-      teamId
+      teamId,
     );
 
     const team = TeamHelper.getTeamFromId(TeamHelper.getTeamsJson(), teamId);
@@ -280,10 +280,10 @@ export const getServerSideProps = withAuth<RequestsNewPageProps>(
     const documentTypes = await gateway.getDocumentTypes(
       user.email,
       team.name,
-      true
+      true,
     );
     return { props: { documentTypes, team, user, feedbackUrl } };
-  }
+  },
 );
 
 export default RequestsNewPage;

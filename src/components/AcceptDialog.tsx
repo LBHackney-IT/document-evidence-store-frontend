@@ -16,21 +16,21 @@ import { DateTime } from 'luxon';
 
 const schema = Yup.object().shape({
   staffSelectedDocumentTypeId: Yup.string().required(
-    'Please choose a document type'
+    'Please choose a document type',
   ),
   validUntilDates: Yup.array().test(
     'is-date',
     'Please enter a valid date',
-    (values) => isDate(values)
+    (values) => isDate(values),
   ),
 });
 
 const isDate = (
-  validUntilDates: string[] | null | undefined | unknown[]
+  validUntilDates: string[] | null | undefined | unknown[],
 ): boolean => {
   if (
     validUntilDates?.every(
-      (x: string | null | undefined | unknown) => x == undefined
+      (x: string | null | undefined | unknown) => x == undefined,
     )
   )
     return true;
@@ -60,12 +60,12 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         const gateway = new InternalApiGateway();
         const payload = buildAcceptDocumentSubmissionRequest(
           values,
-          props.email
+          props.email,
         );
         await gateway.updateDocumentSubmission(
           props.email,
           props.documentSubmissionId,
-          payload
+          payload,
         );
         router.push(props.redirect, undefined, { shallow: true });
       } catch (err) {
@@ -78,12 +78,12 @@ const AcceptDialog: FunctionComponent<Props> = (props) => {
         }
       }
     },
-    [setErrorMessage, setSubmitError]
+    [setErrorMessage, setSubmitError],
   );
 
   const buildAcceptDocumentSubmissionRequest = (
     values: DocumentSubmissionUpdateForm,
-    userUpdatedBy: string
+    userUpdatedBy: string,
   ) => {
     if (
       values.validUntilDates &&

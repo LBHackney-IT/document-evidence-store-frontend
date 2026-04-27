@@ -27,7 +27,7 @@ describe('CreateResidentForm', () => {
           />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(getByLabelText('Name')).toBeInTheDocument();
@@ -42,7 +42,7 @@ describe('CreateResidentForm', () => {
       <CreateResidentForm
         createResident={createResident}
         initialValues={initialValues}
-      />
+      />,
     );
 
     const user = userEvent.setup();
@@ -50,14 +50,14 @@ describe('CreateResidentForm', () => {
     await user.type(screen.getByLabelText(/Name/i), 'Test Resident');
     await user.type(
       screen.getByLabelText(/Email Address/i),
-      'resident@email.co.uk'
+      'resident@email.co.uk',
     );
     await user.type(screen.getByLabelText(/Phone Number/i), '07123456789');
 
     await user.click(
       screen.getByRole('button', {
         name: /Create/i,
-      })
+      }),
     );
 
     await waitFor(() =>
@@ -66,7 +66,7 @@ describe('CreateResidentForm', () => {
         email: 'resident@email.co.uk',
         phoneNumber: '07123456789',
         groupId: null,
-      })
+      }),
     );
   });
   it('displays an error message if there is an error in submission', async () => {
@@ -78,7 +78,7 @@ describe('CreateResidentForm', () => {
       <CreateResidentForm
         createResident={createResidentFailure}
         initialValues={initialValues}
-      />
+      />,
     );
 
     const user = userEvent.setup();
@@ -86,14 +86,14 @@ describe('CreateResidentForm', () => {
     await user.type(screen.getByLabelText(/Name/i), 'Test Resident');
     await user.type(
       screen.getByLabelText(/Email Address/i),
-      'resident@email.co.uk'
+      'resident@email.co.uk',
     );
     await user.type(screen.getByLabelText(/Phone Number/i), '0712345678');
 
     await user.click(
       screen.getByRole('button', {
         name: /Create/i,
-      })
+      }),
     );
 
     await waitFor(() => {
@@ -122,7 +122,7 @@ describe('CreateResidentForm', () => {
           />
           <button type="submit">Continue</button>
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(getByLabelText('Name')).toHaveValue('Test Resident');

@@ -5,6 +5,7 @@ import { InternalApiGateway } from '../gateways/internal-api';
 import { User } from 'src/domain/user';
 import { Team } from 'src/domain/team';
 import { useRouter } from 'next/router';
+import * as RadixDialog from '@radix-ui/react-dialog';
 
 const ConfirmationDialog: FunctionComponent<Props> = (props) => {
   const router = useRouter();
@@ -24,12 +25,12 @@ const ConfirmationDialog: FunctionComponent<Props> = (props) => {
         name,
         email,
         phone,
-        props.residentIds
+        props.residentIds,
       );
       router.push(
         `/teams/${props.team.id}/dashboard/residents/${response.resident.id}`,
         undefined,
-        { shallow: true }
+        { shallow: true },
       );
     } catch (err) {
       console.error(err);

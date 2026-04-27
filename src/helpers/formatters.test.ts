@@ -12,11 +12,11 @@ describe('File size helper', () => {
 describe('Format date helper', () => {
   it('returns the correctly formatted', () => {
     const formattedDate = formatDate(
-      DateTime.local(2021, 4, 14, 18, 21).setLocale('en-gb')
+      DateTime.local(2021, 4, 14, 18, 21).setLocale('en-gb'),
     );
     // do not compare the second part of the formatted date because it contains relative days so will change
     expect(formattedDate.substr(0, 21).toLocaleLowerCase()).toEqual(
-      '6:21 pm 14 april 2021'
+      '6:21 pm 14 april 2021',
     );
   });
 });

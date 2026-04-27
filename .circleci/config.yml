@@ -116,8 +116,9 @@ jobs:
   sonar-scan:
     executor: node
     steps:
+      - checkout:
+          method: full
       - *attach_workspace
-      - checkout
       - sonarcloud/scan
 
   assume-role-staging:

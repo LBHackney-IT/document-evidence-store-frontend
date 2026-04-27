@@ -14,7 +14,7 @@ describe('DocumentDescription', () => {
           name="exampleName"
           panelIndex={0}
         />
-      </Formik>
+      </Formik>,
     );
     expect(screen.getByLabelText('Example label'));
     expect(screen.getByRole('textbox')).toHaveProperty('name', 'exampleName');
@@ -25,8 +25,8 @@ describe('DocumentDescription', () => {
     await waitFor(() =>
       expect(screen.getByRole('textbox')).toHaveProperty(
         'value',
-        'Example value'
-      )
+        'Example value',
+      ),
     );
   });
   it('displays hints', () => {
@@ -38,7 +38,7 @@ describe('DocumentDescription', () => {
           panelIndex={0}
           hint="Example hint"
         />
-      </Formik>
+      </Formik>,
     );
     expect(screen.getByText('Example hint'));
   });

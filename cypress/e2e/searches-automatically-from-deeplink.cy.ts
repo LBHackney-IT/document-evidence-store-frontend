@@ -11,7 +11,7 @@ describe('Can search for a resident', () => {
     });
 
     cy.visit(
-      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=Namey&groupId=41b32531-7973-487a-8f6d-74d31cfd2181&name=Test%20Resident&phone=07000&email=testy@test.com`
+      `http://localhost:3000/teams/2/dashboard/deeplink?searchTerm=Namey&groupId=41b32531-7973-487a-8f6d-74d31cfd2181&name=Test%20Resident&phone=07000&email=testy@test.com`,
     );
     cy.injectAxe();
   });

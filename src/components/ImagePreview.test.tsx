@@ -20,7 +20,10 @@ describe('ImagePreview', () => {
 
   test('it renders correctly', async () => {
     render(
-      <ImagePreview documentSubmission={mockDocSub} downloadUrl={downloadUrl} />
+      <ImagePreview
+        documentSubmission={mockDocSub}
+        downloadUrl={downloadUrl}
+      />,
     );
   });
 });

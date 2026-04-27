@@ -24,17 +24,17 @@ describe('ResidentDocumentsTable', () => {
         total={10}
         pageSize={10}
         onPageOrTabChange={() => Promise.resolve()}
-      />
+      />,
     );
 
     expect(screen.getByTestId('all-documents-tab')).toHaveTextContent(
-      'All documents'
+      'All documents',
     );
     expect(screen.getByTestId('awaiting-submission-tab')).toHaveTextContent(
-      'Awaiting submission'
+      'Awaiting submission',
     );
     expect(screen.getByTestId('pending-review-tab')).toHaveTextContent(
-      'Pending review'
+      'Pending review',
     );
     expect(screen.getByTestId('approved-tab')).toHaveTextContent('Approved');
     expect(screen.getByTestId('rejected-tab')).toHaveTextContent('Rejected');
@@ -49,11 +49,11 @@ describe('ResidentDocumentsTable', () => {
         total={10}
         pageSize={10}
         onPageOrTabChange={() => Promise.resolve()}
-      />
+      />,
     );
     const evidenceTiles = screen.getAllByTestId('all-documents-evidence-tile');
     expect(screen.getByTestId('all-documents-section')).toContainElement(
-      evidenceTiles[0]
+      evidenceTiles[0],
     );
   });
 
@@ -66,20 +66,20 @@ describe('ResidentDocumentsTable', () => {
         total={10}
         pageSize={10}
         onPageOrTabChange={() => Promise.resolve()}
-      />
+      />,
     );
 
     expect(screen.getByTestId('all-documents-section')).toHaveTextContent(
-      'Proof of ID'
+      'Proof of ID',
     );
     // expect(screen.getByTestId('awaiting-submission-section')).toHaveTextContent(
     //   'Proof of Address'
     // );
     expect(screen.getByTestId('approved-section')).toHaveTextContent(
-      'Proof of ID'
+      'Proof of ID',
     );
     expect(screen.getByTestId('rejected-section')).toHaveTextContent(
-      'Proof of ID'
+      'Proof of ID',
     );
   });
 });

@@ -1,7 +1,7 @@
 import { DocumentSubmission } from 'src/domain/document-submission';
 
 const { StaffUploadFormModel: ActualFormModel } = jest.requireActual(
-  '../staff-upload-form-model'
+  '../staff-upload-form-model',
 );
 
 export const mockHandleSubmit = jest.fn();
@@ -11,5 +11,5 @@ export const StaffUploadFormModel = jest.fn(
     model.handleSubmit = mockHandleSubmit;
 
     return model;
-  }
+  },
 );

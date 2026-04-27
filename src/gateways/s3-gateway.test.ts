@@ -13,7 +13,7 @@ describe('S3 Gateway', () => {
 
   beforeAll(async () => {
     const buffer = fs.readFileSync(
-      resolve(process.cwd(), 'cypress/fixtures/example.png')
+      resolve(process.cwd(), 'cypress/fixtures/example.png'),
     );
     file = new File([buffer], 'file.png');
   });
@@ -32,7 +32,7 @@ describe('S3 Gateway', () => {
 
       expect(mockedAxios.post).toHaveBeenCalledWith(
         policy.url,
-        expect.any(FormData)
+        expect.any(FormData),
       );
     });
 

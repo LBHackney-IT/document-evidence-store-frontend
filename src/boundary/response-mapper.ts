@@ -19,7 +19,7 @@ export class ResponseMapper {
     const resident = new Resident(attrs.resident);
     const createdAt = DateTime.fromISO(attrs.createdAt, { zone: 'utc' });
     const deliveryMethods = attrs.deliveryMethods.map(
-      (dm) => DeliveryMethod[dm as keyof typeof DeliveryMethod]
+      (dm) => DeliveryMethod[dm as keyof typeof DeliveryMethod],
     );
     const documentTypes = attrs.documentTypes.map((dt) => new DocumentType(dt));
 
@@ -37,7 +37,7 @@ export class ResponseMapper {
   }
 
   static mapDocumentSubmission(
-    attrs: DocumentSubmissionResponse
+    attrs: DocumentSubmissionResponse,
   ): DocumentSubmission {
     const createdAt = DateTime.fromISO(attrs.createdAt, { zone: 'utc' });
     const evidenceRequestId = attrs.evidenceRequestId;

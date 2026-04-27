@@ -21,10 +21,8 @@ const cookieName = 'cookieName';
 const secret = 'secret';
 const token = 'token';
 
-const {
-  mockCookieGet,
-  default: mockCookie,
-} = (Cookie as unknown) as typeof MockCookie;
+const { mockCookieGet, default: mockCookie } =
+  Cookie as unknown as typeof MockCookie;
 
 describe('Request Authorizer', () => {
   let instance: RequestAuthorizer;
@@ -124,7 +122,7 @@ describe('Request Authorizer', () => {
      */
     type MockVerify = jest.MockedFunction<() => User>;
     beforeEach(() => {
-      ((mockJWT.verify as unknown) as MockVerify).mockReturnValue(jwtPayload);
+      (mockJWT.verify as unknown as MockVerify).mockReturnValue(jwtPayload);
     });
 
     it('succeeds', () => {
@@ -138,7 +136,7 @@ describe('Request Authorizer', () => {
 
     describe('but not part of a valid group', () => {
       beforeEach(() => {
-        ((mockJWT.verify as unknown) as MockVerify).mockReturnValue({
+        (mockJWT.verify as unknown as MockVerify).mockReturnValue({
           ...jwtPayload,
           groups: ['other-group'],
         });
@@ -151,7 +149,7 @@ describe('Request Authorizer', () => {
 
         expect(result.success).toBeFalsy();
         expect(result.error).toEqual(
-          AuthenticationError.GoogleGroupNotRecognised
+          AuthenticationError.GoogleGroupNotRecognised,
         );
       });
     });

@@ -21,6 +21,7 @@ const ResidentLayout: FunctionComponent<Props> = (props) => (
 
 export interface Props {
   feedbackUrl: string;
+  children: React.ReactNode;
 }
 
 export default ResidentLayout;
