@@ -45,7 +45,7 @@ _🔐 This side of the application is authenticated_
 ## 💻 Setup
 
 1. Install [Docker][docker-download].
-2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v20](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
+2. Install [`nvm`](https://formulae.brew.sh/formula/nvm), [`node` v24](https://github.com/nvm-sh/nvm) and `npm` (included in `node`).
 3. Clone this repository.
 4. Open it in your IDE of choice.
 
